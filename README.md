@@ -81,22 +81,20 @@ In addition, if Redux-Saga is being used, the saga middleware should be run with
 Below is an example using React-Redux.
 
 ```javascript
+import { ReduxRegister } from "objective-redux";
+export const register = new ReduxRegister();
+```
+
+```javascript
 import * as React from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import { ReduxRegister } from 'objective-redux';
 import { App } from 'src/app';
+import { register } from 'src/store/register';
 
-const sagaMiddleware = createSagaMiddleware();
-
-const store = createStore(
-  combineReducers(ReduxRegister.getReducers()),
-  applyMiddleware(sagaMiddleware)
-);
-
-ReduxRegister.setStore(store);
-ReduxRegister.setSagaMiddleware(sagaMiddleware);
+const store = register.getStore();
 
 export class App extends React.Component {
   public render(): React.ReactChild {
@@ -125,14 +123,16 @@ Below is an example of a state controller that flips a switch on and off.
 
 ```javascript
 import { StateController } from 'objective-redux';
+import { register } from 'src/store/register';
 
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(stateName) {                  // The generated reducer is added
+  constructor(stateName, register) {        // The generated reducer is added
     super(                                  // to the ReduxRegister. No need
       stateName,                            // to wire it up manually.
-      initialState
+      initialState,
+      register
     );
   }
 
@@ -151,7 +151,7 @@ class SwitchStateController extends StateController {
 }
 
 // We export an instance of the class
-export const switchStateController = new SwitchStateController('switch');
+export const switchStateController = new SwitchStateController('switch', register);
 ```
 
 We export an instance of the class that can then be used directly by our components. Below is an example of how the above class would be used.
@@ -178,8 +178,13 @@ Below is an example of a Saga that will call the `toggleSwitch` method of our pr
 import { StatelessController, TakeType } from 'objective-redux';
 import { put } from 'redux-saga/effects';
 import { switchStateController } from 'src/store/switch-state-controller';
+import { register } from 'src/store/register';
 
 class SwitchStatelessController extends StatelessController {
+  constructor(register) {
+    super(register);
+  }
+
   reset = this.createSagaWithType(TakeType.TAKE_LATEST)
     .register(
       function* () {
@@ -188,7 +193,7 @@ class SwitchStatelessController extends StatelessController {
     );
 }
 
-export const switchStatelessController = new SwitchStatelessController();
+export const switchStatelessController = new SwitchStatelessController(register);
 
 ```
 
