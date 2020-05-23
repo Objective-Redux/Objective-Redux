@@ -22,6 +22,12 @@ interface SagaBuilder<Payload> {
 export abstract class StatelessController {
   private static count = 0;
 
+  private register: ReduxRegister;
+
+  protected constructor(register: ReduxRegister) {
+    this.register = register;
+  }
+
   /**
    * Generates a unique, default action name
    * @return {string} an action name
@@ -88,22 +94,22 @@ export abstract class StatelessController {
   private registerSagaByType(config: SagaConfig): void {
     switch (config.takeType) {
       case TakeType.TAKE_LATEST:
-        ReduxRegister.registerSaga(function* () {
+        this.register.registerSaga(function* () {
           yield takeLatest(config.name, config.sagaFn);
         });
         break;
       case TakeType.TAKE_EVERY:
-        ReduxRegister.registerSaga(function* () {
+        this.register.registerSaga(function* () {
           yield takeEvery(config.name, config.sagaFn);
         });
         break;
       case TakeType.TAKE_LEADING:
-        ReduxRegister.registerSaga(function* () {
+        this.register.registerSaga(function* () {
           yield takeLeading(config.name, config.sagaFn);
         });
         break;
       case TakeType.DEBOUNCE:
-        ReduxRegister.registerSaga(function* () {
+        this.register.registerSaga(function* () {
           yield debounce(config.debounceTime || 0, config.name, config.sagaFn);
         });
         break;

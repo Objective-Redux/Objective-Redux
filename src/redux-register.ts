@@ -1,5 +1,5 @@
-import { Store, combineReducers } from 'redux';
-import { SagaMiddleware } from 'redux-saga';
+import { Store, combineReducers, createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 
 type Reducer<S, A> = (prevState: S, action: A) => S
 
@@ -12,54 +12,48 @@ export interface SagaFn<Payload> {
 }
 
 export class ReduxRegister {
-  private static store: Store;
+  private store: Store;
 
-  private static sagaMiddleware: SagaMiddleware<object>;
+  private sagaMiddleware: SagaMiddleware<object>;
 
-  private static readonly registeredReducers: ReducerMap = {};
+  private readonly registeredReducers: ReducerMap = {};
 
-  private static readonly registeredSagas: SagaFn<void>[] = [];
+  private readonly registeredSagas: SagaFn<void>[] = [];
 
-  public static setStore(store: Store): void {
-    ReduxRegister.store = store;
-    ReduxRegister.updateReducers();
+  public constructor() {
+    this.sagaMiddleware = createSagaMiddleware();
+    this.store = createStore(
+      combineReducers({}),
+      applyMiddleware(this.sagaMiddleware)
+    );
   }
 
-  public static getStore(): Store {
-    return ReduxRegister.store;
+  public getStore(): Store {
+    return this.store;
   }
 
-  public static setSagaMiddleware(sagaMiddleware: SagaMiddleware<object>): void {
-    ReduxRegister.sagaMiddleware = sagaMiddleware;
-    ReduxRegister.registeredSagas.forEach(sagaFn => ReduxRegister.runSaga(sagaFn));
-  }
-
-  private static updateReducers(): void
+  private updateReducers(): void
   {
-    if (ReduxRegister.store) {
-      ReduxRegister.store.replaceReducer(combineReducers(
-        ReduxRegister.getReducers()
+    if (this.store) {
+      this.store.replaceReducer(combineReducers(
+        this.registeredReducers
       ));
     }
   }
 
-  private static runSaga(sagaFn: SagaFn<void>): void {
-    if (ReduxRegister.sagaMiddleware) {
-      ReduxRegister.sagaMiddleware.run(sagaFn);
+  private runSaga(sagaFn: SagaFn<void>): void {
+    if (this.sagaMiddleware) {
+      this.sagaMiddleware.run(sagaFn);
     }
   }
 
-  public static registerReducer(name: string, reducerFn: Reducer<any, any>): void {
-    ReduxRegister.registeredReducers[name] = reducerFn;
-    ReduxRegister.updateReducers();
+  public registerReducer(name: string, reducerFn: Reducer<any, any>): void {
+    this.registeredReducers[name] = reducerFn;
+    this.updateReducers();
   }
 
-  private static getReducers(): ReducerMap {
-    return ReduxRegister.registeredReducers;
-  }
-
-  public static registerSaga(sagaFn: SagaFn<void>): void {
-    ReduxRegister.registeredSagas.push(sagaFn);
+  public registerSaga(sagaFn: SagaFn<void>): void {
+    this.registeredSagas.push(sagaFn);
     this.runSaga(sagaFn);
   }
 }

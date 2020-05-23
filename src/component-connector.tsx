@@ -11,7 +11,7 @@ export class ComponentConnector {
 
   private controllers: { controller: StateController<any>, selector: StateSelectorFn }[];
 
-  public static for(component: React.ComponentClass): ComponentConnector {
+  public static component(component: React.ComponentClass): ComponentConnector {
     return new ComponentConnector(component);
   }
 
@@ -28,7 +28,7 @@ export class ComponentConnector {
     return this;
   }
 
-  public connect(): React.ComponentClass {
+  public connect(register: ReduxRegister): React.ComponentClass {
     const Component = this.component;
     const controllers = this.controllers;
 
@@ -41,10 +41,9 @@ export class ComponentConnector {
       }
 
       render() {
-        const reduxState = ReduxRegister.getStore().getState();
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
-          const slice = controllers[i].controller.stateSelector(reduxState, {});
+          const slice = controllers[i].controller.getStateSlice();
           state = {
             ...state,
             ...controllers[i].selector(slice),
@@ -59,7 +58,7 @@ export class ComponentConnector {
       }
 
       componentDidMount() {
-        this.unsubscribe = ReduxRegister.getStore().subscribe(this.handleChange.bind(this))
+        this.unsubscribe = register.getStore().subscribe(this.handleChange.bind(this))
       }
       
       componentWillUnmount() {

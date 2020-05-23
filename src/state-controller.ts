@@ -16,6 +16,8 @@ export abstract class StateController<State> {
 
   protected readonly initialState: State;
 
+  protected readonly register: ReduxRegister;
+
   protected readonly reducerMap: ReducerMap<State, any>;
 
   /**
@@ -23,11 +25,12 @@ export abstract class StateController<State> {
    * @param stateName the name of the state slice
    * @param initialState the value that will initially populate the state slice
    */
-  public constructor(stateName: string, initialState: State) {
+  protected constructor(stateName: string, initialState: State, register: ReduxRegister) {
     this.stateName = stateName;
     this.initialState = initialState;
+    this.register = register;
     this.reducerMap = {};
-    ReduxRegister.registerReducer(this.stateName, this.reducer.bind(this));
+    this.register.registerReducer(this.stateName, this.reducer.bind(this));
   }
 
   /**
@@ -80,6 +83,16 @@ export abstract class StateController<State> {
     }
 
     return reducerFn(state, action.payload);
+  }
+
+  /**
+   * Gets the current state for this slice of the Redux state
+   * @return the current slice of the state related to this controller
+   */
+  public getStateSlice(): State {
+    return this.register
+      .getStore()
+      .getState()[this.stateName];
   }
 
   /**
