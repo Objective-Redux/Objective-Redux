@@ -23,7 +23,7 @@ export class ReduxRegister {
   public constructor() {
     this.sagaMiddleware = createSagaMiddleware();
     this.store = createStore(
-      combineReducers({}),
+      () => {},
       applyMiddleware(this.sagaMiddleware)
     );
   }
