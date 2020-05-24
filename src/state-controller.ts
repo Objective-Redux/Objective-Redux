@@ -17,8 +17,6 @@ export abstract class StateController<State> extends Controller {
 
   protected readonly initialState: State;
 
-  protected readonly register: ReduxRegister;
-
   protected readonly reducerMap: ReducerMap<State, any>;
 
   /**
@@ -30,7 +28,6 @@ export abstract class StateController<State> extends Controller {
     super(register);
     this.stateName = stateName;
     this.initialState = initialState;
-    this.register = register;
     this.reducerMap = {};
     this.register.registerReducer(this.stateName, this.reducer.bind(this));
   }
@@ -95,18 +92,5 @@ export abstract class StateController<State> extends Controller {
     return this.register
       .getStore()
       .getState()[this.stateName];
-  }
-
-  /**
-   * Adds the portion of the state pertaining to the slice to the ownProps object
-   * @param state the full Redux state
-   * @param ownProps an object to which the state slice values will be added
-   * @return the part of the state that belongs to the slice plus anything that was previously in ownProps
-   */
-  public stateSelector(state: { [name: string]: State }, ownProps: any): State {
-    return {
-      ...ownProps,
-      ...state[this.stateName],
-    };
   }
 }

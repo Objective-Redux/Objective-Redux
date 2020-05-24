@@ -23,11 +23,8 @@ interface SagaBuilder<Payload> {
 export abstract class StatelessController extends Controller {
   private static count = 0;
 
-  protected register: ReduxRegister;
-
   protected constructor(register: ReduxRegister) {
     super(register);
-    this.register = register;
   }
 
   /**

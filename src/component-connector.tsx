@@ -14,7 +14,7 @@ export class ComponentConnector {
 
   private controllers: { controller: Class<StateController<any>>, selector: StateSelectorFn }[];
 
-  public static component(component: React.ComponentClass): ComponentConnector {
+  public static addPropsTo(component: React.ComponentClass): ComponentConnector {
     return new ComponentConnector(component);
   }
 
@@ -23,7 +23,7 @@ export class ComponentConnector {
     this.controllers = [];
   }
 
-  public to<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn): ComponentConnector {
+  public from<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn): ComponentConnector {
     this.controllers.push({
       controller,
       selector: selector || (state => state),
