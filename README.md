@@ -40,7 +40,7 @@ class SwitchStateController extends StateController {
 export const switchOneController = new SwitchStateController('switch-number-one');
 ```
 ```javascript
-store.dispatch(switchOneController.toggleSwitch());
+SwitchOneController.getInstance(register).toggleSwitch();
 ```
 ## Features
 * No boilerplate code
@@ -65,46 +65,31 @@ If you want to use Redux-Saga, install it as well.
 npm install --save redux-saga
 ```
 
-Finally, if you are using React, add react-redux to your project.
-```
-npm install --save react-redux
-```
-
 ## Connecting to Redux
 
-The `ReduxRegister.getReducers()` method will produce an object containing all of the Reducers that have been instantiated. The output should be passed to the `combineReducers` function.
-
-The store object also needs to be passed into the `ReduxRegister::setStore` method.
-
-In addition, if Redux-Saga is being used, the saga middleware should be run with the output of `ReduxRegister.getSagas()`.
-
-Below is an example using React-Redux.
+First, a ReduxRegister needs to be created in order to connect state controllers.
 
 ```javascript
 import { ReduxRegister } from "objective-redux";
 export const register = new ReduxRegister();
 ```
 
+In addition, for Reactjs, the following sets up a provider for components.
+
 ```javascript
-import * as React from 'react';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import { Provider } from 'react-redux';
-import { ReduxRegister } from 'objective-redux';
-import { App } from 'src/app';
-import { register } from 'src/store/register';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RegisterProvider } from 'objective-redux';
+import { register } from './store/register';
+import App from './app';
 
-const store = register.getStore();
+ReactDOM.render(
+  <RegisterProvider register={register}>
+    <App />
+  </RegisterProvider>,
+  document.getElementById('root')
+);
 
-export class App extends React.Component {
-  public render(): React.ReactChild {
-    return (
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-  }
-}
 ```
 
 <br />
@@ -157,7 +142,7 @@ export const switchStateController = new SwitchStateController('switch', registe
 We export an instance of the class that can then be used directly by our components. Below is an example of how the above class would be used.
 
 ```javascript
-dispatch(switchStateController.toggleSwitch());
+SwitchStateController.getInstance(register).toggleSwitch();
 //...
 export default connect(
   (state, ownProps) => ({
@@ -175,25 +160,24 @@ Sagas can be created using the `StatelessController`. The `createSagaWithType` i
 Below is an example of a Saga that will call the `toggleSwitch` method of our previously created `SwitchStateController`.
 
 ```javascript
-import { StatelessController, TakeType } from 'objective-redux';
-import { put } from 'redux-saga/effects';
-import { switchStateController } from 'src/store/switch-state-controller';
-import { register } from 'src/store/register';
+import { StatelessController, TakeType } from "objective-redux";
+import { SwitchStateController } from './switch-state-controller';
+import { register } from './register';
 
-class SwitchStatelessController extends StatelessController {
-  constructor(register) {
-    super(register);
-  }
+export class SwitchStateSagas extends StatelessController {
+  switchStateController = SwitchStateController.getInstance(this.register);
 
-  reset = this.createSagaWithType(TakeType.TAKE_LATEST)
+  toggleSwitch = this.createSagaWithTake(TakeType.TAKE_LATEST)
+    .withAddressableName('SOME_NAME_HERE')
     .register(
       function* () {
-        yield put(switchStateController.toggleSwitch());
-      }
+        yield this.switchStateController.toggleSwitchValue();
+      }.bind(this)
     );
 }
 
-export const switchStatelessController = new SwitchStatelessController(register);
+export const switchStateSagas = new SwitchStateSagas(register);
+
 
 ```
 
@@ -223,7 +207,7 @@ If you need to call the action from outside your package, you can give the actio
 Then, your reducer or saga can be called with
 ```javascript
 const myAction = createAction('SET_SWITCH_STATE');
-dispatch(createAction(isOn));
+register.getStore().dispatch(createAction(isOn));
 ```
 
 <br />
@@ -245,7 +229,7 @@ class ThemeStateController extends StateController<ThemeState> {
 }
 ```
 ```typescript
-store.dispatch(themeStateController.setTheme('dark'));
+ThemeStateController.getInstance(register).setTheme('dark'));
 ```
 
 You can also set the action template type to `<void>` to indicate that no parameter should be taken by the action.
