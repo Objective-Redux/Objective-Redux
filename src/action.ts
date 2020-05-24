@@ -1,3 +1,5 @@
+import { ReduxRegister } from "./";
+
 export interface Action<T> {
   type: string;
   payload?: T;
@@ -23,14 +25,14 @@ export function createAction<Payload>(type: string): (payload: Payload) => Actio
   });
 }
 
-// /**
-//  * Returns a function that generates a Redux action of the form { type, payload }
-//  * @param type the name of the action being sent
-//  * @returns the action generating function
-//  */
-// export function createConnectedAction<Payload>(type: string): (payload: Payload) => Action<Payload> {
-//   return (payload: Payload) => ReduxRegister.getStore().dispatch({
-//     type,
-//     payload,
-//   });
-// }
+/**
+ * Returns a function that generates a Redux action of the form { type, payload }
+ * @param type the name of the action being sent
+ * @returns the action generating function
+ */
+export function createConnectedAction<Payload>(type: string, register: ReduxRegister): (payload: Payload) => Action<Payload> {
+  return (payload: Payload) => register.getStore().dispatch({
+    type,
+    payload,
+  });
+}

@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { StateController, ReduxRegister } from ".";
+import { StateController } from "./";
 import { Unsubscribe } from 'redux';
+import { RegisterProviderContext } from './context';
+
+export type Class<T> = { new (...args: any[]): T; };
 
 interface StateSelectorFn {
   (state: any): any;
@@ -9,7 +12,7 @@ interface StateSelectorFn {
 export class ComponentConnector {
   private component: React.ComponentClass;
 
-  private controllers: { controller: StateController<any>, selector: StateSelectorFn }[];
+  private controllers: { controller: Class<StateController<any>>, selector: StateSelectorFn }[];
 
   public static component(component: React.ComponentClass): ComponentConnector {
     return new ComponentConnector(component);
@@ -20,7 +23,7 @@ export class ComponentConnector {
     this.controllers = [];
   }
 
-  public to(controller: StateController<any>, selector: StateSelectorFn): ComponentConnector {
+  public to<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn): ComponentConnector {
     this.controllers.push({
       controller,
       selector: selector || (state => state),
@@ -28,11 +31,13 @@ export class ComponentConnector {
     return this;
   }
 
-  public connect(register: ReduxRegister): React.ComponentClass {
+  public connect(): React.ComponentClass {
     const Component = this.component;
     const controllers = this.controllers;
 
     return class extends React.Component {
+      static contextType = RegisterProviderContext;
+
       public unsubscribe: Unsubscribe|null = null;
 
       public constructor(props: any, context?: any) {
@@ -41,9 +46,10 @@ export class ComponentConnector {
       }
 
       render() {
+        const register = this.context;
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
-          const slice = controllers[i].controller.getStateSlice();
+          const slice = (controllers[i].controller as any).getInstance(register).getStateSlice();
           state = {
             ...state,
             ...controllers[i].selector(slice),
@@ -53,12 +59,13 @@ export class ComponentConnector {
           <Component
             {...this.props}
             {...state}
+            {...{ register }}
           />
         );
       }
 
       componentDidMount() {
-        this.unsubscribe = register.getStore().subscribe(this.handleChange.bind(this))
+        this.unsubscribe = this.context.getStore().subscribe(this.handleChange.bind(this))
       }
       
       componentWillUnmount() {

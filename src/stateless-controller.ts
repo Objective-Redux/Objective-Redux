@@ -1,7 +1,8 @@
 import { takeLatest, takeEvery, takeLeading, debounce } from 'redux-saga/effects';
 import { ReduxRegister, SagaFn } from './redux-register';
 import { TakeType } from './take-type';
-import { createAction, ActionFn } from './action';
+import { createConnectedAction, ActionFn } from './action';
+import { Controller } from './controller';
 
 interface SagaConfig {
   name: string;
@@ -19,12 +20,13 @@ interface SagaBuilder<Payload> {
   withAddressableName: (name: string) => SagaBuilder<Payload>;
 }
 
-export abstract class StatelessController {
+export abstract class StatelessController extends Controller {
   private static count = 0;
 
   private register: ReduxRegister;
 
   protected constructor(register: ReduxRegister) {
+    super(register);
     this.register = register;
   }
 
@@ -64,7 +66,8 @@ export abstract class StatelessController {
         takeType,
         debounceTime: config?.debounceTime,
       });
-      return createAction<Payload>(actionName);
+
+      return createConnectedAction<Payload>(actionName, this.register);
     };
 
     /**

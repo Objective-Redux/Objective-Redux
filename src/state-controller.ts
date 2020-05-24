@@ -1,5 +1,6 @@
 import { ReduxRegister } from './redux-register';
-import { Action, createAction, ActionFn, ActionExtendFn } from './action';
+import { Action, createConnectedAction, ActionFn, ActionExtendFn } from './action';
+import { Controller } from './controller';
 
 export interface ReducerFn<State, Payload> {
   (state: State, action: Payload): State;
@@ -9,7 +10,7 @@ interface ReducerMap<State, Payload> {
   [actionName: string]: ReducerFn<State, Payload>|null;
 }
 
-export abstract class StateController<State> {
+export abstract class StateController<State> extends Controller {
   private static count = 0;
 
   protected readonly stateName: string;
@@ -26,6 +27,7 @@ export abstract class StateController<State> {
    * @param initialState the value that will initially populate the state slice
    */
   protected constructor(stateName: string, initialState: State, register: ReduxRegister) {
+    super(register);
     this.stateName = stateName;
     this.initialState = initialState;
     this.register = register;
@@ -53,7 +55,7 @@ export abstract class StateController<State> {
     const actionName = this.createActionName();
     this.reducerMap[actionName] = fn;
 
-    const actionFn: ActionExtendFn<Payload> = createAction<Payload>(actionName);
+    const actionFn: ActionExtendFn<Payload> = createConnectedAction<Payload>(actionName, this.register);
 
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder
@@ -63,7 +65,7 @@ export abstract class StateController<State> {
     actionFn.withAddressableName = (name: string): ActionFn<Payload> => {
       this.reducerMap[actionName] = null;
       this.reducerMap[name] = fn;
-      return createAction<Payload>(name);
+      return createConnectedAction<Payload>(name, this.register);
     };
 
     return actionFn;
