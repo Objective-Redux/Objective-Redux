@@ -31,9 +31,9 @@ export class SwitchStateController extends StateController {
 SwitchOneController.getInstance(register).toggleSwitch();
 ```
 ## Features
-* Reducers, sagas, and state are loaded only when needed
+* Lazy/on-demand initialization
 * No boilerplate code
-* No wiring-up pieces
+* No wiring-up reducers and sagas
 * Built-in organization
 * Easy debugging
 * Support for Sagas
@@ -119,7 +119,7 @@ export class SwitchStateController extends StateController {
 }
 ```
 
-We export an instance of the class that can then be used directly by our components. Below is an example of how the above class would be used.
+Below is an example of how the above class would be used.
 
 ```javascript
 import React from 'react';
