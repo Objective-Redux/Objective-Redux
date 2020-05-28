@@ -161,7 +161,7 @@ Sagas can be created using the `StatelessController`. The `createSagaWithType` i
 Below is an example of a Saga that will call the `toggleSwitch` method of our previously created `SwitchStateController`.
 
 ```javascript
-import { StatelessController, TakeType } from "objective-redux";
+import { StatelessController, TakeType, getRegisterFromContext } from "objective-redux";
 import { SwitchStateController } from './switch-state-controller';
 
 export class SwitchStateSagas extends StatelessController {
@@ -170,7 +170,8 @@ export class SwitchStateSagas extends StatelessController {
   toggleSwitch = this.createSagaWithTake(TakeType.TAKE_LATEST)
     .register(
       function* () {
-        yield this.switchStateController.toggleSwitchValue();
+        const register = yield getRegisterFromContext();
+        yield SwitchStateController.getInstance(register).toggleSwitchValue();
       }.bind(this)
     );
 }

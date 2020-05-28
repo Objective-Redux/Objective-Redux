@@ -5,6 +5,7 @@ import { TakeType } from './take-type';
 import { createAction } from './action';
 import { RegisterProvider } from './register-provider';
 import { ComponentConnector } from './component-connector';
+import { getRegisterFromContext } from './get-registry';
 
 export {
   ReduxRegister,
@@ -14,4 +15,5 @@ export {
   createAction,
   RegisterProvider,
   ComponentConnector,
+  getRegisterFromContext,
 };

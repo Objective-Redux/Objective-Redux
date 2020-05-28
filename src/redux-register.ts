@@ -21,7 +21,11 @@ export class ReduxRegister {
   private readonly registeredSagas: SagaFn<void>[] = [];
 
   public constructor() {
-    this.sagaMiddleware = createSagaMiddleware();
+    this.sagaMiddleware = createSagaMiddleware({
+      context: {
+        register: this,
+      },
+    });
     this.store = createStore(
       () => {},
       applyMiddleware(this.sagaMiddleware)
