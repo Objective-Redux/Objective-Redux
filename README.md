@@ -261,10 +261,10 @@ class ThemeStateController extends StateController<ThemeState> {
 }
 ```
 ```typescript
-ThemeStateController.getInstance(register).setTheme());       // error
-ThemeStateController.getInstance(register).setTheme(10));     // error
-ThemeStateController.getInstance(register).setTheme({}));     // error
-ThemeStateController.getInstance(register).setTheme('dark')); // works
+ThemeStateController.getInstance(register).setTheme();       // error
+ThemeStateController.getInstance(register).setTheme(10);     // error
+ThemeStateController.getInstance(register).setTheme({});     // error
+ThemeStateController.getInstance(register).setTheme('dark'); // works
 ```
 
 You can also set the action template type to `<void>` to indicate that no parameter should be taken by the action.
