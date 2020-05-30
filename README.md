@@ -1,5 +1,5 @@
 <div style="text-align: center; border: 1px solid; border-radius: 10px; margin: 80px; padding: 30px;">
-  <h1 style="border-bottom: 1px dotted; margin-bottom: 0; padding-bottom: 8px; width: 250px; margin:auto;">Objective Redux</h1>
+  <h1 style="border-bottom: 1px dotted; margin-bottom: 0; padding-bottom: 8px; width: 300px; margin:auto;">Objective Redux</h1>
   <h2 style="padding: 0; margin-bottom: 0;">Redux made better, objectively.</h2>
   <p style="margin-top: 5px;">Object-oriented, light-weight, and TypeScript compatible.</p>
   <p>
@@ -169,7 +169,7 @@ import {
 import { SwitchStateController } from './switch-state-controller';
 
 export class SwitchStateSagas extends StatelessController {
-  toggleSwitch = this.registerSaga()
+  toggleSwitch = this.createSaga()
     .withTake(TakeType.TAKE_LATEST)
     .register(
       function* () {
@@ -188,7 +188,7 @@ import { SwitchStateController } from './switch-state-controller';
 import {takeLatest} from 'redux-saga/effects';
 
 export class SwitchStateSagas extends StatelessController {
-  toggleSwitch = this.registerSaga()
+  toggleSwitch = this.createSaga()
     .withAddressableName('NAME')
     .register(
       function *() {
@@ -211,15 +211,16 @@ If you need to call the action from outside your package, you can give the actio
   // For Reducers
   setSwitch = this.registerAction(
     (state, isOn) => ({ isOn })
-  );
-  .withAddressableName('SET_SWITCH_STATE');
+  ).withAddressableName('SET_SWITCH_STATE'); // <--
 
   // For Sagas
-  reset = this.createSagaWithTake(TakeType.TAKE_LATEST)
-    .withAddressableName('SET_SWITCH_STATE')
+  toggleSwitch = this.createSaga()
+    .withTake(TakeType.TAKE_LATEST)
+    .withAddressableName('SET_SWITCH_STATE') // <--
     .register(
-      function* (isOn) {
-        yield put(switchStateController.setState(isOn));
+      function *() {
+        const register = yield getRegisterFromContext();
+        yield MyController.getInstance(register).myAction(payload);
       }
     );
 ```

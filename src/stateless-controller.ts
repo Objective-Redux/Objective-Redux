@@ -4,6 +4,9 @@ import { TakeType } from './take-type';
 import { createConnectedAction, ActionFn } from './action';
 import { Controller } from './controller';
 
+/**
+ * @internal
+ */
 interface SagaConfig {
   name: string|null;
   takeType: TakeType|null;
@@ -11,10 +14,16 @@ interface SagaConfig {
   sagaFn: SagaFn<any>;
 }
 
+/**
+ * @internal
+ */
 interface TakeConfig {
   debounceTime: number;
 }
 
+/**
+ * @internal
+ */
 interface TakeSagaConfig {
   name: string;
   takeType: TakeType;
@@ -22,12 +31,19 @@ interface TakeSagaConfig {
   sagaFn: SagaFn<any>;
 }
 
+/**
+ * Builder that is returned by the [[StatelessController]] to create and register a saga.
+ * @template Payload the payload that the action and the saga will use.
+ */
 class SagaBuilder<Payload> {
   private registerFn: (config: SagaConfig) => ActionFn<Payload>;
   private name: string|null;
   private takeType: TakeType|null;
   private takeConfig: TakeConfig|null;
 
+  /**
+   * @internal
+   */
   public constructor(registerFn: (config: SagaConfig) => ActionFn<Payload>) {
     this.registerFn = registerFn;
     this.name = null;
@@ -35,17 +51,33 @@ class SagaBuilder<Payload> {
     this.takeConfig = null;
   }
 
+  /**
+   * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.
+   * @param name the name/type of the action.
+   * @returns an instance of the SagaBuilder.
+   */
   withAddressableName(name: string): SagaBuilder<Payload> {
     this.name = name;
     return this;
   }
 
+  /**
+   * Adds a simple watcher to the saga.
+   * @param type the take type of the watching saga.
+   * @param config the configuration of the take type.
+   * @returns an instance of the SagaBuilder.
+   */
   withTake(type: TakeType, config: TakeConfig): SagaBuilder<Payload> {
     this.takeType = type;
     this.takeConfig = config;
     return this;
   }
 
+  /**
+   * Completes the builder and adds the saga to the register.
+   * @param sagaFn the saga function to add to the ReduxRegister.
+   * @returns an action for calling the saga.
+   */
   register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
     return this.registerFn({
       name: this.name,
@@ -56,32 +88,62 @@ class SagaBuilder<Payload> {
   }
 }
 
+/**
+ * Create and manage sagas that are associated with a Redux store.
+ *
+ * @example
+ * ```typescript
+ * class SwitchStateSagas extends StatelessController {
+ *  toggleSwitch = this.createSaga()
+ *    .withTake(TakeType.TAKE_LATEST)
+ *    .register(
+ *      function* () {
+ *        const register = yield getRegisterFromContext();
+ *        yield SwitchStateController.getInstance(register).toggleSwitchValue();
+ *        yield SwitchStateController.getInstance(register).incrementCount();
+ *      }
+ *    );
+ * }
+ *
+ * const instance = SwitchStateSagas.getInstance(register);
+ * instance.toggleSwitch();
+ * ```
+ */
 export abstract class StatelessController extends Controller {
   private static count = 0;
 
+  /**
+   * Registers and starts the sagas.
+   *
+   * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+   * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
+   * have adverse affects on the application._
+   *
+   * @param register rhe ReduxRegister instance to which the controller will be connected.
+   * @returns an instance of the StatelessController.
+   */
   protected constructor(register: ReduxRegister) {
     super(register);
   }
 
   /**
    * Generates a unique, default action name
-   * @return {string} an action name
+   * @returns {string} an action name
    */
   private createActionName(): string {
     return `SAGA/${StatelessController.count++}`;
   }
 
   /**
-   * Begins building a saga
-   * @param takeType the saga effect for the watching generator function
-   * @param config additional configurations for the watching generator function
-   * @returns a builder that registers the saga
+   * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
+   * @template Payload the payload the action and the saga will take.
+   * @returns a builder that registers the saga.
    */
-  protected registerSaga<Payload>(): SagaBuilder<Payload> {
-    return new SagaBuilder<Payload>(this.buildSagaSaga.bind(this));
+  protected createSaga<Payload>(): SagaBuilder<Payload> {
+    return new SagaBuilder<Payload>(this.buildSaga.bind(this));
   }
 
-  protected buildSagaSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
+  private buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
     console.log(config);
     const name = config.name || this.createActionName();
     let sagaFn = config.sagaFn;

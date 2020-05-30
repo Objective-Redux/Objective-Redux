@@ -1,5 +1,6 @@
 {
   "name": "objective-redux",
+  "productName": "Objective Redux",
   "version": "0.1.0",
   "description": "An object oriented approach to Redux",
   "main": "dist/index.js",
@@ -9,7 +10,9 @@
     "dist/"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "docs": "typedoc --out docs src --mode file --excludeNotExported --excludeExternals --excludePrivate --stripInternal --includeVersion --disableSources",
+    "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\""
   },
   "keywords": [
     "redux",
@@ -27,9 +30,18 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.35",
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
+    "eslint": "^6.1.0",
+    "eslint-plugin-filenames": "^1.3.2",
+    "eslint-plugin-header": "^3.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsdoc": "^18.11.0",
+    "eslint-plugin-react": "^7.19.0",
     "react": "^16.13.1",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
+    "typedoc": "^0.17.7",
     "typescript": "^3.9.3"
   }
 }
