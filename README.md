@@ -38,6 +38,17 @@ SwitchOneController.getInstance(register).toggleSwitch();
 * Easy debugging
 * Support for Sagas
 
+<br />
+
+# Documentation
+
+You can read the full documentation here:
+
+https://objective-redux.github.io/Objective-Redux/
+
+Or keep scrolling for the quick-start guide.
+
+<br />
 
 <br />
 
