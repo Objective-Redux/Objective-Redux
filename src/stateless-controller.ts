@@ -5,19 +5,55 @@ import { createConnectedAction, ActionFn } from './action';
 import { Controller } from './controller';
 
 interface SagaConfig {
-  name: string;
-  takeType: TakeType;
+  name: string|null;
+  takeType: TakeType|null;
+  takeConfig: TakeConfig|null;
   sagaFn: SagaFn<any>;
-  debounceTime?: number;
 }
 
 interface TakeConfig {
   debounceTime: number;
 }
 
-interface SagaBuilder<Payload> {
-  register: (sagaFn: SagaFn<Payload>) => ActionFn<Payload>;
-  withAddressableName: (name: string) => SagaBuilder<Payload>;
+interface TakeSagaConfig {
+  name: string;
+  takeType: TakeType;
+  takeConfig: TakeConfig|null;
+  sagaFn: SagaFn<any>;
+}
+
+class SagaBuilder<Payload> {
+  private registerFn: (config: SagaConfig) => ActionFn<Payload>;
+  private name: string|null;
+  private takeType: TakeType|null;
+  private takeConfig: TakeConfig|null;
+
+  public constructor(registerFn: (config: SagaConfig) => ActionFn<Payload>) {
+    this.registerFn = registerFn;
+    this.name = null;
+    this.takeType = null;
+    this.takeConfig = null;
+  }
+
+  withAddressableName(name: string): SagaBuilder<Payload> {
+    this.name = name;
+    return this;
+  }
+
+  withTake(type: TakeType, config: TakeConfig): SagaBuilder<Payload> {
+    this.takeType = type;
+    this.takeConfig = config;
+    return this;
+  }
+
+  register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
+    return this.registerFn({
+      name: this.name,
+      takeType: this.takeType,
+      takeConfig: this.takeConfig,
+      sagaFn,
+    });
+  }
 }
 
 export abstract class StatelessController extends Controller {
@@ -31,7 +67,7 @@ export abstract class StatelessController extends Controller {
    * Generates a unique, default action name
    * @return {string} an action name
    */
-  protected createActionName(): string {
+  private createActionName(): string {
     return `SAGA/${StatelessController.count++}`;
   }
 
@@ -41,78 +77,52 @@ export abstract class StatelessController extends Controller {
    * @param config additional configurations for the watching generator function
    * @returns a builder that registers the saga
    */
-  protected createSagaWithTake<Payload>(takeType: TakeType, config?: TakeConfig): SagaBuilder<Payload> {
-    let actionName = this.createActionName();
-
-    /**
-     * Registers the generator function for the saga
-     * @param sagaFn the generator function being registered; the function should be in the form
-     * ```
-     * function* (payload?) { ... }
-     * ```
-     * @returns the action producing function for calling the saga
-     */
-    const register = (sagaFn: SagaFn<Payload>): ActionFn<Payload> => {
-      const fn = function* (action: any): any {
-        yield* sagaFn(action.payload);
-      };
-
-      this.registerSagaByType({
-        name: actionName,
-        sagaFn: fn,
-        takeType,
-        debounceTime: config?.debounceTime,
-      });
-
-      return createConnectedAction<Payload>(actionName, this.register);
-    };
-
-    /**
-     * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder
-     * @param name the name of the action
-     * @returns a builder that registers the saga
-     */
-    const withAddressableName = (name: string): SagaBuilder<Payload> => {
-      actionName = name;
-
-      return {
-        register,
-        withAddressableName,
-      };
-    };
-
-    return {
-      register,
-      withAddressableName,
-    };
+  protected registerSaga<Payload>(): SagaBuilder<Payload> {
+    return new SagaBuilder<Payload>(this.buildSagaSaga.bind(this));
   }
 
-  /**
-   * Registers a saga after wrapping it in a watching generator function
-   * @param config the configuration for the saga being registered
-   */
-  private registerSagaByType(config: SagaConfig): void {
+  protected buildSagaSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
+    console.log(config);
+    const name = config.name || this.createActionName();
+    let sagaFn = config.sagaFn;
+
+    if (config.takeType !== null) {
+      sagaFn = this.createTakeSaga({
+        name,
+        takeType: config.takeType,
+        takeConfig: config.takeConfig,
+        sagaFn,
+      });
+    }
+
+    this.register.registerSaga(sagaFn);
+    return createConnectedAction(name, this.register);
+  }
+
+  private createTakeSaga(config: TakeSagaConfig): () => Generator {
     switch (config.takeType) {
       case TakeType.TAKE_LATEST:
-        this.register.registerSaga(function* () {
+        return function* () {
           yield takeLatest(config.name, config.sagaFn);
-        });
+        };
         break;
       case TakeType.TAKE_EVERY:
-        this.register.registerSaga(function* () {
+        return function* () {
           yield takeEvery(config.name, config.sagaFn);
-        });
+        };
         break;
       case TakeType.TAKE_LEADING:
-        this.register.registerSaga(function* () {
+        return function* () {
           yield takeLeading(config.name, config.sagaFn);
-        });
+        };
         break;
       case TakeType.DEBOUNCE:
-        this.register.registerSaga(function* () {
-          yield debounce(config.debounceTime || 0, config.name, config.sagaFn);
-        });
+        return function* () {
+          yield debounce(config?.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
+        };
         break;
+      default:
+        throw new Error('Invalid take type');
     }
   }
 }

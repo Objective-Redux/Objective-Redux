@@ -5,14 +5,14 @@ import { RegisterProviderContext } from './context';
 
 export type Class<T> = { new (...args: any[]): T; };
 
-interface StateSelectorFn {
-  (state: any): any;
+interface StateSelectorFn<T> {
+  (state: T): any;
 }
 
 export class ComponentConnector {
   private component: React.ComponentClass;
 
-  private controllers: { controller: Class<StateController<any>>, selector: StateSelectorFn }[];
+  private controllers: { controller: Class<StateController<any>>, selector: StateSelectorFn<any> }[];
 
   public static addPropsTo(component: React.ComponentClass): ComponentConnector {
     return new ComponentConnector(component);
@@ -23,10 +23,10 @@ export class ComponentConnector {
     this.controllers = [];
   }
 
-  public from<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn): ComponentConnector {
+  public from<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn<C>): ComponentConnector {
     this.controllers.push({
       controller,
-      selector: selector || (state => state),
+      selector: selector || ((state: C) => state),
     });
     return this;
   }

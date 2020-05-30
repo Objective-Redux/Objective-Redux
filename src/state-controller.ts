@@ -36,7 +36,7 @@ export abstract class StateController<State> extends Controller {
    * Generates a unique, default action name
    * @return an action name
    */
-  protected createActionName(): string {
+  private createActionName(): string {
     return `ACTIONS/${this.stateName}/${StateController.count++}`;
   }
 

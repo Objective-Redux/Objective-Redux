@@ -161,22 +161,44 @@ Sagas can be created using the `StatelessController`. The `createSagaWithType` i
 Below is an example of a Saga that will call the `toggleSwitch` method of our previously created `SwitchStateController`.
 
 ```javascript
-import { StatelessController, TakeType, getRegisterFromContext } from "objective-redux";
+import {
+  StatelessController,
+  TakeType,
+  getRegisterFromContext
+} from 'objective-redux';
 import { SwitchStateController } from './switch-state-controller';
 
 export class SwitchStateSagas extends StatelessController {
-  switchStateController = SwitchStateController.getInstance(this.register);
-
-  toggleSwitch = this.createSagaWithTake(TakeType.TAKE_LATEST)
+  toggleSwitch = this.registerSaga()
+    .withTake(TakeType.TAKE_LATEST)
     .register(
       function* () {
-        const register = yield getRegisterFromContext();
-        yield SwitchStateController.getInstance(register).toggleSwitchValue();
-      }.bind(this)
+        const register = yield getRegisterFromContext(payload);
+        yield MyController.getInstance(register).toggleSwitchValue(payload);
+      }
     );
 }
+```
 
+To create a more generic Saga, you can use
 
+```javascript
+import { StatelessController, getRegisterFromContext } from 'objective-redux';
+import { SwitchStateController } from './switch-state-controller';
+import {takeLatest} from 'redux-saga/effects';
+
+export class SwitchStateSagas extends StatelessController {
+  toggleSwitch = this.registerSaga()
+    .withAddressableName('NAME')
+    .register(
+      function *() {
+        yield takeLatest('NAME', function* ({ type, payload }) {
+          const register = yield getRegisterFromContext();
+          yield MyController.getInstance(register).myAction(payload);
+        });
+      }
+    );
+}
 ```
 
 <br />
