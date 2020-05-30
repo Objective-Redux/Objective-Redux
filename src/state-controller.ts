@@ -1,5 +1,14 @@
+// ================================================================================================
+//                                          Objective Redux
+//                 (c) Copyright 2020 by Jason Mace (jmace01). All rights reserved.
+//
+// This code is provided under the terms of the [object Object] license. See the LICENSE file for
+// terms.
+// ================================================================================================
 import { ReduxRegister } from './redux-register';
-import { Action, createConnectedAction, ActionFn, ActionExtendFn } from './action';
+import {
+  Action, createConnectedAction, ActionFn, ActionExtendFn,
+} from './action';
 import { Controller } from './controller';
 
 /**
@@ -18,7 +27,7 @@ interface ReducerMap<State, Payload> {
 
 /**
  * Creates and manages a slice of Redux state.
- * 
+ *
  * @example
  * JavaScript
  * ```javascript
@@ -26,7 +35,7 @@ interface ReducerMap<State, Payload> {
  *   constructor(register) {
  *     super('switch', { isOn: false }, register);
  *   }
- * 
+ *
  *   action = this.registerAction(
  *     (state, payload) => ({
  *       ...state,
@@ -34,7 +43,7 @@ interface ReducerMap<State, Payload> {
  *     })
  *   ).withAddressableName('MY_ACTION');
  * }
- * 
+ *
  * const register = new ReduxRegister();
  * const controller = SwitchStateController.getInstance(register);
  * controller.action({ isOn: true });
@@ -45,12 +54,12 @@ interface ReducerMap<State, Payload> {
  * interface SwitchState {
  *   isOn: boolean;
  * }
- * 
+ *
  * class SwitchStateController extends StateController<SwitchState> {
  *   constructor(register: ReduxRegister) {
  *     super('switch', { isOn: false }, register);
  *   }
- * 
+ *
  *   const readonly action = this.registerAction<SwitchState>(
  *     (state, payload) => ({
  *       ...state,
@@ -58,7 +67,7 @@ interface ReducerMap<State, Payload> {
  *     })
  *   ).withAddressableName('MY_ACTION');
  * }
- * 
+ *
  * const register = new ReduxRegister();
  * const controller = SwitchStateController.getInstance(register);
  * controller.action({ isOn: true });
@@ -90,10 +99,12 @@ export abstract class StateController<State> extends Controller {
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
    * have adverse affects on the application.
    *
-   * @param stateName the type or interface of state slice for which the controller will be managing.
-   * @param initialState the initial value of the state slice in Redux.
-   * @returns the ReduxRegister instance to which the controller will be connected.
+   * @param stateName The type or interface of state slice for which the controller will be managing.
+   * @param initialState The initial value of the state slice in Redux.
+   * @param register The redux register instance to which the component is being connected.
+   * @returns The ReduxRegister instance to which the controller will be connected.
    */
+  // eslint-disable-next-line max-params
   protected constructor(stateName: string, initialState: State, register: ReduxRegister) {
     super(register);
     this.stateName = stateName;
@@ -104,7 +115,8 @@ export abstract class StateController<State> extends Controller {
 
   /**
    * Generates a unique, default action name that can be used for a reducing function.
-   * @returns a unique name for an action.
+   *
+   * @returns A unique name for an action.
    */
   private createActionName(): string {
     return `ACTIONS/${this.stateName}/${StateController.count++}`;
@@ -112,17 +124,18 @@ export abstract class StateController<State> extends Controller {
 
   /**
    * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
-   * @param fn the mutating function to add to the reducer.
-   * 
+   *
+   * @param fn The mutating function to add to the reducer.
+   *
    * The function should be in the form:
-   * ```
+   * ```.
    * (state, payload?) => state
-   * ```
-   * 
-   * @returns the action producing function for calling the mutating function.
-   * 
+   * ```.
+   *
+   * @returns The action producing function for calling the mutating function.
+   *
    * This action producing function also has a `withAddressableName` function that can be called to change the action
-   * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`
+   * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
    */
   protected registerAction<Payload>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload> {
     const actionName = this.createActionName();
@@ -131,9 +144,11 @@ export abstract class StateController<State> extends Controller {
     const actionFn: ActionExtendFn<Payload> = createConnectedAction<Payload>(actionName, this.register);
 
     /**
-     * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder
-     * @param name the name of the action
-     * @returns the action producing function for calling the mutating function
+     * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
+     * this builder.
+     *
+     * @param name The name of the action.
+     * @returns The action producing function for calling the mutating function.
      */
     actionFn.withAddressableName = (name: string): ActionFn<Payload> => {
       this.reducerMap[actionName] = null;
@@ -146,9 +161,10 @@ export abstract class StateController<State> extends Controller {
 
   /**
    * The reducer, which handles mutations to the state slice.
-   * @param state the current state of the state slice.
-   * @param action the action being performed on the state.
-   * @returns the new state resulting from the action.
+   *
+   * @param state The current state of the state slice.
+   * @param action The action being performed on the state.
+   * @returns The new state resulting from the action.
    */
   protected reducer(state: State = this.initialState, action: Action<any>): State {
     const reducerFn = this.reducerMap[action.type];
@@ -162,7 +178,8 @@ export abstract class StateController<State> extends Controller {
 
   /**
    * Gets the current value for this slice of the Redux state.
-   * @returns the current slice of the state related to this controller.
+   *
+   * @returns The current slice of the state related to this controller.
    */
   public getStateSlice(): State {
     return this.register

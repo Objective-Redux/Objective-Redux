@@ -1,0 +1,10 @@
+{
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "projects.indentationSpaces": 2,
+  "files.eol": "\n",
+  "eslint.options": { "configFile": "config/.eslintrc.js" },
+  "eslint.validate": [ "javascript", "javascriptreact", "typescript", "typescriptreact" ],
+  "eslint.enable": true,
+  "typescript.preferences.quoteStyle": "single"
+}

@@ -26,12 +26,6 @@ const universalRules = {
   'no-obj-calls': ['error'],
   'no-prototype-builtins': ['error'],
   'no-regex-spaces': ['error'],
-  'no-restricted-imports': [
-    'error',
-    {
-      patterns: ['.*'],
-    },
-  ],
   'no-sparse-arrays': ['error'],
   'no-template-curly-in-string': ['error'],
   'no-unexpected-multiline': ['error'],
@@ -49,7 +43,6 @@ const universalRules = {
   'dot-notation': ['error'],
   eqeqeq: ['error', 'smart'],
   'guard-for-in': ['error'],
-  'max-classes-per-file': ['error', 1],
   'no-alert': ['error'],
   'no-case-declarations': ['error'],
   'no-empty-pattern': ['error'],
@@ -389,7 +382,6 @@ const universalRules = {
   'react/prefer-es6-class': ['error'],
   'react/prop-types': ['error'],
   'react/require-default-props': ['error'],
-  'react/require-optimization': ['error'],
   'react/require-render-return': ['error'],
   'react/self-closing-comp': ['error'],
   'react/style-prop-object': ['error'],
@@ -467,20 +459,8 @@ const universalRules = {
       },
     },
   ],
-  'jsdoc/check-examples': ['error'],
   'jsdoc/check-indentation': ['error'],
   'jsdoc/check-param-names': ['error'],
-  'jsdoc/check-syntax': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
-  'jsdoc/check-tag-names': ['error'],
   'jsdoc/check-types': ['error'],
   'jsdoc/implements-on-classes': [
     'error',
@@ -507,16 +487,16 @@ const universalRules = {
   'jsdoc/no-undefined-types': ['error'],
   'jsdoc/require-description': ['error'],
   'jsdoc/require-description-complete-sentence': ['error'],
-  'jsdoc/require-jsdoc': [
-    'error',
-    {
-      'require': {
-        'ArrowFunctionExpression': true,
-        'FunctionExpression': true,
-        'MethodDefinition':true
-      }
-    }
-  ],
+  // 'jsdoc/require-jsdoc': [
+  //   'error',
+  //   {
+  //     'require': {
+  //       'ArrowFunctionExpression': true,
+  //       'FunctionExpression': true,
+  //       'MethodDefinition':true
+  //     }
+  //   }
+  // ],
   'jsdoc/require-param': ['error'],
   'jsdoc/require-param-description': [
     'error',
@@ -538,38 +518,8 @@ const universalRules = {
       },
     },
   ],
-  'jsdoc/require-param-type': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
   'jsdoc/require-returns': ['error'],
-  'jsdoc/require-returns-check': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
   'jsdoc/require-returns-description': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
-  'jsdoc/require-returns-type': [
     'error',
     {
       require: {
@@ -594,12 +544,12 @@ const universalRules = {
 const typescriptRules = {
   'filenames/match-regex': ['error', '^[a-z-]+(\\.test)?$', true],
   'filenames/match-exported': ['error', 'kebab'],
-  'import/no-unused-modules': [
-    'error',
-    {
-      unusedExports: true,
-    },
-  ],
+  // 'import/no-unused-modules': [
+  //   'error',
+  //   {
+  //     unusedExports: true,
+  //   },
+  // ],
   'import/order': [
     'error',
     {
@@ -623,8 +573,8 @@ const typescriptRules = {
         '**/*.test.ts',
         '**/*.test.tsx',
       ],
-      optionalDependencies: false,
-      peerDependencies: false,
+      optionalDependencies: true,
+      peerDependencies: true,
       bundledDependencies: false,
     },
   ],
@@ -634,13 +584,6 @@ const typescriptRules = {
   '@typescript-eslint/adjacent-overload-signatures': ['error'],
   '@typescript-eslint/array-type': ['error'],
   '@typescript-eslint/await-thenable': ['error'],
-  '@typescript-eslint/ban-ts-ignore': ['error'],
-  '@typescript-eslint/class-name-casing': [
-    'error',
-    {
-      allowUnderscorePrefix: false,
-    },
-  ],
   '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
   '@typescript-eslint/explicit-function-return-type': [
     'error',
@@ -651,21 +594,7 @@ const typescriptRules = {
     },
   ],
   '@typescript-eslint/explicit-member-accessibility': ['error'],
-  '@typescript-eslint/interface-name-prefix': [
-    'error',
-    {
-      prefixWithI: 'never',
-    },
-  ],
   '@typescript-eslint/member-delimiter-style': ['error'],
-  '@typescript-eslint/member-naming': [
-    'error',
-    {
-      private: '^[a-z]',
-      protected: '^[a-z]',
-      public: '^[a-z]',
-    },
-  ],
   '@typescript-eslint/no-misused-new': ['error'],
   '@typescript-eslint/no-misused-promises': ['error'],
   '@typescript-eslint/no-parameter-properties': ['error'],
@@ -721,9 +650,6 @@ module.exports = {
       '.tsx',
       '.d.ts',
     ],
-    'import/resolver': {
-      node: {},
-    },
   },
   overrides: [
     {

@@ -76,7 +76,6 @@ const generateHeader = headerLines => {
   header.push(addBar());
 
   headerLines.forEach(line => {
-    console.log(line);
     const wrapped = wrapText(line.text);
     wrapped.forEach(wrappedLine => {
       let text = wrappedLine;

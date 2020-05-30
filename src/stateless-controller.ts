@@ -1,4 +1,13 @@
-import { takeLatest, takeEvery, takeLeading, debounce } from 'redux-saga/effects';
+// ================================================================================================
+//                                          Objective Redux
+//                 (c) Copyright 2020 by Jason Mace (jmace01). All rights reserved.
+//
+// This code is provided under the terms of the [object Object] license. See the LICENSE file for
+// terms.
+// ================================================================================================
+import {
+  takeLatest, takeEvery, takeLeading, debounce,
+} from 'redux-saga/effects';
 import { ReduxRegister, SagaFn } from './redux-register';
 import { TakeType } from './take-type';
 import { createConnectedAction, ActionFn } from './action';
@@ -33,14 +42,19 @@ interface TakeSagaConfig {
 
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
+ *
  * @template Payload the payload that the action and the saga will use.
  */
 class SagaBuilder<Payload> {
-  private registerFn: (config: SagaConfig) => ActionFn<Payload>;
+  private readonly registerFn: (config: SagaConfig) => ActionFn<Payload>;
+
   private name: string|null;
+
   private takeType: TakeType|null;
+
   private takeConfig: TakeConfig|null;
 
+  // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param
   /**
    * @internal
    */
@@ -52,22 +66,25 @@ class SagaBuilder<Payload> {
   }
 
   /**
-   * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.
-   * @param name the name/type of the action.
-   * @returns an instance of the SagaBuilder.
+   * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this
+   * builder.
+   *
+   * @param name The name/type of the action.
+   * @returns An instance of the SagaBuilder.
    */
-  withAddressableName(name: string): SagaBuilder<Payload> {
+  public withAddressableName(name: string): SagaBuilder<Payload> {
     this.name = name;
     return this;
   }
 
   /**
    * Adds a simple watcher to the saga.
-   * @param type the take type of the watching saga.
-   * @param config the configuration of the take type.
-   * @returns an instance of the SagaBuilder.
+   *
+   * @param type The take type of the watching saga.
+   * @param config The configuration of the take type.
+   * @returns An instance of the SagaBuilder.
    */
-  withTake(type: TakeType, config: TakeConfig): SagaBuilder<Payload> {
+  public withTake(type: TakeType, config: TakeConfig): SagaBuilder<Payload> {
     this.takeType = type;
     this.takeConfig = config;
     return this;
@@ -75,10 +92,11 @@ class SagaBuilder<Payload> {
 
   /**
    * Completes the builder and adds the saga to the register.
-   * @param sagaFn the saga function to add to the ReduxRegister.
-   * @returns an action for calling the saga.
+   *
+   * @param sagaFn The saga function to add to the ReduxRegister.
+   * @returns An action for calling the saga.
    */
-  register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
+  public register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
     return this.registerFn({
       name: this.name,
       takeType: this.takeType,
@@ -117,18 +135,20 @@ export abstract class StatelessController extends Controller {
    *
    * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-   * have adverse affects on the application._
+   * have adverse affects on the application._.
    *
-   * @param register rhe ReduxRegister instance to which the controller will be connected.
-   * @returns an instance of the StatelessController.
+   * @param register Rhe ReduxRegister instance to which the controller will be connected.
+   * @returns An instance of the StatelessController.
    */
+  // eslint-disable-next-line no-useless-constructor
   protected constructor(register: ReduxRegister) {
     super(register);
   }
 
   /**
-   * Generates a unique, default action name
-   * @returns {string} an action name
+   * Generates a unique, default action name.
+   *
+   * @returns An action name.
    */
   private createActionName(): string {
     return `SAGA/${StatelessController.count++}`;
@@ -136,17 +156,17 @@ export abstract class StatelessController extends Controller {
 
   /**
    * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
+   *
    * @template Payload the payload the action and the saga will take.
-   * @returns a builder that registers the saga.
+   * @returns A builder that registers the saga.
    */
   protected createSaga<Payload>(): SagaBuilder<Payload> {
     return new SagaBuilder<Payload>(this.buildSaga.bind(this));
   }
 
   private buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
-    console.log(config);
     const name = config.name || this.createActionName();
-    let sagaFn = config.sagaFn;
+    let { sagaFn } = config;
 
     if (config.takeType !== null) {
       sagaFn = this.createTakeSaga({
@@ -164,25 +184,21 @@ export abstract class StatelessController extends Controller {
   private createTakeSaga(config: TakeSagaConfig): () => Generator {
     switch (config.takeType) {
       case TakeType.TAKE_LATEST:
-        return function* () {
+        return function* (): any {
           yield takeLatest(config.name, config.sagaFn);
         };
-        break;
       case TakeType.TAKE_EVERY:
-        return function* () {
+        return function* (): any {
           yield takeEvery(config.name, config.sagaFn);
         };
-        break;
       case TakeType.TAKE_LEADING:
-        return function* () {
+        return function* (): any {
           yield takeLeading(config.name, config.sagaFn);
         };
-        break;
       case TakeType.DEBOUNCE:
-        return function* () {
+        return function* (): any {
           yield debounce(config?.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
         };
-        break;
       default:
         throw new Error('Invalid take type');
     }
