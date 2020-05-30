@@ -1,3 +1,10 @@
+// ================================================================================================
+//                                          Objective Redux
+//                 (c) Copyright 2020 by Jason Mace (jmace01). All rights reserved.
+//
+// This code is provided under the terms of the [object Object] license. See the LICENSE file for
+// terms.
+// ================================================================================================
 const path = require('path');
 const expectedHeader = require('./eslint-expected-header');
 
@@ -193,14 +200,6 @@ const universalRules = {
     {
       code: 120,
       tabWidth: 2,
-    },
-  ],
-  'max-lines': [
-    'error',
-    {
-      max: 300,
-      skipBlankLines: true,
-      skipComments: true,
     },
   ],
   'max-lines-per-function': [
@@ -610,7 +609,7 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    //jest: true,
+    // jest: true,
   },
   extends: [],
   globals: {
@@ -625,8 +624,8 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: path.resolve(__dirname, '../tsconfig.json'),
-    tsconfigRootDir: __dirname + '/../src',
+    project: path.resolve(__dirname, 'tsconfig.json'),
+    tsconfigRootDir: `${__dirname}/../`,
   },
   plugins: [
     'react',

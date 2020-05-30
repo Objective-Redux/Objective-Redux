@@ -123,7 +123,7 @@
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="reduxregister.html" class="tsd-signature-type">ReduxRegister</a></h4>
-							<p>an instance of the ReduxRegister.</p>
+							<p>An instance of the ReduxRegister.</p>
 						</li>
 					</ul>
 				</section>
@@ -145,7 +145,7 @@
 									<p>Returns the Redux store that is managed by the register instance.</p>
 								</div>
 								<p><em>WARNING: Do not attempt to connect reducers, sagas, or other components (including middleware) to the store
-								directly. The register instance will override the values any time new controllers are connected.</em></p>
+								directly. The register instance will override the values any time new controllers are connected.</em>.</p>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
 									<dd><pre><code class="language-typescript"><span class="hljs-keyword">const</span> register = <span class="hljs-keyword">new</span> ReduxRegister();
@@ -154,7 +154,7 @@ register.getStore().dispatch(myAction());</code></pre>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Store</span></h4>
-							<p>the Redux store associated with the ReduxRegister instance.</p>
+							<p>The Redux store associated with the ReduxRegister instance.</p>
 						</li>
 					</ul>
 				</section>
@@ -196,13 +196,13 @@ register.registerReducer(<span class="hljs-string">'switch'</span>, reducer);</c
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the name of the reducer/the name of the state slice.</p>
+										<p>The name of the reducer/the name of the state slice.</p>
 									</div>
 								</li>
 								<li>
 									<h5>reducerFn: <span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the reducer that is being registered.</p>
+										<p>The reducer that is being registered.</p>
 									</div>
 								</li>
 							</ul>
@@ -240,7 +240,7 @@ register.registerSaga(sagaFn);</code></pre>
 								<li>
 									<h5>sagaFn: <span class="tsd-signature-type">SagaFn</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the saga to add to the register.</p>
+										<p>The saga to add to the register.</p>
 									</div>
 								</li>
 							</ul>

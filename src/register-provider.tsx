@@ -12,8 +12,9 @@ import { ReduxRegister } from './';
 /**
  * Provides a ReduxRegister to child React components.
  *
- * @param children The child components of the provider.
- * @param register An instance of the ReduxRegister.
+ * @param object The properties being passed to the component.
+ * @param object.children The child components of the provider.
+ * @param object.register An instance of the ReduxRegister.
  *
  * @example
  * ```typescript

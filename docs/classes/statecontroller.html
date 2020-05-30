@@ -192,7 +192,7 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 									<h5>stateName: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>the type or interface of state slice for which the controller will be managing.</p>
+											<p>The type or interface of state slice for which the controller will be managing.</p>
 										</div>
 									</div>
 								</li>
@@ -200,16 +200,21 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 									<h5>initialState: <span class="tsd-signature-type">State</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>the initial value of the state slice in Redux.</p>
+											<p>The initial value of the state slice in Redux.</p>
 										</div>
 									</div>
 								</li>
 								<li>
 									<h5>register: <a href="reduxregister.html" class="tsd-signature-type">ReduxRegister</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The redux register instance to which the component is being connected.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="statecontroller.html" class="tsd-signature-type">StateController</a></h4>
-							<p>the ReduxRegister instance to which the controller will be connected.</p>
+							<p>The ReduxRegister instance to which the controller will be connected.</p>
 						</li>
 					</ul>
 				</section>
@@ -284,7 +289,7 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">State</span></h4>
-							<p>the current slice of the state related to this controller.</p>
+							<p>The current slice of the state related to this controller.</p>
 						</li>
 					</ul>
 				</section>
@@ -308,18 +313,18 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> state: <span class="tsd-signature-type">State</span><span class="tsd-signature-symbol"> = this.initialState</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the current state of the state slice.</p>
+										<p>The current state of the state slice.</p>
 									</div>
 								</li>
 								<li>
 									<h5>action: <span class="tsd-signature-type">Action</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the action being performed on the state.</p>
+										<p>The action being performed on the state.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">State</span></h4>
-							<p>the new state resulting from the action.</p>
+							<p>The new state resulting from the action.</p>
 						</li>
 					</ul>
 				</section>
@@ -349,16 +354,17 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 								<li>
 									<h5>fn: <span class="tsd-signature-type">ReducerFn</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">State</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Payload</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the mutating function to add to the reducer.</p>
+										<p>The mutating function to add to the reducer.</p>
 										<p>The function should be in the form:</p>
-										<pre><code>(<span class="hljs-keyword">state</span>, payload?) =&gt; <span class="hljs-keyword">state</span></code></pre>
+										<pre><code class="language-.">(state, payload?) =&gt; state
+```.</code></pre>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ActionExtendFn</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Payload</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>the action producing function for calling the mutating function.</p>
+							<p>The action producing function for calling the mutating function.</p>
 							<p>This action producing function also has a <code>withAddressableName</code> function that can be called to change the action
-							name. For example: <code>myAction.withAddressableName(&#39;MY_ACTION_NAME&#39;);</code></p>
+							name. For example: <code>myAction.withAddressableName(&#39;MY_ACTION_NAME&#39;);</code>.</p>
 						</li>
 					</ul>
 				</section>
@@ -398,18 +404,18 @@ controller.action({ isOn: <span class="hljs-literal">true</span> });
 								<li>
 									<h5>this: <span class="tsd-signature-type">ModelConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">Controller</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>implicit this for internal use.</p>
+										<p>Implicit this for internal use.</p>
 									</div>
 								</li>
 								<li>
 									<h5>register: <a href="reduxregister.html" class="tsd-signature-type">ReduxRegister</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>an instance of the ReduxRegister from which to get the controller.</p>
+										<p>An instance of the ReduxRegister from which to get the controller.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-							<p>an instance of the controller.</p>
+							<p>An instance of the controller.</p>
 						</li>
 					</ul>
 				</section>
