@@ -3,6 +3,9 @@
   "productName": "Objective Redux",
   "version": "0.1.0",
   "description": "An object oriented approach to Redux",
+  "repository": {
+    "url": "git@github.com:Objective-Redux/Objective-Redux.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +23,7 @@
     "redux-wrapper",
     "redux-saga"
   ],
-  "author": "Jason Mace (jmace01)",
+  "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
   "peerDependencies": {
     "redux": "^4.0.0"

@@ -1,9 +1,11 @@
 // ================================================================================================
-//                                          Objective Redux
-//                 (c) Copyright 2020 by Jason Mace (jmace01). All rights reserved.
+//                                          OBJECTIVE REDUX
+//                                  Redux made better, objectively.
 //
-// This code is provided under the terms of the [object Object] license. See the LICENSE file for
-// terms.
+// (c) Copyright 2020 by Jason Mace (https://github.com/jmace01)
+//
+// This project is provided under the terms of the MIT license. The license details can be found in
+// the LICENSE file, found in the project's root directory.
 // ================================================================================================
 const packageJSON = require('../package.json');
 
@@ -15,11 +17,11 @@ const PADDING_CHAR = ' ';
 const HEADER_DATA = [
   {
     alignment: 'center',
-    text: packageJSON.productName,
+    text: packageJSON.productName.toUpperCase(),
   },
   {
     alignment: 'center',
-    text: `(c) Copyright 2020 by ${packageJSON.author}. All rights reserved.`,
+    text: 'Redux made better, objectively.',
   },
   {
     alignment: 'left',
@@ -27,7 +29,15 @@ const HEADER_DATA = [
   },
   {
     alignment: 'left',
-    text: `This code is provided under the terms of the ${packageJSON} license. See the LICENSE file for terms.`,
+    text: `(c) Copyright 2020 by ${packageJSON.author}`,
+  },
+  {
+    alignment: 'left',
+    text: '',
+  },
+  {
+    alignment: 'left',
+    text: `This project is provided under the terms of the ${packageJSON.license} license. The license details can be found in the LICENSE file, found in the project's root directory.`,
   },
 ];
 
