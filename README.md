@@ -3,7 +3,7 @@
   <h2 style="padding: 0; margin-bottom: 0;">Redux made better, objectively.</h2>
   <p style="margin-top: 5px;">Object-oriented, light-weight, and TypeScript compatible.</p>
   <p>
-    <img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" />
+    <a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
   </p>
 </div>
