@@ -273,12 +273,6 @@ const universalRules = {
     },
   ],
   'object-curly-spacing': ['error', 'always'],
-  'object-property-newline': [
-    'error',
-    {
-      allowAllPropertiesOnSameLine: false,
-    },
-  ],
   'one-var': ['error', 'never'],
   'operator-assignment': ['error', 'always'],
   'operator-linebreak': ['error', 'before'],
@@ -611,7 +605,7 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    // jest: true,
+    jest: true,
   },
   extends: [],
   globals: {
