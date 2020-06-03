@@ -29,7 +29,7 @@ export interface ActionFn<Payload> {
  * @internal
  */
 export interface ActionExtendFn<Payload> extends ActionFn<Payload> {
-  withAddressableName?: (name: string) => ActionFn<Payload>;
+  withAddressableName: (name: string) => ActionFn<Payload>;
 }
 
 /**

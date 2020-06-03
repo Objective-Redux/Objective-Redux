@@ -8,20 +8,17 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { getContext, GetContextEffect } from 'redux-saga/effects';
-import { ReduxRegister } from '.';
+// import React from 'react';
+// import { ComponentConnector } from '../src';
 
-/**
- * Gets the register from the saga's context.
- *
- * @example
- * ```typescript
- * function* () {
- *   const register = yield getRegisterFromContext();
- * }
- * ```
- * @returns A generator that yields an instance of the ReduxRegister.
- */
-export function* getRegisterFromContext(): Generator<GetContextEffect, ReduxRegister, ReduxRegister> {
-  return yield getContext('register');
-}
+// class TestComponent extends React.Component {}
+
+describe('component-connector', () => {
+  it('should create a connected element', () => {
+    // const connected = ComponentConnector
+    //   .addPropsTo(TestComponent)
+    //   .from()
+    //   .from()
+    //   .connect();
+  });
+});

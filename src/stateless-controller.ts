@@ -28,7 +28,7 @@ interface SagaConfig {
 /**
  * @internal
  */
-interface TakeConfig {
+export interface TakeConfig {
   debounceTime: number;
 }
 
@@ -47,7 +47,7 @@ interface TakeSagaConfig {
  *
  * @template Payload the payload that the action and the saga will use.
  */
-class SagaBuilder<Payload> {
+export class SagaBuilder<Payload> {
   private readonly registerFn: (config: SagaConfig) => ActionFn<Payload>;
 
   private name: string|null;
@@ -86,7 +86,7 @@ class SagaBuilder<Payload> {
    * @param config The configuration of the take type.
    * @returns An instance of the SagaBuilder.
    */
-  public withTake(type: TakeType, config: TakeConfig): SagaBuilder<Payload> {
+  public withTake(type: TakeType, config: TakeConfig|null = null): SagaBuilder<Payload> {
     this.takeType = type;
     this.takeConfig = config;
     return this;
@@ -130,7 +130,7 @@ class SagaBuilder<Payload> {
  * ```
  */
 export abstract class StatelessController extends Controller {
-  private static count = 0;
+  private count = 0;
 
   /**
    * Registers and starts the sagas.
@@ -153,7 +153,7 @@ export abstract class StatelessController extends Controller {
    * @returns An action name.
    */
   private createActionName(): string {
-    return `SAGA/${StatelessController.count++}`;
+    return `SAGA/${this.count++}`;
   }
 
   /**
@@ -199,7 +199,7 @@ export abstract class StatelessController extends Controller {
         };
       case TakeType.DEBOUNCE:
         return function* (): any {
-          yield debounce(config?.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
+          yield debounce(config.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
         };
       default:
         throw new Error('Invalid take type');

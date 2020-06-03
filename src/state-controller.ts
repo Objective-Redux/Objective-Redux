@@ -7,6 +7,7 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+
 import { ReduxRegister } from './redux-register';
 import {
   Action, createConnectedAction, ActionFn, ActionExtendFn,
@@ -143,7 +144,7 @@ export abstract class StateController<State> extends Controller {
     const actionName = this.createActionName();
     this.reducerMap[actionName] = fn;
 
-    const actionFn: ActionExtendFn<Payload> = createConnectedAction<Payload>(actionName, this.register);
+    const actionFn: any = createConnectedAction<Payload>(actionName, this.register);
 
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
@@ -158,7 +159,9 @@ export abstract class StateController<State> extends Controller {
       return createConnectedAction<Payload>(name, this.register);
     };
 
-    return actionFn;
+    const extendedActionFn: ActionExtendFn<Payload> = actionFn;
+
+    return extendedActionFn;
   }
 
   /**
@@ -168,10 +171,10 @@ export abstract class StateController<State> extends Controller {
    * @param action The action being performed on the state.
    * @returns The new state resulting from the action.
    */
-  protected reducer(state: State = this.initialState, action: Action<any>): State {
-    const reducerFn = this.reducerMap[action.type];
+  protected reducer(state: State = this.initialState, action: Action<any>|null = null): State {
+    const reducerFn = this.reducerMap[action?.type || ''];
 
-    if (!reducerFn) {
+    if (!reducerFn || !action) {
       return state;
     }
 

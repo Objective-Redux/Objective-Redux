@@ -8,20 +8,20 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { getContext, GetContextEffect } from 'redux-saga/effects';
-import { ReduxRegister } from '.';
+const context = 'foo';
+const getContext = jest.fn(() => context);
 
-/**
- * Gets the register from the saga's context.
- *
- * @example
- * ```typescript
- * function* () {
- *   const register = yield getRegisterFromContext();
- * }
- * ```
- * @returns A generator that yields an instance of the ReduxRegister.
- */
-export function* getRegisterFromContext(): Generator<GetContextEffect, ReduxRegister, ReduxRegister> {
-  return yield getContext('register');
-}
+jest.mock('redux-saga/effects', () => ({
+  getContext,
+  GetContextEffect: {},
+}));
+
+import { getRegisterFromContext } from '../src/get-registry';
+
+describe('get-registry', () => {
+  it('should get the register from the store context', () => {
+    const generator = getRegisterFromContext();
+    const resultingContext = generator.next().value;
+    expect(resultingContext).toEqual(context);
+  });
+});

@@ -12,7 +12,7 @@ import { ReduxRegister } from '.';
 /**
  * @internal
  */
-type ModelConstructor<T> = new () => T;
+type ModelConstructor<T> = new (register: ReduxRegister) => T;
 
 /**
  * @internal
@@ -25,11 +25,6 @@ export class Controller {
 
   public constructor(register: ReduxRegister) {
     this.register = register;
-
-    if (!(this.constructor as any).instances) {
-      (this.constructor as any).instances = new WeakMap();
-    }
-
     (this.constructor as any).instances.set(register, this);
   }
 

@@ -7,8 +7,12 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+
 import {
-  Store, combineReducers, createStore, applyMiddleware,
+  Store,
+  combineReducers,
+  createStore,
+  applyMiddleware,
 } from 'redux';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 
@@ -62,6 +66,7 @@ export class ReduxRegister {
       },
     });
     this.store = createStore(
+      /* istanbul ignore next */
       () => {},
       applyMiddleware(this.sagaMiddleware)
     );
@@ -85,17 +90,13 @@ export class ReduxRegister {
   }
 
   private updateReducers(): void {
-    if (this.store) {
-      this.store.replaceReducer(combineReducers(
-        this.registeredReducers
-      ));
-    }
+    this.store.replaceReducer(combineReducers(
+      this.registeredReducers
+    ));
   }
 
   private runSaga(sagaFn: SagaFn<void>): void {
-    if (this.sagaMiddleware) {
-      this.sagaMiddleware.run(sagaFn);
-    }
+    this.sagaMiddleware.run(sagaFn);
   }
 
   /**
