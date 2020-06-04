@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>objective-redux - v0.1.0</title>
-	<meta name="description" content="Documentation for objective-redux - v0.1.0">
+	<title>objective-redux - v0.2.0</title>
+	<meta name="description" content="Documentation for objective-redux - v0.2.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">objective-redux - v0.1.0</a>
+					<a href="index.html" class="title">objective-redux - v0.2.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>objective-redux - v0.1.0</h1>
+			<h1>objective-redux - v0.2.0</h1>
 		</div>
 	</div>
 </header>
@@ -65,44 +65,11 @@
 					<h2 style="padding: 0; margin-bottom: 0;">Redux made better, objectively.</h2>
 					<p style="margin-top: 5px;">Object-oriented, light-weight, and TypeScript compatible.</p>
 					<p>
-						<img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" />
+						<a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
 						<a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+						<a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
 					</p>
 				</div>
-				<a href="#meet-your-new-redux-api" id="meet-your-new-redux-api" style="color: inherit; text-decoration: none;">
-					<h1>Meet your new Redux API</h1>
-				</a>
-				<a href="#example-slice" id="example-slice" style="color: inherit; text-decoration: none;">
-					<h2>Example Slice</h2>
-				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { StateController } <span class="hljs-keyword">from</span> <span class="hljs-string">'objective-redux'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwitchStateController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StateController</span> </span>{
-  <span class="hljs-keyword">constructor</span>(stateName) {
-    <span class="hljs-keyword">super</span>(stateName, initialState);
-  }
-
-  toggleSwitch = <span class="hljs-keyword">this</span>.registerAction(
-    <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> ({ <span class="hljs-attr">isOn</span>: !state.isOn })
-  );
-
-  setSwitch = <span class="hljs-keyword">this</span>.registerAction(
-    <span class="hljs-function">(<span class="hljs-params">state, isOn</span>) =&gt;</span> ({ isOn })
-  );
-}</code></pre>
-				<pre><code class="language-javascript">SwitchOneController.getInstance(register).toggleSwitch();</code></pre>
-				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
-					<h2>Features</h2>
-				</a>
-				<ul>
-					<li>Lazy/on-demand initialization</li>
-					<li>No boilerplate code</li>
-					<li>No wiring-up reducers and sagas</li>
-					<li>Built-in organization</li>
-					<li>Easy debugging</li>
-					<li>Support for Sagas</li>
-				</ul>
-				<br />
 				<a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
 					<h1>Setup</h1>
 				</a>
@@ -273,10 +240,10 @@ register.getStore().dispatch(createAction(isOn));</code></pre>
     })
   );
 }</code></pre>
-				<pre><code class="language-typescript">ThemeStateController.getInstance(register).setTheme());       <span class="hljs-comment">// error</span>
-ThemeStateController.getInstance(register).setTheme(<span class="hljs-number">10</span>));     <span class="hljs-comment">// error</span>
-ThemeStateController.getInstance(register).setTheme({}));     <span class="hljs-comment">// error</span>
-ThemeStateController.getInstance(register).setTheme(<span class="hljs-string">'dark'</span>)); <span class="hljs-comment">// works</span></code></pre>
+				<pre><code class="language-typescript">ThemeStateController.getInstance(register).setTheme();       <span class="hljs-comment">// error</span>
+ThemeStateController.getInstance(register).setTheme(<span class="hljs-number">10</span>);     <span class="hljs-comment">// error</span>
+ThemeStateController.getInstance(register).setTheme({});     <span class="hljs-comment">// error</span>
+ThemeStateController.getInstance(register).setTheme(<span class="hljs-string">'dark'</span>); <span class="hljs-comment">// works</span></code></pre>
 				<p>You can also set the action template type to <code>&lt;void&gt;</code> to indicate that no parameter should be taken by the action.</p>
 			</div>
 		</div>
