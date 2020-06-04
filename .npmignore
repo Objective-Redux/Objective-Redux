@@ -1,5 +1,9 @@
+.github/
+.vscode/
+config/
+converage/
 docs/
+node_modules/
 src/
 statics/
 tests/
-node_modules/
