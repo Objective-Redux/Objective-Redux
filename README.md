@@ -20,7 +20,7 @@ Object-oriented, light-weight, and TypeScript compatible.
 npm install --save redux redux-saga objective-redux
 ```
 
-## Setup (for Reactjs)
+## Setup (for React)
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
