@@ -74,12 +74,11 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
 
 ## Organize your state
 
-<div style="overflow: auto;">
-  <img src="./statics/organize.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px; float: right;" />
-  <h3>The logic for your slice, together at last.</h3>
-  <p>Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.</p>
-  <p>A slice of state never needs to know about what other slices are doing or how they're organized.</p>
-</div>
+### Your slice logic, together at last.
+
+Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
+
+A slice of state never needs to know about what other slices are doing or how they're organized.
 
 <br />
 
