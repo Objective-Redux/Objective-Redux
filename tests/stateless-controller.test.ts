@@ -61,6 +61,7 @@ describe('stateless-controller', () => {
   });
 
   describe('createSaga', () => {
+    // eslint-disable-next-line max-params
     function checkSaga(type: TakeType, mock: jest.Mock, config: TakeConfig|null = null): void {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
