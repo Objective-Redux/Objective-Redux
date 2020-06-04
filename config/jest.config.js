@@ -24,7 +24,7 @@ module.exports = {
   },
   preset: 'ts-jest',
   rootDir: path.resolve(__dirname, '../'),
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },

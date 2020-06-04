@@ -22,8 +22,8 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-import { StatelessController, SagaBuilder, TakeConfig } from '../src/stateless-controller';
-import { TakeType } from '../src';
+import { SagaBuilder, TakeConfig } from '../src/stateless-controller';
+import { TakeType, StatelessController } from '../src';
 
 class TestController extends StatelessController {
   public constructor(register: any) {

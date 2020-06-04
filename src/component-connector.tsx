@@ -68,7 +68,10 @@ export class ComponentConnector {
    * @param selector An optional mapping function.
    * @returns An instance of the ComponentConnector builder.
    */
-  public from<C extends StateController<any>>(controller: Class<C>, selector: StateSelectorFn<C>): ComponentConnector {
+  public from<C extends StateController<any>>(
+    controller: Class<C>,
+    selector: StateSelectorFn<C>|null = null
+  ): ComponentConnector {
     this.controllers.push({
       controller,
       selector: selector || ((state: C): C => state),
@@ -122,6 +125,7 @@ export class ComponentConnector {
       }
 
       public componentWillUnmount(): void {
+        /* istanbul ignore else */
         if (this.unsubscribe) {
           this.unsubscribe();
         }

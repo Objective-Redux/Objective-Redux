@@ -16,7 +16,7 @@ jest.mock('redux-saga/effects', () => ({
   GetContextEffect: {},
 }));
 
-import { getRegisterFromContext } from '../src/get-registry';
+import { getRegisterFromContext } from '../src';
 
 describe('get-registry', () => {
   it('should get the register from the store context', () => {
