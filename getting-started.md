@@ -43,7 +43,6 @@ ReactDOM.render(
   </RegisterProvider>,
   document.getElementById('root')
 );
-
 ```
 
 <br />

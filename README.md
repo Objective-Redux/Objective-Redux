@@ -1,15 +1,43 @@
-<div style="text-align: center; border: 1px solid; border-radius: 10px; margin: 80px; padding: 30px;">
-  <h1 style="border-bottom: 1px dotted; margin-bottom: 0; padding-bottom: 8px; width: 300px; margin:auto;">Objective Redux</h1>
-  <h2 style="padding: 0; margin-bottom: 0;">Redux made better, objectively.</h2>
-  <p style="margin-top: 5px;">Object-oriented, light-weight, and TypeScript compatible.</p>
-  <p>
-    <a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
-    <a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
-  </p>
-</div>
+# Objective Redux
+## Redux made better, objectively.
+Object-oriented, light-weight, and TypeScript compatible.
+
+<p>
+  <a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+  <a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
+</p>
+
+<br />
+
+<br />
 
 # Meet your new Redux API
+
+## Install
+
+```
+npm install --save redux redux-saga objective-redux
+```
+
+## Setup (for Reactjs)
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import { register } from './store/register';
+import App from './app';
+
+export const register = new ReduxRegister();
+
+ReactDOM.render(
+  <RegisterProvider register={register}>
+    <App />
+  </RegisterProvider>,
+  document.getElementById('root')
+);
+```
+
 ## Example Slice
 ```javascript
 import { StateController } from 'objective-redux';
@@ -38,9 +66,7 @@ SwitchOneController.getInstance(register).toggleSwitch();
 
 # Start using it now
 
-Can't wait to get started?
-
-You can read the full documentation here:
+You can read the full documentation, along with examples, here:
 
 https://objective-redux.github.io/Objective-Redux/
 
