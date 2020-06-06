@@ -17,6 +17,7 @@
     "docs": "typedoc --out docs src --mode file --readme getting-started.md --excludeNotExported --excludeExternals --excludePrivate --stripInternal --includeVersion --disableSources",
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
+    "prepublishOnly": "npm run build",
     "test": "jest --config ./config/jest.config.js"
   },
   "keywords": [
