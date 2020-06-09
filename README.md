@@ -100,7 +100,7 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
 
 ## Organize your state
 
-### Your slice logic, together at last.
+### One slice, one object.
 
 Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
 
@@ -127,3 +127,11 @@ Using Objective-Redux, your editor knows exactly where to find everything. That 
 Stop registering your reducers and sagas. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
 
 <img src="./statics/lazy.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+
+<br />
+
+## Multiple ways to connect
+
+### Inject properties or use hooks
+
+You can connect your components to Objective-Redux to inject props from the store. Or, skip the connection process and use React hooks, instead.
