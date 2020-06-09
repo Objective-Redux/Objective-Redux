@@ -15,7 +15,8 @@ import { TakeType } from './take-type';
 import { createAction } from './action';
 import { RegisterProvider } from './register-provider';
 import { ComponentConnector } from './component-connector';
-import { getRegisterFromContext } from './get-registry';
+import { getRegisterFromSagaContext } from './get-register-from-saga-context';
+import { useRegisterFromReactContext } from './use-register-from-react-context';
 
 export {
   ReduxRegister,
@@ -25,5 +26,6 @@ export {
   createAction,
   RegisterProvider,
   ComponentConnector,
-  getRegisterFromContext,
+  getRegisterFromSagaContext,
+  useRegisterFromReactContext,
 };

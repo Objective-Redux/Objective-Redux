@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ComponentConnector | objective-redux - v0.2.0</title>
-	<meta name="description" content="Documentation for objective-redux - v0.2.0">
+	<title>ComponentConnector | objective-redux - v0.3.0</title>
+	<meta name="description" content="Documentation for objective-redux - v0.3.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">objective-redux - v0.2.0</a>
+					<a href="../index.html" class="title">objective-redux - v0.3.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -70,6 +70,8 @@
 					</div>
 					<p>This provides the React component with a <code>register</code> prop, which is an instance of the ReduxRegister connected to the
 					components closest provided ancestor. It also provides props from the states that were added.</p>
+					<p>As an alternative for functional components, the useRegisterFromReactContext hook can be used to get
+					the ReduxRegister.</p>
 					<dl class="tsd-comment-tags">
 						<dt>example</dt>
 						<dd><pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> ComponentConnector
@@ -251,7 +253,10 @@
 						<a href="../globals.html#createaction" class="tsd-kind-icon">create<wbr>Action</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#getregisterfromcontext" class="tsd-kind-icon">get<wbr>Register<wbr>From<wbr>Context</a>
+						<a href="../globals.html#getregisterfromsagacontext" class="tsd-kind-icon">get<wbr>Register<wbr>From<wbr>Saga<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#useregisterfromreactcontext" class="tsd-kind-icon">use<wbr>Register<wbr>From<wbr>React<wbr>Context</a>
 					</li>
 				</ul>
 			</nav>

@@ -31,7 +31,7 @@
     "redux": "^4.0.0"
   },
   "optionalDependencies": {
-    "react": "^16.13.1",
+    "react": "^16.8.0",
     "redux-saga": "^1.1.0"
   },
   "devDependencies": {

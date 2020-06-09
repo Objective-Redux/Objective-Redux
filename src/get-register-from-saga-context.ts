@@ -22,6 +22,6 @@ import { ReduxRegister } from '.';
  * ```
  * @returns A generator that yields an instance of the ReduxRegister.
  */
-export function* getRegisterFromContext(): Generator<GetContextEffect, ReduxRegister, ReduxRegister> {
+export function* getRegisterFromSagaContext(): Generator<GetContextEffect, ReduxRegister, ReduxRegister> {
   return yield getContext('register');
 }
