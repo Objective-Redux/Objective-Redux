@@ -13,6 +13,7 @@ import {
   combineReducers,
   createStore,
   applyMiddleware,
+  Middleware,
 } from 'redux';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 
@@ -38,13 +39,15 @@ export interface SagaFn<Payload> {
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
  * own Redux store that it manages.
+ *
+ * Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
  */
 export class ReduxRegister {
   private readonly store: Store;
 
   private readonly sagaMiddleware: SagaMiddleware<object>;
 
-  private readonly registeredReducers: ReducerMap = {};
+  private registeredReducers: ReducerMap = {};
 
   private readonly registeredSagas: SagaFn<void>[] = [];
 
@@ -53,22 +56,27 @@ export class ReduxRegister {
    *
    * In setting up the instance, the class will create a ReduxStore.
    *
+   * @param middleware Additional middleware to add.
    * @returns An instance of the ReduxRegister.
    * @example
    * ```typescript
    * const register = new ReduxRegister();
    * ```
    */
-  public constructor() {
+  public constructor(middleware: Middleware<any>[] = []) {
     this.sagaMiddleware = createSagaMiddleware({
       context: {
         register: this,
       },
     });
+
     this.store = createStore(
       /* istanbul ignore next */
       () => {},
-      applyMiddleware(this.sagaMiddleware)
+      applyMiddleware(
+        ...middleware,
+        this.sagaMiddleware
+      )
     );
   }
 
@@ -76,7 +84,8 @@ export class ReduxRegister {
    * Returns the Redux store that is managed by the register instance.
    *
    * _WARNING: Do not attempt to connect reducers, sagas, or other components (including middleware) to the store
-   * directly. The register instance will override the values any time new controllers are connected._.
+   * directly. The register instance will override the values any time new controllers are connected_. Instead, you
+   * should pass middleware into the [[constructor]].
    *
    * @returns The Redux store associated with the ReduxRegister instance.
    * @example
@@ -124,6 +133,30 @@ export class ReduxRegister {
    */
   public registerReducer(name: string, reducerFn: Reducer<any, any>): void {
     this.registeredReducers[name] = reducerFn;
+    this.updateReducers();
+  }
+
+  /**
+   * Adds multiple reducers to the store.
+   *
+   * This can be especially helpful when migrating from pure Redux, to add Reducers before they are migrated to
+   * [[StateController|StateControllers]].
+   *
+   * @param reducers A map of slice names to their reducing functions.
+   * @example
+   * ```typescript
+   * const register = new ReduxRegister();
+   * register.registerReducers({
+   *   sliceOne: reducerOne,
+   *   sliceTwo: reducerTwo,
+   * });
+   * ```
+   */
+  public registerReducers(reducers: ReducerMap): void {
+    this.registeredReducers = {
+      ...this.registeredReducers,
+      ...reducers,
+    };
     this.updateReducers();
   }
 

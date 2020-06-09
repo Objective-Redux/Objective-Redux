@@ -78,6 +78,34 @@ describe('redux-register', () => {
     });
   });
 
+  describe('registerReducers', () => {
+    it('should add multiple reducers without removing existing ones', () => {
+      const reducer1 = (): any => {};
+      const reducer2 = (): any => {};
+      const reducer3 = (): any => {};
+
+      const register = new ReduxRegister();
+      register.registerReducers({
+        one: reducer1,
+      });
+
+      expect(replaceReducer.mock.calls[0][0]).toEqual({
+        one: reducer1,
+      });
+
+      register.registerReducers({
+        two: reducer2,
+        three: reducer3,
+      });
+
+      expect(replaceReducer.mock.calls[1][0]).toEqual({
+        one: reducer1,
+        two: reducer2,
+        three: reducer3,
+      });
+    });
+  });
+
   describe('registerSaga', () => {
     it('should add teh saga to the middleware', () => {
       const saga1 = function* (): Generator {};

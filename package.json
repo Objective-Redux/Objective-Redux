@@ -2,7 +2,7 @@
   "name": "objective-redux",
   "productName": "Objective Redux",
   "version": "0.3.0",
-  "description": "An object oriented approach to Redux",
+  "description": "An Object-oriented, light-weight, boilerplate-free wrapper for easy development and debugging.",
   "repository": {
     "url": "git@github.com:Objective-Redux/Objective-Redux.git"
   },
@@ -23,7 +23,10 @@
   "keywords": [
     "redux",
     "redux-wrapper",
-    "redux-saga"
+    "redux-saga",
+    "redux-tools",
+    "state",
+    "boilerplate"
   ],
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
