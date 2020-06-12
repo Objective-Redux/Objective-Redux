@@ -40,7 +40,7 @@ export const useRegisterFromReactContext = (): ReduxRegister|null => {
 
   /* istanbul ignore else */
   if (register) {
-    register.getStore().subscribe(() => forceUpdate());
+    register.subscribe(() => forceUpdate());
   }
 
   return register;

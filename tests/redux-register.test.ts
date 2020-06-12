@@ -8,8 +8,14 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
+const MOCK_STATE = { foo: 'bar' };
+
 const run = jest.fn();
+const mockUnsubscribe = jest.fn();
 const replaceReducer = jest.fn();
+const dispatch = jest.fn(d => d);
+const subscribe = jest.fn(() => mockUnsubscribe);
+const getState = jest.fn(() => MOCK_STATE);
 
 const middleware = {
   run,
@@ -17,6 +23,9 @@ const middleware = {
 
 const mockStore = {
   replaceReducer,
+  dispatch,
+  subscribe,
+  getState,
 };
 
 const combineReducers = jest.fn(r => r);
@@ -50,10 +59,32 @@ describe('redux-register', () => {
     });
   });
 
-  describe('getStore', () => {
-    it('should return the store', () => {
+  describe('dispatch', () => {
+    it('should dispatch an action', () => {
       const register = new ReduxRegister();
-      expect(register.getStore()).toEqual(mockStore);
+      const action = {
+        type: 'MyAction',
+      };
+      expect(register.dispatch(action)).toEqual(action);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('subscribe', () => {
+    it('should subscribe to the store', () => {
+      const register = new ReduxRegister();
+      const fn = (): void => {};
+      const unsubscribe = register.subscribe(fn);
+      unsubscribe();
+      expect(subscribe).toHaveBeenCalledWith(fn);
+      expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getState', () => {
+    it('should get the state object from the store', () => {
+      const register = new ReduxRegister();
+      expect(register.getState()).toBe(MOCK_STATE);
     });
   });
 

@@ -10,7 +10,7 @@
 import * as React from 'react';
 import { Unsubscribe } from 'redux';
 import { RegisterProviderContext } from './context';
-import { StateController } from './';
+import { StateController, ReduxRegister } from './';
 
 /**
  * @internal
@@ -104,7 +104,7 @@ export class ComponentConnector {
       }
 
       public render(): JSX.Element {
-        const register = this.context;
+        const register: ReduxRegister = this.context;
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
           const slice = (controllers[i].controller as any).getInstance(register).getStateSlice();
@@ -123,8 +123,8 @@ export class ComponentConnector {
       }
 
       public componentDidMount(): void {
-        const { context } = this;
-        this.unsubscribe = context.getStore().subscribe(this.handleChange.bind(this));
+        const register: ReduxRegister = this.context;
+        this.unsubscribe = register.subscribe(this.handleChange.bind(this));
       }
 
       public componentWillUnmount(): void {

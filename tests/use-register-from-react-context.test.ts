@@ -9,9 +9,8 @@
 // ================================================================================================
 
 const subscribe = jest.fn();
-const getStore = jest.fn(() => ({ subscribe }));
 const registerMock = {
-  getStore,
+  subscribe,
 };
 
 const forceUpdate = jest.fn();

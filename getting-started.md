@@ -195,7 +195,7 @@ If you need to call the action from outside your package, you can give the actio
 Then, your reducer or saga can be called with
 ```javascript
 const myAction = createAction('SET_SWITCH_STATE');
-register.getStore().dispatch(createAction(isOn));
+register.dispatch(createAction(isOn));
 ```
 
 <br />

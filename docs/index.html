@@ -223,7 +223,7 @@ ReactDOM.render(
     );</code></pre>
 				<p>Then, your reducer or saga can be called with</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> myAction = createAction(<span class="hljs-string">'SET_SWITCH_STATE'</span>);
-register.getStore().dispatch(createAction(isOn));</code></pre>
+register.dispatch(createAction(isOn));</code></pre>
 				<br />
 				<a href="#typescript" id="typescript" style="color: inherit; text-decoration: none;">
 					<h1>TypeScript</h1>

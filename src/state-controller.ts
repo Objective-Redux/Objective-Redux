@@ -188,7 +188,6 @@ export abstract class StateController<State> extends Controller {
    */
   public getStateSlice(): State {
     return this.register
-      .getStore()
       .getState()[this.stateName];
   }
 }

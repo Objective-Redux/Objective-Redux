@@ -14,6 +14,8 @@ import {
   createStore,
   applyMiddleware,
   Middleware,
+  AnyAction,
+  Unsubscribe,
 } from 'redux';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 
@@ -81,21 +83,47 @@ export class ReduxRegister {
   }
 
   /**
-   * Returns the Redux store that is managed by the register instance.
+   * Dispatches a Redux action to the store without using a Controller.
    *
-   * _WARNING: Do not attempt to connect reducers, sagas, or other components (including middleware) to the store
-   * directly. The register instance will override the values any time new controllers are connected_. Instead, you
-   * should pass middleware into the [[constructor]].
-   *
-   * @returns The Redux store associated with the ReduxRegister instance.
+   * @param action The action that is to be dispatched via the store.
+   * @returns The action that was sent.
    * @example
    * ```typescript
    * const register = new ReduxRegister();
-   * register.getStore().dispatch(myAction());
+   * register.dispatch(myAction());
    * ```
    */
-  public getStore(): Store {
-    return this.store;
+  public dispatch(action: AnyAction): AnyAction {
+    return this.store.dispatch(action);
+  }
+
+  /**
+   * Subscribes to the Redux store events.
+   *
+   * @param listener The callback that will be fired.
+   * @returns An unsubscribe function that can be called to stop listening.
+   * @example
+   * ```
+   * const register = new ReduxRegister();
+   * const unsubscribeFn = register.subscribe(myCallback);
+   * ```
+   */
+  public subscribe(listener: () => void): Unsubscribe {
+    return this.store.subscribe(listener);
+  }
+
+  /**
+   * Gets the state object from the Redux store.
+   *
+   * @returns The state object from Redux.
+   * @example
+   * ```
+   * const register = new ReduxRegister();
+   * const state = register.getState();
+   * ```
+   */
+  public getState(): any {
+    return this.store.getState();
   }
 
   private updateReducers(): void {

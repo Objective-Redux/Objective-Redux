@@ -11,13 +11,10 @@
 const counter = jest.fn();
 const registerReducer: any = jest.fn();
 const dispatch = jest.fn();
-const storeMock = {
-  dispatch,
-  getState: (): any => ({ TestSlice: true }),
-};
 const reduxRegisterMock: any = {
   registerReducer,
-  getStore: () => storeMock,
+  dispatch,
+  getState: (): any => ({ TestSlice: true }),
 };
 
 import { StateController } from '../src';

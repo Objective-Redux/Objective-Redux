@@ -19,9 +19,7 @@ const unsubscribe = jest.fn();
 const subscribe = jest.fn(() => unsubscribe);
 
 const registerMock: any = {
-  getStore: () => ({
-    subscribe,
-  }),
+  subscribe,
 };
 
 class ConnectedTest extends React.Component {

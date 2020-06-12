@@ -55,7 +55,7 @@ export function createAction<Payload>(type: string): (payload: Payload) => Actio
  */
 export function createConnectedAction<Payload>(type: string, register: ReduxRegister):
   (payload: Payload) => Action<Payload> {
-  return (payload: Payload): Action<Payload> => register.getStore().dispatch({
+  return (payload: Payload): Action<Payload> => register.dispatch({
     type,
     payload,
   });
