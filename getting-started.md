@@ -202,6 +202,7 @@ register.getStore().dispatch(createAction(isOn));
 
 # TypeScript
 
+### Example
 Templating is available for projects using TypeScript. For example, if you create an action that will take a string as a parameter, it would look like the below example.
 
 ```typescript
@@ -224,3 +225,25 @@ ThemeStateController.getInstance(register).setTheme('dark'); // works
 ```
 
 You can also set the action template type to `<void>` to indicate that no parameter should be taken by the action.
+
+### The `<Template>` parameter is optional... mostly.
+
+The template parameter can be inferred for all actions _except_ those that don't take a parameter.
+
+```typescript
+// ACTIONS THAT TAKE A PAYLOAD
+
+// Both will CORRECTLY require action take a string payload parameter, as inferred by the function being passed as an argument. It doesn't matter if you use the <template> parameter.
+this.registerAction((a, b: string) => b);         // Good
+this.registerAction<string>((a, b: string) => b); // Also good
+
+
+// ACTIONS THAT DON'T TAKE A PAYLOAD
+
+// Due to limitations in TypeScript, this will INCORRECTLY require that the action take a payload parameter.
+this.registerAction(a => a) // Bad
+
+// This will CORRECTLY produce an action that does not allow a payload parameter
+// Note the <void>, which tells TypeScript the payload should not be used.
+this.registerAction<void>(a => a) // Good
+```
