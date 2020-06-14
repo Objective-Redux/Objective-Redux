@@ -12,7 +12,7 @@ import { LazyLoader } from '../src/lazy-loader';
 
 const mockController: any = {
   getName: () => 'TEST-CONTROLLER',
-}
+};
 
 LazyLoader.registerController(mockController);
 
