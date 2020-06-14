@@ -114,6 +114,10 @@ export class SagaBuilder<Payload> {
  * @example
  * ```typescript
  * class SwitchStateSagas extends StatelessController {
+ *  getName() {
+ *    return 'switch-sagas';
+ *  }
+ *
  *  toggleSwitch = this.createSaga()
  *    .withTake(TakeType.TAKE_LATEST)
  *    .register(
@@ -130,8 +134,6 @@ export class SagaBuilder<Payload> {
  * ```
  */
 export abstract class StatelessController extends Controller {
-  private count = 0;
-
   /**
    * Registers and starts the sagas.
    *
@@ -148,15 +150,6 @@ export abstract class StatelessController extends Controller {
   }
 
   /**
-   * Generates a unique, default action name.
-   *
-   * @returns An action name.
-   */
-  private createActionName(): string {
-    return `SAGA/${this.count++}`;
-  }
-
-  /**
    * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
    *
    * @template Payload the payload the action and the saga will take.
@@ -167,7 +160,10 @@ export abstract class StatelessController extends Controller {
   }
 
   private buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
-    const name = config.name || this.createActionName();
+    const name = config.name
+      ? this.createActionName(config.name)
+      : this.createActionName();
+
     let { sagaFn } = config;
 
     if (config.takeType !== null) {

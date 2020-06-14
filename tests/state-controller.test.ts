@@ -17,12 +17,25 @@ const reduxRegisterMock: any = {
   getState: (): any => ({ TestSlice: true }),
 };
 
+const registerController = jest.fn();
+
+jest.mock('../src/lazy-loader', () => ({
+  LazyLoader: {
+    registerController,
+  },
+}));
+
 import { StateController } from '../src';
+import { ControllerNameNotDefined } from '../src/controllernamenotdefined';
 
 class TestController extends StateController<boolean> {
   public constructor(register: any) {
-    super('TestSlice', false, register);
+    super(false, register);
     counter();
+  }
+
+  public static getName(): string {
+    return 'TestSlice';
   }
 
   public readonly unnamedAction = this.registerAction<boolean>(
@@ -42,6 +55,17 @@ describe('state-controller', () => {
       const instance = new TestController(reduxRegisterMock);
       expect(instance).toBeInstanceOf(TestController);
       expect(registerReducer).toHaveBeenCalled();
+    });
+  });
+
+  describe('getName', () => {
+    it('should throw an error when the name is not defined', () => {
+      try {
+        StateController.getName();
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(ControllerNameNotDefined);
+      }
     });
   });
 
@@ -72,10 +96,10 @@ describe('state-controller', () => {
   describe('registerAction', () => {
     const instance = TestController.getInstance(reduxRegisterMock);
     instance.unnamedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({ type: 'ACTIONS/TestSlice/0', payload: true });
+    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/TestSlice/0', payload: true });
 
     instance.namedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({ type: 'NAME', payload: true });
+    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/TestSlice/NAME', payload: true });
   });
 
   describe('reducer', () => {
@@ -96,7 +120,7 @@ describe('state-controller', () => {
 
     it('should call named mutation', () => {
       const instance = TestController.getInstance(reduxRegisterMock);
-      const reduced = instance.reducerHandle(false, { type: 'NAME', payload: true });
+      const reduced = instance.reducerHandle(false, { type: 'OBJECTIVE-REDUX-ACTION/TestSlice/NAME', payload: true });
       expect(reduced).toEqual(true);
     });
   });
@@ -106,6 +130,13 @@ describe('state-controller', () => {
       const instance = TestController.getInstance(reduxRegisterMock);
       const slice = instance.getStateSlice();
       expect(slice).toBeTruthy();
+    });
+  });
+
+  describe('lazyLoadOnExternalAction', () => {
+    it('should register the controller for lazy-loading', () => {
+      TestController.lazyLoadOnExternalAction();
+      expect(registerController).toHaveBeenCalledWith(TestController);
     });
   });
 });

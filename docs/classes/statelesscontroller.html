@@ -70,6 +70,10 @@
 					<dl class="tsd-comment-tags">
 						<dt>example</dt>
 						<dd><pre><code class="language-typescript"><span class="hljs-keyword">class</span> SwitchStateSagas <span class="hljs-keyword">extends</span> StatelessController {
+ getName() {
+   <span class="hljs-keyword">return</span> <span class="hljs-string">'switch-sagas'</span>;
+ }
+
  toggleSwitch = <span class="hljs-keyword">this</span>.createSaga()
    .withTake(TakeType.TAKE_LATEST)
    .register(
@@ -119,8 +123,11 @@ instance.toggleSwitch();</code></pre>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="statelesscontroller.html#createactionname" class="tsd-kind-icon">create<wbr>Action<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected"><a href="statelesscontroller.html#createsaga" class="tsd-kind-icon">create<wbr>Saga</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static"><a href="statelesscontroller.html#getinstance" class="tsd-kind-icon">get<wbr>Instance</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="statelesscontroller.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static"><a href="statelesscontroller.html#lazyloadonexternalaction" class="tsd-kind-icon">lazy<wbr>Load<wbr>OnExternal<wbr>Action</a></li>
 							</ul>
 						</section>
 					</div>
@@ -182,6 +189,36 @@ instance.toggleSwitch();</code></pre>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="createactionname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Action<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Action<wbr>Name<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from Controller.createActionName</p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a unique, default action name.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the action.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>An action name.</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
 					<a name="createsaga" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Saga</h3>
@@ -247,7 +284,7 @@ instance.toggleSwitch();</code></pre>
 								<li>
 									<h5>this: <span class="tsd-signature-type">ModelConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">Controller</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Implicit this for internal use.</p>
+										<p>Implicit &quot;this&quot; for internal use. When calling, this parameter should be ignored/skipped.</p>
 									</div>
 								</li>
 								<li>
@@ -259,6 +296,75 @@ instance.toggleSwitch();</code></pre>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 							<p>An instance of the controller.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<a name="getname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from Controller.getName</p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the name of the state slice.</p>
+								</div>
+								<p>If the controller will be used with lazy loading, the name of the controller must be globally unique.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>The name of the state slice.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static">
+					<a name="lazyloadonexternalaction" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> lazy<wbr>Load<wbr>OnExternal<wbr>Action</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">lazy<wbr>Load<wbr>OnExternal<wbr>Action&lt;T&gt;<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from Controller.lazyLoadOnExternalAction</p>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.</p>
+								</div>
+								<p>This can be used in conjunction with the method <a href="sagabuilder.html#withaddressablename">withAddressableName</a>.</p>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-typescript"><span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> StateController&lt;MySliceType&gt; {
+  <span class="hljs-comment">// ...</span>
+}
+
+MyController.lazyLoadOnExternalAction();
+
+<span class="hljs-keyword">export</span> MyController;</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">Controller</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>this: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Implicit &quot;this&quot; parameter, which dees not need to be supplied.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -281,6 +387,9 @@ instance.toggleSwitch();</code></pre>
 						<a href="componentconnector.html" class="tsd-kind-icon">Component<wbr>Connector</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="controllernamenotdefined.html" class="tsd-kind-icon">Controller<wbr>Name<wbr>Not<wbr>Defined</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="reduxregister.html" class="tsd-kind-icon">Redux<wbr>Register</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
@@ -300,11 +409,20 @@ instance.toggleSwitch();</code></pre>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="statelesscontroller.html#register" class="tsd-kind-icon">register</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="statelesscontroller.html#createactionname" class="tsd-kind-icon">create<wbr>Action<wbr>Name</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
 								<a href="statelesscontroller.html#createsaga" class="tsd-kind-icon">create<wbr>Saga</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static">
 								<a href="statelesscontroller.html#getinstance" class="tsd-kind-icon">get<wbr>Instance</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+								<a href="statelesscontroller.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-static">
+								<a href="statelesscontroller.html#lazyloadonexternalaction" class="tsd-kind-icon">lazy<wbr>Load<wbr>OnExternal<wbr>Action</a>
 							</li>
 						</ul>
 					</li>
@@ -315,6 +433,9 @@ instance.toggleSwitch();</code></pre>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="../globals.html#createaction" class="tsd-kind-icon">create<wbr>Action</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#getactionnameforcontroller" class="tsd-kind-icon">get<wbr>Action<wbr>Name<wbr>For<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#getregisterfromsagacontext" class="tsd-kind-icon">get<wbr>Register<wbr>From<wbr>Saga<wbr>Context</a>
@@ -340,7 +461,11 @@ instance.toggleSwitch();</code></pre>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 			</ul>
 		</div>
 	</div>

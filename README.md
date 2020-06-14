@@ -42,9 +42,11 @@ ReactDOM.render(
 ```javascript
 import { StateController } from 'objective-redux';
 
+const initialState = { isOn: false };
+
 export class SwitchStateController extends StateController {
-  constructor(stateName) {
-    super(stateName, initialState);
+  constructor(register) {
+    super(initialState, register);
   }
 
   toggleSwitch = this.registerAction(

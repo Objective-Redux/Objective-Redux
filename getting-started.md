@@ -62,28 +62,28 @@ import { StateController } from 'objective-redux';
 
 const initialState = { isOn: false };
 
-export class SwitchStateController extends StateController {
-  constructor(stateName, register) {        // The generated reducer is added
+class SwitchStateController extends StateController {
+  constructor(register) {                   // The generated reducer is added
     super(                                  // to the ReduxRegister. No need
-      stateName,                            // to wire it up manually.
-      initialState,
+      initialState,                         // to wire it up manually.
       register
     );
+  }
+
+  static getName() {
+    return 'switch';
   }
 
   toggleSwitch = this.registerAction(       // This creates a reducer and
     (state) => ({ isOn: !state.isOn })      // returns the associate action.
   );
-
-  switchSelector(state, ownProps) {         // Optionally defined selector.
-    const { isOn } = state[this.stateName]; // We could use the inherited 
-                                            // stateSelector method instead
-    return {                                // if we only want to flatten
-      ...ownProps,                          // the object.
-      switchIsOn: isOn,
-    };
-  }
 }
+
+// For use if non-Objective-Redux code will be calling actions.
+// If everything is using Objective-Redux, this isn't needed.
+SwitchStateController.lazyLoadOnExternalAction();
+
+export SwitchStateController;
 ```
 
 Below is an example of how the above class would be used.
@@ -136,6 +136,10 @@ import {
 import { SwitchStateController } from './switch-state-controller';
 
 export class SwitchStateSagas extends StatelessController {
+  static getName() {
+    return 'Switch-State-Sagas';
+  }
+
   toggleSwitch = this.createSaga()
     .withTake(TakeType.TAKE_LATEST)
     .register(
@@ -155,6 +159,10 @@ import { SwitchStateController } from './switch-state-controller';
 import {takeLatest} from 'redux-saga/effects';
 
 export class SwitchStateSagas extends StatelessController {
+  static getName() {
+    return 'Switch-State-Sagas';
+  }
+
   toggleSwitch = this.createSaga()
     .withAddressableName('NAME')
     .register(
@@ -194,8 +202,8 @@ If you need to call the action from outside your package, you can give the actio
 
 Then, your reducer or saga can be called with
 ```javascript
-const myAction = createAction('SET_SWITCH_STATE');
-register.dispatch(createAction(isOn));
+const myAction = createAction(getActionNameForController('My-Controller', 'SET_SWITCH_STATE'));
+register.dispatch(myAction(isOn));
 ```
 
 <br />
@@ -226,7 +234,7 @@ ThemeStateController.getInstance(register).setTheme('dark'); // works
 
 You can also set the action template type to `<void>` to indicate that no parameter should be taken by the action.
 
-### The `<Template>` parameter is optional... mostly.
+### Note: the `<Template>` parameter is optional... mostly.
 
 The template parameter can be inferred for all actions _except_ those that don't take a parameter.
 

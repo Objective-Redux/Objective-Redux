@@ -36,7 +36,11 @@ interface ReducerMap<State, Payload> {
  * ```javascript
  * class SwitchStateController extends StateController {
  *   constructor(register) {
- *     super('switch', { isOn: false }, register);
+ *     super({ isOn: false }, register);
+ *   }
+ *
+ *   public static getName() {
+ *     return 'switch';
  *   }
  *
  *   action = this.registerAction(
@@ -60,7 +64,11 @@ interface ReducerMap<State, Payload> {
  *
  * class SwitchStateController extends StateController<SwitchState> {
  *   constructor(register: ReduxRegister) {
- *     super('switch', { isOn: false }, register);
+ *     super({ isOn: false }, register);
+ *   }
+ *
+ *   public static getName(): string {
+ *     return 'switch';
  *   }
  *
  *   const readonly action = this.registerAction<SwitchState>(
@@ -78,13 +86,6 @@ interface ReducerMap<State, Payload> {
  * ```
  */
 export abstract class StateController<State> extends Controller {
-  private static count = 0;
-
-  /**
-   * The name of the reducer/state slice.
-   */
-  protected readonly stateName: string;
-
   /**
    * The initial value of the state slice.
    */
@@ -102,27 +103,16 @@ export abstract class StateController<State> extends Controller {
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
    * have adverse affects on the application.
    *
-   * @param stateName The type or interface of state slice for which the controller will be managing.
    * @param initialState The initial value of the state slice in Redux.
    * @param register The redux register instance to which the component is being connected.
    * @returns The ReduxRegister instance to which the controller will be connected.
    */
   // eslint-disable-next-line max-params
-  protected constructor(stateName: string, initialState: State, register: ReduxRegister) {
+  protected constructor(initialState: State, register: ReduxRegister) {
     super(register);
-    this.stateName = stateName;
     this.initialState = initialState;
     this.reducerMap = {};
-    this.register.registerReducer(this.stateName, this.reducer.bind(this));
-  }
-
-  /**
-   * Generates a unique, default action name that can be used for a reducing function.
-   *
-   * @returns A unique name for an action.
-   */
-  private createActionName(): string {
-    return `ACTIONS/${this.stateName}/${StateController.count++}`;
+    this.register.registerReducer((this.constructor as any).getName(), this.reducer.bind(this));
   }
 
   /**
@@ -155,8 +145,9 @@ export abstract class StateController<State> extends Controller {
      */
     actionFn.withAddressableName = (name: string): ActionFn<Payload> => {
       this.reducerMap[actionName] = null;
-      this.reducerMap[name] = fn;
-      return createConnectedAction<Payload>(name, this.register);
+      const addressableActionName = this.createActionName(name);
+      this.reducerMap[addressableActionName] = fn;
+      return createConnectedAction<Payload>(addressableActionName, this.register);
     };
 
     const extendedActionFn: ActionExtendFn<Payload> = actionFn;
@@ -188,6 +179,6 @@ export abstract class StateController<State> extends Controller {
    */
   public getStateSlice(): State {
     return this.register
-      .getState()[this.stateName];
+      .getState()[(this.constructor as any).getName()];
   }
 }

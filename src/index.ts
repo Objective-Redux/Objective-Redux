@@ -12,7 +12,7 @@ import { ReduxRegister } from './redux-register';
 import { StateController } from './state-controller';
 import { StatelessController } from './stateless-controller';
 import { TakeType } from './take-type';
-import { createAction } from './action';
+import { createAction, getActionNameForController } from './action';
 import { RegisterProvider } from './register-provider';
 import { ComponentConnector } from './component-connector';
 import { getRegisterFromSagaContext } from './get-register-from-saga-context';
@@ -28,4 +28,5 @@ export {
   ComponentConnector,
   getRegisterFromSagaContext,
   useRegisterFromReactContext,
+  getActionNameForController,
 };

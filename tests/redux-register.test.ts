@@ -40,6 +40,14 @@ jest.mock('redux', () => ({
   applyMiddleware,
 }));
 
+const getControllerForAction = jest.fn();
+
+jest.mock('../src/lazy-loader', () => ({
+  LazyLoader: {
+    getControllerForAction,
+  },
+}));
+
 jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 
 import { ReduxRegister } from '../src';
@@ -60,13 +68,27 @@ describe('redux-register', () => {
   });
 
   describe('dispatch', () => {
-    it('should dispatch an action', () => {
+    it('should dispatch an action and not lazy-load controller', () => {
       const register = new ReduxRegister();
       const action = {
         type: 'MyAction',
       };
       expect(register.dispatch(action)).toEqual(action);
       expect(dispatch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should dispatch an action and lazy-load controller', () => {
+      const register = new ReduxRegister();
+      const action = {
+        type: 'MyAction',
+      };
+      const getInstance = jest.fn();
+      getControllerForAction.mockReturnValue({
+        getInstance,
+      });
+      expect(register.dispatch(action)).toEqual(action);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(getControllerForAction).toHaveBeenCalled();
     });
   });
 

@@ -73,6 +73,7 @@
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class"><a href="classes/componentconnector.html" class="tsd-kind-icon">Component<wbr>Connector</a></li>
+								<li class="tsd-kind-class"><a href="classes/controllernamenotdefined.html" class="tsd-kind-icon">Controller<wbr>Name<wbr>Not<wbr>Defined</a></li>
 								<li class="tsd-kind-class"><a href="classes/reduxregister.html" class="tsd-kind-icon">Redux<wbr>Register</a></li>
 								<li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/sagabuilder.html" class="tsd-kind-icon">Saga<wbr>Builder</a></li>
 								<li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/statecontroller.html" class="tsd-kind-icon">State<wbr>Controller</a></li>
@@ -84,6 +85,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#registerprovider" class="tsd-kind-icon">Register<wbr>Provider</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#createaction" class="tsd-kind-icon">create<wbr>Action</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#getactionnameforcontroller" class="tsd-kind-icon">get<wbr>Action<wbr>Name<wbr>For<wbr>Controller</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getregisterfromsagacontext" class="tsd-kind-icon">get<wbr>Register<wbr>From<wbr>Saga<wbr>Context</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#useregisterfromreactcontext" class="tsd-kind-icon">use<wbr>Register<wbr>From<wbr>React<wbr>Context</a></li>
 							</ul>
@@ -193,6 +195,47 @@ ReactDOM.render(
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getactionnameforcontroller" class="tsd-anchor"></a>
+					<h3>get<wbr>Action<wbr>Name<wbr>For<wbr>Controller</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Action<wbr>Name<wbr>For<wbr>Controller<span class="tsd-signature-symbol">(</span>controllerName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, actionName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets an action name that can be used to fire a controller&#39;s action without using the controller.</p>
+								</div>
+								<p>This can be used along with <a href="globals.html#createaction">createAction</a> to create an action.</p>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-typescript"><span class="hljs-keyword">const</span> action = createAction(getActionNameForController(<span class="hljs-string">'myControllerName'</span>, <span class="hljs-string">'myActionName'</span>));</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>controllerName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the controller the action should target.</p>
+									</div>
+								</li>
+								<li>
+									<h5>actionName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the registered action the action should target.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>The generated action name.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="getregisterfromsagacontext" class="tsd-anchor"></a>
 					<h3>get<wbr>Register<wbr>From<wbr>Saga<wbr>Context</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -273,6 +316,9 @@ ReactDOM.render(
 						<a href="classes/componentconnector.html" class="tsd-kind-icon">Component<wbr>Connector</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/controllernamenotdefined.html" class="tsd-kind-icon">Controller<wbr>Name<wbr>Not<wbr>Defined</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/reduxregister.html" class="tsd-kind-icon">Redux<wbr>Register</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
@@ -289,6 +335,9 @@ ReactDOM.render(
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createaction" class="tsd-kind-icon">create<wbr>Action</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getactionnameforcontroller" class="tsd-kind-icon">get<wbr>Action<wbr>Name<wbr>For<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getregisterfromsagacontext" class="tsd-kind-icon">get<wbr>Register<wbr>From<wbr>Saga<wbr>Context</a>
@@ -314,7 +363,11 @@ ReactDOM.render(
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 			</ul>
 		</div>
 	</div>

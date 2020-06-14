@@ -18,6 +18,7 @@ import {
   Unsubscribe,
 } from 'redux';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
+import { LazyLoader } from './lazy-loader';
 
 /**
  * @internal
@@ -94,6 +95,10 @@ export class ReduxRegister {
    * ```
    */
   public dispatch(action: AnyAction): AnyAction {
+    const controller = LazyLoader.getControllerForAction(action);
+    if (controller) {
+      (controller as any).getInstance(this);
+    }
     return this.store.dispatch(action);
   }
 

@@ -24,11 +24,16 @@ jest.mock('redux-saga/effects', () => ({
 
 import { SagaBuilder, TakeConfig } from '../src/stateless-controller';
 import { TakeType, StatelessController } from '../src';
+import { ControllerNameNotDefined } from '../src/controllernamenotdefined';
 
 class TestController extends StatelessController {
   public constructor(register: any) {
     super(register);
     counter();
+  }
+
+  public static getName(): string {
+    return 'test-saga';
   }
 
   public createSagaHandle<T>(): SagaBuilder<T> {
@@ -41,6 +46,17 @@ function* testSaga(): Generator {
 }
 
 describe('stateless-controller', () => {
+  describe('getName', () => {
+    it('should throw an error when the name is not defined', () => {
+      try {
+        StatelessController.getName();
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(ControllerNameNotDefined);
+      }
+    });
+  });
+
   describe('getInstance', () => {
     it('should create only one instance per register', () => {
       const reduxRegisterMock1: any = {};
@@ -75,11 +91,11 @@ describe('stateless-controller', () => {
       saga().next();
 
       if (config && config.debounceTime) {
-        expect(mock).toHaveBeenCalledWith(config.debounceTime, 'SAGA/0', testSaga);
+        expect(mock).toHaveBeenCalledWith(config.debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
       } else if (type === TakeType.DEBOUNCE) {
-        expect(mock).toHaveBeenCalledWith(0, 'SAGA/0', testSaga);
+        expect(mock).toHaveBeenCalledWith(0, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
       } else {
-        expect(mock).toHaveBeenCalledWith('SAGA/0', testSaga);
+        expect(mock).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
       }
     }
 
@@ -130,7 +146,7 @@ describe('stateless-controller', () => {
         .register(testSaga);
       const { mock: { calls: [[saga]] } } = registerSaga;
       saga().next();
-      expect(takeLeading).toHaveBeenCalledWith('NAME', testSaga);
+      expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/NAME', testSaga);
     });
 
     it('should create saga without take', () => {

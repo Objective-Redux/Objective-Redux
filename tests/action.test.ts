@@ -9,12 +9,19 @@
 // ================================================================================================
 
 import { createAction } from '../src';
-import { createConnectedAction } from '../src/action';
+import { createConnectedAction, getActionNameForController } from '../src/action';
 
 const type = 'MY_ACTION';
 const payload = 10;
 
 describe('action', () => {
+  describe('getActionNameForController', () => {
+    it('should generate the correctly formatted action name', () => {
+      expect(getActionNameForController('controller/name', 'action-name'))
+        .toEqual('OBJECTIVE-REDUX-ACTION/controller-name/action-name');
+    });
+  });
+
   describe('createAction', () => {
     it('should return function that creates action', () => {
       const action = createAction<number>(type);
