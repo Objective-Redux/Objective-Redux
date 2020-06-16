@@ -49,6 +49,10 @@ export class SwitchStateController extends StateController {
     super(initialState, register);
   }
 
+  static getName() {
+    return 'switch';
+  }
+
   toggleSwitch = this.registerAction(
     (state) => ({ isOn: !state.isOn })
   );

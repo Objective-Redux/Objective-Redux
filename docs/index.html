@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>objective-redux - v0.4.0</title>
-	<meta name="description" content="Documentation for objective-redux - v0.4.0">
+	<title>objective-redux - v0.4.1</title>
+	<meta name="description" content="Documentation for objective-redux - v0.4.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">objective-redux - v0.4.0</a>
+					<a href="index.html" class="title">objective-redux - v0.4.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>objective-redux - v0.4.0</h1>
+			<h1>objective-redux - v0.4.1</h1>
 		</div>
 	</div>
 </header>
@@ -112,13 +112,10 @@ ReactDOM.render(
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwitchStateController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StateController</span> </span>{
   <span class="hljs-keyword">constructor</span>(register) {                   <span class="hljs-comment">// The generated reducer is added</span>
-    <span class="hljs-keyword">super</span>(                                  <span class="hljs-comment">// to the ReduxRegister. No need</span>
-      initialState,                         <span class="hljs-comment">// to wire it up manually.</span>
-      register
-    );
-  }
+    <span class="hljs-keyword">super</span>(initialState, register);          <span class="hljs-comment">// to the ReduxRegister. No need</span>
+  }                                         <span class="hljs-comment">// to wire it up manually.</span>
 
-  <span class="hljs-keyword">static</span> getName() {
+  <span class="hljs-keyword">static</span> getName() {                        <span class="hljs-comment">// Sets the name of the slice.</span>
     <span class="hljs-keyword">return</span> <span class="hljs-string">'switch'</span>;
   }
 

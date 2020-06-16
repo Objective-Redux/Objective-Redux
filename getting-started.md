@@ -64,13 +64,10 @@ const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
   constructor(register) {                   // The generated reducer is added
-    super(                                  // to the ReduxRegister. No need
-      initialState,                         // to wire it up manually.
-      register
-    );
-  }
+    super(initialState, register);          // to the ReduxRegister. No need
+  }                                         // to wire it up manually.
 
-  static getName() {
+  static getName() {                        // Sets the name of the slice.
     return 'switch';
   }
 
