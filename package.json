@@ -23,10 +23,15 @@
   "keywords": [
     "redux",
     "redux-wrapper",
-    "redux-saga",
+    "react",
+    "reactjs",
+    "slice",
+    "hooks",
     "redux-tools",
+    "object-oriented",
+    "redux-saga",
     "state",
-    "boilerplate"
+    "redux-helper"
   ],
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
