@@ -86,9 +86,7 @@ https://objective-redux.github.io/Objective-Redux/
 
 ## Drop the boilerplate code
 
-### Actions are a thing of the past.
-
-Among other things.
+### Actions are a thing of the past&mdash; among other things
 
 Object-Redux largely removes the need for action names, actions, switch-statement-reducers, selectors, and dispatching. You just need to write the mutating function. Objective-Redux can take it from there.
 
@@ -106,7 +104,7 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
 
 ## Organize your state
 
-### One slice, one object.
+### One slice, one object
 
 Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
 
@@ -116,7 +114,7 @@ A slice of state never needs to know about what other slices are doing or how th
 
 ## Easy Debugging
 
-### No more global searches for action names.
+### No more global searches for action names
 
 Using Objective-Redux, your editor knows exactly where to find everything. That means you get intellisense, jump to definition, and more. Plus, your actions and reducer will never get out-of-sync.
 
@@ -126,13 +124,20 @@ Using Objective-Redux, your editor knows exactly where to find everything. That 
 
 <br />
 
-## Un-wired, lazy-loaded data
+## Code splitting and lazy loading
 
-### Get the pieces of state you need, when you need them.
+### Get the pieces of state you need, when you need them
 
 Stop registering your reducers and sagas. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
 
 <img src="./statics/lazy.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+
+## Compatible with React-Redux
+
+### Migrate over time
+You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, or `getState`. The only difference is that you'll need to register your reducers using `register.registerReducers(myReducerMap)` or `register.registerReducer(name, reducingFn)`. See the documentation for more.
+
+For React-Redux, simply pass the ReduxRegister to the provider and use it normally. In your Objective-Redux based components, simply call `register.dispatch()` to fire off events to your non-Objective-Redux reducers. Use `withAddressableName()` when creating actions to receive them from outside of Objective-Redux.
 
 <br />
 
