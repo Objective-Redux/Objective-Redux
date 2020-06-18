@@ -1,10 +1,13 @@
 {
-  "name": "objective-redux",
+  "name": "@objective-redux/objective-redux",
   "productName": "Objective Redux",
   "version": "0.4.1",
   "description": "An Object-oriented, light-weight, boilerplate-free wrapper for easy development and debugging.",
   "repository": {
     "url": "git@github.com:Objective-Redux/Objective-Redux.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
