@@ -8,6 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
+import * as React from 'react';
 import { Unsubscribe } from 'redux';
 import { RegisterProviderContext } from './context';
 import { StateController, ReduxRegister } from './';
@@ -87,10 +88,7 @@ export class ComponentConnector {
    *
    * @returns The connected React component.
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  public connect() {
-    // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-    const React = require('react');
+  public connect(): React.ComponentClass {
     const Component = this.component;
     const { controllers } = this;
 
