@@ -1,5 +1,5 @@
 {
-  "name": "@objective-redux/objective-redux",
+  "name": "objective-redux",
   "productName": "Objective Redux",
   "version": "0.4.1",
   "description": "An Object-oriented, light-weight, boilerplate-free wrapper for easy development and debugging.",
