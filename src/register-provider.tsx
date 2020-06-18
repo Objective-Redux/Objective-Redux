@@ -8,7 +8,6 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import * as React from 'react';
 import { RegisterProviderContext } from './context';
 import { ReduxRegister } from './';
 
@@ -34,6 +33,8 @@ import { ReduxRegister } from './';
  * @returns The provider that will render with its child components.
  */
 export function RegisterProvider({ register, children }: { register: ReduxRegister; children: any }): JSX.Element {
+  // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
+  const React = require('react');
   return (
     <RegisterProviderContext.Provider value={register}>
       {children}
