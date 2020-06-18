@@ -8,8 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { getContext, GetContextEffect } from 'redux-saga/effects';
-import { ReduxRegister } from '.';
+import { getReduxSagaEffects } from './get-redux-saga-module';
+import { ReduxRegister } from './';
 
 /**
  * Gets the register from the saga's context.
@@ -22,6 +22,7 @@ import { ReduxRegister } from '.';
  * ```
  * @returns A generator that yields an instance of the ReduxRegister.
  */
-export function* getRegisterFromSagaContext(): Generator<GetContextEffect, ReduxRegister, ReduxRegister> {
-  return yield getContext('register');
+export function* getRegisterFromSagaContext(): Generator<any, ReduxRegister, ReduxRegister> {
+  const reguxSagaEffects = getReduxSagaEffects();
+  return yield reguxSagaEffects.getContext('register');
 }

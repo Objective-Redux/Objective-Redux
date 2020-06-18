@@ -17,8 +17,8 @@ import {
   AnyAction,
   Unsubscribe,
 } from 'redux';
-import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 import { LazyLoader } from './lazy-loader';
+import { getReduxSagaModule } from './get-redux-saga-module';
 
 /**
  * @internal
@@ -48,7 +48,7 @@ export interface SagaFn<Payload> {
 export class ReduxRegister {
   private readonly store: Store;
 
-  private readonly sagaMiddleware: SagaMiddleware<object>;
+  private readonly sagaMiddleware: any;
 
   private registeredReducers: ReducerMap = {};
 
@@ -67,18 +67,25 @@ export class ReduxRegister {
    * ```
    */
   public constructor(middleware: Middleware<any>[] = []) {
-    this.sagaMiddleware = createSagaMiddleware({
-      context: {
-        register: this,
-      },
-    });
+    const internalMiddleware: Middleware<any>[] = [];
+    const reduxSaga = getReduxSagaModule();
+
+    /* istanbul ignore else */
+    if (reduxSaga) {
+      this.sagaMiddleware = reduxSaga.default({
+        context: {
+          register: this,
+        },
+      });
+      internalMiddleware[0] = this.sagaMiddleware;
+    }
 
     this.store = createStore(
       /* istanbul ignore next */
       () => {},
       applyMiddleware(
         ...middleware,
-        this.sagaMiddleware
+        ...internalMiddleware
       )
     );
   }

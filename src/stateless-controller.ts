@@ -7,13 +7,12 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-import {
-  takeLatest, takeEvery, takeLeading, debounce,
-} from 'redux-saga/effects';
+
 import { ReduxRegister, SagaFn } from './redux-register';
 import { TakeType } from './take-type';
 import { createConnectedAction, ActionFn } from './action';
 import { Controller } from './controller';
+import { getReduxSagaEffects } from './get-redux-saga-module';
 
 /**
  * @internal
@@ -180,22 +179,24 @@ export abstract class StatelessController extends Controller {
   }
 
   private createTakeSaga(config: TakeSagaConfig): () => Generator {
+    const reguxSagaEffects = getReduxSagaEffects();
+
     switch (config.takeType) {
       case TakeType.TAKE_LATEST:
         return function* (): any {
-          yield takeLatest(config.name, config.sagaFn);
+          yield reguxSagaEffects.takeLatest(config.name, config.sagaFn);
         };
       case TakeType.TAKE_EVERY:
         return function* (): any {
-          yield takeEvery(config.name, config.sagaFn);
+          yield reguxSagaEffects.takeEvery(config.name, config.sagaFn);
         };
       case TakeType.TAKE_LEADING:
         return function* (): any {
-          yield takeLeading(config.name, config.sagaFn);
+          yield reguxSagaEffects.takeLeading(config.name, config.sagaFn);
         };
       case TakeType.DEBOUNCE:
         return function* (): any {
-          yield debounce(config.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
+          yield reguxSagaEffects.debounce(config.takeConfig?.debounceTime || 0, config.name, config.sagaFn);
         };
       default:
         throw new Error('Invalid take type');
