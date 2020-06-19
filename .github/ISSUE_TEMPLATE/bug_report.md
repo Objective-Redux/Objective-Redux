@@ -7,11 +7,13 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Summary**
+In one or two sentences, what is the bug?
 
-**To Reproduce**
-Steps to reproduce the behavior:
+**Detail**
+If applicable, give a more thorough explanation of the bug.
+
+**Steps to Reproduce**
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -23,9 +25,10 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Environment (please complete the following information):**
- - Browser [e.g. chrome, safari]
- - Node Version [e.g. 22]
- - Redux Version [e.g. 22]
- - Redux-Saga Version [e.g. 22]
- - React Version [e.g. 22]
+**Environment**
+ - OS and Browser [e.g. iOS safari v13.1]
+ - Node Version [e.g. 14.1]
+ - Redux Version [e.g. 4.0.5]
+ - Redux-Saga Version [e.g. 1.1.3]
+ - React Version [e.g. 16.13.1]
+Any additional details about your setup that might be relevant.
