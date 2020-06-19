@@ -22,6 +22,9 @@ If applicable, give a more thorough explanation of the bug.
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
+**Actual Result**
+What actually happens?
+
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
