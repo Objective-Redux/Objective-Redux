@@ -4,6 +4,7 @@ config/
 converage/
 docs/
 node_modules/
+scripts/
 src/
 statics/
 tests/

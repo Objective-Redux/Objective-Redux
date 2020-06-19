@@ -25,7 +25,6 @@ npm install --save redux redux-saga objective-redux
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RegisterProvider, ReduxRegister } from 'objective-redux';
-import { register } from './store/register';
 import App from './app';
 
 export const register = new ReduxRegister();
