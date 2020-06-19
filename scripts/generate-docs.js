@@ -26,7 +26,7 @@ app.bootstrap({
 const project = app.convert(app.expandInputFiles(['src']));
 
 const { children } = project;
-console.log(generateDocs(children));
+// console.log(generateDocs(children));
 
 function generateDocs(files) {
   const docs = [];
