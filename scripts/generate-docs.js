@@ -8,90 +8,87 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const TypeDoc = require('typedoc');
+/* eslint-disable no-sync */
 
-const app = new TypeDoc.Application();
+const fs = require('fs');
+const path = require('path');
+const TypeScriptDataProvider = require('./get-typescript-data');
 
-app.options.addReader(new TypeDoc.TSConfigReader());
+const API_DIR = path.resolve(__dirname, '../docs/api');
 
-app.bootstrap({
-  mode: 'modules',
-  logger: 'none',
-  target: 'ES5',
-  module: 'CommonJS',
-  experimentalDecorators: true,
-  jsx: true,
-});
+try {
+  fs.rmdirSync(API_DIR, { recursive: true });
+} catch (e) {
+  //
+}
+fs.mkdirSync(API_DIR);
 
-const project = app.convert(app.expandInputFiles(['src']));
+const typescriptData = TypeScriptDataProvider.getTypeScriptData();
 
-const { children } = project;
-// console.log(generateDocs(children));
-
-function generateDocs(files) {
-  const docs = [];
-
-  for (let i = 0; i < files.length; i++) {
-    const fileDocs = generateDocsForFile(files[i]);
-    if (fileDocs) {
-      docs.push(...fileDocs);
-    }
+function applyFunctionTemplate(functionData) {
+  let params = '';
+  if (functionData.parameters.length > 0) {
+    params = functionData.parameters
+      .map(p => `<p>${p.name}: ${p.type}<br />${p.description}<p>`)
+      .reduce((p, c) => `${p}\n${c}`, '<h3>Parameters</h3>');
   }
 
-  return docs;
+  const templateParams = getTemplateParameters(functionData.typeParameters);
+  const examples = getExamples(functionData.examples);
+
+  return `
+    <h2>${functionData.name}<h2>
+    <p>${functionData.signature}</p>
+    <p>${functionData.description}</p>
+    ${templateParams}
+    ${params}
+    <h3>Returns</h3>
+    <p>${functionData.returns.type}<br />${functionData.returns.description}</p>
+    ${examples}
+  `;
 }
 
-function generateDocsForFile(file) {
-  const docs = [];
-
-  for (let j = 0; file.children && j < file.children.length; j++) {
-    const declaration = file.children[j];
-    const type = declaration.kindString;
-    switch (type) {
-      case 'Class':
-        docs.push(generateClassDoc(file, declaration));
-        break;
-      case 'Function':
-        docs.push(generateFunctionDoc(file, declaration));
-        break;
-    }
+function applyClassTemplate(classData) {
+  let methods = '';
+  if (classData.methods.length > 0) {
+    methods = classData.methods.map(m => applyFunctionTemplate(m)).reduce((p, c) => `${p}\n${c}`);
   }
 
-  return docs;
+  const templateParams = getTemplateParameters(classData.typeParameters);
+  const examples = getExamples(classData.examples);
+
+  return `
+    <h1>${classData.name}</h1>
+    <p>${classData.signature}</p>
+    <p>${classData.description}</p>
+    ${templateParams}
+    ${examples}
+    ${methods}
+  `;
 }
 
-function generateClassDoc() {
-  return null;
-}
-
-function generateFunctionDoc(file, declaration) {
-  const signature = (declaration.signatures && declaration.signatures[0]) || {};
-
-  return {
-    filename: file.name,
-    filepath: file.originalName,
-    name: declaration.name,
-    description: signature ? signature.comment : null,
-    type: 'Function',
-    typeParameters: getParameters(signature ? signature.typeParameters : null),
-    parameters: getParameters(signature ? signature.parameters : null),
-  };
-}
-
-function getParameters(paramDeclarations) {
-  const parameters = [];
-
-  // eslint-disable-next-line no-unmodified-loop-condition
-  for (let k = 0; paramDeclarations && k < paramDeclarations.length; k++) {
-    const parameter = paramDeclarations[k];
-    parameters.push({
-      name: parameter.name,
-      type: parameter.type ? parameter.type.name : null,
-      description: parameter.comment ? parameter.comment.text : null,
-    });
+function getTemplateParameters(typeParameters) {
+  let templateParams = '';
+  if (typeParameters.length > 0) {
+    templateParams = typeParameters
+      .map(t => `<p>${t.name}<br />${t.description}<p>`)
+      .reduce((p, c) => `${p}\n${c}`, '<h3>Template Parameters</h3>');
   }
-
-  return parameters;
+  return templateParams;
 }
 
-// console.log(children[0].children[4]);
+function getExamples(examples) {
+  let examplesHTML = '';
+  if (examples.length > 0) {
+    examplesHTML = examples.map(
+      e => `<code>${e}</code>`
+    ).reduce((p, c) => `${p}\n${c}`, '<h3>Examples</h3>');
+  }
+  return examplesHTML;
+}
+
+// console.log('\n\n-- Functions --');
+// typescriptData.functions.forEach(d => console.log(applyFunctionTemplate(d)));
+
+// console.log('\n-- Classes --');
+// typescriptData.classes.forEach(d => console.log(applyClassTemplate(d)));
