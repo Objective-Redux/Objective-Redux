@@ -58,19 +58,25 @@ function generateDocsForFile(file) {
 
 function generateClassDoc(file, declaration) {
   const methods = (declaration.children || [])
-    .filter(child => !hasInternalTag(child) && (child.kindString === 'Method' || child.kindString === 'Constructor'))
-    .map(method => generateFunctionDoc(file, method));
+    .filter(
+      child => !hasInternalTag(child)
+        && (child.kindString === 'Method' || child.kindString === 'Constructor')
+        && !child.flags.find(f => f === 'Private')
+    ).map(method => generateFunctionDoc(file, method));
 
   const properties = (declaration.children || [])
-    .filter(child => !hasInternalTag(child) && child.kindString === 'Property')
-    .map(method => generatePropertyDoc(method));
+    .filter(
+      child => !hasInternalTag(child) && child.kindString === 'Property' && !child.flags.find(f => f === 'Private')
+    ).map(method => generatePropertyDoc(method));
 
   return {
     filename: file.name,
     filepath: file.originalName,
     name: declaration.name,
     signature: getClassSignature(declaration),
-    description: declaration.comment ? `${declaration.comment.shortText}\n${declaration.comment.text}` : null,
+    description: declaration.comment && declaration.comment.shortText
+      ? `${declaration.comment.shortText.replace('\n', ' ')}\n${declaration.comment.text.replace('\n', ' ')}`
+      : null,
     examples: getExamples(declaration.comment ? declaration.comment.tags: null),
     typeParameters: getParameters(declaration.typeParameters),
     properties,
@@ -87,7 +93,9 @@ function generateFunctionDoc(file, declaration) {
     filepath: file.originalName,
     name: declaration.name,
     signature: getFunctionSignature(declaration),
-    description: signature && signature.comment ? `${signature.comment.shortText}\n${signature.comment.text}` : null,
+    description: signature && signature.comment && signature.comment.shortText
+      ? `${signature.comment.shortText.replace('\n', ' ')}\n${signature.comment.text.replace('\n', ' ')}`
+      : null,
     examples: getExamples(signature && signature.comment ? signature.comment.tags : null),
     typeParameters: getParameters(signature ? signature.typeParameters : null),
     parameters: getParameters(signature ? signature.parameters : null),
@@ -109,6 +117,8 @@ function getType(type) {
     return `${type.name}${template}`;
   } else if (type.declaration) {
     return getFunctionSignature(type.declaration);
+  } else if (type.type === 'array') {
+    return `${getType(type.elementType)}[]`;
   } else if (type.types) {
     return type.types.map(t => getType(t)).reduce((p, c) => `${p}|${c}`);
   } else {
@@ -122,10 +132,11 @@ function getParameters(paramDeclarations) {
   // eslint-disable-next-line no-unmodified-loop-condition
   for (let i = 0; paramDeclarations && i < paramDeclarations.length; i++) {
     const parameter = paramDeclarations[i];
+    const defaultValue = parameter.defaultValue ? ` = ${parameter.defaultValue}` : '';
 
     parameters.push({
       name: parameter.name,
-      type: getType(parameter.type),
+      type: `${getType(parameter.type)}${defaultValue}`,
       description: parameter.comment ? parameter.comment.text : null,
     });
   }
@@ -219,7 +230,8 @@ function getFunctionSignature(declaration) {
 
   const template = getTemplateParameterString(signature.typeParameters);
   const parameters = signature.parameters && signature.parameters.length
-    ? signature.parameters.map(p => `${p.name}: ${p.type}`).reduce((p, c) => `${p}, ${c}`)
+    ? signature.parameters.map(p => `${p.name}: ${getType(p.type)}${p.defaultValue ? ` = ${p.defaultValue}` : ''}`)
+      .reduce((p, c) => `${p}, ${c}`)
     : '';
   const returnData = getType(signature.type);
   const flags = getFlagData(declaration.flags);

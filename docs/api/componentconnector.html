@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+  <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objective-Redux Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+  <header>
+    <div class="left">
+      <p><a href="./">Objective Redux</a></p>
+      <p>Redux made better, objectively.</p>
+    </div>
+    <div class="right">
+      <p>
+        Version 0.4.1
+        <br />
+        On
+        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
+        and
+        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
+      </p>
+    </div>
+  </header>
+  <div id="main">
+    <nav>
+      <div class="padded">
+        <p class="nav-section">Functions</p>
+<p><a href="createaction.html">createAction</a></p>
+<p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
+<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
+<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="useregisterfromreactcontext.html">useRegisterFromReactContext</a></p><p class="nav-section">Classes</p>
+<p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
+<p><a href="reduxregister.html">ReduxRegister</a></p>
+<p><a href="statecontroller.html">StateController</a></p>
+<p><a href="sagabuilder.html">SagaBuilder</a></p>
+<p><a href="statelesscontroller.html">StatelessController</a></p>
+      </div>
+    </nav>
+    <div id="content">
+      <div class="padded">
+        
+    <h1 class="code">ComponentConnector</h1>
+    <p class="code">class ComponentConnector</p>
+    <p>Builder that connections a React component to the Objective Redux register, allowing the component to use the states and dispatch events.<br />This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the components closest provided ancestor. It also provides props from the states that were added.
+
+As an alternative for functional components, the useRegisterFromReactContext hook can be used to get
+the ReduxRegister.
+</p>
+    
+    <h3>Examples</h3>
+<pre><code>export default ComponentConnector
+  .addPropsTo(MyReactComponent)
+  .from(MyStateControllerOne)
+  .from(MyStateControllerTwo, slice =&gt; ({ a: slice.a }))
+  .connect();</code></pre>
+    
+  <section>
+    <h2 class="code">connect</h2>
+    <p class="code">public connect(): ComponentClass</p>
+    <p>Finishes the builder and provides the connected component.<br /></p>
+    
+    
+    <h3>Returns</h3>
+    <p><dt>ComponentClass</dt><dd>The connected React component.<br /></dd></p>
+    
+  </section>
+  
+
+  <section>
+    <h2 class="code">from</h2>
+    <p class="code">public from&lt;C&gt;(controller: Class&lt;C&gt;, selector: StateSelectorFn&lt;C&gt;|null = null): ComponentConnector</p>
+    <p>Gets parameters from the specified StateController and injects them into the properties of the component.<br /></p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;C&gt;</dt><dd>The state controller class being connected. Will be inferred from the first parameter.</dd></p>
+    <h3>Parameters</h3>
+<p><dt>controller: Class<C></dt><dd>The state controller from which properties will be extracted.</dd><p>
+<p><dt>selector: StateSelectorFn<C>|null = null</dt><dd>An optional mapping function.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.<br /></dd></p>
+    
+  </section>
+  
+
+  <section>
+    <h2 class="code">addPropsTo</h2>
+    <p class="code">public static addPropsTo(component: ComponentClass): ComponentConnector</p>
+    <p>Starts the builder for a React component.<br /></p>
+    
+    <h3>Parameters</h3>
+<p><dt>component: ComponentClass</dt><dd>The React component to which the props will be added.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.<br /></dd></p>
+    
+  </section>
+  
+  
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; Copyright 2020 by Jason Mace</p>
+  </footer>
+</body>
+  </html>

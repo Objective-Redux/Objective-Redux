@@ -15,6 +15,7 @@
   "files": [
     "dist/"
   ],
+  "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
     "build": "tsc",
     "docs": "typedoc --out docs src --mode file --readme getting-started.md --excludeNotExported --excludeExternals --excludePrivate --stripInternal --includeVersion --disableSources",

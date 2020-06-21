@@ -12,9 +12,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const package = require('../package.json');
 const TypeScriptDataProvider = require('./get-typescript-data');
 
 const API_DIR = path.resolve(__dirname, '../docs/api');
+const TEMPLATE_DIRECTORY = path.resolve(__dirname, './templates');
+const TEMPLATE_FILE = `${TEMPLATE_DIRECTORY}/template.html`;
 
 try {
   fs.rmdirSync(API_DIR, { recursive: true });
@@ -25,11 +28,48 @@ fs.mkdirSync(API_DIR);
 
 const typescriptData = TypeScriptDataProvider.getTypeScriptData();
 
+function copyTemplateFiles() {
+  fs.writeFileSync(
+    `${API_DIR}/docs.css`,
+    fs.readFileSync(`${TEMPLATE_DIRECTORY}/docs.css`, 'utf-8')
+  );
+}
+
+function writeFile(config) {
+  const content = getPageTemplate()
+    .replace(
+      '{{body}}',
+      config.body
+    )
+    .replace(
+      '{{menu}}',
+      config.menu
+    )
+    .replace(
+      '{{version}}',
+      package.version
+    )
+    .replace(
+      '{{year}}',
+      (new Date()).getFullYear()
+    );
+
+  fs.writeFileSync(`${API_DIR}/${config.filename}`, content);
+}
+
+let template;
+function getPageTemplate() {
+  if (!template) {
+    template = fs.readFileSync(TEMPLATE_FILE, 'utf-8');
+  }
+  return template;
+}
+
 function applyFunctionTemplate(functionData) {
   let params = '';
   if (functionData.parameters.length > 0) {
     params = functionData.parameters
-      .map(p => `<p>${p.name}: ${p.type}<br />${p.description}<p>`)
+      .map(p => `<p><dt>${p.name}: ${p.type}</dt><dd>${sanitizeDescription(p.description)}</dd><p>`)
       .reduce((p, c) => `${p}\n${c}`, '<h3>Parameters</h3>');
   }
 
@@ -37,14 +77,16 @@ function applyFunctionTemplate(functionData) {
   const examples = getExamples(functionData.examples);
 
   return `
-    <h2>${functionData.name}<h2>
-    <p>${functionData.signature}</p>
-    <p>${functionData.description}</p>
+  <section>
+    <h2 class="code">${functionData.name}</h2>
+    <p class="code">${functionData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p>${sanitizeDescription(functionData.description)}</p>
     ${templateParams}
     ${params}
     <h3>Returns</h3>
-    <p>${functionData.returns.type}<br />${functionData.returns.description}</p>
+    <p><dt>${functionData.returns.type}</dt><dd>${sanitizeDescription(functionData.returns.description)}</dd></p>
     ${examples}
+  </section>
   `;
 }
 
@@ -58,9 +100,9 @@ function applyClassTemplate(classData) {
   const examples = getExamples(classData.examples);
 
   return `
-    <h1>${classData.name}</h1>
-    <p>${classData.signature}</p>
-    <p>${classData.description}</p>
+    <h1 class="code">${classData.name}</h1>
+    <p class="code">${classData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p>${sanitizeDescription(classData.description)}</p>
     ${templateParams}
     ${examples}
     ${methods}
@@ -71,7 +113,7 @@ function getTemplateParameters(typeParameters) {
   let templateParams = '';
   if (typeParameters.length > 0) {
     templateParams = typeParameters
-      .map(t => `<p>${t.name}<br />${t.description}<p>`)
+      .map(t => `<p><dt>&lt;${t.name}&gt;</dt><dd>${sanitizeDescription(t.description)}</dd></p>`)
       .reduce((p, c) => `${p}\n${c}`, '<h3>Template Parameters</h3>');
   }
   return templateParams;
@@ -81,14 +123,50 @@ function getExamples(examples) {
   let examplesHTML = '';
   if (examples.length > 0) {
     examplesHTML = examples.map(
-      e => `<code>${e}</code>`
+      e => {
+        const matches = /```(?<language>.*)\n(?<code>[\w\W]*)\n```/.exec(e);
+        const { groups: { code } } = matches;
+        return `<pre><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+      }
     ).reduce((p, c) => `${p}\n${c}`, '<h3>Examples</h3>');
   }
   return examplesHTML;
 }
 
-// console.log('\n\n-- Functions --');
-// typescriptData.functions.forEach(d => console.log(applyFunctionTemplate(d)));
+function sanitizeDescription(desc) {
+  if (!desc) {
+    return '';
+  }
 
-// console.log('\n-- Classes --');
-// typescriptData.classes.forEach(d => console.log(applyClassTemplate(d)));
+  return desc.replace('\n', '<br />');
+}
+
+function getLink(item) {
+  return `${item.name.toLowerCase()}.html`;
+}
+
+copyTemplateFiles();
+
+let menu = typescriptData.functions
+  .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
+  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Functions</p>');
+
+menu += typescriptData.classes
+  .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
+  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Classes</p>');
+
+typescriptData.functions.forEach(
+  d => writeFile({
+    body: applyFunctionTemplate(d),
+    menu,
+    filename: getLink(d),
+  })
+);
+
+typescriptData.classes.forEach(
+  d => writeFile({
+    body: applyClassTemplate(d),
+    menu,
+    filename: getLink(d),
+  })
+);

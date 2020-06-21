@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+  <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objective-Redux Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+  <header>
+    <div class="left">
+      <p><a href="./">Objective Redux</a></p>
+      <p>Redux made better, objectively.</p>
+    </div>
+    <div class="right">
+      <p>
+        Version 0.4.1
+        <br />
+        On
+        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
+        and
+        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
+      </p>
+    </div>
+  </header>
+  <div id="main">
+    <nav>
+      <div class="padded">
+        <p class="nav-section">Functions</p>
+<p><a href="createaction.html">createAction</a></p>
+<p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
+<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
+<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="useregisterfromreactcontext.html">useRegisterFromReactContext</a></p><p class="nav-section">Classes</p>
+<p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
+<p><a href="reduxregister.html">ReduxRegister</a></p>
+<p><a href="statecontroller.html">StateController</a></p>
+<p><a href="sagabuilder.html">SagaBuilder</a></p>
+<p><a href="statelesscontroller.html">StatelessController</a></p>
+      </div>
+    </nav>
+    <div id="content">
+      <div class="padded">
+        
+  <section>
+    <h2 class="code">getActionNameForController</h2>
+    <p class="code">function getActionNameForController(controllerName: string, actionName: string): string</p>
+    <p>Gets an action name that can be used to fire a controller's action without using the controller.<br />This can be used along with [[createAction]] to create an action. </p>
+    
+    <h3>Parameters</h3>
+<p><dt>controllerName: string</dt><dd>The name of the controller the action should target.</dd><p>
+<p><dt>actionName: string</dt><dd>The name of the registered action the action should target.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>string</dt><dd>The generated action name.<br /></dd></p>
+    <h3>Examples</h3>
+<pre><code>const action = createAction(getActionNameForController('myControllerName', 'myActionName'));</code></pre>
+  </section>
+  
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; Copyright 2020 by Jason Mace</p>
+  </footer>
+</body>
+  </html>

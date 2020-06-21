@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+  <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objective-Redux Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+  <header>
+    <div class="left">
+      <p><a href="./">Objective Redux</a></p>
+      <p>Redux made better, objectively.</p>
+    </div>
+    <div class="right">
+      <p>
+        Version 0.4.1
+        <br />
+        On
+        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
+        and
+        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
+      </p>
+    </div>
+  </header>
+  <div id="main">
+    <nav>
+      <div class="padded">
+        <p class="nav-section">Functions</p>
+<p><a href="createaction.html">createAction</a></p>
+<p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
+<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
+<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="useregisterfromreactcontext.html">useRegisterFromReactContext</a></p><p class="nav-section">Classes</p>
+<p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
+<p><a href="reduxregister.html">ReduxRegister</a></p>
+<p><a href="statecontroller.html">StateController</a></p>
+<p><a href="sagabuilder.html">SagaBuilder</a></p>
+<p><a href="statelesscontroller.html">StatelessController</a></p>
+      </div>
+    </nav>
+    <div id="content">
+      <div class="padded">
+        
+    <h1 class="code">ReduxRegister</h1>
+    <p class="code">class ReduxRegister</p>
+    <p>The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its own Redux store that it manages.<br />Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed. </p>
+    
+    
+    
+  <section>
+    <h2 class="code">constructor</h2>
+    <p class="code">public constructor(middleware: Middleware&lt;any&gt;[] = []): ReduxRegister</p>
+    <p>Creates an instance of the ReduxRegister.<br />In setting up the instance, the class will create a ReduxStore. </p>
+    
+    <h3>Parameters</h3>
+<p><dt>middleware: Middleware<any>[] = []</dt><dd></dd><p>
+    <h3>Returns</h3>
+    <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
+    <h3>Examples</h3>
+<pre><code>const register = new ReduxRegister();</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">dispatch</h2>
+    <p class="code">public dispatch(action: AnyAction): AnyAction</p>
+    <p>Dispatches a Redux action to the store without using a Controller.<br /></p>
+    
+    <h3>Parameters</h3>
+<p><dt>action: AnyAction</dt><dd>The action that is to be dispatched via the store.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>AnyAction</dt><dd>The action that was sent.</dd></p>
+    <h3>Examples</h3>
+<pre><code>const register = new ReduxRegister();
+register.dispatch(myAction());</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">getState</h2>
+    <p class="code">public getState(): any</p>
+    <p>Gets the state object from the Redux store.<br /></p>
+    
+    
+    <h3>Returns</h3>
+    <p><dt>any</dt><dd>The state object from Redux.</dd></p>
+    <h3>Examples</h3>
+<pre><code>const register = new ReduxRegister();
+const state = register.getState();</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">registerReducer</h2>
+    <p class="code">public registerReducer(name: string, reducerFn: Reducer&lt;any, any&gt;): void</p>
+    <p>Adds a reducer to the register's Redux store.<br /></p>
+    
+    <h3>Parameters</h3>
+<p><dt>name: string</dt><dd>The name of the reducer/the name of the state slice.</dd><p>
+<p><dt>reducerFn: Reducer<any, any></dt><dd>The reducer that is being registered.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
+    <h3>Examples</h3>
+<pre><code>const reducer = (state = { isOn: false }, action) {
+  switch (action.type) {
+    case 'MY_ACTION':
+      return {
+        ...state,
+        isOn: !state.isOn,
+      };
+    default:
+      return state;
+  }
+};
+
+const register = new ReduxRegister();
+register.registerReducer('switch', reducer);</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">registerReducers</h2>
+    <p class="code">public registerReducers(reducers: ReducerMap): void</p>
+    <p>Adds multiple reducers to the store.<br />This can be especially helpful when migrating from pure Redux, to add Reducers before they are migrated to [[StateController|StateControllers]].
+</p>
+    
+    <h3>Parameters</h3>
+<p><dt>reducers: ReducerMap</dt><dd>A map of slice names to their reducing functions.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
+    <h3>Examples</h3>
+<pre><code>const register = new ReduxRegister();
+register.registerReducers({
+  sliceOne: reducerOne,
+  sliceTwo: reducerTwo,
+});</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">registerSaga</h2>
+    <p class="code">public registerSaga(sagaFn: SagaFn&lt;void&gt;): void</p>
+    <p>Adds and and begins running a saga as part in the context of the store that the register manages.<br /></p>
+    
+    <h3>Parameters</h3>
+<p><dt>sagaFn: SagaFn<void></dt><dd>The saga to add to the register.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
+    <h3>Examples</h3>
+<pre><code>function* sagaFn() {
+  yield console.log('Hello, world!');
+}
+
+const register = new ReduxRegister();
+register.registerSaga(sagaFn);</code></pre>
+  </section>
+  
+
+  <section>
+    <h2 class="code">subscribe</h2>
+    <p class="code">public subscribe(listener: () =&gt; void): Unsubscribe</p>
+    <p>Subscribes to the Redux store events.<br /></p>
+    
+    <h3>Parameters</h3>
+<p><dt>listener: () => void</dt><dd>The callback that will be fired.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>Unsubscribe</dt><dd>An unsubscribe function that can be called to stop listening.</dd></p>
+    <h3>Examples</h3>
+<pre><code>const register = new ReduxRegister();
+const unsubscribeFn = register.subscribe(myCallback);</code></pre>
+  </section>
+  
+  
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; Copyright 2020 by Jason Mace</p>
+  </footer>
+</body>
+  </html>
