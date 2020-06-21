@@ -137,7 +137,9 @@ function getParameters(paramDeclarations) {
     parameters.push({
       name: parameter.name,
       type: `${getType(parameter.type)}${defaultValue}`,
-      description: parameter.comment ? parameter.comment.text : null,
+      description: parameter.comment
+        ? `${parameter.comment.shortText.replace('\n', '')}\n${parameter.comment.text}`
+        : null,
     });
   }
 
@@ -147,7 +149,9 @@ function getParameters(paramDeclarations) {
 function generatePropertyDoc(declaration) {
   return {
     name: declaration.name,
-    description: declaration.comment ? `${declaration.comment.shortText}\n${declaration.comment.text}` : null,
+    description: declaration.comment
+      ? `${declaration.comment.shortText.replace('\n', '')}\n${declaration.comment.text}`
+      : null,
     returnType: declaration.type.name,
     ...getFlagData(declaration.flags),
   };

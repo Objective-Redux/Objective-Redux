@@ -48,7 +48,7 @@
     <p class="code">class SagaBuilder&lt;Payload&gt;</p>
     <p>Builder that is returned by the [[StatelessController]] to create and register a saga.<br /></p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd></dd></p>
+<p><dt>&lt;Payload&gt;</dt><dd>The payload that the action and the saga will use.<br /></dd></p>
     
     
   <section>
@@ -57,7 +57,7 @@
     <p>Completes the builder and adds the saga to the register.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn<Payload></dt><dd>The saga function to add to the ReduxRegister.</dd><p>
+<p><dt>sagaFn: SagaFn<Payload></dt><dd><br />The saga function to add to the ReduxRegister.</dd><p>
     <h3>Returns</h3>
     <p><dt>ActionFn<Payload></dt><dd>An action for calling the saga.<br /></dd></p>
     
@@ -70,7 +70,7 @@
     <p>Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>name: string</dt><dd>The name/type of the action.</dd><p>
+<p><dt>name: string</dt><dd><br />The name/type of the action.</dd><p>
     <h3>Returns</h3>
     <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
     
@@ -83,8 +83,8 @@
     <p>Adds a simple watcher to the saga.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>type: TakeType</dt><dd>The take type of the watching saga.</dd><p>
-<p><dt>config: TakeConfig|null = null</dt><dd>The configuration of the take type.</dd><p>
+<p><dt>type: TakeType</dt><dd><br />The take type of the watching saga.</dd><p>
+<p><dt>config: TakeConfig|null = null</dt><dd><br />The configuration of the take type.</dd><p>
     <h3>Returns</h3>
     <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
     

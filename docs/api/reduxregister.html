@@ -56,11 +56,13 @@
     <p>Creates an instance of the ReduxRegister.<br />In setting up the instance, the class will create a ReduxStore. </p>
     
     <h3>Parameters</h3>
-<p><dt>middleware: Middleware<any>[] = []</dt><dd></dd><p>
+<p><dt>middleware: Middleware<any>[] = []</dt><dd>Additional middleware to add.<br /></dd><p>
     <h3>Returns</h3>
     <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
     <h3>Examples</h3>
+
 <pre><code>const register = new ReduxRegister();</code></pre>
+
   </section>
   
 
@@ -70,12 +72,14 @@
     <p>Dispatches a Redux action to the store without using a Controller.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>action: AnyAction</dt><dd>The action that is to be dispatched via the store.</dd><p>
+<p><dt>action: AnyAction</dt><dd><br />The action that is to be dispatched via the store.</dd><p>
     <h3>Returns</h3>
     <p><dt>AnyAction</dt><dd>The action that was sent.</dd></p>
     <h3>Examples</h3>
+
 <pre><code>const register = new ReduxRegister();
 register.dispatch(myAction());</code></pre>
+
   </section>
   
 
@@ -88,8 +92,10 @@ register.dispatch(myAction());</code></pre>
     <h3>Returns</h3>
     <p><dt>any</dt><dd>The state object from Redux.</dd></p>
     <h3>Examples</h3>
+
 <pre><code>const register = new ReduxRegister();
 const state = register.getState();</code></pre>
+
   </section>
   
 
@@ -99,11 +105,12 @@ const state = register.getState();</code></pre>
     <p>Adds a reducer to the register's Redux store.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>name: string</dt><dd>The name of the reducer/the name of the state slice.</dd><p>
-<p><dt>reducerFn: Reducer<any, any></dt><dd>The reducer that is being registered.</dd><p>
+<p><dt>name: string</dt><dd><br />The name of the reducer/the name of the state slice.</dd><p>
+<p><dt>reducerFn: Reducer<any, any></dt><dd><br />The reducer that is being registered.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
+
 <pre><code>const reducer = (state = { isOn: false }, action) {
   switch (action.type) {
     case 'MY_ACTION':
@@ -118,6 +125,7 @@ const state = register.getState();</code></pre>
 
 const register = new ReduxRegister();
 register.registerReducer('switch', reducer);</code></pre>
+
   </section>
   
 
@@ -128,15 +136,17 @@ register.registerReducer('switch', reducer);</code></pre>
 </p>
     
     <h3>Parameters</h3>
-<p><dt>reducers: ReducerMap</dt><dd>A map of slice names to their reducing functions.</dd><p>
+<p><dt>reducers: ReducerMap</dt><dd><br />A map of slice names to their reducing functions.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
+
 <pre><code>const register = new ReduxRegister();
 register.registerReducers({
   sliceOne: reducerOne,
   sliceTwo: reducerTwo,
 });</code></pre>
+
   </section>
   
 
@@ -146,16 +156,18 @@ register.registerReducers({
     <p>Adds and and begins running a saga as part in the context of the store that the register manages.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn<void></dt><dd>The saga to add to the register.</dd><p>
+<p><dt>sagaFn: SagaFn<void></dt><dd><br />The saga to add to the register.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
+
 <pre><code>function* sagaFn() {
   yield console.log('Hello, world!');
 }
 
 const register = new ReduxRegister();
 register.registerSaga(sagaFn);</code></pre>
+
   </section>
   
 
@@ -165,12 +177,14 @@ register.registerSaga(sagaFn);</code></pre>
     <p>Subscribes to the Redux store events.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>listener: () => void</dt><dd>The callback that will be fired.</dd><p>
+<p><dt>listener: () => void</dt><dd><br />The callback that will be fired.</dd><p>
     <h3>Returns</h3>
     <p><dt>Unsubscribe</dt><dd>An unsubscribe function that can be called to stop listening.</dd></p>
     <h3>Examples</h3>
+
 <pre><code>const register = new ReduxRegister();
 const unsubscribeFn = register.subscribe(myCallback);</code></pre>
+
   </section>
   
   

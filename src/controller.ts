@@ -92,7 +92,7 @@ export abstract class Controller {
    *
    * This can be used in conjunction with the method [[withAddressableName]].
    *
-   * @param this Implicit "this" parameter, which dees not need to be supplied.
+   * @param this Implicit "this" parameter, which does not need to be supplied.
    * @example
    * ```typescript
    * class MyController extends StateController<MySliceType> {

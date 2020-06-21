@@ -48,8 +48,9 @@
     <p class="code">abstract class StateController&lt;State&gt; extends Controller</p>
     <p>Creates and manages a slice of Redux state.<br /></p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;State&gt;</dt><dd></dd></p>
+<p><dt>&lt;State&gt;</dt><dd>The interface to which the slice of state will adhere.<br /></dd></p>
     <h3>Examples</h3>
+JavaScript
 <pre><code>class SwitchStateController extends StateController {
   constructor(register) {
     super({ isOn: false }, register);
@@ -70,11 +71,9 @@
 const register = new ReduxRegister();
 const controller = SwitchStateController.getInstance(register);
 controller.action({ isOn: true });
-const slice = controller.getStateSlice();
-```
+const slice = controller.getStateSlice();</code></pre>
 TypeScript
-```typescript
-interface SwitchState {
+<pre><code>interface SwitchState {
   isOn: boolean;
 }
 
@@ -99,6 +98,7 @@ const register = new ReduxRegister();
 const controller = SwitchStateController.getInstance(register);
 controller.action({ isOn: true });
 const slice = controller.getStateSlice();</code></pre>
+
     
   <section>
     <h2 class="code">constructor</h2>
@@ -108,8 +108,8 @@ have adverse affects on the application.
 </p>
     
     <h3>Parameters</h3>
-<p><dt>initialState: State</dt><dd></dd><p>
-<p><dt>register: ReduxRegister</dt><dd></dd><p>
+<p><dt>initialState: State</dt><dd>The initial value of the state slice in Redux.<br /></dd><p>
+<p><dt>register: ReduxRegister</dt><dd>The redux register instance to which the component is being connected.<br /></dd><p>
     <h3>Returns</h3>
     <p><dt>StateController</dt><dd>The ReduxRegister instance to which the controller will be connected.<br /></dd></p>
     
@@ -122,7 +122,7 @@ have adverse affects on the application.
     <p>Generates a unique, default action name.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>name: string|null = null</dt><dd>The name of the action.</dd><p>
+<p><dt>name: string|null = null</dt><dd><br />The name of the action.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>An action name.<br /></dd></p>
     
@@ -147,8 +147,8 @@ have adverse affects on the application.
     <p>The reducer, which handles mutations to the state slice.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>state: State = this.initialState</dt><dd>The current state of the state slice.</dd><p>
-<p><dt>action: Action<any>|null = null</dt><dd>The action being performed on the state.</dd><p>
+<p><dt>state: State = this.initialState</dt><dd><br />The current state of the state slice.</dd><p>
+<p><dt>action: Action<any>|null = null</dt><dd><br />The action being performed on the state.</dd><p>
     <h3>Returns</h3>
     <p><dt>State</dt><dd>The new state resulting from the action.<br /></dd></p>
     
@@ -160,9 +160,12 @@ have adverse affects on the application.
     <p class="code">protected registerAction&lt;Payload&gt;(fn: ReducerFn&lt;State, Payload&gt;): ActionExtendFn&lt;Payload&gt;</p>
     <p>Registers a data mutator as part of the slice's reducer and returns the action for calling it.<br /></p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd></dd></p>
+<p><dt>&lt;Payload&gt;</dt><dd><br />The interface to which the payload of the action will adhere. If the type is void, no payload
+will be accepted.
+</dd></p>
     <h3>Parameters</h3>
-<p><dt>fn: ReducerFn<State, Payload></dt><dd>The mutating function to add to the reducer.<br />
+<p><dt>fn: ReducerFn<State, Payload></dt><dd><br />The mutating function to add to the reducer.
+
 The function should be in the form:
 ```.
 (state, payload?) => state
@@ -182,14 +185,16 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
     <p class="code">public static getInstance&lt;T&gt;(this: ModelConstructor&lt;T&gt;|Controller, register: ReduxRegister): T</p>
     <p>Gets an instance of the class, creating one if it does not yet exist.<br />This should be used as the method of instantiating controllers. </p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;T&gt;</dt><dd>the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
+<p><dt>&lt;T&gt;</dt><dd><br />the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
     <h3>Parameters</h3>
-<p><dt>this: ModelConstructor<T>|Controller</dt><dd>Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
-<p><dt>register: ReduxRegister</dt><dd>An instance of the ReduxRegister from which to get the controller.</dd><p>
+<p><dt>this: ModelConstructor<T>|Controller</dt><dd><br />Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
+<p><dt>register: ReduxRegister</dt><dd><br />An instance of the ReduxRegister from which to get the controller.</dd><p>
     <h3>Returns</h3>
     <p><dt>T</dt><dd>An instance of the controller.<br /></dd></p>
     <h3>Examples</h3>
+
 <pre><code>const instance = MyController.getInstance(register);</code></pre>
+
   </section>
   
 
@@ -212,10 +217,11 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd></dd></p>
     <h3>Parameters</h3>
-<p><dt>this: T</dt><dd>Implicit "this" parameter, which dees not need to be supplied.</dd><p>
+<p><dt>this: T</dt><dd><br />Implicit "this" parameter, which does not need to be supplied.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
+
 <pre><code>class MyController extends StateController&lt;MySliceType&gt; {
   // ...
 }
@@ -223,6 +229,7 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
 MyController.lazyLoadOnExternalAction();
 
 export MyController;</code></pre>
+
   </section>
   
   

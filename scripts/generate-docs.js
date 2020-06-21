@@ -126,7 +126,10 @@ function getExamples(examples) {
       e => {
         const matches = /```(?<language>.*)\n(?<code>[\w\W]*)\n```/.exec(e);
         const { groups: { code } } = matches;
-        return `<pre><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+        return e.replace(
+          /```.*\n[\w\W]*\n```/,
+          `<pre><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`
+        );
       }
     ).reduce((p, c) => `${p}\n${c}`, '<h3>Examples</h3>');
   }
@@ -170,3 +173,8 @@ typescriptData.classes.forEach(
     filename: getLink(d),
   })
 );
+
+//
+// TODO: add properties to classes!!!
+//
+

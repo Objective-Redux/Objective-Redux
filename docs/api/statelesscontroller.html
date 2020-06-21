@@ -49,6 +49,7 @@
     <p>Create and manage sagas that are associated with a Redux store.<br /></p>
     
     <h3>Examples</h3>
+
 <pre><code>class SwitchStateSagas extends StatelessController {
  getName() {
    return 'switch-sagas';
@@ -67,6 +68,7 @@
 
 const instance = SwitchStateSagas.getInstance(register);
 instance.toggleSwitch();</code></pre>
+
     
   <section>
     <h2 class="code">constructor</h2>
@@ -76,7 +78,7 @@ have adverse affects on the application._.
 </p>
     
     <h3>Parameters</h3>
-<p><dt>register: ReduxRegister</dt><dd></dd><p>
+<p><dt>register: ReduxRegister</dt><dd>Rhe ReduxRegister instance to which the controller will be connected.<br /></dd><p>
     <h3>Returns</h3>
     <p><dt>StatelessController</dt><dd>An instance of the StatelessController.<br /></dd></p>
     
@@ -89,7 +91,7 @@ have adverse affects on the application._.
     <p>Generates a unique, default action name.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>name: string|null = null</dt><dd>The name of the action.</dd><p>
+<p><dt>name: string|null = null</dt><dd><br />The name of the action.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>An action name.<br /></dd></p>
     
@@ -101,7 +103,7 @@ have adverse affects on the application._.
     <p class="code">protected createSaga&lt;Payload&gt;(): SagaBuilder&lt;Payload&gt;</p>
     <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.<br /></p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd>the payload the action and the saga will take.</dd></p>
+<p><dt>&lt;Payload&gt;</dt><dd><br />the payload the action and the saga will take.</dd></p>
     
     <h3>Returns</h3>
     <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.<br /></dd></p>
@@ -114,14 +116,16 @@ have adverse affects on the application._.
     <p class="code">public static getInstance&lt;T&gt;(this: ModelConstructor&lt;T&gt;|Controller, register: ReduxRegister): T</p>
     <p>Gets an instance of the class, creating one if it does not yet exist.<br />This should be used as the method of instantiating controllers. </p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;T&gt;</dt><dd>the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
+<p><dt>&lt;T&gt;</dt><dd><br />the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
     <h3>Parameters</h3>
-<p><dt>this: ModelConstructor<T>|Controller</dt><dd>Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
-<p><dt>register: ReduxRegister</dt><dd>An instance of the ReduxRegister from which to get the controller.</dd><p>
+<p><dt>this: ModelConstructor<T>|Controller</dt><dd><br />Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
+<p><dt>register: ReduxRegister</dt><dd><br />An instance of the ReduxRegister from which to get the controller.</dd><p>
     <h3>Returns</h3>
     <p><dt>T</dt><dd>An instance of the controller.<br /></dd></p>
     <h3>Examples</h3>
+
 <pre><code>const instance = MyController.getInstance(register);</code></pre>
+
   </section>
   
 
@@ -144,10 +148,11 @@ have adverse affects on the application._.
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd></dd></p>
     <h3>Parameters</h3>
-<p><dt>this: T</dt><dd>Implicit "this" parameter, which dees not need to be supplied.</dd><p>
+<p><dt>this: T</dt><dd><br />Implicit "this" parameter, which does not need to be supplied.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
+
 <pre><code>class MyController extends StateController&lt;MySliceType&gt; {
   // ...
 }
@@ -155,6 +160,7 @@ have adverse affects on the application._.
 MyController.lazyLoadOnExternalAction();
 
 export MyController;</code></pre>
+
   </section>
   
   

@@ -50,12 +50,14 @@
     <p>Gets an action name that can be used to fire a controller's action without using the controller.<br />This can be used along with [[createAction]] to create an action. </p>
     
     <h3>Parameters</h3>
-<p><dt>controllerName: string</dt><dd>The name of the controller the action should target.</dd><p>
-<p><dt>actionName: string</dt><dd>The name of the registered action the action should target.</dd><p>
+<p><dt>controllerName: string</dt><dd><br />The name of the controller the action should target.</dd><p>
+<p><dt>actionName: string</dt><dd><br />The name of the registered action the action should target.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>The generated action name.<br /></dd></p>
     <h3>Examples</h3>
+
 <pre><code>const action = createAction(getActionNameForController('myControllerName', 'myActionName'));</code></pre>
+
   </section>
   
       </div>
