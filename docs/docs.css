@@ -16,19 +16,18 @@ html, body {
 
 header {
   margin: 0;
-  padding: 30px 40px;
-  color: #FFF;
+  color: #F7F3F0;
   font-size: 1.4em;
   font-family: 'Open Sans', sans-serif;
   overflow: auto;
 }
 
-header div:first-child p:first-child {
+header .left p:first-child {
   font-size: 2em;
 }
 
 header a {
-  color: #FFF;
+  color: #F7F3F0;
   text-decoration: none;
 }
 
@@ -36,24 +35,18 @@ header a {
   font-size: 1.6em;
   overflow: auto;
   background-color: #D7D3D0;
+  width: 100%;
 }
 
 #content {
-  width: 50%;
-  width: 800px;
   float: left;
   background: #F7F3F0;
-  min-height: calc(100vh - 221px);
+  min-height: calc(100vh - 281px);
   padding-bottom: 40px;
 }
 
 #content p {
   margin: 15px 0px;
-}
-
-nav {
-  float: right;
-  width: calc(100% - 800px);
 }
 
 nav a {
@@ -70,9 +63,8 @@ nav a {
 }
 
 footer {
-  color: #FFF;
+  color: #F7F3F0;
   font-size: 1.6em;
-  padding: 20px 40px;
 }
 
 .code {
@@ -101,52 +93,75 @@ section {
   padding-left: 15px;
 }
 
-pre {
-  padding: 30px;
-  background: #171717;
-  color: #FFF;
-  border-radius: 5px;
-  overflow-x: auto;
-}
-
 .left {
-  float: left;
+  display: inline-block;
+  width: 796px;
+  padding-left: calc(50% - 600px);
+  position: relative;
+  z-index: 1;
 }
 
 .right {
-  float: right;
+  display: inline-block;
+  width: 399px;
+  padding-right: calc(50% - 600px);
+  text-align: right;
+}
+
+#main nav {
+  text-align: left;
 }
 
 .underline {
   text-decoration: underline;
 }
 
-@media only screen and (max-width: 1100px) {
-  #content {
-    width: calc(100% - 300px);
+pre {
+  overflow-x: auto;
+  background: hsl(0, 0%, 8%);
+  color: #F7F3F0;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .left {
+    width: calc(100% - 400px);
+    padding-left: 0;
   }
   
-  nav {
-    width: 300px;
+  .right {
+    width: 395px;
   }
 }
 
+.icon-background {
+  background: #A7A3A0;
+  padding: 4px 5px 0px 5px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
 @media only screen and (max-width: 800px) {
-  #content {
-    float: none;
+  .right {
+    display: block;
     width: 100%;
+    text-align: left;
   }
   
-  nav {
-    float: none;
+  .left {
+    display: block;
     width: 100%;
+    padding-left: 0;
   }
 
-  header .left, header .right {
-    float: none;
+  header .left .padded {
+    margin-bottom: 0px;
+    padding-bottom: 10px;
   }
 
-  header .right {
-    margin-top: 20px;
+  header .right .padded {
+    margin-top: 0px;
+    padding-top: 0px;
   }
 }

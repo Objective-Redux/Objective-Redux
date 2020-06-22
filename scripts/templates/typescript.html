@@ -1,0 +1,47 @@
+<h1>TypeScript</h1>
+
+<p>Templating is available for projects using TypeScript. For example, if you create an action that will take a string as a parameter, it would look like the below example.</p>
+
+<pre><code class="language-typescript">
+class ThemeStateController extends StateController&lt;ThemeState&gt; {
+  // ...
+
+  public readonly setTheme = this.registerAction&lt;string&gt;(
+    (state: ThemeState, theme: string) => ({
+      ...state,
+      theme,
+    })
+  );
+}
+</code></pre>
+
+<pre><code class="language-typescript">
+ThemeStateController.getInstance(register).setTheme();       // error
+ThemeStateController.getInstance(register).setTheme(10);     // error
+ThemeStateController.getInstance(register).setTheme({});     // error
+ThemeStateController.getInstance(register).setTheme('dark'); // works
+</code></pre>
+
+<p>You can also set the action template type to &lt;void&gt; to indicate that no parameter should be taken by the action.</void>
+
+<p>Note: the &lt;Template&gt; parameter is optional... mostly.</p>
+
+<p>The template parameter can be inferred for all actions _except_ those that don't take a parameter.</p>
+
+<pre><code class="language-typescript">
+// ACTIONS THAT TAKE A PAYLOAD
+
+// Both will CORRECTLY require action take a string payload parameter, as inferred by the function being passed as an argument. It doesn't matter if you use the &lt;template&gt; parameter.
+this.registerAction((a, b: string) => b);         // Good
+this.registerAction&lt;string&gt;((a, b: string) => b); // Also good
+
+
+// ACTIONS THAT DON'T TAKE A PAYLOAD
+
+// Due to limitations in TypeScript, this will INCORRECTLY require that the action take a payload parameter.
+this.registerAction(a => a) // Bad
+
+// This will CORRECTLY produce an action that does not allow a payload parameter
+// Note the &lt;void&gt;, which tells TypeScript the payload should not be used.
+this.registerAction&lt;void&gt;(a => a) // Good
+</code></pre>

@@ -6,28 +6,33 @@
   <title>Objective-Redux Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="prism.css">
 </head>
 <body>
   <header>
     <div class="left">
-      <p><a href="./">Objective Redux</a></p>
-      <p>Redux made better, objectively.</p>
+      <div class="padded">
+        <p><a href="./">Objective Redux</a></p>
+        <p>Redux made better, objectively.</p>
+      </div>
     </div>
     <div class="right">
-      <p>
-        Version 0.4.1
-        <br />
-        On
-        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
-        and
-        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
-      </p>
+      <div class="padded">
+        <p>
+          <span class="icon-background"><a class="underline" href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a></span>
+          &nbsp;
+          <span class="icon-background"><a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a></span>
+        </p>
+      </div>
     </div>
   </header>
   <div id="main">
-    <nav>
+    <nav class="right">
       <div class="padded">
-        <p class="nav-section">Functions</p>
+        <p class="nav-section">Topics</p>
+<p><a href="code-splitting.html">Code splitting</a></p>
+<p><a href="getting-started.html">Getting started</a></p>
+<p><a href="typescript.html">Typescript</a></p><p class="nav-section">Functions</p>
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
@@ -41,12 +46,13 @@
 <p><a href="statelesscontroller.html">StatelessController</a></p>
       </div>
     </nav>
-    <div id="content">
+    <div id="content" class="left">
       <div class="padded">
         
     <h1 class="code">ReduxRegister</h1>
     <p class="code">class ReduxRegister</p>
     <p>The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its own Redux store that it manages.<br />Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed. </p>
+    
     
     
     
@@ -61,7 +67,7 @@
     <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
     <h3>Examples</h3>
 
-<pre><code>const register = new ReduxRegister();</code></pre>
+<pre><code class="language-typescript">const register = new ReduxRegister();</code></pre>
 
   </section>
   
@@ -77,7 +83,7 @@
     <p><dt>AnyAction</dt><dd>The action that was sent.</dd></p>
     <h3>Examples</h3>
 
-<pre><code>const register = new ReduxRegister();
+<pre><code class="language-typescript">const register = new ReduxRegister();
 register.dispatch(myAction());</code></pre>
 
   </section>
@@ -93,7 +99,7 @@ register.dispatch(myAction());</code></pre>
     <p><dt>any</dt><dd>The state object from Redux.</dd></p>
     <h3>Examples</h3>
 
-<pre><code>const register = new ReduxRegister();
+<pre><code class="language-typescript">const register = new ReduxRegister();
 const state = register.getState();</code></pre>
 
   </section>
@@ -111,7 +117,7 @@ const state = register.getState();</code></pre>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
 
-<pre><code>const reducer = (state = { isOn: false }, action) {
+<pre><code class="language-typescript">const reducer = (state = { isOn: false }, action) {
   switch (action.type) {
     case 'MY_ACTION':
       return {
@@ -141,7 +147,7 @@ register.registerReducer('switch', reducer);</code></pre>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
 
-<pre><code>const register = new ReduxRegister();
+<pre><code class="language-typescript">const register = new ReduxRegister();
 register.registerReducers({
   sliceOne: reducerOne,
   sliceTwo: reducerTwo,
@@ -161,7 +167,7 @@ register.registerReducers({
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
 
-<pre><code>function* sagaFn() {
+<pre><code class="language-typescript">function* sagaFn() {
   yield console.log('Hello, world!');
 }
 
@@ -182,7 +188,7 @@ register.registerSaga(sagaFn);</code></pre>
     <p><dt>Unsubscribe</dt><dd>An unsubscribe function that can be called to stop listening.</dd></p>
     <h3>Examples</h3>
 
-<pre><code>const register = new ReduxRegister();
+<pre><code class="language-typescript">const register = new ReduxRegister();
 const unsubscribeFn = register.subscribe(myCallback);</code></pre>
 
   </section>
@@ -192,7 +198,18 @@ const unsubscribeFn = register.subscribe(myCallback);</code></pre>
     </div>
   </div>
   <footer>
-    <p>&copy; Copyright 2020 by Jason Mace</p>
+    <div class="left">
+      <div class="padded">
+        <p>&copy; Copyright 2020 by Jason Mace</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="padded">
+        <p>Documentation for Version 0.4.1</p>
+      </div>
+    </div>
   </footer>
+
+  <script src="prism.js"></script>
 </body>
   </html>

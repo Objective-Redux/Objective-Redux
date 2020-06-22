@@ -6,28 +6,33 @@
   <title>Objective-Redux Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="prism.css">
 </head>
 <body>
   <header>
     <div class="left">
-      <p><a href="./">Objective Redux</a></p>
-      <p>Redux made better, objectively.</p>
+      <div class="padded">
+        <p><a href="./">Objective Redux</a></p>
+        <p>Redux made better, objectively.</p>
+      </div>
     </div>
     <div class="right">
-      <p>
-        Version 0.4.1
-        <br />
-        On
-        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
-        and
-        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
-      </p>
+      <div class="padded">
+        <p>
+          <span class="icon-background"><a class="underline" href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a></span>
+          &nbsp;
+          <span class="icon-background"><a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a></span>
+        </p>
+      </div>
     </div>
   </header>
   <div id="main">
-    <nav>
+    <nav class="right">
       <div class="padded">
-        <p class="nav-section">Functions</p>
+        <p class="nav-section">Topics</p>
+<p><a href="code-splitting.html">Code splitting</a></p>
+<p><a href="getting-started.html">Getting started</a></p>
+<p><a href="typescript.html">Typescript</a></p><p class="nav-section">Functions</p>
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
@@ -41,7 +46,7 @@
 <p><a href="statelesscontroller.html">StatelessController</a></p>
       </div>
     </nav>
-    <div id="content">
+    <div id="content" class="left">
       <div class="padded">
         
   <section>
@@ -54,7 +59,7 @@
     <p><dt>Generator<any, ReduxRegister, ReduxRegister></dt><dd>A generator that yields an instance of the ReduxRegister.<br /></dd></p>
     <h3>Examples</h3>
 
-<pre><code>function* () {
+<pre><code class="language-typescript">function* () {
   const register = yield getRegisterFromContext();
 }</code></pre>
   </section>
@@ -63,7 +68,18 @@
     </div>
   </div>
   <footer>
-    <p>&copy; Copyright 2020 by Jason Mace</p>
+    <div class="left">
+      <div class="padded">
+        <p>&copy; Copyright 2020 by Jason Mace</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="padded">
+        <p>Documentation for Version 0.4.1</p>
+      </div>
+    </div>
   </footer>
+
+  <script src="prism.js"></script>
 </body>
   </html>

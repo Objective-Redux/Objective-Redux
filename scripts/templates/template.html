@@ -6,38 +6,51 @@
   <title>Objective-Redux Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="prism.css">
 </head>
 <body>
   <header>
     <div class="left">
-      <p><a href="./">Objective Redux</a></p>
-      <p>Redux made better, objectively.</p>
+      <div class="padded">
+        <p><a href="./">Objective Redux</a></p>
+        <p>Redux made better, objectively.</p>
+      </div>
     </div>
     <div class="right">
-      <p>
-        Version {{version}}
-        <br />
-        On
-        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
-        and
-        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
-      </p>
+      <div class="padded">
+        <p>
+          <span class="icon-background"><a class="underline" href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a></span>
+          &nbsp;
+          <span class="icon-background"><a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a></span>
+        </p>
+      </div>
     </div>
   </header>
   <div id="main">
-    <nav>
+    <nav class="right">
       <div class="padded">
         {{menu}}
       </div>
     </nav>
-    <div id="content">
+    <div id="content" class="left">
       <div class="padded">
         {{body}}
       </div>
     </div>
   </div>
   <footer>
-    <p>&copy; Copyright {{year}} by Jason Mace</p>
+    <div class="left">
+      <div class="padded">
+        <p>&copy; Copyright {{year}} by Jason Mace</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="padded">
+        <p>Documentation for Version {{version}}</p>
+      </div>
+    </div>
   </footer>
+
+  <script src="prism.js"></script>
 </body>
   </html>

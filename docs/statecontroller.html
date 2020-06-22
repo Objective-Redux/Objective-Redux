@@ -6,28 +6,33 @@
   <title>Objective-Redux Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="prism.css">
 </head>
 <body>
   <header>
     <div class="left">
-      <p><a href="./">Objective Redux</a></p>
-      <p>Redux made better, objectively.</p>
+      <div class="padded">
+        <p><a href="./">Objective Redux</a></p>
+        <p>Redux made better, objectively.</p>
+      </div>
     </div>
     <div class="right">
-      <p>
-        Version 0.4.1
-        <br />
-        On
-        <a class="underline" href="https://www.npmjs.com/package/objective-redux">NPM</a>
-        and
-        <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux">GitHub</a>
-      </p>
+      <div class="padded">
+        <p>
+          <span class="icon-background"><a class="underline" href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a></span>
+          &nbsp;
+          <span class="icon-background"><a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a></span>
+        </p>
+      </div>
     </div>
   </header>
   <div id="main">
-    <nav>
+    <nav class="right">
       <div class="padded">
-        <p class="nav-section">Functions</p>
+        <p class="nav-section">Topics</p>
+<p><a href="code-splitting.html">Code splitting</a></p>
+<p><a href="getting-started.html">Getting started</a></p>
+<p><a href="typescript.html">Typescript</a></p><p class="nav-section">Functions</p>
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
@@ -41,7 +46,7 @@
 <p><a href="statelesscontroller.html">StatelessController</a></p>
       </div>
     </nav>
-    <div id="content">
+    <div id="content" class="left">
       <div class="padded">
         
     <h1 class="code">StateController</h1>
@@ -51,7 +56,7 @@
 <p><dt>&lt;State&gt;</dt><dd>The interface to which the slice of state will adhere.<br /></dd></p>
     <h3>Examples</h3>
 JavaScript
-<pre><code>class SwitchStateController extends StateController {
+<pre><code class="language-typescript">class SwitchStateController extends StateController {
   constructor(register) {
     super({ isOn: false }, register);
   }
@@ -73,7 +78,7 @@ const controller = SwitchStateController.getInstance(register);
 controller.action({ isOn: true });
 const slice = controller.getStateSlice();</code></pre>
 TypeScript
-<pre><code>interface SwitchState {
+<pre><code class="language-typescript">interface SwitchState {
   isOn: boolean;
 }
 
@@ -101,9 +106,30 @@ const slice = controller.getStateSlice();</code></pre>
 
     
   <section>
+    <h2 class="code">initialState</h2>
+    <p class="code">protected initialState: State</p>
+    <p>The initial value of the state slice.<br /></p>
+  </section>
+  
+
+  <section>
+    <h2 class="code">reducerMap</h2>
+    <p class="code">protected reducerMap: ReducerMap&lt;State, any&gt;</p>
+    <p>A map of the reducer action names to the data mutation functions.<br /></p>
+  </section>
+  
+
+  <section>
+    <h2 class="code">register</h2>
+    <p class="code">protected register: ReduxRegister</p>
+    <p>The ReduxController to which the controller belongs.<br /></p>
+  </section>
+  
+    
+  <section>
     <h2 class="code">constructor</h2>
     <p class="code">protected constructor(initialState: State, register: ReduxRegister): StateController</p>
-    <p>Registers the controller, sets up the reducer, and sets the initial state.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
+    <p>Registers the controller, sets up the reducer, and sets the initial state.<br />WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
 have adverse affects on the application.
 </p>
     
@@ -122,7 +148,7 @@ have adverse affects on the application.
     <p>Generates a unique, default action name.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>name: string|null = null</dt><dd><br />The name of the action.</dd><p>
+<p><dt>name: string|null = null</dt><dd><br />The name of the action or null to generate a unique, default action name.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>An action name.<br /></dd></p>
     
@@ -193,7 +219,7 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
     <p><dt>T</dt><dd>An instance of the controller.<br /></dd></p>
     <h3>Examples</h3>
 
-<pre><code>const instance = MyController.getInstance(register);</code></pre>
+<pre><code class="language-typescript">const instance = MyController.getInstance(register);</code></pre>
 
   </section>
   
@@ -222,7 +248,7 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
 
-<pre><code>class MyController extends StateController&lt;MySliceType&gt; {
+<pre><code class="language-typescript">class MyController extends StateController&lt;MySliceType&gt; {
   // ...
 }
 
@@ -237,7 +263,18 @@ export MyController;</code></pre>
     </div>
   </div>
   <footer>
-    <p>&copy; Copyright 2020 by Jason Mace</p>
+    <div class="left">
+      <div class="padded">
+        <p>&copy; Copyright 2020 by Jason Mace</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="padded">
+        <p>Documentation for Version 0.4.1</p>
+      </div>
+    </div>
   </footer>
+
+  <script src="prism.js"></script>
 </body>
   </html>

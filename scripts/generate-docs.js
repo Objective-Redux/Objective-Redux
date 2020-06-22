@@ -15,7 +15,7 @@ const path = require('path');
 const package = require('../package.json');
 const TypeScriptDataProvider = require('./get-typescript-data');
 
-const API_DIR = path.resolve(__dirname, '../docs/api');
+const API_DIR = path.resolve(__dirname, '../docs');
 const TEMPLATE_DIRECTORY = path.resolve(__dirname, './templates');
 const TEMPLATE_FILE = `${TEMPLATE_DIRECTORY}/template.html`;
 
@@ -27,13 +27,6 @@ try {
 fs.mkdirSync(API_DIR);
 
 const typescriptData = TypeScriptDataProvider.getTypeScriptData();
-
-function copyTemplateFiles() {
-  fs.writeFileSync(
-    `${API_DIR}/docs.css`,
-    fs.readFileSync(`${TEMPLATE_DIRECTORY}/docs.css`, 'utf-8')
-  );
-}
 
 function writeFile(config) {
   const content = getPageTemplate()
@@ -65,6 +58,31 @@ function getPageTemplate() {
   return template;
 }
 
+function applyClassTemplate(classData) {
+  let properties = '';
+  if (classData.properties.length > 0) {
+    properties = classData.properties.map(p => applyPropertyTemplate(p)).reduce((p, c) => `${p}\n${c}`);
+  }
+
+  let methods = '';
+  if (classData.methods.length > 0) {
+    methods = classData.methods.map(m => applyFunctionTemplate(m)).reduce((p, c) => `${p}\n${c}`);
+  }
+
+  const templateParams = getTemplateParameters(classData.typeParameters);
+  const examples = getExamples(classData.examples);
+
+  return `
+    <h1 class="code">${classData.name}</h1>
+    <p class="code">${classData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p>${sanitizeDescription(classData.description)}</p>
+    ${templateParams}
+    ${examples}
+    ${properties}
+    ${methods}
+  `;
+}
+
 function applyFunctionTemplate(functionData) {
   let params = '';
   if (functionData.parameters.length > 0) {
@@ -90,22 +108,13 @@ function applyFunctionTemplate(functionData) {
   `;
 }
 
-function applyClassTemplate(classData) {
-  let methods = '';
-  if (classData.methods.length > 0) {
-    methods = classData.methods.map(m => applyFunctionTemplate(m)).reduce((p, c) => `${p}\n${c}`);
-  }
-
-  const templateParams = getTemplateParameters(classData.typeParameters);
-  const examples = getExamples(classData.examples);
-
+function applyPropertyTemplate(propertyData) {
   return `
-    <h1 class="code">${classData.name}</h1>
-    <p class="code">${classData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
-    <p>${sanitizeDescription(classData.description)}</p>
-    ${templateParams}
-    ${examples}
-    ${methods}
+  <section>
+    <h2 class="code">${propertyData.name}</h2>
+    <p class="code">${propertyData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p>${sanitizeDescription(propertyData.description)}</p>
+  </section>
   `;
 }
 
@@ -128,7 +137,7 @@ function getExamples(examples) {
         const { groups: { code } } = matches;
         return e.replace(
           /```.*\n[\w\W]*\n```/,
-          `<pre><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`
+          `<pre><code class="language-typescript">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`
         );
       }
     ).reduce((p, c) => `${p}\n${c}`, '<h3>Examples</h3>');
@@ -144,19 +153,46 @@ function sanitizeDescription(desc) {
   return desc.replace('\n', '<br />');
 }
 
+function getStaticLink(file) {
+  return capitalize(file.replace('-', ' ').replace('.html', ''));
+}
+
 function getLink(item) {
   return `${item.name.toLowerCase()}.html`;
 }
 
-copyTemplateFiles();
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-let menu = typescriptData.functions
+const files = fs.readdirSync(TEMPLATE_DIRECTORY);
+
+let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html' && file !== 'index.html')
+  .map(file => `<p><a href="${file}">${getStaticLink(file)}</a></p>`)
+  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Topics</p>');
+
+menu += typescriptData.functions
   .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
   .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Functions</p>');
 
 menu += typescriptData.classes
   .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
   .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Classes</p>');
+
+files.filter(file => file !== 'template.html').forEach(file => {
+  if (!file.match(/.html$/)) {
+    fs.writeFileSync(
+      `${API_DIR}/${file}`,
+      fs.readFileSync(`${TEMPLATE_DIRECTORY}/${file}`)
+    );
+  } else {
+    writeFile({
+      body: fs.readFileSync(`${TEMPLATE_DIRECTORY}/${file}`, 'utf-8'),
+      menu,
+      filename: file,
+    });
+  }
+});
 
 typescriptData.functions.forEach(
   d => writeFile({
@@ -173,8 +209,3 @@ typescriptData.classes.forEach(
     filename: getLink(d),
   })
 );
-
-//
-// TODO: add properties to classes!!!
-//
-

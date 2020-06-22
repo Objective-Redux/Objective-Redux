@@ -47,7 +47,7 @@ export abstract class Controller {
   /**
    * Generates a unique, default action name.
    *
-   * @param name The name of the action.
+   * @param name The name of the action or null to generate a unique, default action name.
    * @returns An action name.
    */
   protected createActionName(name: string|null = null): string {

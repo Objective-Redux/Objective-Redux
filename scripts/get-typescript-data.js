@@ -152,7 +152,8 @@ function generatePropertyDoc(declaration) {
     description: declaration.comment
       ? `${declaration.comment.shortText.replace('\n', '')}\n${declaration.comment.text}`
       : null,
-    returnType: declaration.type.name,
+    returnType: getType(declaration.type),
+    signature: getPropertySignature(declaration),
     ...getFlagData(declaration.flags),
   };
 }
@@ -255,6 +256,12 @@ function getFunctionSignature(declaration) {
   }
 
   return `${name}${template}(${parameters})${isLambda ? ' => ' : ': '}${returnData}`;
+}
+
+function getPropertySignature(declaration) {
+  const flags = getFlagData(declaration.flags);
+  const static = flags.isStatic ? 'static ' : '';
+  return `${flags.scope.toLocaleLowerCase()} ${static}${declaration.name}: ${getType(declaration.type)}`;
 }
 
 function getTemplateParameterString(typeParameters) {
