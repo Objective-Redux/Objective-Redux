@@ -16,8 +16,9 @@ interface ReducerMap<State, Payload> {
 /**
  * Creates and manages a slice of Redux state.
  *
- * @example
- * JavaScript
+ * @template State The interface to which the slice of state will adhere.
+ *
+ * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
  *   constructor(register) {
@@ -41,7 +42,7 @@ interface ReducerMap<State, Payload> {
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
- * TypeScript
+ * @example TypeScript
  * ```typescript
  * interface SwitchState {
  *   isOn: boolean;
@@ -82,7 +83,7 @@ export declare abstract class StateController<State> extends Controller {
     /**
      * Registers the controller, sets up the reducer, and sets the initial state.
      *
-     * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+     * WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
      * have adverse affects on the application.
      *
@@ -93,6 +94,9 @@ export declare abstract class StateController<State> extends Controller {
     protected constructor(initialState: State, register: ReduxRegister);
     /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
+     *
+     * @template Payload The interface to which the payload of the action will adhere. If the type is void, no payload
+     * will be accepted.
      *
      * @param fn The mutating function to add to the reducer.
      *

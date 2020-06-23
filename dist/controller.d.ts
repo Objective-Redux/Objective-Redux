@@ -24,7 +24,7 @@ export declare abstract class Controller {
     /**
      * Generates a unique, default action name.
      *
-     * @param name The name of the action.
+     * @param name The name of the action or null to generate a unique, default action name.
      * @returns An action name.
      */
     protected createActionName(name?: string | null): string;
@@ -49,7 +49,7 @@ export declare abstract class Controller {
      *
      * This can be used in conjunction with the method [[withAddressableName]].
      *
-     * @param this Implicit "this" parameter, which dees not need to be supplied.
+     * @param this Implicit "this" parameter, which does not need to be supplied.
      * @example
      * ```typescript
      * class MyController extends StateController<MySliceType> {

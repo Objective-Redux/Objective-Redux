@@ -20,7 +20,7 @@ export interface TakeConfig {
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
  *
- * @template Payload the payload that the action and the saga will use.
+ * @template Payload The payload that the action and the saga will use.
  */
 export declare class SagaBuilder<Payload> {
     private readonly registerFn;

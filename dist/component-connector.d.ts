@@ -1,6 +1,5 @@
-/// <reference types="react" />
-import { Unsubscribe } from 'redux';
-import { StateController, ReduxRegister } from './';
+import * as React from 'react';
+import { StateController } from './';
 /**
  * @internal
  */
@@ -57,19 +56,7 @@ export declare class ComponentConnector {
      *
      * @returns The connected React component.
      */
-    connect(): {
-        new (props: any, context?: any): {
-            [x: string]: any;
-            unsubscribe: Unsubscribe | null;
-            render(): JSX.Element;
-            componentDidMount(): void;
-            componentWillUnmount(): void;
-            handleChange(): void;
-        };
-        [x: string]: any;
-        contextType: import("react").Context<ReduxRegister | null>;
-        displayName: string;
-    };
+    connect(): React.ComponentClass;
 }
 export {};
 //# sourceMappingURL=component-connector.d.ts.map

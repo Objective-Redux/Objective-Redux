@@ -10,6 +10,7 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComponentConnector = void 0;
+const React = require("react");
 const context_1 = require("./context");
 /**
  * Builder that connections a React component to the Objective Redux register, allowing the component to use the states
@@ -64,11 +65,8 @@ class ComponentConnector {
      *
      * @returns The connected React component.
      */
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     connect() {
         var _a;
-        // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-        const React = require('react');
         const Component = this.component;
         const { controllers } = this;
         const connected = (_a = class extends React.Component {

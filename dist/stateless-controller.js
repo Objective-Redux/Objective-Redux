@@ -17,7 +17,7 @@ const get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
  *
- * @template Payload the payload that the action and the saga will use.
+ * @template Payload The payload that the action and the saga will use.
  */
 class SagaBuilder {
     // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param
