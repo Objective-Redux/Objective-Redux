@@ -16,7 +16,9 @@ import { createAction, getActionNameForController } from './action';
 import { RegisterProvider } from './register-provider';
 import { ComponentConnector } from './component-connector';
 import { getRegisterFromSagaContext } from './get-register-from-saga-context';
-import { useRegisterFromReactContext } from './use-register-from-react-context';
+import { getControllerFromSagaContext } from './get-controller-from-saga-context';
+import { useRegister } from './use-register';
+import { useController } from './use-controller';
 
 export {
   ReduxRegister,
@@ -27,6 +29,8 @@ export {
   RegisterProvider,
   ComponentConnector,
   getRegisterFromSagaContext,
-  useRegisterFromReactContext,
+  getControllerFromSagaContext,
+  useRegister,
+  useController,
   getActionNameForController,
 };

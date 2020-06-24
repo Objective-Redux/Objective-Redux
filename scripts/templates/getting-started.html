@@ -97,12 +97,11 @@ export default ComponentConnector
 
 <pre><code class="language-typescript">
   import React from 'react';
-  import { ComponentConnector, useRegisterFromReactContext } from 'objective-redux';
+  import { useController } from 'objective-redux';
   import { SwitchStateController } from './store/switch-state-controller';
   
-  function AppComponent(props) {
-    const register = useRegisterFromReactContext();
-    const switchController = SwitchStateController.getInstance(register);
+  function AppComponent() {
+    const switchController = useController(SwitchStateController);
     const { isOn } = switchController.getStateSlice();
   
     const sendToggleAction = () => {
@@ -127,7 +126,7 @@ export default ComponentConnector
 import {
   StatelessController,
   TakeType,
-  getRegisterFromContext
+  getControllerFromSagaContext
 } from 'objective-redux';
 import { SwitchStateController } from './switch-state-controller';
 
@@ -140,8 +139,8 @@ export class SwitchStateSagas extends StatelessController {
     .withTake(TakeType.TAKE_LATEST)
     .register(
       function* () {
-        const register = yield getRegisterFromContext(payload);
-        yield MyController.getInstance(register).toggleSwitchValue(payload);
+        const switchController = yield getControllerFromSagaContext(SwitchStateController);
+        yield switchController.toggleSwitchValue(payload);
       }
     );
 }

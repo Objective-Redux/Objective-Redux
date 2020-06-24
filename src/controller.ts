@@ -15,7 +15,7 @@ import { ReduxRegister, getActionNameForController } from './';
 /**
  * @internal
  */
-type ModelConstructor<T> = new (register: ReduxRegister) => T;
+export type ModelConstructor<T> = new (register: ReduxRegister) => T;
 
 /**
  * @internal

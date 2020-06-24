@@ -121,9 +121,9 @@ export class SagaBuilder<Payload> {
  *    .withTake(TakeType.TAKE_LATEST)
  *    .register(
  *      function* () {
- *        const register = yield getRegisterFromContext();
- *        yield SwitchStateController.getInstance(register).toggleSwitchValue();
- *        yield SwitchStateController.getInstance(register).incrementCount();
+ *        const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *        yield controller.toggleSwitchValue();
+ *        yield controller.incrementCount();
  *      }
  *    );
  * }

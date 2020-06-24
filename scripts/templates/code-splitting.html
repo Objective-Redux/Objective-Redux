@@ -19,8 +19,8 @@ class MyControllerClass extends StatelessController {
     .withAddressableName('SET_SWITCH_STATE') // <--
     .register(
       function *() {
-        const register = yield getRegisterFromContext();
-        yield MyController.getInstance(register).myAction(payload);
+        const myController = yield getControllerFromSagaContext(MyController);
+        yield myController.myAction(payload);
       }
     );
 }

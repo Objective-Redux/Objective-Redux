@@ -23,12 +23,12 @@ jest.mock('react', () => ({
   createContext: jest.fn(),
 }));
 
-import { useRegisterFromReactContext } from '../src';
+import { useRegister } from '../src';
 
-describe('use-register-from-react-context', () => {
+describe('use-register', () => {
   describe('hook', () => {
     it('should get the register and re-render', () => {
-      const register = useRegisterFromReactContext();
+      const register = useRegister();
       expect(register).toBe(registerMock);
 
       const { mock: { calls: [[reducingFn]] } } = useReducer as any;
