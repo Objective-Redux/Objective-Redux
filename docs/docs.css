@@ -17,7 +17,7 @@ html, body {
 header {
   margin: 0;
   color: #F7F3F0;
-  font-size: 1.4em;
+  font-size: 1.4rem;
   font-family: 'Open Sans', sans-serif;
   overflow: auto;
 }
@@ -32,7 +32,7 @@ header a {
 }
 
 #main {
-  font-size: 1.6em;
+  font-size: 1.6rem;
   overflow: auto;
   background-color: #D7D3D0;
   width: 100%;
@@ -51,11 +51,25 @@ header a {
 
 nav a {
   color: #2A2A2A;
-  margin-left: 20px;
+  text-decoration: none;
+}
+
+nav a .destructure {
+  display: none;
+}
+
+nav a:hover {
+  font-size: 1.7rem;
+  text-decoration: underline;
+}
+
+nav a:hover .destructure {
+  display: inline;
 }
 
 .nav-section {
   margin-top: 20px;
+  margin-bottom: 5px;
   font-weight: bold;
 }
 
@@ -65,7 +79,7 @@ nav a {
 
 footer {
   color: #F7F3F0;
-  font-size: 1.4em;
+  font-size: 1.4rem;
 }
 
 .code {
@@ -112,20 +126,12 @@ section {
   text-align: left;
 }
 
-.underline {
-  text-decoration: underline;
-}
-
 pre {
   overflow-x: auto;
   background: hsl(0, 0%, 8%);
   color: #F7F3F0;
   padding: 20px;
   border-radius: 5px;
-}
-
-nav p:first-child a {
-  margin-left: 0;
 }
 
 @media only screen and (max-width: 1200px) {
