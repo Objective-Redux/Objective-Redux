@@ -56,6 +56,7 @@ nav a {
 
 .nav-section {
   margin-top: 20px;
+  font-weight: bold;
 }
 
 .nav-section:first-child {
@@ -123,6 +124,10 @@ pre {
   border-radius: 5px;
 }
 
+nav p:first-child a {
+  margin-left: 0;
+}
+
 @media only screen and (max-width: 1200px) {
   .left {
     width: calc(100% - 400px);
@@ -132,13 +137,6 @@ pre {
   .right {
     width: 395px;
   }
-}
-
-.icon-background {
-  background: #A7A3A0;
-  padding: 4px 20px 0px 20px;
-  display: inline-block;
-  border-radius: 5px;
 }
 
 @media only screen and (max-width: 800px) {
