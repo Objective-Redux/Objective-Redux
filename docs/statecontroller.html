@@ -16,21 +16,15 @@
         <p>Redux made better, objectively.</p>
       </div>
     </div>
-    <div class="right">
-      <div class="padded">
-        <div class="icon-background">
-          <p>
-            <a class="underline" href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a>
-            &nbsp;
-            <a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a>
-          </p>
-        </div>
-      </div>
-    </div>
   </header>
   <div id="main">
     <nav class="right">
       <div class="padded">
+        <p>
+          <a href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a>
+          &nbsp;
+          <a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a>
+        </p>
         <p class="nav-section">Topics</p>
 <p><a href="code-splitting.html">Code splitting</a></p>
 <p><a href="getting-started.html">Getting started</a></p>
@@ -58,7 +52,7 @@
 <p><dt>&lt;State&gt;</dt><dd>The interface to which the slice of state will adhere.<br /></dd></p>
     <h3>Examples</h3>
 JavaScript
-<pre><code class="language-typescript">class SwitchStateController extends StateController {
+<pre><code class="language-javascript">class SwitchStateController extends StateController {
   constructor(register) {
     super({ isOn: false }, register);
   }
@@ -176,7 +170,7 @@ have adverse affects on the application.
     
     <h3>Parameters</h3>
 <p><dt>state: State = this.initialState</dt><dd><br />The current state of the state slice.</dd><p>
-<p><dt>action: Action<any>|null = null</dt><dd><br />The action being performed on the state.</dd><p>
+<p><dt>action: Action&lt;any&gt;|null = null</dt><dd><br />The action being performed on the state.</dd><p>
     <h3>Returns</h3>
     <p><dt>State</dt><dd>The new state resulting from the action.<br /></dd></p>
     
@@ -192,7 +186,7 @@ have adverse affects on the application.
 will be accepted.
 </dd></p>
     <h3>Parameters</h3>
-<p><dt>fn: ReducerFn<State, Payload></dt><dd><br />The mutating function to add to the reducer.
+<p><dt>fn: ReducerFn&lt;State, Payload&gt;</dt><dd><br />The mutating function to add to the reducer.
 
 The function should be in the form:
 ```.
@@ -215,7 +209,7 @@ name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd><br />the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
     <h3>Parameters</h3>
-<p><dt>this: ModelConstructor<T>|Controller</dt><dd><br />Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
+<p><dt>this: ModelConstructor&lt;T&gt;|Controller</dt><dd><br />Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
 <p><dt>register: ReduxRegister</dt><dd><br />An instance of the ReduxRegister from which to get the controller.</dd><p>
     <h3>Returns</h3>
     <p><dt>T</dt><dd>An instance of the controller.<br /></dd></p>
