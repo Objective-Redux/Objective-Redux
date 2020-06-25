@@ -74,7 +74,7 @@ function applyClassTemplate(classData) {
 
   return `
     <h1 class="code">${classData.name}</h1>
-    <p class="code">${classData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p class="code">${sanitizeAsHTML(classData.signature)}</p>
     <p>${sanitizeDescription(classData.description)}</p>
     ${templateParams}
     ${examples}
@@ -87,7 +87,7 @@ function applyFunctionTemplate(functionData) {
   let params = '';
   if (functionData.parameters.length > 0) {
     params = functionData.parameters
-      .map(p => `<p><dt>${p.name}: ${p.type}</dt><dd>${sanitizeDescription(p.description)}</dd><p>`)
+      .map(p => `<p><dt>${p.name}: ${sanitizeAsHTML(p.type)}</dt><dd>${sanitizeDescription(p.description)}</dd><p>`)
       .reduce((p, c) => `${p}\n${c}`, '<h3>Parameters</h3>');
   }
 
@@ -97,7 +97,7 @@ function applyFunctionTemplate(functionData) {
   return `
   <section>
     <h2 class="code">${functionData.name}</h2>
-    <p class="code">${functionData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p class="code">${sanitizeAsHTML(functionData.signature)}</p>
     <p>${sanitizeDescription(functionData.description)}</p>
     ${templateParams}
     ${params}
@@ -112,7 +112,7 @@ function applyPropertyTemplate(propertyData) {
   return `
   <section>
     <h2 class="code">${propertyData.name}</h2>
-    <p class="code">${propertyData.signature.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p class="code">${sanitizeAsHTML(propertyData.signature)}</p>
     <p>${sanitizeDescription(propertyData.description)}</p>
   </section>
   `;
@@ -134,10 +134,10 @@ function getExamples(examples) {
     examplesHTML = examples.map(
       e => {
         const matches = /```(?<language>.*)\n(?<code>[\w\W]*)\n```/.exec(e);
-        const { groups: { code } } = matches;
+        const { groups: { code, language } } = matches;
         return e.replace(
           /```.*\n[\w\W]*\n```/,
-          `<pre><code class="language-typescript">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`
+          `<pre><code class="language-${language}">${sanitizeAsHTML(code)}</code></pre>`
         );
       }
     ).reduce((p, c) => `${p}\n${c}`, '<h3>Examples</h3>');
@@ -163,6 +163,12 @@ function getLink(item) {
 
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function sanitizeAsHTML(text) {
+  return text.replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 const files = fs.readdirSync(TEMPLATE_DIRECTORY);
