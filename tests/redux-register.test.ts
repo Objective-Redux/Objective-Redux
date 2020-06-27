@@ -8,7 +8,10 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const MOCK_STATE = { foo: 'bar' };
+const MOCK_STATE = {
+  internal: { foo: 'bar' },
+  external: {},
+};
 
 const run = jest.fn();
 const mockUnsubscribe = jest.fn();
@@ -21,16 +24,11 @@ const middleware = {
   run,
 };
 
-const mockStore = {
-  replaceReducer,
-  dispatch,
-  subscribe,
-  getState,
-};
+let mockStore: any;
 
 const combineReducers = jest.fn(r => r);
 const createStore = jest.fn(() => mockStore);
-const applyMiddleware = jest.fn(m => m);
+const applyMiddleware = jest.fn((...m) => m);
 const createSagaMiddleware = jest.fn(() => middleware);
 
 jest.mock('redux', () => ({
@@ -53,8 +51,17 @@ jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 import { ReduxRegister } from '../src';
 
 describe('redux-register', () => {
+  beforeEach(() => {
+    mockStore ={
+      replaceReducer,
+      dispatch,
+      subscribe,
+      getState,
+    };
+  });
+
   describe('constructor', () => {
-    it('should set up the store', () => {
+    it('should set up the store without parameters', () => {
       const register = new ReduxRegister();
       expect(register).toBeInstanceOf(ReduxRegister);
       expect(createSagaMiddleware).toBeCalledWith({
@@ -63,7 +70,32 @@ describe('redux-register', () => {
         },
       });
       expect(applyMiddleware).toBeCalledWith(middleware);
-      expect((createStore.mock.calls[0] as any)[1]).toEqual(middleware);
+      expect((createStore.mock.calls[0] as any)[2]).toEqual([middleware]);
+    });
+
+    it('should set up the store with parameters', () => {
+      const reducer = (): any => {};
+      const initialState = {};
+      const initialMiddleware: any = [{}];
+
+      const register = new ReduxRegister(
+        reducer,
+        initialState,
+        initialMiddleware
+      );
+
+      expect(register).toBeInstanceOf(ReduxRegister);
+      expect(createSagaMiddleware).toBeCalledWith({
+        context: {
+          register: register,
+        },
+      });
+      expect((applyMiddleware.mock.calls[0] as any)[0]).toBe(initialMiddleware[0]);
+      expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
+      expect((createStore.mock.calls[0] as any)[2]).toEqual([
+        ...initialMiddleware,
+        middleware,
+      ]);
     });
   });
 
@@ -106,7 +138,7 @@ describe('redux-register', () => {
   describe('getState', () => {
     it('should get the state object from the store', () => {
       const register = new ReduxRegister();
-      expect(register.getState()).toBe(MOCK_STATE);
+      expect(register.getState()).toEqual({ foo: 'bar' });
     });
   });
 
@@ -119,48 +151,31 @@ describe('redux-register', () => {
 
       const register = new ReduxRegister();
       register.registerReducer(name1, reducer1);
-      expect(replaceReducer.mock.calls[0][0]).toEqual({
+      expect(replaceReducer.mock.calls[0][0].external).toBeInstanceOf(Function);
+      expect(replaceReducer.mock.calls[0][0].internal).toEqual({
         [name1]: reducer1,
       });
 
       register.registerReducer(name2, reducer2);
-      expect(replaceReducer.mock.calls[1][0]).toEqual({
+      expect(replaceReducer.mock.calls[1][0].external).toBeInstanceOf(Function);
+      expect(replaceReducer.mock.calls[1][0].internal).toEqual({
         [name1]: reducer1,
         [name2]: reducer2,
       });
     });
   });
 
-  describe('registerReducers', () => {
-    it('should add multiple reducers without removing existing ones', () => {
-      const reducer1 = (): any => {};
-      const reducer2 = (): any => {};
-      const reducer3 = (): any => {};
-
+  describe('replaceReducer', () => {
+    it('should replace the reducer function', () => {
       const register = new ReduxRegister();
-      register.registerReducers({
-        one: reducer1,
-      });
-
-      expect(replaceReducer.mock.calls[0][0]).toEqual({
-        one: reducer1,
-      });
-
-      register.registerReducers({
-        two: reducer2,
-        three: reducer3,
-      });
-
-      expect(replaceReducer.mock.calls[1][0]).toEqual({
-        one: reducer1,
-        two: reducer2,
-        three: reducer3,
-      });
+      const reducer = (): any => {};
+      register.replaceReducer(reducer);
+      expect(replaceReducer.mock.calls[0][0].external).toBe(reducer);
     });
   });
 
   describe('registerSaga', () => {
-    it('should add teh saga to the middleware', () => {
+    it('should add the saga to the middleware', () => {
       const saga1 = function* (): Generator {};
       const saga2 = function* (): Generator {};
       const register = new ReduxRegister();

@@ -134,9 +134,9 @@ Stop registering your reducers and sagas. Objective-Redux will take care of it f
 ## Compatible with React-Redux
 
 ### Migrate over time
-You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, or `getState`. The only difference is that you'll need to register your reducers using `register.registerReducers(myReducerMap)` or `register.registerReducer(name, reducingFn)`. See the documentation for more.
+You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`&mdash;all without disrupting Objective-Redux controllers. Simply pass the ReduxRegister to the React-Redux provider and use it normally.
 
-For React-Redux, simply pass the ReduxRegister to the provider and use it normally. In your Objective-Redux based components, simply call `register.dispatch()` to fire off events to your non-Objective-Redux reducers. Use `withAddressableName()` when creating actions to receive them from outside of Objective-Redux.
+In your Objective-Redux based components, simply call `register.dispatch()` to fire off events to your non-Objective-Redux reducers. Use `withAddressableName()` when creating actions to receive them from outside of Objective-Redux.
 
 <br />
 
