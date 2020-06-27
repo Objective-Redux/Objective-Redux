@@ -49,6 +49,9 @@ export interface SagaFn<Payload> {
   (payload: Payload): any;
 }
 
+/**
+ * @internal
+ */
 /* istanbul ignore next */
 const defaultReducer = (): any => ({});
 
