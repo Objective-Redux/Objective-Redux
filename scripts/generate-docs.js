@@ -154,7 +154,12 @@ function sanitizeDescription(desc) {
 }
 
 function getStaticLink(file) {
-  return capitalize(file.replace('-', ' ').replace('.html', ''));
+  return capitalize(
+    file.replace(/--/g, '/')
+      .replace(/-/g, ' ')
+      .replace(/\//g, '-')
+      .replace('.html', '')
+  );
 }
 
 function getLink(item) {
@@ -174,7 +179,7 @@ function sanitizeAsHTML(text) {
 const files = fs.readdirSync(TEMPLATE_DIRECTORY);
 
 let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html' && file !== 'index.html')
-  .map(file => `<p><a href="${file}">${getStaticLink(file)}</a></p>`)
+  .map(file => `<p><a href="${file.replace(/--/g, '-').toLocaleLowerCase()}">${getStaticLink(file)}</a></p>`)
   .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Topics</p>');
 
 menu += typescriptData.functions
@@ -195,7 +200,7 @@ files.filter(file => file !== 'template.html').forEach(file => {
     writeFile({
       body: fs.readFileSync(`${TEMPLATE_DIRECTORY}/${file}`, 'utf-8'),
       menu,
-      filename: file,
+      filename: file.replace(/--/g, '-').toLocaleLowerCase(),
     });
   }
 });
