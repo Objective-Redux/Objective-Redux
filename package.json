@@ -22,7 +22,7 @@
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run build",
-    "test": "jest --config ./config/jest.config.js"
+    "test": "jest --no-cache --config ./config/jest.config.js"
   },
   "keywords": [
     "redux",
