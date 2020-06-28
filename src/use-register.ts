@@ -23,18 +23,18 @@ import { ReduxRegister } from '.';
  * @example
  * ```
  * import React from 'react';
- * import { useRegisterFromReactContext } from 'objective-redux';
+ * import { useRegister } from 'objective-redux';
  * import { MyStateController } from './store/my-state-controller';
  *
  * export default function() {
- *   const register = useRegisterFromReactContext();
+ *   const register = useRegister();
  *   const { value } = MyStateController.getInstance(register).getStateSlice();
  *
  *   return <p>{ value }</p>;
  * }
  * ```
  */
-export const useRegisterFromReactContext = (): ReduxRegister|null => {
+export const useRegister = (): ReduxRegister|null => {
   const register = useContext(RegisterProviderContext);
   const [, forceUpdate] = useReducer(c => c + 1, 0);
 

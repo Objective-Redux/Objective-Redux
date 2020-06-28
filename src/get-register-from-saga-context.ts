@@ -17,7 +17,7 @@ import { ReduxRegister } from './';
  * @example
  * ```typescript
  * function* () {
- *   const register = yield getRegisterFromContext();
+ *   const register = yield getRegisterFromSagaContext();
  * }
  * ```
  * @returns A generator that yields an instance of the ReduxRegister.

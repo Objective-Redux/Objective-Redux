@@ -32,8 +32,7 @@ interface StateSelectorFn<T> {
  * This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the
  * components closest provided ancestor. It also provides props from the states that were added.
  *
- * As an alternative for functional components, the useRegisterFromReactContext hook can be used to get
- * the ReduxRegister.
+ * As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
  *
  * @example
  * ```typescript
