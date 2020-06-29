@@ -2,7 +2,7 @@ import { ReduxRegister } from './';
 /**
  * @internal
  */
-declare type ModelConstructor<T> = new (register: ReduxRegister) => T;
+export declare type ModelConstructor<T> = new (register: ReduxRegister) => T;
 /**
  * @internal
  */
@@ -63,5 +63,4 @@ export declare abstract class Controller {
      */
     static lazyLoadOnExternalAction<T extends typeof Controller>(this: T): void;
 }
-export {};
 //# sourceMappingURL=controller.d.ts.map

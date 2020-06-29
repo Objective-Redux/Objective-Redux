@@ -23,6 +23,5 @@ import { ReduxRegister } from './';
  * @returns A generator that yields an instance of the ReduxRegister.
  */
 export function* getRegisterFromSagaContext(): Generator<any, ReduxRegister, ReduxRegister> {
-  const reguxSagaEffects = getReduxSagaEffects();
-  return yield reguxSagaEffects.getContext('register');
+  return yield getReduxSagaEffects().getContext('register');
 }

@@ -124,8 +124,7 @@ class StateController extends controller_1.Controller {
             this.reducerMap[addressableActionName] = fn;
             return action_1.createConnectedAction(addressableActionName, this.register);
         };
-        const extendedActionFn = actionFn;
-        return extendedActionFn;
+        return actionFn;
     }
     /**
      * The reducer, which handles mutations to the state slice.

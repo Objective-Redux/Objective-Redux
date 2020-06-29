@@ -31,11 +31,6 @@ export function getReduxSagaModule(): any {
  * @returns An instance of Redux-Saga effects.
  */
 export function getReduxSagaEffects(): any {
-  try {
-    // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-    return require('redux-saga/effects');
-  } catch (e) {
-    /* istanbul ignore next */
-    return null;
-  }
+  // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
+  return require('redux-saga/effects');
 }

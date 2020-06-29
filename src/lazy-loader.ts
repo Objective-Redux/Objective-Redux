@@ -30,14 +30,11 @@ export class LazyLoader {
 
   public static getControllerForAction(action: AnyAction): typeof Controller|null {
     let controller = null;
-    const type = action?.type;
+    const type = action?.type || '';
 
-    if (type) {
-      const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
-      if (match && match.length === 2) {
-        const [, actionName] = match;
-        controller = LazyLoader.registeredControllers[actionName];
-      }
+    const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
+    if (match) {
+      controller = LazyLoader.registeredControllers[match[1]];
     }
 
     return controller;

@@ -10,10 +10,8 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatelessController = exports.SagaBuilder = void 0;
-const take_type_1 = require("./take-type");
 const action_1 = require("./action");
 const controller_1 = require("./controller");
-const get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
  *
@@ -27,8 +25,7 @@ class SagaBuilder {
     constructor(registerFn) {
         this.registerFn = registerFn;
         this.name = null;
-        this.takeType = null;
-        this.takeConfig = null;
+        this.takeBuilder = null;
     }
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this
@@ -44,13 +41,12 @@ class SagaBuilder {
     /**
      * Adds a simple watcher to the saga.
      *
-     * @param type The take type of the watching saga.
-     * @param config The configuration of the take type.
+     * @param takeBuilder The builder function for the saga watcher. This can be generating using one of the configure
+     * functions, such as configureTakeLatest or configureDebounce.
      * @returns An instance of the SagaBuilder.
      */
-    withTake(type, config = null) {
-        this.takeType = type;
-        this.takeConfig = config;
+    withTake(takeBuilder) {
+        this.takeBuilder = takeBuilder;
         return this;
     }
     /**
@@ -62,8 +58,7 @@ class SagaBuilder {
     register(sagaFn) {
         return this.registerFn({
             name: this.name,
-            takeType: this.takeType,
-            takeConfig: this.takeConfig,
+            takeBuilder: this.takeBuilder,
             sagaFn,
         });
     }
@@ -80,12 +75,12 @@ exports.SagaBuilder = SagaBuilder;
  *  }
  *
  *  toggleSwitch = this.createSaga()
- *    .withTake(TakeType.TAKE_LATEST)
+ *    .withTake(configureTakeLatest())
  *    .register(
  *      function* () {
- *        const register = yield getRegisterFromContext();
- *        yield SwitchStateController.getInstance(register).toggleSwitchValue();
- *        yield SwitchStateController.getInstance(register).incrementCount();
+ *        const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *        yield controller.toggleSwitchValue();
+ *        yield controller.incrementCount();
  *      }
  *    );
  * }
@@ -119,44 +114,16 @@ class StatelessController extends controller_1.Controller {
         return new SagaBuilder(this.buildSaga.bind(this));
     }
     buildSaga(config) {
-        const name = config.name
-            ? this.createActionName(config.name)
-            : this.createActionName();
+        const name = this.createActionName(config.name);
         let { sagaFn } = config;
-        if (config.takeType !== null) {
-            sagaFn = this.createTakeSaga({
+        if (config.takeBuilder !== null) {
+            sagaFn = config.takeBuilder({
                 name,
-                takeType: config.takeType,
-                takeConfig: config.takeConfig,
                 sagaFn,
             });
         }
         this.register.registerSaga(sagaFn);
         return action_1.createConnectedAction(name, this.register);
-    }
-    createTakeSaga(config) {
-        const reguxSagaEffects = get_redux_saga_module_1.getReduxSagaEffects();
-        switch (config.takeType) {
-            case take_type_1.TakeType.TAKE_LATEST:
-                return function* () {
-                    yield reguxSagaEffects.takeLatest(config.name, config.sagaFn);
-                };
-            case take_type_1.TakeType.TAKE_EVERY:
-                return function* () {
-                    yield reguxSagaEffects.takeEvery(config.name, config.sagaFn);
-                };
-            case take_type_1.TakeType.TAKE_LEADING:
-                return function* () {
-                    yield reguxSagaEffects.takeLeading(config.name, config.sagaFn);
-                };
-            case take_type_1.TakeType.DEBOUNCE:
-                return function* () {
-                    var _a;
-                    yield reguxSagaEffects.debounce(((_a = config.takeConfig) === null || _a === void 0 ? void 0 : _a.debounceTime) || 0, config.name, config.sagaFn);
-                };
-            default:
-                throw new Error('Invalid take type');
-        }
     }
 }
 exports.StatelessController = StatelessController;

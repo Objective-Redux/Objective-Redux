@@ -17,14 +17,13 @@ const get_redux_saga_module_1 = require("./get-redux-saga-module");
  * @example
  * ```typescript
  * function* () {
- *   const register = yield getRegisterFromContext();
+ *   const register = yield getRegisterFromSagaContext();
  * }
  * ```
  * @returns A generator that yields an instance of the ReduxRegister.
  */
 function* getRegisterFromSagaContext() {
-    const reguxSagaEffects = get_redux_saga_module_1.getReduxSagaEffects();
-    return yield reguxSagaEffects.getContext('register');
+    return yield get_redux_saga_module_1.getReduxSagaEffects().getContext('register');
 }
 exports.getRegisterFromSagaContext = getRegisterFromSagaContext;
 //# sourceMappingURL=get-register-from-saga-context.js.map

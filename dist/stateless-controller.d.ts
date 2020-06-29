@@ -1,21 +1,14 @@
 import { ReduxRegister, SagaFn } from './redux-register';
-import { TakeType } from './take-type';
 import { ActionFn } from './action';
 import { Controller } from './controller';
+import { TakeBuilder } from './take-type';
 /**
  * @internal
  */
 interface SagaConfig {
     name: string | null;
-    takeType: TakeType | null;
-    takeConfig: TakeConfig | null;
+    takeBuilder: TakeBuilder | null;
     sagaFn: SagaFn<any>;
-}
-/**
- * @internal
- */
-export interface TakeConfig {
-    debounceTime: number;
 }
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
@@ -25,8 +18,7 @@ export interface TakeConfig {
 export declare class SagaBuilder<Payload> {
     private readonly registerFn;
     private name;
-    private takeType;
-    private takeConfig;
+    private takeBuilder;
     /**
      * @internal
      */
@@ -42,11 +34,11 @@ export declare class SagaBuilder<Payload> {
     /**
      * Adds a simple watcher to the saga.
      *
-     * @param type The take type of the watching saga.
-     * @param config The configuration of the take type.
+     * @param takeBuilder The builder function for the saga watcher. This can be generating using one of the configure
+     * functions, such as configureTakeLatest or configureDebounce.
      * @returns An instance of the SagaBuilder.
      */
-    withTake(type: TakeType, config?: TakeConfig | null): SagaBuilder<Payload>;
+    withTake(takeBuilder: TakeBuilder): SagaBuilder<Payload>;
     /**
      * Completes the builder and adds the saga to the register.
      *
@@ -66,12 +58,12 @@ export declare class SagaBuilder<Payload> {
  *  }
  *
  *  toggleSwitch = this.createSaga()
- *    .withTake(TakeType.TAKE_LATEST)
+ *    .withTake(configureTakeLatest())
  *    .register(
  *      function* () {
- *        const register = yield getRegisterFromContext();
- *        yield SwitchStateController.getInstance(register).toggleSwitchValue();
- *        yield SwitchStateController.getInstance(register).incrementCount();
+ *        const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *        yield controller.toggleSwitchValue();
+ *        yield controller.incrementCount();
  *      }
  *    );
  * }
@@ -100,7 +92,6 @@ export declare abstract class StatelessController extends Controller {
      */
     protected createSaga<Payload>(): SagaBuilder<Payload>;
     private buildSaga;
-    private createTakeSaga;
 }
 export {};
 //# sourceMappingURL=stateless-controller.d.ts.map

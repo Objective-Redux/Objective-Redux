@@ -20,13 +20,10 @@ let LazyLoader = /** @class */ (() => {
         }
         static getControllerForAction(action) {
             let controller = null;
-            const type = action === null || action === void 0 ? void 0 : action.type;
-            if (type) {
-                const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
-                if (match && match.length === 2) {
-                    const [, actionName] = match;
-                    controller = LazyLoader.registeredControllers[actionName];
-                }
+            const type = (action === null || action === void 0 ? void 0 : action.type) || '';
+            const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
+            if (match) {
+                controller = LazyLoader.registeredControllers[match[1]];
             }
             return controller;
         }

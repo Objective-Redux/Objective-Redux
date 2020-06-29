@@ -22,9 +22,16 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-import { SagaBuilder, TakeConfig } from '../src/stateless-controller';
-import { TakeType, StatelessController } from '../src';
+import { SagaBuilder } from '../src/stateless-controller';
+import {
+  StatelessController,
+  configureTakeLatest,
+  configureTakeEvery,
+  configureTakeLeading,
+  configureDebounce,
+} from '../src';
 import { ControllerNameNotDefined } from '../src/controllernamenotdefined';
+import { TakeBuilder } from '../src/take-type';
 
 class TestController extends StatelessController {
   public constructor(register: any) {
@@ -77,12 +84,11 @@ describe('stateless-controller', () => {
   });
 
   describe('createSaga', () => {
-    // eslint-disable-next-line max-params
-    function checkSaga(type: TakeType, mock: jest.Mock, config: TakeConfig|null = null): void {
+    function checkSaga(takeBuilder: TakeBuilder, verify: () => void): void {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
       instance.createSagaHandle()
-        .withTake(type, config)
+        .withTake(takeBuilder)
         .register(testSaga);
 
       expect(registerSaga).toHaveBeenCalled();
@@ -90,58 +96,59 @@ describe('stateless-controller', () => {
       const { mock: { calls: [[saga]] } } = registerSaga;
       saga().next();
 
-      if (config && config.debounceTime) {
-        expect(mock).toHaveBeenCalledWith(config.debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
-      } else if (type === TakeType.DEBOUNCE) {
-        expect(mock).toHaveBeenCalledWith(0, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
-      } else {
-        expect(mock).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga);
-      }
+      verify();
     }
 
     it('should create saga with takeLatest', () => {
-      checkSaga(TakeType.TAKE_LATEST, takeLatest);
+      checkSaga(
+        configureTakeLatest(),
+        () => expect(takeLatest).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should create saga with takeEvery', () => {
-      checkSaga(TakeType.TAKE_EVERY, takeEvery);
+      checkSaga(
+        configureTakeEvery(),
+        () => expect(takeEvery).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should create saga with takeLeading', () => {
-      checkSaga(TakeType.TAKE_LEADING, takeLeading);
+      checkSaga(
+        configureTakeLeading(),
+        () => expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should create saga with debounce', () => {
-      checkSaga(TakeType.DEBOUNCE, debounce, { debounceTime: 1000 });
+      const debounceTime = 1000;
+      checkSaga(
+        configureDebounce({ debounceTime }),
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should create saga with debounce and no config', () => {
-      checkSaga(TakeType.DEBOUNCE, debounce);
+      const debounceTime = 0;
+      checkSaga(
+        configureDebounce({} as any),
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should create saga with debounce and empty config', () => {
-      checkSaga(TakeType.DEBOUNCE, debounce, {} as any);
-    });
-
-    it('should throw an exception on invalid take type', () => {
-      const reduxRegisterMock: any = { registerSaga };
-      const instance = TestController.getInstance(reduxRegisterMock);
-
-      try {
-        instance.createSagaHandle()
-          .withTake(99)
-          .register(testSaga);
-        expect(false).toEqual(true);
-      } catch (e) {
-        //
-      }
+      const debounceTime = 0;
+      checkSaga(
+        configureDebounce(null as any),
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+      );
     });
 
     it('should name actions', () => {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
       instance.createSagaHandle()
-        .withTake(TakeType.TAKE_LEADING)
+        .withTake(configureTakeLeading())
         .withAddressableName('NAME')
         .register(testSaga);
       const { mock: { calls: [[saga]] } } = registerSaga;

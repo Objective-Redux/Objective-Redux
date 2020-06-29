@@ -136,7 +136,7 @@ export class SwitchStateSagas extends StatelessController {
   }
 
   toggleSwitch = this.createSaga()
-    .withTake(TakeType.TAKE_LATEST)
+    .withTake(configureTakeLatest()))
     .register(
       function* () {
         const switchController = yield getControllerFromSagaContext(SwitchStateController);

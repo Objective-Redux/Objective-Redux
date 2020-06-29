@@ -7,21 +7,101 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-export enum TakeType {
-  /**
-   * Represents a takeLatest watcher.
-   */
-  TAKE_LATEST,
-  /**
-   * Represents a takeEvery watcher.
-   */
-  TAKE_EVERY,
-  /**
-   * Represents a takeLeading watcher.
-   */
-  TAKE_LEADING,
-  /**
-   * Represents a debounce watcher.
-   */
-  DEBOUNCE,
+
+import { getReduxSagaEffects } from './get-redux-saga-module';
+import { SagaFn } from './redux-register';
+
+/**
+ * @internal
+ */
+export interface DebounceTakeConfig {
+  debounceTime: number;
 }
+
+/**
+ * @internal
+ */
+interface TakeSagaConfig {
+  name: string;
+  sagaFn: SagaFn<any>;
+}
+
+/**
+ * @internal
+ */
+export interface TakeBuilder {
+  (config: TakeSagaConfig): () => Generator;
+}
+
+/**
+ * Returns a function that will create a takeLatest saga watcher. This can be used with the SagaBuilder::withTake()
+ * method.
+ *
+ * @returns A function that creates a takeLatest watching function.
+ * @example
+ * ```typescript
+ * configureTakeLatest();
+ * ```
+ */
+export function configureTakeLatest(): TakeBuilder {
+  const effects = getReduxSagaEffects();
+  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+    yield effects.takeLatest(config.name, config.sagaFn);
+  };
+}
+
+/**
+ * Returns a function that will create a takeEvery saga watcher. This can be used with the SagaBuilder::withTake()
+ * method.
+ *
+ * @returns A function that creates a takeEvery watching function.
+ * @example
+ * ```typescript
+ * configureTakeEvery();
+ * ```
+ */
+export function configureTakeEvery(): TakeBuilder {
+  const effects = getReduxSagaEffects();
+  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+    yield effects.takeEvery(config.name, config.sagaFn);
+  };
+}
+
+/**
+ * Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withTake()
+ * method.
+ *
+ * @returns A function that creates a takeLeading watching function.
+ * @example
+ * ```typescript
+ * configureTakeLeading();
+ * ```
+ */
+export function configureTakeLeading(): TakeBuilder {
+  const effects = getReduxSagaEffects();
+  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+    yield effects.takeLeading(config.name, config.sagaFn);
+  };
+}
+
+/**
+ * Returns a function that will create a debounce saga watcher. This can be used with the SagaBuilder::withTake()
+ * method.
+ *
+ * @param debounceConfig The configuration for the watcher.
+ * @returns A function that creates a debounce watching function.
+ * @example
+ * ```typescript
+ * configureDebounce({ debounceTime: 1000 });
+ * ```
+ */
+export function configureDebounce(debounceConfig: DebounceTakeConfig): TakeBuilder {
+  const effects = getReduxSagaEffects();
+  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+    yield effects.debounce(debounceConfig?.debounceTime || 0, config.name, config.sagaFn);
+  };
+}
+
+// export function configureTake(): TakeBuilder {
+//   //
+// }

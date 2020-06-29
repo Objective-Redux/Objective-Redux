@@ -154,9 +154,7 @@ export abstract class StateController<State> extends Controller {
       return createConnectedAction<Payload>(addressableActionName, this.register);
     };
 
-    const extendedActionFn: ActionExtendFn<Payload> = actionFn;
-
-    return extendedActionFn;
+    return actionFn;
   }
 
   /**

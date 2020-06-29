@@ -133,19 +133,21 @@ export class ReduxRegister {
     const internalDispatch = this.dispatch.bind(this);
     (this as any).dispatch = (action: any): any => internalDispatch(action);
 
+    const { store } = this;
+
     // Keep the original store functions for use later
     const storeFns = {
-      dispatch: this.store.dispatch.bind(this.store),
-      subscribe: this.store.subscribe.bind(this.store),
-      replaceReducer: this.store.replaceReducer.bind(this.store),
-      getState: this.store.getState.bind(this.store),
+      dispatch: store.dispatch.bind(this.store),
+      subscribe: store.subscribe.bind(this.store),
+      replaceReducer: store.replaceReducer.bind(this.store),
+      getState: store.getState.bind(this.store),
     };
 
     // Map the store functions to register functions
-    this.store.dispatch = this.dispatch.bind(this) as any;
-    this.store.subscribe = this.subscribe.bind(this);
-    this.store.replaceReducer = this.replaceReducer.bind(this);
-    this.store.getState = this.getState.bind(this);
+    store.dispatch = this.dispatch.bind(this) as any;
+    store.subscribe = this.subscribe.bind(this);
+    store.replaceReducer = this.replaceReducer.bind(this);
+    store.getState = this.getState.bind(this);
 
     return storeFns;
   }

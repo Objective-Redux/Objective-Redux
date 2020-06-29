@@ -34,14 +34,8 @@ exports.getReduxSagaModule = getReduxSagaModule;
  * @returns An instance of Redux-Saga effects.
  */
 function getReduxSagaEffects() {
-    try {
-        // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-        return require('redux-saga/effects');
-    }
-    catch (e) {
-        /* istanbul ignore next */
-        return null;
-    }
+    // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
+    return require('redux-saga/effects');
 }
 exports.getReduxSagaEffects = getReduxSagaEffects;
 //# sourceMappingURL=get-redux-saga-module.js.map

@@ -15,7 +15,7 @@ class MyControllerClass extends StateController {
 class MyControllerClass extends StatelessController {
   // ...
   toggleSwitch = this.createSaga()
-    .withTake(TakeType.TAKE_LATEST)
+    .withTake(configureTakeLatest())
     .withAddressableName('SET_SWITCH_STATE') // <--
     .register(
       function *() {

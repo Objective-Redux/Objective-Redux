@@ -11,7 +11,6 @@
 import { ReduxRegister } from './redux-register';
 import { StateController } from './state-controller';
 import { StatelessController } from './stateless-controller';
-import { TakeType } from './take-type';
 import { createAction, getActionNameForController } from './action';
 import { RegisterProvider } from './register-provider';
 import { ComponentConnector } from './component-connector';
@@ -19,12 +18,17 @@ import { getRegisterFromSagaContext } from './get-register-from-saga-context';
 import { getControllerFromSagaContext } from './get-controller-from-saga-context';
 import { useRegister } from './use-register';
 import { useController } from './use-controller';
+import {
+  configureTakeLatest,
+  configureTakeEvery,
+  configureTakeLeading,
+  configureDebounce,
+} from './take-type';
 
 export {
   ReduxRegister,
   StateController,
   StatelessController,
-  TakeType,
   createAction,
   RegisterProvider,
   ComponentConnector,
@@ -33,4 +37,8 @@ export {
   useRegister,
   useController,
   getActionNameForController,
+  configureTakeLatest,
+  configureTakeEvery,
+  configureTakeLeading,
+  configureDebounce,
 };
