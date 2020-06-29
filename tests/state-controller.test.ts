@@ -9,10 +9,10 @@
 // ================================================================================================
 
 const counter = jest.fn();
-const registerReducer: any = jest.fn();
+const registerStateController: any = jest.fn();
 const dispatch = jest.fn();
 const reduxRegisterMock: any = {
-  registerReducer,
+  registerStateController,
   dispatch,
   getState: (): any => ({ TestSlice: true }),
 };
@@ -54,7 +54,7 @@ describe('state-controller', () => {
     it('should register the reducer', () => {
       const instance = new TestController(reduxRegisterMock);
       expect(instance).toBeInstanceOf(TestController);
-      expect(registerReducer).toHaveBeenCalled();
+      expect(registerStateController).toHaveBeenCalled();
     });
   });
 
@@ -72,11 +72,11 @@ describe('state-controller', () => {
   describe('getInstance', () => {
     it('should create one instance for each register', () => {
       const reduxRegisterMock1: any = {
-        registerReducer,
+        registerStateController,
       };
 
       const reduxRegisterMock2: any = {
-        registerReducer,
+        registerStateController,
       };
 
       TestController.getInstance(reduxRegisterMock1);

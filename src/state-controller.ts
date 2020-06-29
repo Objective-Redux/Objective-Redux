@@ -113,7 +113,7 @@ export abstract class StateController<State> extends Controller {
     super(register);
     this.initialState = initialState;
     this.reducerMap = {};
-    this.register.registerReducer((this.constructor as any).getName(), this.reducer.bind(this));
+    this.register.registerStateController(this);
   }
 
   /**
@@ -164,7 +164,7 @@ export abstract class StateController<State> extends Controller {
    * @param action The action being performed on the state.
    * @returns The new state resulting from the action.
    */
-  protected reducer(state: State = this.initialState, action: Action<any>|null = null): State {
+  public reducer(state: State = this.initialState, action: Action<any>|null = null): State {
     const reducerFn = this.reducerMap[action?.type || ''];
 
     if (!reducerFn || !action) {

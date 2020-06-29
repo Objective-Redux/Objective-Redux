@@ -143,30 +143,14 @@ class ReduxRegister {
         this.sagaMiddleware.run(sagaFn);
     }
     /**
-     * Adds a reducer to the register's Redux store.
+     * Adds a state controller to the register. This will add the reducer to the Redux store.
      *
-     * @param name The name of the reducer/the name of the state slice.
-     * @param reducerFn The reducer that is being registered.
-     * @example
-     * ```typescript
-     * const reducer = (state = { isOn: false }, action) {
-     *   switch (action.type) {
-     *     case 'MY_ACTION':
-     *       return {
-     *         ...state,
-     *         isOn: !state.isOn,
-     *       };
-     *     default:
-     *       return state;
-     *   }
-     * };
+     * This method is not meant to be used directly-- it will be called automatically when a new instance is created.
      *
-     * const register = new ReduxRegister();
-     * register.registerReducer('switch', reducer);
-     * ```
+     * @param controller The controller that is being registered.
      */
-    registerReducer(name, reducerFn) {
-        this.registeredReducers[name] = reducerFn;
+    registerStateController(controller) {
+        this.registeredReducers[controller.constructor.getName()] = controller.reducer.bind(controller);
         this.updateReducers();
     }
     /**

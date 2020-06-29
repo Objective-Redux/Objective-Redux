@@ -142,26 +142,35 @@ describe('redux-register', () => {
     });
   });
 
-  describe('registerReducer', () => {
+  describe('registerStateController', () => {
     it('should add the reducer to the store', () => {
       const name1 = 'NAME_1';
       const name2 = 'NAME_2';
       const reducer1 = (): any => {};
       const reducer2 = (): any => {};
 
-      const register = new ReduxRegister();
-      register.registerReducer(name1, reducer1);
-      expect(replaceReducer.mock.calls[0][0].external).toBeInstanceOf(Function);
-      expect(replaceReducer.mock.calls[0][0].internal).toEqual({
-        [name1]: reducer1,
-      });
+      const controllerOne: any = {
+        constructor: {
+          getName: (): string => name1,
+        },
+        reducer: reducer1,
+      };
 
-      register.registerReducer(name2, reducer2);
+      const controllerTwo: any = {
+        constructor: {
+          getName: (): string => name2,
+        },
+        reducer: reducer2,
+      };
+
+      const register = new ReduxRegister();
+      register.registerStateController(controllerOne);
+      expect(replaceReducer.mock.calls[0][0].external).toBeInstanceOf(Function);
+      expect(Object.keys(replaceReducer.mock.calls[0][0].internal).length).toEqual(1);
+
+      register.registerStateController(controllerTwo);
       expect(replaceReducer.mock.calls[1][0].external).toBeInstanceOf(Function);
-      expect(replaceReducer.mock.calls[1][0].internal).toEqual({
-        [name1]: reducer1,
-        [name2]: reducer2,
-      });
+      expect(Object.keys(replaceReducer.mock.calls[1][0].internal).length).toEqual(2);
     });
   });
 

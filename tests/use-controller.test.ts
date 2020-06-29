@@ -8,9 +8,9 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const registerReducer = jest.fn();
+const registerStateController = jest.fn();
 const registerMock = {
-  registerReducer,
+  registerStateController,
 };
 
 const useRegister = jest.fn();

@@ -118,7 +118,7 @@ export declare abstract class StateController<State> extends Controller {
      * @param action The action being performed on the state.
      * @returns The new state resulting from the action.
      */
-    protected reducer(state?: State, action?: Action<any> | null): State;
+    reducer(state?: State, action?: Action<any> | null): State;
     /**
      * Gets the current value for this slice of the Redux state.
      *

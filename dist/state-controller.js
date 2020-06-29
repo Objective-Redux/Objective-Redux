@@ -87,7 +87,7 @@ class StateController extends controller_1.Controller {
         super(register);
         this.initialState = initialState;
         this.reducerMap = {};
-        this.register.registerReducer(this.constructor.getName(), this.reducer.bind(this));
+        this.register.registerStateController(this);
     }
     /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
