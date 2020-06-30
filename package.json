@@ -23,9 +23,9 @@
     "lint-fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run build",
     "start-server": "cd examples/react-redux && npm start",
-    "test": "npm run test-unit && npm run test-cypress",
+    "test": "npm run test-unit && npm run test-e2e",
     "test-e2e": "start-server-and-test start-server http://localhost:3000 test-e2e-cypress",
-    "test-e2e-cypress": "cypress open --config-file ./config/cypress.json",
+    "test-e2e-cypress": "cypress run --config-file ./config/cypress.json",
     "test-unit": "jest --no-cache --config ./config/jest.config.js"
   },
   "keywords": [

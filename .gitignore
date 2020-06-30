@@ -1,5 +1,6 @@
 .DS_Store
 **/.DS_Store
 coverage/
+cypress/
 **/node_modules/
 examples/**/build

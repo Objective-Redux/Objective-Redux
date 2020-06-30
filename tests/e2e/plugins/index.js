@@ -1,21 +1,13 @@
-/// <reference types="cypress" />
-// ***********************************************************
-// This example plugins/index.js can be used to load plugins
+// ================================================================================================
+//                                          OBJECTIVE REDUX
+//                                  Redux made better, objectively.
 //
-// You can change the location of this file or turn off loading
-// the plugins file with the 'pluginsFile' configuration option.
+// (c) Copyright 2020 by Jason Mace (https://github.com/jmace01)
 //
-// You can read more here:
-// https://on.cypress.io/plugins-guide
-// ***********************************************************
-
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
-
-/**
- * @type {Cypress.PluginConfig}
- */
+// This project is provided under the terms of the MIT license. The license details can be found in
+// the LICENSE file, found in the project's root directory.
+// ================================================================================================
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-}
+};

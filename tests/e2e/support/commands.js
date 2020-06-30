@@ -1,25 +1,9 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
+// ================================================================================================
+//                                          OBJECTIVE REDUX
+//                                  Redux made better, objectively.
 //
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
+// (c) Copyright 2020 by Jason Mace (https://github.com/jmace01)
 //
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+// This project is provided under the terms of the MIT license. The license details can be found in
+// the LICENSE file, found in the project's root directory.
+// ================================================================================================
