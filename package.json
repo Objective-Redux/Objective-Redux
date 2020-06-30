@@ -17,7 +17,7 @@
   ],
   "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cd examples/react-redux && npm i",
     "docs": "node scripts/generate-docs.js",
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
