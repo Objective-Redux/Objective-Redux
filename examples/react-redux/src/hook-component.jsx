@@ -24,11 +24,11 @@ export default function HookComponent() {
   };
 
   return (
-    <>
+    <div id="hook">
       <p>
         <button onClick={sendToggleAction}>Click me</button>
       </p>
-      <p>
+      <p className="result">
         Switch is
         {' '}
         {isOn ? 'On' : 'Off'}
@@ -39,7 +39,7 @@ export default function HookComponent() {
         {' '}
         times
       </p>
-    </>
+    </div>
   );
 }
 

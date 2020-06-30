@@ -21,11 +21,11 @@ function ConnectedComponent(props) {
   };
 
   return (
-    <>
+    <div id="connected">
       <p>
         <button onClick={sendToggleAction}>Click me</button>
       </p>
-      <p>
+      <p className="result">
         Switch is
         {' '}
         {isOn ? 'On' : 'Off'}
@@ -36,7 +36,7 @@ function ConnectedComponent(props) {
         {' '}
         times
       </p>
-    </>
+    </div>
   );
 }
 

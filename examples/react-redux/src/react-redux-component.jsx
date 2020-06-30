@@ -21,11 +21,11 @@ function ReactReduxComponent(props) {
   };
 
   return (
-    <>
+    <div id="react-redux">
       <p>
         <button onClick={sendToggleAction}>Click me</button>
       </p>
-      <p>
+      <p className="result">
         Switch is
         {' '}
         {isOn ? 'On' : 'Off'}
@@ -36,7 +36,7 @@ function ReactReduxComponent(props) {
         {' '}
         times
       </p>
-    </>
+    </div>
   );
 }
 
