@@ -11,7 +11,7 @@
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
-import { RegisterProvider, ComponentConnector } from '../src';
+import { RegisterProvider, ComponentConnector } from '../../src';
 
 configure({ adapter: new Adapter() });
 

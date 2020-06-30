@@ -14,11 +14,11 @@ const reduxRegisterMock: any = {
 };
 
 const getRegisterFromSagaContext = jest.fn();
-jest.mock('../src/get-register-from-saga-context', () => ({
+jest.mock('../../src/get-register-from-saga-context', () => ({
   getRegisterFromSagaContext,
 }));
 
-import { getControllerFromSagaContext, StateController } from '../src';
+import { getControllerFromSagaContext, StateController } from '../../src';
 
 class TestStateController extends StateController<number> {
   public constructor(register: any) {

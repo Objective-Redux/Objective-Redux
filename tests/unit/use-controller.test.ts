@@ -15,11 +15,11 @@ const registerMock = {
 
 const useRegister = jest.fn();
 
-jest.mock('../src/use-register', () => ({
+jest.mock('../../src/use-register', () => ({
   useRegister,
 }));
 
-import { useController, StatelessController } from '../src';
+import { useController, StatelessController } from '../../src';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor

@@ -8,20 +8,25 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const context = 'foo';
-const getContext = jest.fn(() => context);
+import { StateController } from 'objective-redux';
 
-jest.mock('redux-saga/effects', () => ({
-  getContext,
-  GetContextEffect: {},
-}));
+const initialState = '';
 
-import { getRegisterFromSagaContext } from '../src';
+class LazyStateController extends StateController {
+  constructor(register) {
+    super(initialState, register);
+  }
 
-describe('get-register-from-saga-context', () => {
-  it('should get the register from the store context', () => {
-    const generator = getRegisterFromSagaContext();
-    const resultingContext = generator.next().value;
-    expect(resultingContext).toEqual(context);
-  });
-});
+  static getName() {
+    return 'lazy';
+  }
+
+  action = this.registerAction(() => {
+    window.onload = () => {
+      document.getElementById('lazy').innerHTML = 'Lazy loaded data worked';
+    };
+    return '';
+  }).withAddressableName('test');
+}
+
+LazyStateController.lazyLoadOnExternalAction();

@@ -19,14 +19,14 @@ const reduxRegisterMock: any = {
 
 const registerController = jest.fn();
 
-jest.mock('../src/lazy-loader', () => ({
+jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     registerController,
   },
 }));
 
-import { StateController } from '../src';
-import { ControllerNameNotDefined } from '../src/controllernamenotdefined';
+import { StateController } from '../../src';
+import { ControllerNameNotDefined } from '../../src/controllernamenotdefined';
 
 class TestController extends StateController<boolean> {
   public constructor(register: any) {

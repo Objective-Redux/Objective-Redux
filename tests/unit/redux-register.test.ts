@@ -40,7 +40,7 @@ jest.mock('redux', () => ({
 
 const getControllerForAction = jest.fn();
 
-jest.mock('../src/lazy-loader', () => ({
+jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getControllerForAction,
   },
@@ -48,7 +48,7 @@ jest.mock('../src/lazy-loader', () => ({
 
 jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 
-import { ReduxRegister } from '../src';
+import { ReduxRegister } from '../../src';
 
 describe('redux-register', () => {
   beforeEach(() => {

@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { LazyLoader } from '../src/lazy-loader';
+import { LazyLoader } from '../../src/lazy-loader';
 
 const mockController: any = {
   getName: () => 'TEST-CONTROLLER',

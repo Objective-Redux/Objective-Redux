@@ -23,7 +23,7 @@ jest.mock('react', () => ({
   createContext: jest.fn(),
 }));
 
-import { useRegister } from '../src';
+import { useRegister } from '../../src';
 
 describe('use-register', () => {
   describe('hook', () => {

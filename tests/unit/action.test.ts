@@ -8,8 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { createAction } from '../src';
-import { createConnectedAction, getActionNameForController } from '../src/action';
+import { createAction } from '../../src';
+import { createConnectedAction, getActionNameForController } from '../../src/action';
 
 const type = 'MY_ACTION';
 const payload = 10;

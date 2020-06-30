@@ -22,16 +22,16 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-import { SagaBuilder } from '../src/stateless-controller';
+import { SagaBuilder } from '../../src/stateless-controller';
 import {
   StatelessController,
   configureTakeLatest,
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
-} from '../src';
-import { ControllerNameNotDefined } from '../src/controllernamenotdefined';
-import { TakeBuilder } from '../src/take-type';
+} from '../../src';
+import { ControllerNameNotDefined } from '../../src/controllernamenotdefined';
+import { TakeBuilder } from '../../src/take-type';
 
 class TestController extends StatelessController {
   public constructor(register: any) {

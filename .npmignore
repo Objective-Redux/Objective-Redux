@@ -2,6 +2,7 @@
 .vscode/
 config/
 converage/
+examples/
 docs/
 node_modules/
 scripts/

@@ -8,25 +8,20 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const path = require('path');
+const context = 'foo';
+const getContext = jest.fn(() => context);
 
-module.exports = {
-  clearMocks: true,
-  collectCoverage: true,
-  collectCoverageFrom: ['./src/**/*.{js,jsx,ts,tsx}'],
-  coveragePathIgnorePatterns: ['/node_modules/'],
-  coverageThreshold: {
-    global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-    },
-  },
-  preset: 'ts-jest',
-  rootDir: path.resolve(__dirname, '../'),
-  testEnvironment: 'jsdom',
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
-  testMatch: ['**/tests/unit/**/*.test.[jt]s?(x)'],
-};
+jest.mock('redux-saga/effects', () => ({
+  getContext,
+  GetContextEffect: {},
+}));
+
+import { getRegisterFromSagaContext } from '../../src';
+
+describe('get-register-from-saga-context', () => {
+  it('should get the register from the store context', () => {
+    const generator = getRegisterFromSagaContext();
+    const resultingContext = generator.next().value;
+    expect(resultingContext).toEqual(context);
+  });
+});

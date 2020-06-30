@@ -343,8 +343,6 @@ const universalRules = {
     },
   ],
   'react/boolean-prop-naming': ['error'],
-  'react/button-has-type': ['error'],
-  'react/default-props-match-prop-types': ['error'],
   'react/destructuring-assignment': ['error'],
   'react/display-name': ['error'],
   'react/forbid-elements': [
@@ -375,7 +373,6 @@ const universalRules = {
   'react/no-unused-prop-types': ['error'],
   'react/no-will-update-set-state': ['error'],
   'react/prefer-es6-class': ['error'],
-  'react/prop-types': ['error'],
   'react/require-default-props': ['error'],
   'react/require-render-return': ['error'],
   'react/self-closing-comp': ['error'],
@@ -399,7 +396,7 @@ const universalRules = {
   'react/jsx-filename-extension': [
     'error',
     {
-      extensions: ['.tsx'],
+      extensions: ['.tsx', '.jsx'],
     },
   ],
   'react/jsx-first-prop-new-line': ['error'],
@@ -425,9 +422,7 @@ const universalRules = {
       maximum: 3,
     },
   ],
-  'react/jsx-no-bind': ['error'],
   'react/jsx-no-duplicate-props': ['error'],
-  'react/jsx-no-literals': ['error'],
   'react/jsx-no-target-blank': ['error'],
   'react/jsx-no-undef': ['error'],
   'react/jsx-no-useless-fragment': ['error'],
@@ -649,13 +644,22 @@ module.exports = {
   overrides: [
     {
       files: [
+        '*.js',
         '*.jsx',
+      ],
+      rules: {
+        ...universalRules,
+      },
+    },
+    {
+      files: [
         '*.ts',
         '*.tsx',
       ],
       rules: {
         ...universalRules,
         ...typescriptRules,
+        'react/jsx-no-bind': ['error'],
       },
     },
     {
