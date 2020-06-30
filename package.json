@@ -22,8 +22,10 @@
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run build",
+    "start-server": "cd examples/react-redux && npm start",
     "test": "npm run test-unit && npm run test-cypress",
-    "test-e2e": "cypress open --config-file ./config/cypress.json",
+    "test-e2e": "start-server-and-test start-server http://localhost:3000 test-e2e-cypress",
+    "test-e2e-cypress": "cypress open --config-file ./config/cypress.json",
     "test-unit": "jest --no-cache --config ./config/jest.config.js"
   },
   "keywords": [
@@ -70,6 +72,7 @@
     "react-dom": "^16.13.1",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
+    "start-server-and-test": "^1.11.0",
     "ts-jest": "^26.1.0",
     "typedoc": "^0.17.7",
     "typescript": "^3.9.3"
