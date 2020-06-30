@@ -602,7 +602,9 @@ module.exports = {
     es6: true,
     jest: true,
   },
-  extends: [],
+  extends: [
+    'plugin:cypress/recommended',
+  ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
