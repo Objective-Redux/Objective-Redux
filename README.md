@@ -6,7 +6,7 @@
 <a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="bundle size" /></a>
 <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
 
-It's object-oriented, light-weight, and TypeScript compatible.
+Object-oriented, light-weight, and TypeScript compatible.
 
 <br />
 
