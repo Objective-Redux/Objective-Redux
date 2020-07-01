@@ -143,7 +143,7 @@ Stop wiring-up your reducers and sagas manually. And, for that matter, stop usin
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> topic in the documentation for more.
 
-<img src="./statics/lazy.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+<img src="./statics/lazy.png" alt="Lazy load reducers and controller when you need them" style="height: 200px;" />
 
 <br />
 
@@ -154,6 +154,8 @@ See the <a href="https://objective-redux.github.io/Objective-Redux/code-splittin
 Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
 
 A slice of state never needs to know about what other slices are doing or how they're organized.
+
+<img src="./statics/organize.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
 
 <br />
 
