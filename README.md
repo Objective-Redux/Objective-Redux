@@ -84,6 +84,28 @@ https://objective-redux.github.io/Objective-Redux/
 
 <br />
 
+## Keep your bundle small
+
+### Lots of features, one tiny package
+
+Objective-Redux replaces many of the packages you're already using.
+
+For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
+
+<a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
+
+you can simply use Objective-Redux
+
+<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a>
+
+_Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions._
+
+<br />
+
 ## Drop the boilerplate code
 
 ### Actions are a thing of the past&mdash; among other things
@@ -99,16 +121,6 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
     })
   );
 ```
-
-<br />
-
-## Organize your state
-
-### One slice, one object
-
-Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
-
-A slice of state never needs to know about what other slices are doing or how they're organized.
 
 <br />
 
@@ -128,16 +140,30 @@ Using Objective-Redux, your editor knows exactly where to find everything. That 
 
 ### Get the pieces of state you need, when you need them
 
-Stop registering your reducers and sagas. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
+Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
+
+See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> topic in the documentation for more.
 
 <img src="./statics/lazy.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+
+<br />
+
+## Organize your state
+
+### One slice, one object
+
+Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.
+
+A slice of state never needs to know about what other slices are doing or how they're organized.
+
+<br />
 
 ## Compatible with React-Redux
 
 ### Migrate over time
 You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`&mdash;all without disrupting Objective-Redux controllers. Simply pass the ReduxRegister to the React-Redux provider and use it normally.
 
-In your Objective-Redux based components, simply call `register.dispatch()` to fire off events to your non-Objective-Redux reducers. Use `withAddressableName()` when creating actions to receive them from outside of Objective-Redux.
+See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.
 
 <br />
 
