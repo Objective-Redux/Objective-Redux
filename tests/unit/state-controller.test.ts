@@ -8,30 +8,27 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const counter = jest.fn();
-const registerStateController: any = jest.fn();
 const dispatch = jest.fn();
 const reduxRegisterMock: any = {
-  registerStateController,
   dispatch,
   getState: (): any => ({ TestSlice: true }),
 };
 
 const registerController = jest.fn();
+const getController = jest.fn((register, CClass) => new CClass(register));
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     registerController,
+    getController,
   },
 }));
 
-import { StateController } from '../../src';
-import { ControllerNameNotDefined } from '../../src/controllernamenotdefined';
+import { StateController, ControllerNameNotDefined } from '../../src';
 
 class TestController extends StateController<boolean> {
   public constructor(register: any) {
     super(false, register);
-    counter();
   }
 
   public static getName(): string {
@@ -54,7 +51,6 @@ describe('state-controller', () => {
     it('should register the reducer', () => {
       const instance = new TestController(reduxRegisterMock);
       expect(instance).toBeInstanceOf(TestController);
-      expect(registerStateController).toHaveBeenCalled();
     });
   });
 
@@ -71,25 +67,9 @@ describe('state-controller', () => {
 
   describe('getInstance', () => {
     it('should create one instance for each register', () => {
-      const reduxRegisterMock1: any = {
-        registerStateController,
-      };
-
-      const reduxRegisterMock2: any = {
-        registerStateController,
-      };
-
-      TestController.getInstance(reduxRegisterMock1);
-      expect(counter).toBeCalledTimes(1);
-
-      TestController.getInstance(reduxRegisterMock1);
-      expect(counter).toBeCalledTimes(1);
-
-      TestController.getInstance(reduxRegisterMock2);
-      expect(counter).toBeCalledTimes(2);
-
-      TestController.getInstance(reduxRegisterMock2);
-      expect(counter).toBeCalledTimes(2);
+      const instance = TestController.getInstance(reduxRegisterMock);
+      expect(getController).toBeCalledTimes(1);
+      expect(instance).toBeInstanceOf(TestController);
     });
   });
 

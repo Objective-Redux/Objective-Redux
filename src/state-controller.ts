@@ -113,7 +113,6 @@ export abstract class StateController<State> extends Controller {
     super(register);
     this.initialState = initialState;
     this.reducerMap = {};
-    this.register.registerStateController(this);
   }
 
   /**
