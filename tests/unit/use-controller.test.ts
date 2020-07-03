@@ -19,6 +19,14 @@ jest.mock('../../src/use-register', () => ({
   useRegister,
 }));
 
+const getController = jest.fn((register, CClass) => new CClass(register));
+
+jest.mock('../../src/lazy-loader', () => ({
+  LazyLoader: {
+    getController,
+  },
+}));
+
 import { useController, StatelessController } from '../../src';
 
 class TestController extends StatelessController {

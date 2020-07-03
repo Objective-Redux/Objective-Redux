@@ -30,7 +30,6 @@ export abstract class Controller {
 
   protected constructor(register: ReduxRegister) {
     this.register = register;
-    (this.constructor as any).instances.set(register, this);
   }
 
   /**
@@ -72,19 +71,10 @@ export abstract class Controller {
    * ```
    */
   public static getInstance<T extends Controller>(
-    this: ModelConstructor<T> & typeof Controller,
+    this: typeof Controller & ModelConstructor<T>,
     register: ReduxRegister
   ): T {
-    if (!(this as any).instances) {
-      (this as any).instances = new WeakMap();
-    }
-
-    let instance = (this as any).instances.get(register);
-    if (!instance) {
-      instance = new this(register);
-    }
-
-    return instance;
+    return LazyLoader.getController(register, this);
   }
 
   /**

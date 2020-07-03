@@ -24,6 +24,7 @@ import {
   configureTakeLeading,
   configureDebounce,
 } from './take-type';
+import { ControllerNameNotDefined } from './controllernamenotdefined';
 
 export {
   ReduxRegister,
@@ -41,4 +42,5 @@ export {
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
+  ControllerNameNotDefined,
 };

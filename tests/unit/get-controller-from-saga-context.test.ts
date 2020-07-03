@@ -18,6 +18,13 @@ jest.mock('../../src/get-register-from-saga-context', () => ({
   getRegisterFromSagaContext,
 }));
 
+const getController = jest.fn((register, CClass) => new CClass(register));
+jest.mock('../../src/lazy-loader', () => ({
+  LazyLoader: {
+    getController,
+  },
+}));
+
 import { getControllerFromSagaContext, StateController } from '../../src';
 
 class TestStateController extends StateController<number> {

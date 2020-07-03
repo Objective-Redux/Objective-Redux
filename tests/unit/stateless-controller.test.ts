@@ -8,7 +8,6 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const counter = jest.fn();
 const registerSaga = jest.fn((fn): Generator => fn());
 const takeLatest = jest.fn();
 const takeEvery = jest.fn();
@@ -22,6 +21,13 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
+const getController = jest.fn((register, CClass) => new CClass(register));
+jest.mock('../../src/lazy-loader', () => ({
+  LazyLoader: {
+    getController,
+  },
+}));
+
 import { SagaBuilder } from '../../src/stateless-controller';
 import {
   StatelessController,
@@ -29,14 +35,14 @@ import {
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
+  ControllerNameNotDefined,
 } from '../../src';
-import { ControllerNameNotDefined } from '../../src/controllernamenotdefined';
 import { TakeBuilder } from '../../src/take-type';
 
 class TestController extends StatelessController {
+  // eslint-disable-next-line no-useless-constructor
   public constructor(register: any) {
     super(register);
-    counter();
   }
 
   public static getName(): string {
@@ -66,20 +72,10 @@ describe('stateless-controller', () => {
 
   describe('getInstance', () => {
     it('should create only one instance per register', () => {
-      const reduxRegisterMock1: any = {};
-      const reduxRegisterMock2: any = {};
-
-      TestController.getInstance(reduxRegisterMock1);
-      expect(counter).toBeCalledTimes(1);
-
-      TestController.getInstance(reduxRegisterMock1);
-      expect(counter).toBeCalledTimes(1);
-
-      TestController.getInstance(reduxRegisterMock2);
-      expect(counter).toBeCalledTimes(2);
-
-      TestController.getInstance(reduxRegisterMock2);
-      expect(counter).toBeCalledTimes(2);
+      const reduxRegisterMock: any = { registerSaga };
+      const instance = TestController.getInstance(reduxRegisterMock);
+      expect(getController).toBeCalledTimes(1);
+      expect(instance).toBeInstanceOf(TestController);
     });
   });
 

@@ -9,7 +9,8 @@
 // ================================================================================================
 
 import { AnyAction } from 'redux';
-import { Controller } from './controller';
+import { Controller, ModelConstructor } from './controller';
+import { ReduxRegister } from '.';
 
 /**
  * @internal
@@ -21,11 +22,37 @@ interface ControllerMap {
 /**
  * @internal
  */
+interface ControllerInstanceMap<T extends Controller> {
+  [key: string]: T;
+}
+
+/**
+ * @interface
+ */
+type RegisterToLoadedControllers<T extends Controller> = WeakMap<ReduxRegister, ControllerInstanceMap<T>>;
+
+/**
+ * @internal
+ */
+type ReduxRegisterFn = (controller: any) => void;
+
+/**
+ * @internal
+ */
+type RegisterReducerFnMap = WeakMap<ReduxRegister, ReduxRegisterFn>;
+
+/**
+ * @internal
+ */
 export class LazyLoader {
-  private static readonly registeredControllers: ControllerMap = {};
+  private static readonly loadableControllers: ControllerMap = {};
+
+  private static readonly reducerFns: RegisterReducerFnMap = new WeakMap();
+
+  private static readonly controllers: RegisterToLoadedControllers<any> = new WeakMap();
 
   public static registerController(controller: typeof Controller): void {
-    this.registeredControllers[controller.getName()] = controller;
+    this.loadableControllers[controller.getName()] = controller;
   }
 
   public static getControllerForAction(action: AnyAction): typeof Controller|null {
@@ -34,9 +61,38 @@ export class LazyLoader {
 
     const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
     if (match) {
-      controller = LazyLoader.registeredControllers[match[1]];
+      controller = LazyLoader.loadableControllers[match[1]];
     }
 
     return controller;
+  }
+
+  public static addRegister(register: ReduxRegister, registerReducerFn: ReduxRegisterFn): void {
+    this.reducerFns.set(register, registerReducerFn);
+    this.controllers.set(register, {});
+  }
+
+  // eslint-disable-next-line max-statements
+  public static getController<T extends Controller>(
+    register: ReduxRegister,
+    ControllerClass: ModelConstructor<T> & typeof Controller
+  ): T {
+    const name = ControllerClass.getName();
+    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(register) as any;
+
+    const existing = controllerMap[name];
+
+    if (existing) {
+      return existing;
+    }
+
+    const instance: any = new ControllerClass(register);
+    controllerMap[name] = instance;
+
+    if (instance.reducer) {
+      (this.reducerFns.get(register) as any)(instance);
+    }
+
+    return instance;
   }
 }

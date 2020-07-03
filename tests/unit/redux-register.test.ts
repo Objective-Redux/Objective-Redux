@@ -39,10 +39,12 @@ jest.mock('redux', () => ({
 }));
 
 const getControllerForAction = jest.fn();
+const addRegister = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getControllerForAction,
+    addRegister,
   },
 }));
 
@@ -142,35 +144,22 @@ describe('redux-register', () => {
     });
   });
 
-  describe('registerStateController', () => {
+  describe('replaceReducer', () => {
     it('should add the reducer to the store', () => {
-      const name1 = 'NAME_1';
-      const name2 = 'NAME_2';
-      const reducer1 = (): any => {};
-      const reducer2 = (): any => {};
+      const name = 'NAME_1';
+      const reducer = (): any => {};
 
-      const controllerOne: any = {
+      const controller: any = {
         constructor: {
-          getName: (): string => name1,
+          getName: (): string => name,
         },
-        reducer: reducer1,
-      };
-
-      const controllerTwo: any = {
-        constructor: {
-          getName: (): string => name2,
-        },
-        reducer: reducer2,
+        reducer: reducer,
       };
 
       const register = new ReduxRegister();
-      register.registerStateController(controllerOne);
+      (register as any).addControllerReducer(controller);
       expect(replaceReducer.mock.calls[0][0].external).toBeInstanceOf(Function);
       expect(Object.keys(replaceReducer.mock.calls[0][0].internal).length).toEqual(1);
-
-      register.registerStateController(controllerTwo);
-      expect(replaceReducer.mock.calls[1][0].external).toBeInstanceOf(Function);
-      expect(Object.keys(replaceReducer.mock.calls[1][0].internal).length).toEqual(2);
     });
   });
 

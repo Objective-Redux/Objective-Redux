@@ -37,4 +37,39 @@ describe('LazyLoader', () => {
       expect(controller).toEqual(mockController);
     });
   });
+
+  describe('getController', () => {
+    it('created one instance of each controller', () => {
+      class TestControllerOne {
+        public reducer(): any {}
+
+        public static getName(): string {
+          return 'A';
+        }
+      }
+
+      class TestControllerTwo {
+        public static getName(): string {
+          return 'B';
+        }
+      }
+
+      const mockRegister: any = {};
+      const registerReducerFn = jest.fn();
+
+      LazyLoader.addRegister(mockRegister, registerReducerFn);
+
+      const instanceOneA = LazyLoader.getController(mockRegister, TestControllerOne as any);
+      const instanceOneB = LazyLoader.getController(mockRegister, TestControllerOne as any);
+      expect(instanceOneA).toBeInstanceOf(TestControllerOne);
+      expect(instanceOneB).toBe(instanceOneA);
+
+      const instanceTwoA = LazyLoader.getController(mockRegister, TestControllerTwo as any);
+      const instanceTwoB = LazyLoader.getController(mockRegister, TestControllerTwo as any);
+      expect(instanceTwoA).toBeInstanceOf(TestControllerTwo);
+      expect(instanceTwoB).toBe(instanceTwoA);
+
+      expect(registerReducerFn).toBeCalledTimes(1);
+    });
+  });
 });
