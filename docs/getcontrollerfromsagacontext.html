@@ -52,53 +52,30 @@
     <div id="content" class="left">
       <div class="padded">
         
-    <h1 class="code">SagaBuilder</h1>
-    <p class="code">class SagaBuilder&lt;Payload&gt;</p>
-    <p>Builder that is returned by the [[StatelessController]] to create and register a saga.<br /></p>
+  <section>
+    <h2 class="code">getControllerFromSagaContext</h2>
+    <p class="code">function getControllerFromSagaContext&lt;C&gt;(controller: Controller|ModelConstructor&lt;C&gt;): Generator&lt;any, undefined, C&gt;</p>
+    <p>Gets a controller instance from the saga context.<br /></p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd>The payload that the action and the saga will use.<br /></dd></p>
-    
-    
-    
-  <section>
-    <h2 class="code">register</h2>
-    <p class="code">public register(sagaFn: SagaFn&lt;Payload&gt;): ActionFn&lt;Payload&gt;</p>
-    <p>Completes the builder and adds the saga to the register.<br /></p>
-    
+<p><dt>&lt;C&gt;</dt><dd><br />The type of controller that will be returned. This type is inferred and does not need to be specified in
+TypeScript.</dd></p>
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd><br />The saga function to add to the ReduxRegister.</dd><p>
+<p><dt>controller: Controller|ModelConstructor&lt;C&gt;</dt><dd><br />The controller class of which an instance should be retrieved.</dd><p>
     <h3>Returns</h3>
-    <p><dt>ActionFn<Payload></dt><dd>An action for calling the saga.<br /></dd></p>
-    
-  </section>
-  
+    <p><dt>Generator<any, undefined, C></dt><dd>A generator that yields an instance of the provided controller or null if there is no register in the saga's<br />context.
+</dd></p>
+    <h3>Examples</h3>
 
-  <section>
-    <h2 class="code">withAddressableName</h2>
-    <p class="code">public withAddressableName(name: string): SagaBuilder&lt;Payload&gt;</p>
-    <p>Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.<br /></p>
-    
-    <h3>Parameters</h3>
-<p><dt>name: string</dt><dd><br />The name/type of the action.</dd><p>
-    <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
-    
-  </section>
-  
+<pre><code class="language-typescript">// Also works with a StateController
+class MyController extends StatelessController {
+  // ...
+}
 
-  <section>
-    <h2 class="code">withTake</h2>
-    <p class="code">public withTake(takeBuilder: TakeBuilder): SagaBuilder&lt;Payload&gt;</p>
-    <p>Adds a simple watcher to the saga.<br /></p>
-    
-    <h3>Parameters</h3>
-<p><dt>takeBuilder: TakeBuilder</dt><dd><br />The builder function for the saga watcher. This can be generating using one of the configure
-functions, such as configureTakeLatest or configureDebounce.</dd><p>
-    <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
-    
+function* foo(): any {
+  const myController = yield getControllerFromSagaContext(MyController);
+}</code></pre>
+
   </section>
-  
   
       </div>
     </div>

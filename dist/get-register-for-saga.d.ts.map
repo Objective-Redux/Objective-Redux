@@ -1,1 +1,0 @@
-{"version":3,"file":"get-register-for-saga.d.ts","sourceRoot":"","sources":["../src/get-register-for-saga.ts"],"names":[],"mappings":"AAUA,OAAO,EAAc,gBAAgB,EAAE,MAAM,oBAAoB,CAAC;AAClE,OAAO,EAAE,aAAa,EAAE,MAAM,GAAG,CAAC;AAElC;;;;;;;;;;GAUG;AACH,wBAAiB,0BAA0B,IAAI,SAAS,CAAC,gBAAgB,EAAE,aAAa,EAAE,aAAa,CAAC,CAEvG"}

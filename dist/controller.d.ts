@@ -43,7 +43,7 @@ export declare abstract class Controller {
      * const instance = MyController.getInstance(register);
      * ```
      */
-    static getInstance<T extends Controller>(this: ModelConstructor<T> & typeof Controller, register: ReduxRegister): T;
+    static getInstance<T extends Controller>(this: typeof Controller & ModelConstructor<T>, register: ReduxRegister): T;
     /**
      * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
      *

@@ -9,5 +9,6 @@ import { getControllerFromSagaContext } from './get-controller-from-saga-context
 import { useRegister } from './use-register';
 import { useController } from './use-controller';
 import { configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce } from './take-type';
-export { ReduxRegister, StateController, StatelessController, createAction, RegisterProvider, ComponentConnector, getRegisterFromSagaContext, getControllerFromSagaContext, useRegister, useController, getActionNameForController, configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce, };
+import { ControllerNameNotDefined } from './controllernamenotdefined';
+export { ReduxRegister, StateController, StatelessController, createAction, RegisterProvider, ComponentConnector, getRegisterFromSagaContext, getControllerFromSagaContext, useRegister, useController, getActionNameForController, configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce, ControllerNameNotDefined, };
 //# sourceMappingURL=index.d.ts.map

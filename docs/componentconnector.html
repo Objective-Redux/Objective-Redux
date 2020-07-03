@@ -32,9 +32,15 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p><p class="nav-section">Functions</p>
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
+<p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
 <p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
 <p><a href="registerprovider.html">RegisterProvider</a></p>
-<p><a href="useregisterfromreactcontext.html">useRegisterFromReactContext</a></p><p class="nav-section">Classes</p>
+<p><a href="configuredebounce.html">configureDebounce</a></p>
+<p><a href="configuretakeevery.html">configureTakeEvery</a></p>
+<p><a href="configuretakelatest.html">configureTakeLatest</a></p>
+<p><a href="configuretakeleading.html">configureTakeLeading</a></p>
+<p><a href="usecontroller.html">useController</a></p>
+<p><a href="useregister.html">useRegister</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
 <p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
@@ -50,8 +56,7 @@
     <p class="code">class ComponentConnector</p>
     <p>Builder that connections a React component to the Objective Redux register, allowing the component to use the states and dispatch events.<br />This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the components closest provided ancestor. It also provides props from the states that were added.
 
-As an alternative for functional components, the useRegisterFromReactContext hook can be used to get
-the ReduxRegister.
+As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
 </p>
     
     <h3>Examples</h3>
@@ -111,7 +116,7 @@ the ReduxRegister.
     <div class="left">
       <div class="padded">
         <p>&copy; Copyright 2020 by Jason Mace</p>
-        <p>Documentation for v 0.6.0</p>
+        <p>Documentation for v 0.7.0</p>
       </div>
     </div>
   </footer>

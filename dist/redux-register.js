@@ -44,6 +44,7 @@ class ReduxRegister {
         this.registeredReducers = {};
         this.replacedReducer = null;
         this.registeredSagas = [];
+        lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         const internalMiddleware = [];
         const reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
         /* istanbul ignore else */
@@ -142,14 +143,7 @@ class ReduxRegister {
     runSaga(sagaFn) {
         this.sagaMiddleware.run(sagaFn);
     }
-    /**
-     * Adds a state controller to the register. This will add the reducer to the Redux store.
-     *
-     * This method is not meant to be used directly-- it will be called automatically when a new instance is created.
-     *
-     * @param controller The controller that is being registered.
-     */
-    registerStateController(controller) {
+    addControllerReducer(controller) {
         this.registeredReducers[controller.constructor.getName()] = controller.reducer.bind(controller);
         this.updateReducers();
     }

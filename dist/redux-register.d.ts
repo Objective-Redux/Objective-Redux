@@ -1,5 +1,4 @@
 import { Middleware, AnyAction, Unsubscribe } from 'redux';
-import { StateController } from '.';
 /**
  * @internal
  */
@@ -81,14 +80,7 @@ export declare class ReduxRegister {
     getState(): any;
     private updateReducers;
     private runSaga;
-    /**
-     * Adds a state controller to the register. This will add the reducer to the Redux store.
-     *
-     * This method is not meant to be used directly-- it will be called automatically when a new instance is created.
-     *
-     * @param controller The controller that is being registered.
-     */
-    registerStateController(controller: StateController<any>): void;
+    private addControllerReducer;
     /**
      * Replaced the existing reducer with a new one.
      *

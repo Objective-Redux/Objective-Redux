@@ -9,7 +9,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = exports.getActionNameForController = exports.useController = exports.useRegister = exports.getControllerFromSagaContext = exports.getRegisterFromSagaContext = exports.ComponentConnector = exports.RegisterProvider = exports.createAction = exports.StatelessController = exports.StateController = exports.ReduxRegister = void 0;
+exports.ControllerNameNotDefined = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = exports.getActionNameForController = exports.useController = exports.useRegister = exports.getControllerFromSagaContext = exports.getRegisterFromSagaContext = exports.ComponentConnector = exports.RegisterProvider = exports.createAction = exports.StatelessController = exports.StateController = exports.ReduxRegister = void 0;
 const redux_register_1 = require("./redux-register");
 Object.defineProperty(exports, "ReduxRegister", { enumerable: true, get: function () { return redux_register_1.ReduxRegister; } });
 const state_controller_1 = require("./state-controller");
@@ -36,4 +36,6 @@ Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: f
 Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return take_type_1.configureTakeEvery; } });
 Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return take_type_1.configureTakeLeading; } });
 Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return take_type_1.configureDebounce; } });
+const controllernamenotdefined_1 = require("./controllernamenotdefined");
+Object.defineProperty(exports, "ControllerNameNotDefined", { enumerable: true, get: function () { return controllernamenotdefined_1.ControllerNameNotDefined; } });
 //# sourceMappingURL=index.js.map

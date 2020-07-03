@@ -16,19 +16,40 @@ exports.LazyLoader = void 0;
 let LazyLoader = /** @class */ (() => {
     class LazyLoader {
         static registerController(controller) {
-            this.registeredControllers[controller.getName()] = controller;
+            this.loadableControllers[controller.getName()] = controller;
         }
         static getControllerForAction(action) {
             let controller = null;
             const type = (action === null || action === void 0 ? void 0 : action.type) || '';
             const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
             if (match) {
-                controller = LazyLoader.registeredControllers[match[1]];
+                controller = LazyLoader.loadableControllers[match[1]];
             }
             return controller;
         }
+        static addRegister(register, registerReducerFn) {
+            this.reducerFns.set(register, registerReducerFn);
+            this.controllers.set(register, {});
+        }
+        // eslint-disable-next-line max-statements
+        static getController(register, ControllerClass) {
+            const name = ControllerClass.getName();
+            const controllerMap = this.controllers.get(register);
+            const existing = controllerMap[name];
+            if (existing) {
+                return existing;
+            }
+            const instance = new ControllerClass(register);
+            controllerMap[name] = instance;
+            if (instance.reducer) {
+                this.reducerFns.get(register)(instance);
+            }
+            return instance;
+        }
     }
-    LazyLoader.registeredControllers = {};
+    LazyLoader.loadableControllers = {};
+    LazyLoader.reducerFns = new WeakMap();
+    LazyLoader.controllers = new WeakMap();
     return LazyLoader;
 })();
 exports.LazyLoader = LazyLoader;

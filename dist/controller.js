@@ -20,7 +20,6 @@ class Controller {
     constructor(register) {
         this.count = 0;
         this.register = register;
-        this.constructor.instances.set(register, this);
     }
     /**
      * Gets the name of the state slice.
@@ -59,14 +58,7 @@ class Controller {
      * ```
      */
     static getInstance(register) {
-        if (!this.instances) {
-            this.instances = new WeakMap();
-        }
-        let instance = this.instances.get(register);
-        if (!instance) {
-            instance = new this(register);
-        }
-        return instance;
+        return lazy_loader_1.LazyLoader.getController(register, this);
     }
     /**
      * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
