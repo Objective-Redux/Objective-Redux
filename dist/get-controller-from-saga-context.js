@@ -40,4 +40,3 @@ function* getControllerFromSagaContext(controller) {
     return yield controller.getInstance(register);
 }
 exports.getControllerFromSagaContext = getControllerFromSagaContext;
-//# sourceMappingURL=get-controller-from-saga-context.js.map

@@ -40,4 +40,3 @@ exports.useController = (controller) => {
     }
     return controller.getInstance(register);
 };
-//# sourceMappingURL=use-controller.js.map

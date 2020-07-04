@@ -127,4 +127,3 @@ class StatelessController extends controller_1.Controller {
     }
 }
 exports.StatelessController = StatelessController;
-//# sourceMappingURL=stateless-controller.js.map

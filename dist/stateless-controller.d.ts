@@ -83,7 +83,7 @@ export declare abstract class StatelessController extends Controller {
      * @param register Rhe ReduxRegister instance to which the controller will be connected.
      * @returns An instance of the StatelessController.
      */
-    protected constructor(register: ReduxRegister);
+    constructor(register: ReduxRegister);
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
      *

@@ -56,4 +56,3 @@ function createConnectedAction(type, register) {
     });
 }
 exports.createConnectedAction = createConnectedAction;
-//# sourceMappingURL=action.js.map

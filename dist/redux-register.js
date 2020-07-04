@@ -180,4 +180,3 @@ class ReduxRegister {
     }
 }
 exports.ReduxRegister = ReduxRegister;
-//# sourceMappingURL=redux-register.js.map

@@ -37,4 +37,3 @@ function RegisterProvider({ register, children }) {
     return (React.createElement(context_1.RegisterProviderContext.Provider, { value: register }, children));
 }
 exports.RegisterProvider = RegisterProvider;
-//# sourceMappingURL=register-provider.js.map

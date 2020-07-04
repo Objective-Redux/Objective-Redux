@@ -13,4 +13,3 @@ exports.ControllerNameNotDefined = void 0;
 class ControllerNameNotDefined extends Error {
 }
 exports.ControllerNameNotDefined = ControllerNameNotDefined;
-//# sourceMappingURL=controllernamenotdefined.js.map

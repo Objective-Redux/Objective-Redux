@@ -26,4 +26,3 @@ function* getRegisterFromSagaContext() {
     return yield get_redux_saga_module_1.getReduxSagaEffects().getContext('register');
 }
 exports.getRegisterFromSagaContext = getRegisterFromSagaContext;
-//# sourceMappingURL=get-register-from-saga-context.js.map

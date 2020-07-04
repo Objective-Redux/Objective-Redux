@@ -43,4 +43,3 @@ exports.useRegister = () => {
     }
     return register;
 };
-//# sourceMappingURL=use-register.js.map

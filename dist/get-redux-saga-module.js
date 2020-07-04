@@ -38,4 +38,3 @@ function getReduxSagaEffects() {
     return require('redux-saga/effects');
 }
 exports.getReduxSagaEffects = getReduxSagaEffects;
-//# sourceMappingURL=get-redux-saga-module.js.map

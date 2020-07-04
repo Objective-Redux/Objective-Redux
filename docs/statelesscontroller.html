@@ -87,7 +87,7 @@ instance.toggleSwitch();</code></pre>
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">protected constructor(register: ReduxRegister): StatelessController</p>
+    <p class="code">public constructor(register: ReduxRegister): StatelessController</p>
     <p>Registers and starts the sagas.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
 have adverse affects on the application._.
 </p>
@@ -186,7 +186,7 @@ export MyController;</code></pre>
     <div class="left">
       <div class="padded">
         <p>&copy; Copyright 2020 by Jason Mace</p>
-        <p>Documentation for v 0.7.0</p>
+        <p>Documentation for v 0.7.1</p>
       </div>
     </div>
   </footer>

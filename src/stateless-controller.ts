@@ -120,7 +120,7 @@ export abstract class StatelessController extends Controller {
    * @returns An instance of the StatelessController.
    */
   // eslint-disable-next-line no-useless-constructor
-  protected constructor(register: ReduxRegister) {
+  public constructor(register: ReduxRegister) {
     super(register);
   }
 
