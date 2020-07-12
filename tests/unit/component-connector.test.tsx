@@ -111,6 +111,7 @@ describe('component-connector', () => {
     instance.forceUpdate = null;
 
     instance.handleChange();
+    instance.componentWillUnmount();
 
     expect(instance.render()).toBeNull();
     expect(instance.shouldComponentUpdate()).toBeFalsy();

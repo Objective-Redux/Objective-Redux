@@ -140,7 +140,6 @@ export class ComponentConnector {
       }
 
       public componentWillUnmount(): void {
-        /* istanbul ignore else */
         if (this.unsubscribe) {
           this.unsubscribe();
           this.unsubscribe = null;
