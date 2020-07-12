@@ -37,8 +37,9 @@ header a {
 #main {
   font-size: 1.6rem;
   overflow: auto;
-  background-color: #D7D3D0;
+  background: #D7D3D0;
   width: 100%;
+  display: flex;
 }
 
 #content {
@@ -46,10 +47,21 @@ header a {
   background: #F7F3F0;
   min-height: calc(100vh - 298px);
   padding-bottom: 40px;
+  flex: 1;
+  flex-basis: 796px;
+  padding-left: calc(50% - 600px);
+  order: 1;
 }
 
 #content p {
   margin: 15px 0px;
+}
+
+nav {
+  flex: 1;
+  order: 2;
+  flex-basis: 399px;
+  padding-right: calc(50% - 600px);
 }
 
 nav p:first-child {
@@ -142,24 +154,32 @@ pre {
 }
 
 @media only screen and (max-width: 1200px) {
-  .left {
+  .left, #content {
     width: calc(100% - 400px);
+    flex-basis: calc(100% - 400px);
     padding-left: 0;
   }
   
-  .right {
+  .right, nav {
     width: 395px;
+    flex-basis: 395px;
   }
 }
 
 @media only screen and (max-width: 800px) {
-  .right {
+  #main {
+    display: block;
+  }
+
+  .right, nav {
+    flex: none;
     display: block;
     width: 100%;
     text-align: left;
   }
   
-  .left {
+  .left, #content {
+    flex: none;
     display: block;
     width: 100%;
     padding-left: 0;
