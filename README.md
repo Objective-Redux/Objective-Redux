@@ -93,9 +93,9 @@ For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
 
 <a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
 +
-<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
-+
 <a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
 
 you can simply use Objective-Redux
 
