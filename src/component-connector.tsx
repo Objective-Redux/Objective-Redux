@@ -96,14 +96,26 @@ export class ComponentConnector {
 
       public unsubscribe: Unsubscribe|null = null;
 
-      public static displayName: string = 'ObjectiveReduxConnector';
+      private mounted: boolean;
+
+      public static displayName: string = 'ComponentConnector';
 
       public constructor(props: any, context?: any) {
         super(props, context);
         this.unsubscribe = null;
+        this.mounted = false;
       }
 
-      public render(): JSX.Element {
+      public shouldComponentUpdate(): boolean {
+        return false;
+      }
+
+      public render(): JSX.Element|null {
+        if (!this.unsubscribe && this.mounted) {
+          return null;
+        }
+
+        this.mounted = true;
         const register: ReduxRegister = this.context;
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
@@ -131,11 +143,14 @@ export class ComponentConnector {
         /* istanbul ignore else */
         if (this.unsubscribe) {
           this.unsubscribe();
+          this.unsubscribe = null;
         }
       }
 
       public handleChange(): void {
-        this.forceUpdate();
+        if (this.unsubscribe) {
+          this.forceUpdate();
+        }
       }
     };
 
