@@ -56,7 +56,7 @@ class SliceTwo {
 }
 
 describe('component-connector', () => {
-  it('should create a connected element', () => {
+  it('creates a connected element', () => {
     const Connected = ComponentConnector
       .addPropsTo(ConnectedTest)
       .from(SliceOne as any)
@@ -83,8 +83,36 @@ describe('component-connector', () => {
 
     expect(subscribe).toHaveBeenCalled();
     (subscribe.mock.calls as any)[0][0]();
+  });
+
+  it('unmounts properly', () => {
+    const Connected = ComponentConnector
+      .addPropsTo(ConnectedTest)
+      .connect();
+
+    const wrapper = mount(
+      <RegisterProvider register={registerMock}>
+        <Connected />
+      </RegisterProvider>
+    );
 
     wrapper.unmount();
     expect(unsubscribe).toHaveBeenCalled();
+  });
+
+  it('not update unless forced', () => {
+    const Connected = ComponentConnector
+      .addPropsTo(ConnectedTest)
+      .connect();
+
+    const instance: any = new Connected({}, {});
+    instance.unsubscribe = null;
+    instance.mounted = true;
+    instance.forceUpdate = null;
+
+    instance.handleChange();
+
+    expect(instance.render()).toBeNull();
+    expect(instance.shouldComponentUpdate()).toBeFalsy();
   });
 });
