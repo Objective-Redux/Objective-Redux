@@ -73,8 +73,16 @@ class ComponentConnector {
                     super(props, context);
                     this.unsubscribe = null;
                     this.unsubscribe = null;
+                    this.mounted = false;
+                }
+                shouldComponentUpdate() {
+                    return false;
                 }
                 render() {
+                    if (!this.unsubscribe && this.mounted) {
+                        return null;
+                    }
+                    this.mounted = true;
                     const register = this.context;
                     let state = {};
                     for (let i = 0; i < controllers.length; i++) {
@@ -88,17 +96,19 @@ class ComponentConnector {
                     this.unsubscribe = register.subscribe(this.handleChange.bind(this));
                 }
                 componentWillUnmount() {
-                    /* istanbul ignore else */
                     if (this.unsubscribe) {
                         this.unsubscribe();
+                        this.unsubscribe = null;
                     }
                 }
                 handleChange() {
-                    this.forceUpdate();
+                    if (this.unsubscribe) {
+                        this.forceUpdate();
+                    }
                 }
             },
             _a.contextType = context_1.RegisterProviderContext,
-            _a.displayName = 'ObjectiveReduxConnector',
+            _a.displayName = 'ComponentConnector',
             _a);
         return connected;
     }
