@@ -19,7 +19,16 @@
   </header>
   <div id="main">
     <nav>
-      <div class="padded">
+      <div id="hamburger">
+        <div id="hamburger-icon">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        &nbsp;
+        Menu
+      </div>
+      <div id="links" class="padded">
         <p>
           <a href="https://github.com/Objective-Redux/Objective-Redux"><img style="width: 24px;" src="github.png" alt="GitHub" /></a>
           &nbsp;
@@ -89,5 +98,11 @@ export default function() {
   </footer>
 
   <script src="prism.js"></script>
+  <script>
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("hamburger").style.display = 'none';
+      document.getElementById("links").style.display = "block";
+    });
+  </script>
 </body>
   </html>

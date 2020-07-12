@@ -49,6 +49,7 @@ header a {
   padding-bottom: 40px;
   flex: 1;
   max-width: 796px;
+  min-width: 796px;
   padding-left: calc(50% - 600px);
   order: 1;
 }
@@ -153,9 +154,28 @@ pre {
   border-radius: 5px;
 }
 
+#hamburger {
+  display: none;
+  padding: 10px;
+  padding-left: 35px;
+  cursor: pointer;
+}
+
+#hamburger-icon {
+  float: left;
+}
+
+#hamburger-icon div {
+  width: 24px;
+  height: 3px;
+  background-color: black;
+  margin: 4px 0;
+}
+
 @media only screen and (max-width: 1100px) {
   .left, #content {
     max-width: calc(100% - 315px);
+    min-width: calc(100% - 315px);
     padding-left: 0;
   }
   
@@ -176,12 +196,17 @@ pre {
     width: 100%;
     text-align: left;
   }
+
+  nav .padded {
+    display: none;
+  }
   
   .left, #content {
     flex: none;
     display: block;
     width: 100%;
     max-width: 100%;
+    min-width: 100%;
     padding-left: 0;
   }
 
@@ -197,5 +222,9 @@ pre {
 
   nav p:first-child {
     margin-top: 0;
+  }
+
+  #hamburger {
+    display: inline-block;
   }
 }
