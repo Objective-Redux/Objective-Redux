@@ -20,7 +20,10 @@ const get_redux_saga_module_1 = require("./get-redux-saga-module");
 const defaultReducer = () => ({});
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
- * own Redux store that it manages.
+ * own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.
+ *
+ * The store is partitioned internally, making it safe to continue calling functions like replaceReducer without
+ * affecting how Objective-Redux manages its own reducers.
  *
  * Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
  */
@@ -28,7 +31,8 @@ class ReduxRegister {
     /**
      * Creates an instance of the ReduxRegister.
      *
-     * In setting up the instance, the class will create a ReduxStore.
+     * In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be
+     * setup automatically as well.
      *
      * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
      * @param initialState The initial state of the store. This should not include the state for any of the controllers.
@@ -36,6 +40,7 @@ class ReduxRegister {
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript
+     * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
      * const register = new ReduxRegister();
      * ```
      */

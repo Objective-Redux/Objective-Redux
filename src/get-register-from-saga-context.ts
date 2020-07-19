@@ -14,13 +14,13 @@ import { ReduxRegister } from './';
 /**
  * Gets the register from the saga's context.
  *
+ * @returns A generator that yields an instance of the ReduxRegister.
  * @example
  * ```typescript
  * function* () {
  *   const register = yield getRegisterFromSagaContext();
  * }
  * ```
- * @returns A generator that yields an instance of the ReduxRegister.
  */
 export function* getRegisterFromSagaContext(): Generator<any, ReduxRegister, ReduxRegister> {
   return yield getReduxSagaEffects().getContext('register');

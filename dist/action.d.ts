@@ -36,8 +36,19 @@ export declare function getActionNameForController(controllerName: string, actio
 /**
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
+ * This is particularly useful for code-splitting or for firing actions to non-Objective-Redux reducers.
+ *
  * @param type The name of the action being sent.
  * @returns The action generating function.
+ *
+ * @example
+ * ```typescript
+ * // To fire an action to a reducer not managed by Objective-Redux
+ * const action = createAction('myAction');
+ *
+ * // To fire an action to an Objective-Redux controller without using the controller
+ * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
+ * ```
  */
 export declare function createAction<Payload>(type: string): (payload: Payload) => Action<Payload>;
 /**

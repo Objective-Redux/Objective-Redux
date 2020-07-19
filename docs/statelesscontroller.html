@@ -156,7 +156,10 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">getName</h2>
     <p class="code">public static getName(): string</p>
-    <p>Gets the name of the state slice.<br />If the controller will be used with lazy loading, the name of the controller must be globally unique. </p>
+    <p>Gets the name of the state slice.<br />This must be overloaded and defined for each controller. Failure to override the controller will result in ControllerNameNotDefined errors.
+
+The name of the controller should be globally unique for all Objective-Redux controllers in the application.
+</p>
     
     
     <h3>Returns</h3>
@@ -168,7 +171,9 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">lazyLoadOnExternalAction</h2>
     <p class="code">public static lazyLoadOnExternalAction&lt;T&gt;(this: T): void</p>
-    <p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.<br />This can be used in conjunction with the method [[withAddressableName]]. </p>
+    <p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.<br />In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load without using the controller directly, this needs to be used in conjunction with the method
+[[withAddressableName]].
+</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd></dd></p>
     <h3>Parameters</h3>
@@ -178,12 +183,27 @@ have adverse affects on the application._.
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">class MyController extends StateController&lt;MySliceType&gt; {
-  // ...
+  public static getName() {
+    return 'MY_CONTROLLER';
+  }
+
+  action = this.registerAction(
+    (state, payload) =&gt; ({
+      ...state,
+      ...payload,
+    })
+  ).withAddressableName('MY_ACTION'); // &lt;-- also required
 }
 
 MyController.lazyLoadOnExternalAction();
 
-export MyController;</code></pre>
+export MyController;
+
+// ... elsewhere ...
+
+// By firing this action, the controller will now be instantiated (if it hasn't been).
+const myAction = createAction(getActionNameForController('MY_CONTROLLER', 'MY_ACTION'));
+register.dispatch(myAction);</code></pre>
 
   </section>
   
@@ -195,7 +215,7 @@ export MyController;</code></pre>
     <div class="left">
       <div class="padded">
         <p>&copy; Copyright 2020 by Jason Mace</p>
-        <p>Documentation for v 0.7.2</p>
+        <p>Documentation for v 0.7.3</p>
       </div>
     </div>
   </footer>

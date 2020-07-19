@@ -16,8 +16,12 @@ export declare abstract class Controller {
     /**
      * Gets the name of the state slice.
      *
-     * If the controller will be used with lazy loading, the name of the controller must be globally unique.
+     * This must be overloaded and defined for each controller. Failure to override the controller will result
+     * in ControllerNameNotDefined errors.
      *
+     * The name of the controller should be globally unique for all Objective-Redux controllers in the application.
+     *
+     * @throws {ControllerNameNotDefined} Thrown when the method has not been overloaded to return a proper name.
      * @returns The name of the state slice.
      */
     static getName(): string;
@@ -47,18 +51,35 @@ export declare abstract class Controller {
     /**
      * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
      *
-     * This can be used in conjunction with the method [[withAddressableName]].
+     * In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load
+     * without using the controller directly, this needs to be used in conjunction with the method
+     * [[withAddressableName]].
      *
      * @param this Implicit "this" parameter, which does not need to be supplied.
      * @example
      * ```typescript
      * class MyController extends StateController<MySliceType> {
-     *   // ...
+     *   public static getName() {
+     *     return 'MY_CONTROLLER';
+     *   }
+     *
+     *   action = this.registerAction(
+     *     (state, payload) => ({
+     *       ...state,
+     *       ...payload,
+     *     })
+     *   ).withAddressableName('MY_ACTION'); // <-- also required
      * }
      *
      * MyController.lazyLoadOnExternalAction();
      *
      * export MyController;
+     *
+     * // ... elsewhere ...
+     *
+     * // By firing this action, the controller will now be instantiated (if it hasn't been).
+     * const myAction = createAction(getActionNameForController('MY_CONTROLLER', 'MY_ACTION'));
+     * register.dispatch(myAction);
      * ```
      */
     static lazyLoadOnExternalAction<T extends typeof Controller>(this: T): void;

@@ -64,14 +64,21 @@
   <section>
     <h2 class="code">createAction</h2>
     <p class="code">function createAction&lt;Payload&gt;(type: string): (payload: Payload) =&gt; Action&lt;Payload&gt;</p>
-    <p>Returns a function that generates a Redux action of the form { type, payload }.<br /></p>
+    <p>Returns a function that generates a Redux action of the form { type, payload }.<br />This is particularly useful for code-splitting or for firing actions to non-Objective-Redux reducers. </p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;Payload&gt;</dt><dd></dd></p>
     <h3>Parameters</h3>
 <p><dt>type: string</dt><dd><br />The name of the action being sent.</dd><p>
     <h3>Returns</h3>
     <p><dt>(payload: Payload) => Action<Payload></dt><dd>The action generating function.<br /></dd></p>
-    
+    <h3>Examples</h3>
+
+<pre><code class="language-typescript">// To fire an action to a reducer not managed by Objective-Redux
+const action = createAction('myAction');
+
+// To fire an action to an Objective-Redux controller without using the controller
+const action = createAction(getActionNameForController('myControllerName', 'myActionName'));</code></pre>
+
   </section>
   
       </div>
@@ -81,7 +88,7 @@
     <div class="left">
       <div class="padded">
         <p>&copy; Copyright 2020 by Jason Mace</p>
-        <p>Documentation for v 0.7.2</p>
+        <p>Documentation for v 0.7.3</p>
       </div>
     </div>
   </footer>

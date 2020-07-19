@@ -10,6 +10,9 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ControllerNameNotDefined = void 0;
+/**
+ * Thrown when the method getName of a controller instance has not been implemented.
+ */
 class ControllerNameNotDefined extends Error {
 }
 exports.ControllerNameNotDefined = ControllerNameNotDefined;

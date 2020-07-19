@@ -3,7 +3,7 @@
 
 <a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
 <a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
-<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="bundle size" /></a>
+<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/minzip/objective-redux" alt="bundle size" /></a>
 <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
 
 Object-oriented, light-weight, and TypeScript compatible.
@@ -52,17 +52,13 @@ export class SwitchStateController extends StateController {
     return 'switch';
   }
 
-  toggleSwitch = this.registerAction(
-    (state) => ({ isOn: !state.isOn })
-  );
-
   setSwitch = this.registerAction(
     (state, isOn) => ({ isOn })
   );
 }
 ```
 ```javascript
-SwitchOneController.getInstance(register).toggleSwitch();
+SwitchOneController.getInstance(register).setSwitch(true);
 ```
 
 <br />

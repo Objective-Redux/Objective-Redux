@@ -14,13 +14,13 @@ const get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
  * Gets the register from the saga's context.
  *
+ * @returns A generator that yields an instance of the ReduxRegister.
  * @example
  * ```typescript
  * function* () {
  *   const register = yield getRegisterFromSagaContext();
  * }
  * ```
- * @returns A generator that yields an instance of the ReduxRegister.
  */
 function* getRegisterFromSagaContext() {
     return yield get_redux_saga_module_1.getReduxSagaEffects().getContext('register');

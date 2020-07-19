@@ -8,4 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
+/**
+ * Thrown when the method getName of a controller instance has not been implemented.
+ */
 export class ControllerNameNotDefined extends Error {}
