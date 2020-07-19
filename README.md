@@ -67,9 +67,11 @@ SwitchOneController.getInstance(register).setSwitch(true);
 
 # Start using it now
 
-You can read the full documentation, along with examples, here:
+You can read the <a href="https://objective-redux.github.io/Objective-Redux/">full documentation</a> for more detailed information, along with examples.
 
-https://objective-redux.github.io/Objective-Redux/
+<a href="https://objective-redux.github.io/Objective-Redux/" alt="documentation website screenshot"><img src="./statics/docs.png"></a>
+
+In addition, you can take a look at the <a href="./examples">example apps</a> in the project's <a href="https://github.com/Objective-Redux/Objective-Redux/">GitHub repository</a>.
 
 <br />
 
