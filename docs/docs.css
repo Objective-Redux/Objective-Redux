@@ -25,6 +25,52 @@ header {
 
 header .left p:first-child {
   font-size: 1.8em;
+  text-indent: 0;
+}
+
+header .left p {
+  text-indent: 40px;
+}
+
+header .padded {
+  position: relative;
+}
+
+#logo, #logo2 {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  border: 15px solid #0B2C3D;
+  z-index: -1;
+  top: 22px;
+  left: 12px;
+  border-radius: 40px;
+  opacity: .6;
+}
+
+#logo:before {
+  content: '';
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border: 25px solid #69AEBB;
+  z-index: 1;
+  top: -5px;
+  left: -14px;
+  border-radius: 40px;
+  opacity: .7;
+}
+
+#logo:after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  background: #534F4E;
+  z-index: 1;
+  top: 0;
+  left: -2px;
+  border-radius: 100px;
 }
 
 header a {
