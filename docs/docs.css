@@ -16,7 +16,7 @@ html, body {
 
 header {
   margin: 0;
-  color: #F7F3F0;
+  color: #FFF;
   font-size: 1.4rem;
   overflow: auto;
 }
@@ -30,21 +30,21 @@ header .left p:first-child {
 }
 
 header a {
-  color: #F7F3F0;
+  color: #FFF;
   text-decoration: none;
 }
 
 #main {
   font-size: 1.6rem;
   overflow: auto;
-  background: #D7D3D0;
+  background: #FFF;
   width: 100%;
   display: flex;
 }
 
 #content {
   float: left;
-  background: #F7F3F0;
+  background: #FFF;
   min-height: calc(100vh - 298px);
   padding-bottom: 40px;
   flex: 1;
@@ -52,6 +52,7 @@ header a {
   min-width: 796px;
   padding-left: calc(50% - 600px);
   order: 1;
+  border-right: 1px dotted #000;
 }
 
 #content p {
@@ -98,7 +99,7 @@ nav a:hover .destructure {
 }
 
 footer {
-  color: #F7F3F0;
+  color: #FFF;
   font-size: 1.4rem;
 }
 
