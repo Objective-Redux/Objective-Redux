@@ -11,10 +11,11 @@ html, body {
   padding: 0px;
   font-size: 10px;
   font-family: 'Noto Sans', sans-serif;
-  background: #534F4E;
+  color: #000;
 }
 
 header {
+  background: #534F4E;
   margin: 0;
   color: #FFF;
   font-size: 1.4rem;
@@ -52,7 +53,6 @@ header a {
   min-width: 796px;
   padding-left: calc(50% - 600px);
   order: 1;
-  border-right: 1px dotted #000;
 }
 
 #content p {
@@ -64,10 +64,10 @@ nav {
   order: 2;
   width: 399px;
   padding-right: calc(50% - 600px);
+  margin-top: 60px;
 }
 
 nav p:first-child {
-  margin-top: 60px;
 }
 
 nav a {
@@ -88,6 +88,10 @@ nav a:hover .destructure {
   display: inline;
 }
 
+#links {
+  border-left: 1px dotted #000;
+}
+
 .nav-section {
   margin-top: 20px;
   margin-bottom: 5px;
@@ -99,7 +103,6 @@ nav a:hover .destructure {
 }
 
 footer {
-  color: #FFF;
   font-size: 1.4rem;
 }
 
