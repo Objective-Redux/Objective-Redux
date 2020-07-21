@@ -20,14 +20,11 @@ header {
   color: #FFF;
   font-size: 1.4rem;
   overflow: auto;
-}
-
-header p:first-child {
-  font-family: 'Ubuntu', sans-serif;
+  letter-spacing: 1px;
 }
 
 header .left p:first-child {
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 header a {
@@ -38,20 +35,18 @@ header a {
 #main {
   font-size: 1.6rem;
   overflow: auto;
-  background: #FFF;
   width: 100%;
   display: flex;
 }
 
 #content {
   float: left;
-  background: #FFF;
-  min-height: calc(100vh - 298px);
+  min-height: calc(100vh - 238px);
   padding-bottom: 40px;
   flex: 1;
-  max-width: 796px;
-  min-width: 796px;
-  padding-left: calc(50% - 600px);
+  max-width: 795px;
+  min-width: 795px;
+  padding-left: calc(50% - 602px);
   order: 1;
 }
 
@@ -62,8 +57,8 @@ header a {
 nav {
   flex: 1;
   order: 2;
-  width: 399px;
-  padding-right: calc(50% - 600px);
+  width: 397px;
+  padding-right: calc(50% - 602px);
   margin-top: 60px;
 }
 
@@ -101,6 +96,11 @@ nav a:hover .destructure {
 
 footer {
   font-size: 1.4rem;
+}
+
+footer .padded {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .code {
@@ -169,19 +169,19 @@ pre {
 #hamburger-icon div {
   width: 24px;
   height: 3px;
-  background-color: black;
+  background-color: #000;
   margin: 4px 0;
 }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 1110px) {
   .left, #content {
-    max-width: calc(100% - 315px);
-    min-width: calc(100% - 315px);
+    max-width: calc(100% - 316px);
+    min-width: calc(100% - 316px);
     padding-left: 0;
   }
   
   .right, nav {
-    width: 295px;
+    width: 294px;
     padding-right: 0;
   }
 }
@@ -227,5 +227,9 @@ pre {
 
   #hamburger {
     display: inline-block;
+  }
+
+  #links {
+    border-left: 0;
   }
 }
