@@ -155,7 +155,8 @@ function sanitizeDescription(desc) {
 
 function getStaticLink(file) {
   return capitalize(
-    file.replace(/--/g, '/')
+    file.replace(/^\d+_/, '')
+      .replace(/--/g, '/')
       .replace(/-/g, ' ')
       .replace(/\//g, '-')
       .replace('.html', '')
@@ -163,7 +164,11 @@ function getStaticLink(file) {
 }
 
 function getLink(item) {
-  return `${item.name.toLowerCase()}.html`;
+  const name = item.name.replace(/\d+_/, '')
+    .replace(/\.html$/, '')
+    .replace(/--/g, '-')
+    .toLowerCase();
+  return `${name}.html`;
 }
 
 function capitalize(string) {
@@ -178,17 +183,20 @@ function sanitizeAsHTML(text) {
 
 const files = fs.readdirSync(TEMPLATE_DIRECTORY);
 
-let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html' && file !== 'index.html')
-  .map(file => `<p><a href="${file.replace(/--/g, '-').toLocaleLowerCase()}">${getStaticLink(file)}</a></p>`)
-  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Topics</p>');
+typescriptData.classes.sort((a, b) => (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1));
+typescriptData.functions.sort((a, b) => (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1));
 
-menu += typescriptData.functions
-  .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
-  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Functions</p>');
+let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html' && file !== 'index.html')
+  .map(file => `<p><a href="${getLink({ name: file })}">${getStaticLink(file)}</a></p>`)
+  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Topics</p>');
 
 menu += typescriptData.classes
   .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
   .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Classes</p>');
+
+menu += typescriptData.functions
+  .map(d => `<p><a href="${getLink(d)}">${d.name}</a></p>`)
+  .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Functions</p>');
 
 files.filter(file => file !== 'template.html').forEach(file => {
   if (!file.match(/.html$/)) {
@@ -197,10 +205,13 @@ files.filter(file => file !== 'template.html').forEach(file => {
       fs.readFileSync(`${TEMPLATE_DIRECTORY}/${file}`)
     );
   } else {
+    const filename = file
+      .replace(/^\d+_/, '').replace(/--/g, '-')
+      .toLocaleLowerCase();
     writeFile({
       body: fs.readFileSync(`${TEMPLATE_DIRECTORY}/${file}`, 'utf-8'),
       menu,
-      filename: file.replace(/--/g, '-').toLocaleLowerCase(),
+      filename,
     });
   }
 });

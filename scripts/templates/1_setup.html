@@ -1,0 +1,31 @@
+<h1>Setup</h1>
+
+<h2>Installing Packages</h2>
+
+<p>In order to use Objective Redux in your project, you'll need to install it along with Redux. These should be saved as dependencies, since they will need to be run with the final application.</p>
+
+<pre><code>npm install --save redux objective-redux</code></pre>
+
+<p>If you want to use Redux-Saga, install it as well.</p>
+
+<pre><code>npm install --save redux-saga</code></pre>
+
+<h2>Adding a Provider (React)</h2>
+
+<p>If you're using React, you'll need to setup a provider for the ReduxRegister class. This will allow you to access the register instance from your components, either by connecting the component to the provider or by using the provided React hook.</p>
+
+<pre><code class="language-typescript">
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import App from './app';
+
+export const register = new ReduxRegister();
+
+ReactDOM.render(
+  &lt;RegisterProvider register={register}&gt;
+    &lt;App /&gt;
+  &lt;/RegisterProvider&gt;,
+  document.getElementById('root')
+);
+</code></pre>

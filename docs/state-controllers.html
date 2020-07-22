@@ -36,74 +36,74 @@
           <a href="https://www.npmjs.com/package/objective-redux"><img src="npm.png" style="width: 24px;" alt="NPM" /></a>
         </p>
         <p class="nav-section">Topics</p>
+<p><a href="setup.html">Setup</a></p>
+<p><a href="state-controllers.html">State controllers</a></p>
+<p><a href="stateless-controllers.html">Stateless controllers</a></p>
 <p><a href="code-splitting.html">Code splitting</a></p>
-<p><a href="getting-started.html">Getting started</a></p>
-<p><a href="typescript.html">Typescript</a></p>
-<p><a href="use-with-react-redux.html">Use with React-Redux</a></p><p class="nav-section">Functions</p>
+<p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
+<p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
+<p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
+<p><a href="reduxregister.html">ReduxRegister</a></p>
+<p><a href="sagabuilder.html">SagaBuilder</a></p>
+<p><a href="statecontroller.html">StateController</a></p>
+<p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
+<p><a href="configuredebounce.html">configureDebounce</a></p>
+<p><a href="configuretakeevery.html">configureTakeEvery</a></p>
+<p><a href="configuretakelatest.html">configureTakeLatest</a></p>
+<p><a href="configuretakeleading.html">configureTakeLeading</a></p>
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
 <p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
 <p><a href="registerprovider.html">RegisterProvider</a></p>
-<p><a href="configuredebounce.html">configureDebounce</a></p>
-<p><a href="configuretakeevery.html">configureTakeEvery</a></p>
-<p><a href="configuretakelatest.html">configureTakeLatest</a></p>
-<p><a href="configuretakeleading.html">configureTakeLeading</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p><p class="nav-section">Classes</p>
-<p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
-<p><a href="statecontroller.html">StateController</a></p>
-<p><a href="sagabuilder.html">SagaBuilder</a></p>
-<p><a href="statelesscontroller.html">StatelessController</a></p>
+<p><a href="useregister.html">useRegister</a></p>
       </div>
     </nav>
     <div id="content">
       <div class="padded">
-        <h1>Getting Started</h1>
+        <h1>State Controllers</h1>
 
-<h2>Setup</h2>
+<h2>The StateControllers Class</h2>
 
-<h3>Installing Packages</h3>
+<p>A state controller defines a slice of Redux state. In other words, a StateController instance manages the mutation and retrieval of piece of the Redux store.</p>
 
-<p>In order to use Objective Redux in your project, you'll need to install it along with Redux. These should be saved as dependencies, since they will need to be run with the final application.</p>
+<h2>Defining a StateController</h2>
 
-<pre><code>npm install --save redux objective-redux</code></pre>
+<h3>Required Implementations</h3>
 
-<p>If you want to use Redux-Saga, install it as well.</p>
+<p>A StateController instance needs two things: (1) a construction that takes a register and passes the initial state and the register to the super constructor; and (2) a static getName method that returns the string name of the state slice.</p>
 
-<pre><code>npm install --save redux-saga</code></pre>
-
-<h3>Adding a Provider (React)</h3>
-
-<p>If you're using React, you'll need to setup a provider for the ReduxRegister class. This will allow you to access the register instance from your components, either by connecting the component to the provider or by using the provided React hook.</p>
+<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly.</p>
 
 <pre><code class="language-typescript">
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
-import App from './app';
-
-export const register = new ReduxRegister();
-
-ReactDOM.render(
-  &lt;RegisterProvider register={register}&gt;
-    &lt;App /&gt;
-  &lt;/RegisterProvider&gt;,
-  document.getElementById('root')
-);
+  import { StateController } from 'objective-redux';
+  
+  const initialState = { isOn: false };
+  
+  class SwitchStateController extends StateController {
+    // The construct should look like this
+    constructor(register) {
+      super(initialState, register);
+    }
+  
+    // The name returned must be unique
+    static getName() {
+      return 'switch';
+    }
+    
+    // ... your actions will go here ...
+  }
+  
+  export SwitchStateController;
 </code></pre>
 
-<h2>Creating Slices</h2>
-
-<p>In Objective-Redux, a StateController handles the access and mutation of a slice of state. Every time you instantiate a StateController, the reducer associated with that state is added automatically to the ReduxRegister.</p>
-
-<p>The stateName and the initialState are sent to the super constructor. The stateName will identify the piece of the state the controller is operating on and the initialState determines the starting configuration it.</p>
+<h3>Defining Actions</h3>
 
 <p>Actions and their associated mutations are created by using the registerAction method. This method takes a function that, in turn, accepts the current state and the action payload as parameters and returns the new state.</p>
 
-<p>Below is an example of a state controller that flips a switch on and off.</p>
+<p>Below is an example of a state controller that flips a switch on and off or sets the switch to a value.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -111,21 +111,29 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(register) {                   // The generated reducer is added
-    super(initialState, register);          // to the ReduxRegister. No need
-  }                                         // to wire it up manually.
+  constructor(register) {
+    super(initialState, register);
+  }
 
-  static getName() {                        // Sets the name of the slice.
+  static getName() {
     return 'switch';
   }
 
-  toggleSwitch = this.registerAction(       // This creates a reducer and
-    (state) => ({ isOn: !state.isOn })      // returns the associate action.
+  // Our actions:
+
+  toggleSwitch = this.registerAction(
+    (state) => ({ isOn: !state.isOn })
+  );
+
+  setSwitch = this.registerAction(
+    (state, isOn) => ({ isOn })
   );
 }
 
 export SwitchStateController;
 </code></pre>
+
+<h2>Using the StateController</h2>
 
 <p>Below are two examples of how the above class would be used with React.</p>
 
@@ -141,6 +149,8 @@ function AppComponent(props) {
 
   const sendToggleAction = () => {
     SwitchStateController.getInstance(register).toggleSwitch();
+    // or we could call our set method
+    // SwitchStateController.getInstance(register).setSwitch(true);
   }
 
   return (
@@ -169,6 +179,8 @@ export default ComponentConnector
   
     const sendToggleAction = () => {
       switchController.toggleSwitch();
+      // or we could call our set method
+      // switchController.setSwitch(true);
     }
   
     return (
@@ -177,37 +189,8 @@ export default ComponentConnector
         &lt;/button&gt;
     );
   }
-  </code></pre>
-
-<h2>Creating Sagas</h2>
-
-<p>Sagas can be created using the StatelessController. The createSagaWithType is passed a take type for the saga, defining how de-duplication of the events should be handled. Then, the register method is called and passed the generator function the saga will execute.</p>
-
-<p>Below is an example of a Saga that will call the toggleSwitch method of our previously created SwitchStateController.</p>
-
-<pre><code class="language-typescript">
-import {
-  StatelessController,
-  TakeType,
-  getControllerFromSagaContext
-} from 'objective-redux';
-import { SwitchStateController } from './switch-state-controller';
-
-export class SwitchStateSagas extends StatelessController {
-  static getName() {
-    return 'Switch-State-Sagas';
-  }
-
-  toggleSwitch = this.createSaga()
-    .withTake(configureTakeLatest()))
-    .register(
-      function* () {
-        const switchController = yield getControllerFromSagaContext(SwitchStateController);
-        yield switchController.toggleSwitchValue(payload);
-      }
-    );
-}
 </code></pre>
+
       </div>
     </div>
   </div>
