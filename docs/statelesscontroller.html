@@ -172,8 +172,8 @@ The name of the controller should be globally unique for all Objective-Redux con
   
 
   <section>
-    <h2 class="code">lazyLoadOnExternalAction</h2>
-    <p class="code">public static lazyLoadOnExternalAction&lt;T&gt;(this: T): void</p>
+    <h2 class="code">initializeOnExternalAction</h2>
+    <p class="code">public static initializeOnExternalAction&lt;T&gt;(this: T): void</p>
     <p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.<br />In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load without using the controller directly, this needs to be used in conjunction with the method
 [[withAddressableName]].
 </p>
@@ -198,7 +198,7 @@ The name of the controller should be globally unique for all Objective-Redux con
   ).withAddressableName('MY_ACTION'); // &lt;-- also required
 }
 
-MyController.lazyLoadOnExternalAction();
+MyController.initializeOnExternalAction();
 
 export MyController;
 
@@ -217,7 +217,7 @@ register.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.7.4 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.8.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
