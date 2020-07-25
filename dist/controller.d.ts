@@ -71,7 +71,7 @@ export declare abstract class Controller {
      *   ).withAddressableName('MY_ACTION'); // <-- also required
      * }
      *
-     * MyController.lazyLoadOnExternalAction();
+     * MyController.initializeOnExternalAction();
      *
      * export MyController;
      *
@@ -82,6 +82,6 @@ export declare abstract class Controller {
      * register.dispatch(myAction);
      * ```
      */
-    static lazyLoadOnExternalAction<T extends typeof Controller>(this: T): void;
+    static initializeOnExternalAction<T extends typeof Controller>(this: T): void;
 }
 //# sourceMappingURL=controller.d.ts.map

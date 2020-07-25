@@ -104,7 +104,7 @@ export abstract class Controller {
    *   ).withAddressableName('MY_ACTION'); // <-- also required
    * }
    *
-   * MyController.lazyLoadOnExternalAction();
+   * MyController.initializeOnExternalAction();
    *
    * export MyController;
    *
@@ -115,7 +115,7 @@ export abstract class Controller {
    * register.dispatch(myAction);
    * ```
    */
-  public static lazyLoadOnExternalAction<T extends typeof Controller>(this: T): void {
+  public static initializeOnExternalAction<T extends typeof Controller>(this: T): void {
     LazyLoader.registerController(this);
   }
 }

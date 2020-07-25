@@ -31,4 +31,4 @@ export class SwitchStateSagas extends StatelessController {
     );
 }
 
-SwitchStateSagas.lazyLoadOnExternalAction();
+SwitchStateSagas.initializeOnExternalAction();

@@ -46,4 +46,4 @@ export class SwitchStateController extends StateController {
   );
 }
 
-SwitchStateController.lazyLoadOnExternalAction();
+SwitchStateController.initializeOnExternalAction();

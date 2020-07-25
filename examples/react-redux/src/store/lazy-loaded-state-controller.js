@@ -29,4 +29,4 @@ class LazyStateController extends StateController {
   }).withAddressableName('test');
 }
 
-LazyStateController.lazyLoadOnExternalAction();
+LazyStateController.initializeOnExternalAction();

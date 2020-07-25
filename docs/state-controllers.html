@@ -67,43 +67,44 @@
 
 <h2>The StateControllers Class</h2>
 
-<p>A state controller defines a slice of Redux state. In other words, a StateController instance manages the mutation and retrieval of piece of the Redux store.</p>
+<p>A state controller defines a slice of Redux state. In other words, a StateController instance manages the mutations and retrieval of piece of the Redux store.</p>
 
 <h2>Defining a StateController</h2>
 
 <h3>Required Implementations</h3>
 
-<p>A StateController instance needs two things: (1) a construction that takes a register and passes the initial state and the register to the super constructor; and (2) a static getName method that returns the string name of the state slice.</p>
+<p>A StateController instance needs two things: (1) a construction that takes a register and calls super with the initial state and register; and (2) a static getName method that returns the string name of the state slice.</p>
 
-<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly.</p>
+<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
 
 <pre><code class="language-typescript">
-  import { StateController } from 'objective-redux';
-  
-  const initialState = { isOn: false };
-  
-  class SwitchStateController extends StateController {
-    // The construct should look like this
-    constructor(register) {
-      super(initialState, register);
-    }
-  
-    // The name returned must be unique
-    static getName() {
-      return 'switch';
-    }
-    
-    // ... your actions will go here ...
+import { StateController } from 'objective-redux';
+
+const initialState = { isOn: false };
+
+class SwitchStateController extends StateController {
+  // The construct should look like this
+  constructor(register) {
+    super(initialState, register);
+    // ... additional setup code can go here
+  }
+
+  // The name returned must be unique
+  static getName() {
+    return 'switch';
   }
   
-  export SwitchStateController;
+  // ... our actions will go here ...
+}
+
+export SwitchStateController;
 </code></pre>
 
 <h3>Defining Actions</h3>
 
-<p>Actions and their associated mutations are created by using the registerAction method. This method takes a function that, in turn, accepts the current state and the action payload as parameters and returns the new state.</p>
+<p>Actions and their associated mutations are created by using the registerAction method. This method takes a function or the form (state, payload) => nextState. That is, it should accepts the current state and the action payload as parameters and returns the new state.</p>
 
-<p>Below is an example of a state controller that flips a switch on and off or sets the switch to a value.</p>
+<p>Below is an example of a state controller that has two actions: one that toggles a switch on and off and one that sets the switch to a value.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -150,7 +151,7 @@ function AppComponent(props) {
   const sendToggleAction = () => {
     SwitchStateController.getInstance(register).toggleSwitch();
     // or we could call our set method
-    // SwitchStateController.getInstance(register).setSwitch(true);
+    // SwitchStateController.getInstance(register).setSwitch(!isOn);
   }
 
   return (
@@ -180,7 +181,7 @@ export default ComponentConnector
     const sendToggleAction = () => {
       switchController.toggleSwitch();
       // or we could call our set method
-      // switchController.setSwitch(true);
+      // switchController.setSwitch(!isOn);
     }
   
     return (

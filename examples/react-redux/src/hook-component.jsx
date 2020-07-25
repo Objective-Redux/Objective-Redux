@@ -16,11 +16,12 @@ export default function HookComponent() {
 
   const register = useRegister();
   const switchStateController = useController(SwitchStateController);
+  const switchStateSagas = useController(SwitchStateSagas);
 
   const { isOn, count } = switchStateController?.getStateSlice();
 
   const sendToggleAction = () => {
-    SwitchStateSagas.getInstance(register).toggleSwitch();
+    switchStateSagas.toggleSwitch();
   };
 
   return (

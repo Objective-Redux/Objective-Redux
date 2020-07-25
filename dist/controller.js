@@ -87,7 +87,7 @@ class Controller {
      *   ).withAddressableName('MY_ACTION'); // <-- also required
      * }
      *
-     * MyController.lazyLoadOnExternalAction();
+     * MyController.initializeOnExternalAction();
      *
      * export MyController;
      *
@@ -98,7 +98,7 @@ class Controller {
      * register.dispatch(myAction);
      * ```
      */
-    static lazyLoadOnExternalAction() {
+    static initializeOnExternalAction() {
         lazy_loader_1.LazyLoader.registerController(this);
     }
 }

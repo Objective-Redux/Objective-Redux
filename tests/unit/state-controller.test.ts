@@ -113,9 +113,9 @@ describe('state-controller', () => {
     });
   });
 
-  describe('lazyLoadOnExternalAction', () => {
+  describe('initializeOnExternalAction', () => {
     it('should register the controller for lazy-loading', () => {
-      TestController.lazyLoadOnExternalAction();
+      TestController.initializeOnExternalAction();
       expect(registerController).toHaveBeenCalledWith(TestController);
     });
   });
