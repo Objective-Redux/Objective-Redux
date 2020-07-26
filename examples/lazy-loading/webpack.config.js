@@ -12,12 +12,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function(_env, argv) {
-  const isProduction = argv.mode === 'production';
-  const isDevelopment = !isProduction;
-
   return {
+    mode: 'production',
     target: 'web',
-    devtool: isDevelopment && 'cheap-module-source-map',
     entry: ['./src/index.jsx'],
     output: {
       path: path.resolve(__dirname, 'dist'),
