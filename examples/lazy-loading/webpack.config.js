@@ -1,0 +1,54 @@
+// ================================================================================================
+//                                          OBJECTIVE REDUX
+//                                  Redux made better, objectively.
+//
+// (c) Copyright 2020 by Jason Mace (https://github.com/jmace01)
+//
+// This project is provided under the terms of the MIT license. The license details can be found in
+// the LICENSE file, found in the project's root directory.
+// ================================================================================================
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = function(_env, argv) {
+  const isProduction = argv.mode === 'production';
+  const isDevelopment = !isProduction;
+
+  return {
+    target: 'web',
+    devtool: isDevelopment && 'cheap-module-source-map',
+    entry: ['./src/index.jsx'],
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js',
+      chunkFilename: '[name].bundle.js',
+      publicPath: '/',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.js', '.jsx'],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        inject: true,
+      }),
+    ],
+    devServer: {
+      compress: true,
+      historyApiFallback: true,
+      open: true,
+      overlay: true,
+    },
+  };
+};

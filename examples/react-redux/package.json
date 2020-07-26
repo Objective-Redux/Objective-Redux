@@ -1,5 +1,7 @@
 {
   "name": "redux-wrapper-demo",
+  "author": "Jason Mace (https://github.com/jmace01)",
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -2,4 +2,6 @@
 /docs
 **/node_modules
 examples/**/build
+examples/**/built
+examples/**/dist
 /scripts/templates
