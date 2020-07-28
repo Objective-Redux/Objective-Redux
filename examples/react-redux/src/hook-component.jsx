@@ -8,13 +8,11 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 import React from 'react';
-import { useRegister, useController } from 'objective-redux';
+import { useController } from 'objective-redux';
 import { SwitchStateController } from './store/switch-state-controller';
 import { SwitchStateSagas } from './store/switch-state-sagas';
 
 export default function HookComponent() {
-
-  const register = useRegister();
   const switchStateController = useController(SwitchStateController);
   const switchStateSagas = useController(SwitchStateSagas);
 

@@ -18,7 +18,7 @@ import {
   Unsubscribe,
 } from 'redux';
 import { LazyLoader } from './lazy-loader';
-import { getReduxSagaModule } from './get-redux-saga-module';
+import { getReduxSagaModule, getReduxSagaEffects } from './get-redux-saga-module';
 
 /**
  * @internal
@@ -73,8 +73,6 @@ export class ReduxRegister {
 
   private replacedReducer: Reducer<any, AnyAction>|null = null;
 
-  private readonly registeredSagas: SagaFn<void>[] = [];
-
   private readonly storeFns: StoreFns;
 
   /**
@@ -86,6 +84,7 @@ export class ReduxRegister {
    * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
    * @param initialState The initial state of the store. This should not include the state for any of the controllers.
    * @param middleware Additional middleware to add to the store.
+   * @param sagaMiddleware The saga middleware to use, if you do not want Objective-Redux to create it for you.
    * @returns An instance of the ReduxRegister.
    * @example
    * ```typescript
@@ -97,20 +96,16 @@ export class ReduxRegister {
   public constructor(
     reducer: Reducer<any, AnyAction>|null = null,
     initialState: any = {},
-    middleware: Middleware<any>[] = []
+    middleware: Middleware<any>[] = [],
+    sagaMiddleware: Middleware<any>|null = null
   ) {
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
     const internalMiddleware: Middleware<any>[] = [];
-    const reduxSaga = getReduxSagaModule();
+    this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
 
     /* istanbul ignore else */
-    if (reduxSaga) {
-      this.sagaMiddleware = reduxSaga.default({
-        context: {
-          register: this,
-        },
-      });
+    if (this.sagaMiddleware) {
       internalMiddleware[0] = this.sagaMiddleware;
     }
 
@@ -128,6 +123,19 @@ export class ReduxRegister {
     if (reducer) {
       this.replaceReducer(reducer);
     }
+  }
+
+  private setupSagaMiddleware(sagaMiddleware: any): Middleware<any>|null {
+    let middleware = null;
+
+    if (sagaMiddleware) {
+      middleware = sagaMiddleware;
+    } else {
+      /* istanbul ignore next */
+      middleware = getReduxSagaModule()?.default();
+    }
+
+    return middleware;
   }
 
   /**
@@ -260,7 +268,11 @@ export class ReduxRegister {
    * ```
    */
   public registerSaga(sagaFn: SagaFn<void>): void {
-    this.registeredSagas.push(sagaFn);
-    this.runSaga(sagaFn);
+    this.runSaga(
+      function* (this: any): any {
+        yield getReduxSagaEffects().setContext({ register: this });
+        yield sagaFn();
+      }.bind(this)
+    );
   }
 }

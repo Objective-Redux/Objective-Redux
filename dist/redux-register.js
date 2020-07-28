@@ -37,6 +37,7 @@ class ReduxRegister {
      * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
      * @param initialState The initial state of the store. This should not include the state for any of the controllers.
      * @param middleware Additional middleware to add to the store.
+     * @param sagaMiddleware The saga middleware to use, if you do not want Objective-Redux to create it for you.
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript
@@ -45,20 +46,13 @@ class ReduxRegister {
      * ```
      */
     // eslint-disable-next-line max-params
-    constructor(reducer = null, initialState = {}, middleware = []) {
+    constructor(reducer = null, initialState = {}, middleware = [], sagaMiddleware = null) {
         this.registeredReducers = {};
         this.replacedReducer = null;
-        this.registeredSagas = [];
         lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         const internalMiddleware = [];
-        const reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
-        /* istanbul ignore else */
-        if (reduxSaga) {
-            this.sagaMiddleware = reduxSaga.default({
-                context: {
-                    register: this,
-                },
-            });
+        this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
+        if (this.sagaMiddleware) {
             internalMiddleware[0] = this.sagaMiddleware;
         }
         this.store = redux_1.createStore(defaultReducer, initialState, redux_1.applyMiddleware(...middleware, ...internalMiddleware));
@@ -66,6 +60,17 @@ class ReduxRegister {
         if (reducer) {
             this.replaceReducer(reducer);
         }
+    }
+    setupSagaMiddleware(sagaMiddleware) {
+        var _a;
+        let middleware = null;
+        if (sagaMiddleware) {
+            middleware = sagaMiddleware;
+        }
+        else {
+            middleware = (_a = get_redux_saga_module_1.getReduxSagaModule()) === null || _a === void 0 ? void 0 : _a.default();
+        }
+        return middleware;
     }
     /**
      * Monkey-patch the redux store so that the register can properly partition the store for internal and external use.
@@ -180,8 +185,10 @@ class ReduxRegister {
      * ```
      */
     registerSaga(sagaFn) {
-        this.registeredSagas.push(sagaFn);
-        this.runSaga(sagaFn);
+        this.runSaga(function* () {
+            yield get_redux_saga_module_1.getReduxSagaEffects().setContext({ register: this });
+            yield sagaFn();
+        }.bind(this));
     }
 }
 exports.ReduxRegister = ReduxRegister;

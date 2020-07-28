@@ -10,6 +10,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 import {
   RegisterProvider, ReduxRegister, createAction, getActionNameForController,
 } from 'objective-redux';
@@ -18,7 +19,13 @@ import HookComponent from './hook-component';
 import './store/lazy-loaded-state-controller';
 import ReactReduxComponent from './react-redux-component';
 
-export const register = new ReduxRegister();
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    test: 'Some Value',
+  },
+});
+
+export const register = new ReduxRegister(null, {}, [], sagaMiddleware);
 register.dispatch(createAction(getActionNameForController('lazy', 'test'))());
 
 ReactDOM.render(

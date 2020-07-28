@@ -23,7 +23,6 @@ export declare class ReduxRegister {
     private readonly sagaMiddleware;
     private registeredReducers;
     private replacedReducer;
-    private readonly registeredSagas;
     private readonly storeFns;
     /**
      * Creates an instance of the ReduxRegister.
@@ -34,6 +33,7 @@ export declare class ReduxRegister {
      * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
      * @param initialState The initial state of the store. This should not include the state for any of the controllers.
      * @param middleware Additional middleware to add to the store.
+     * @param sagaMiddleware The saga middleware to use, if you do not want Objective-Redux to create it for you.
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript
@@ -41,7 +41,8 @@ export declare class ReduxRegister {
      * const register = new ReduxRegister();
      * ```
      */
-    constructor(reducer?: Reducer<any, AnyAction> | null, initialState?: any, middleware?: Middleware<any>[]);
+    constructor(reducer?: Reducer<any, AnyAction> | null, initialState?: any, middleware?: Middleware<any>[], sagaMiddleware?: Middleware<any> | null);
+    private setupSagaMiddleware;
     /**
      * Monkey-patch the redux store so that the register can properly partition the store for internal and external use.
      *
