@@ -76,7 +76,7 @@ Middleware can be applied at construction. Sagas and reducers can be added at an
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">public constructor(reducer: Reducer&lt;any, AnyAction&gt;|null = null, initialState: any = {}, middleware: Middleware&lt;any&gt;[] = []): ReduxRegister</p>
+    <p class="code">public constructor(reducer: Reducer&lt;any, AnyAction&gt;|null = null, initialState: any = {}, middleware: Middleware&lt;any&gt;[] = [], sagaMiddleware: Middleware&lt;any&gt;|null = null): ReduxRegister</p>
     <p>Creates an instance of the ReduxRegister.<br />In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be setup automatically as well.
 </p>
     
@@ -84,6 +84,7 @@ Middleware can be applied at construction. Sagas and reducers can be added at an
 <p><dt>reducer: Reducer&lt;any, AnyAction&gt;|null = null</dt><dd>The initial reducer for the store. This should not include any of the reducers for the controllers.<br /></dd><p>
 <p><dt>initialState: any = {}</dt><dd>The initial state of the store. This should not include the state for any of the controllers.<br /></dd><p>
 <p><dt>middleware: Middleware&lt;any&gt;[] = []</dt><dd>Additional middleware to add to the store.<br /></dd><p>
+<p><dt>sagaMiddleware: Middleware&lt;any&gt;|null = null</dt><dd>The saga middleware to use, if you do not want Objective-Redux to create it for you.<br /></dd><p>
     <h3>Returns</h3>
     <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
     <h3>Examples</h3>
@@ -187,7 +188,7 @@ const unsubscribeFn = register.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.8.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.9.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

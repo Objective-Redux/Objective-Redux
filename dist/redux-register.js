@@ -52,6 +52,7 @@ class ReduxRegister {
         lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         const internalMiddleware = [];
         this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
+        /* istanbul ignore else */
         if (this.sagaMiddleware) {
             internalMiddleware[0] = this.sagaMiddleware;
         }
@@ -68,6 +69,7 @@ class ReduxRegister {
             middleware = sagaMiddleware;
         }
         else {
+            /* istanbul ignore next */
             middleware = (_a = get_redux_saga_module_1.getReduxSagaModule()) === null || _a === void 0 ? void 0 : _a.default();
         }
         return middleware;

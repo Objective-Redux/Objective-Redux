@@ -67,11 +67,12 @@ header .padded {
   width: 40px;
   height: 40px;
   position: absolute;
-  background: #534F4E;
+  background: #736F6E;
   z-index: 1;
   top: 0;
   left: -2px;
   border-radius: 100px;
+  box-shadow: 2px 2px 3px 0 #130F0E inset;
 }
 /*/
 #logo, #logo:before {
@@ -246,7 +247,7 @@ pre {
 
 #hamburger {
   display: none;
-  padding: 10px;
+  padding: 0px;
   padding-left: 35px;
   cursor: pointer;
 }
@@ -308,6 +309,10 @@ pre {
   header .right .padded {
     margin-top: 0px;
     padding-top: 0px;
+  }
+
+  nav {
+    margin-top: 20px;
   }
 
   nav p:first-child {
