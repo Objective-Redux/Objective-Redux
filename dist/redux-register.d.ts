@@ -30,7 +30,7 @@ export declare class ReduxRegister {
     private readonly store;
     private readonly sagaMiddleware;
     private readonly injector;
-    private registeredReducers;
+    private readonly registeredReducers;
     private readonly storeFns;
     /**
      * Creates an instance of the ReduxRegister.
@@ -84,6 +84,7 @@ export declare class ReduxRegister {
      * @returns The original store methods.
      */
     private wrapStore;
+    private getReducers;
     /**
      * Dispatches a Redux action to the store without using a Controller.
      *

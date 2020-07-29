@@ -11,7 +11,12 @@
 const dispatch = jest.fn();
 const reduxRegisterMock: any = {
   dispatch,
-  getState: (): any => ({ TestSlice: true }),
+  getState: (): any => ({
+    TestSlice: true,
+    NAMESPACE: {
+      TestSlice: false,
+    },
+  }),
 };
 
 const registerController = jest.fn();
@@ -46,6 +51,12 @@ class TestController extends StateController<boolean> {
   public readonly reducerHandle = this.reducer.bind(this);
 }
 
+class NamespacedTestController extends TestController {
+  public static getNamespace(): string {
+    return 'NAMESPACE';
+  }
+}
+
 describe('state-controller', () => {
   describe('constructor', () => {
     it('should register the reducer', () => {
@@ -62,6 +73,12 @@ describe('state-controller', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(ControllerNameNotDefined);
       }
+    });
+  });
+
+  describe('getNamespace', () => {
+    it('returns null by default', () => {
+      expect(StateController.getNamespace()).toBeNull();
     });
   });
 
@@ -106,10 +123,16 @@ describe('state-controller', () => {
   });
 
   describe('getStateSlice', () => {
-    it('should return the state slice', () => {
+    it('returns the state slice with no namespace', () => {
       const instance = TestController.getInstance(reduxRegisterMock);
       const slice = instance.getStateSlice();
-      expect(slice).toBeTruthy();
+      expect(slice).toEqual(true);
+    });
+
+    it('returns the state slice with a namespace', () => {
+      const instance = NamespacedTestController.getInstance(reduxRegisterMock);
+      const slice = instance.getStateSlice();
+      expect(slice).toEqual(false);
     });
   });
 

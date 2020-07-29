@@ -43,7 +43,7 @@ function ReactReduxComponent(props) {
 export default connect(
   (state, ownProps) => ({
     ...ownProps,
-    ...state.switch,
+    ...state.TEST_NAMESPACE.switch,
   })
 )(ReactReduxComponent);
 

@@ -25,8 +25,10 @@ const middleware = {
 
 let mockStore: any;
 
+const COMBINED = 'combined';
 const createStore = jest.fn(() => mockStore);
 const compose = jest.fn((...m) => m);
+const combineReducers = jest.fn(() => COMBINED);
 const applyMiddleware = jest.fn((...m) => m);
 const createSagaMiddleware = jest.fn(() => middleware);
 
@@ -34,6 +36,7 @@ jest.mock('redux', () => ({
   Store: {},
   createStore,
   compose,
+  combineReducers,
   applyMiddleware,
 }));
 
@@ -52,7 +55,7 @@ jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 jest.mock('redux-saga/effects', () => ({ setContext }));
 
 const setGetObjectiveReduxReducers = jest.fn();
-const reducerCreationFn = jest.fn(() => 'TESTING_RED');
+const reducerCreationFn = jest.fn(() => 'TESTING_REDUCER');
 
 jest.mock('../../src/reducer-injector', () => ({
   ReducerInjector: jest.fn().mockImplementation(() => ({
@@ -117,6 +120,25 @@ describe('redux-register', () => {
     });
   });
 
+  describe('getReducers', () => {
+    it('combines only nested reducers', () => {
+      const register: any = new ReduxRegister();
+      const flat = (): any => {};
+      const nested = {
+        foo: (): any => {},
+      };
+      register.registeredReducers = {
+        flat,
+        nested,
+      };
+      const resultingReducers = register.getReducers();
+      expect(resultingReducers).toEqual({
+        flat,
+        nested: COMBINED,
+      });
+    });
+  });
+
   describe('dispatch', () => {
     it('should dispatch an action and not lazy-load controller', () => {
       const register = new ReduxRegister();
@@ -166,6 +188,7 @@ describe('redux-register', () => {
       const controller = {
         constructor: {
           getName: (): string => 'TEST',
+          getNamespace: (): null => null,
         },
         reducer,
       };
@@ -174,8 +197,26 @@ describe('redux-register', () => {
       const [[, addControllerReducer]] = addRegister.mock.calls;
       addControllerReducer(controller);
       expect(register).toBeInstanceOf(ReduxRegister);
-      expect(replaceReducer).toHaveBeenCalledWith('TESTING_RED');
+      expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
       expect((register as any).registeredReducers.TEST).not.toBeNull();
+    });
+
+    it('adds the new, namespaced reducer for state controllers', () => {
+      const reducer = jest.fn();
+      const controller = {
+        constructor: {
+          getName: (): string => 'TEST',
+          getNamespace: (): string => 'NAMESPACE',
+        },
+        reducer,
+      };
+
+      const register = new ReduxRegister();
+      const [[, addControllerReducer]] = addRegister.mock.calls;
+      addControllerReducer(controller);
+      expect(register).toBeInstanceOf(ReduxRegister);
+      expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
+      expect((register as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
     });
   });
 

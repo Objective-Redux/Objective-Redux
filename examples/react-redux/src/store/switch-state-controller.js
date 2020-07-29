@@ -24,6 +24,10 @@ export class SwitchStateController extends StateController {
     return 'switch';
   }
 
+  static getNamespace() {
+    return 'TEST_NAMESPACE';
+  }
+
   toggleSwitchValue = this.registerAction(
     state => ({
       ...state,

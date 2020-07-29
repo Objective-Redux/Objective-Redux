@@ -89,6 +89,59 @@ class StateController extends controller_1.Controller {
         this.reducerMap = {};
     }
     /**
+     * Creates groupings of state slices in the store by moving them into an object of the namespace.
+     *
+     * @returns Null if the state should be on the root level of the store, or a string representing the structure of the
+     * object that the slice belongs in.
+     *
+     * @example
+     * ```typescript
+     * class MyFirstController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_FIRST_CONTROLLER';
+     *   }
+     *
+     *   static getNamespace() {
+     *     return 'MY_NAMESPACE';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * class MySecondController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_SECOND_CONTROLLER';
+     *   }
+     *
+     *   static getNamespace() {
+     *     return 'MY_NAMESPACE';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * // Creates a state of the form:
+     * //
+     * // {
+     * //   MY_NAMESPACE: {
+     * //     MY_FIRST_CONTROLLER: {
+     * //       // ...
+     * //     },
+     * //     MY_SECOND_CONTROLLER: {
+     * //       // ...
+     * //     },
+     * //   },
+     * // }
+     * ```
+     */
+    static getNamespace() {
+        return null;
+    }
+    /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
      *
      * @template Payload The interface to which the payload of the action will adhere. If the type is void, no payload
@@ -145,8 +198,10 @@ class StateController extends controller_1.Controller {
      * @returns The current slice of the state related to this controller.
      */
     getStateSlice() {
-        return this.register
-            .getState()[this.constructor.getName()];
+        let state = this.register.getState();
+        const namespace = this.constructor.getNamespace();
+        state = namespace ? state[namespace] : state;
+        return state[this.constructor.getName()];
     }
 }
 exports.StateController = StateController;

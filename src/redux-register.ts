@@ -16,6 +16,7 @@ import {
   Middleware,
   AnyAction,
   Unsubscribe,
+  combineReducers,
 } from 'redux';
 import { LazyLoader } from './lazy-loader';
 import { getReduxSagaModule, getReduxSagaEffects } from './get-redux-saga-module';
@@ -26,13 +27,6 @@ import { ReducerInjector } from '.';
  * @internal
  */
 type Reducer<S, A> = (prevState: S, action: A) => S
-
-/**
- * @internal
- */
-interface ReducerMap {
-  [reducer: string]: Reducer<any, any>;
-}
 
 /**
  * @internal
@@ -75,7 +69,7 @@ export class ReduxRegister {
 
   private readonly injector: ReducerInjector;
 
-  private registeredReducers: ReducerMap = {};
+  private readonly registeredReducers: any = {};
 
   private readonly storeFns: StoreFns;
 
@@ -133,7 +127,7 @@ export class ReduxRegister {
     } = config;
 
     this.injector = injector;
-    this.injector.setGetObjectiveReduxReducers(() => this.registeredReducers);
+    this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
 
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
@@ -212,6 +206,20 @@ export class ReduxRegister {
     return storeFns;
   }
 
+  private getReducers(): any {
+    const reducerMap: any = {};
+    Object.keys(this.registeredReducers).forEach(
+      key => {
+        let reducer = this.registeredReducers[key];
+        if (typeof reducer == 'object') {
+          reducer = combineReducers(reducer);
+        }
+        reducerMap[key] = reducer;
+      }
+    );
+    return reducerMap;
+  }
+
   /**
    * Dispatches a Redux action to the store without using a Controller.
    *
@@ -265,7 +273,17 @@ export class ReduxRegister {
   }
 
   private addControllerReducer(controller: any): void {
-    this.registeredReducers[controller.constructor.getName()] = controller.reducer.bind(controller);
+    const name = controller.constructor.getName();
+    const namespace = controller.constructor.getNamespace();
+    let placement = this.registeredReducers;
+    if (namespace) {
+      /* istanbul ignore else */
+      if (placement[namespace] == null) {
+        placement[namespace] = {};
+      }
+      placement = placement[namespace];
+    }
+    placement[name] = controller.reducer.bind(controller);
     this.storeFns.replaceReducer(this.injector.getReducerCreationFn()());
   }
 

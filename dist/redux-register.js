@@ -81,7 +81,7 @@ class ReduxRegister {
         this.registeredReducers = {};
         const { reducer = null, initialState = {}, middleware = [], sagaMiddleware = null, injector = new _1.ReducerInjector(), } = config;
         this.injector = injector;
-        this.injector.setGetObjectiveReduxReducers(() => this.registeredReducers);
+        this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
         lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         const internalMiddleware = [];
         this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
@@ -133,6 +133,17 @@ class ReduxRegister {
         store.getState = this.getState.bind(this);
         return storeFns;
     }
+    getReducers() {
+        const reducerMap = {};
+        Object.keys(this.registeredReducers).forEach(key => {
+            let reducer = this.registeredReducers[key];
+            if (typeof reducer == 'object') {
+                reducer = redux_1.combineReducers(reducer);
+            }
+            reducerMap[key] = reducer;
+        });
+        return reducerMap;
+    }
     /**
      * Dispatches a Redux action to the store without using a Controller.
      *
@@ -182,7 +193,17 @@ class ReduxRegister {
         this.sagaMiddleware.run(sagaFn);
     }
     addControllerReducer(controller) {
-        this.registeredReducers[controller.constructor.getName()] = controller.reducer.bind(controller);
+        const name = controller.constructor.getName();
+        const namespace = controller.constructor.getNamespace();
+        let placement = this.registeredReducers;
+        if (namespace) {
+            /* istanbul ignore else */
+            if (placement[namespace] == null) {
+                placement[namespace] = {};
+            }
+            placement = placement[namespace];
+        }
+        placement[name] = controller.reducer.bind(controller);
         this.storeFns.replaceReducer(this.injector.getReducerCreationFn()());
     }
     /**
