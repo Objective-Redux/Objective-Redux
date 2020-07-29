@@ -44,6 +44,7 @@
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
 <p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
+<p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
@@ -66,31 +67,48 @@
         
     <h1 class="code">ReduxRegister</h1>
     <p class="code">class ReduxRegister</p>
-    <p>The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.<br />The store is partitioned internally, making it safe to continue calling functions like replaceReducer without affecting how Objective-Redux manages its own reducers.
-
-Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
-</p>
+    <p>The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.<br />Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed. </p>
     
     
     
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">public constructor(reducer: Reducer&lt;any, AnyAction&gt;|null = null, initialState: any = {}, middleware: Middleware&lt;any&gt;[] = [], sagaMiddleware: Middleware&lt;any&gt;|null = null): ReduxRegister</p>
+    <p class="code">public constructor(config: RegisterOptions = {}): ReduxRegister</p>
     <p>Creates an instance of the ReduxRegister.<br />In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be setup automatically as well.
 </p>
     
     <h3>Parameters</h3>
-<p><dt>reducer: Reducer&lt;any, AnyAction&gt;|null = null</dt><dd>The initial reducer for the store. This should not include any of the reducers for the controllers.<br /></dd><p>
-<p><dt>initialState: any = {}</dt><dd>The initial state of the store. This should not include the state for any of the controllers.<br /></dd><p>
-<p><dt>middleware: Middleware&lt;any&gt;[] = []</dt><dd>Additional middleware to add to the store.<br /></dd><p>
-<p><dt>sagaMiddleware: Middleware&lt;any&gt;|null = null</dt><dd>The saga middleware to use, if you do not want Objective-Redux to create it for you.<br /></dd><p>
+<p><dt>config: RegisterOptions = {}</dt><dd>The optional configuration for the controller.<br /></dd><p>
     <h3>Returns</h3>
     <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">// No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
 const register = new ReduxRegister();</code></pre>
+
+<pre><code class="language-typescript">import { ReducerInjector, ReduxRegister } from 'objective-redux';
+import { createInjectorsEnhancer } from 'redux-injectors';
+import createSagaMiddleware from 'redux-saga';
+import { initialState, initialReducers } from './elsewhere';
+
+const injector = new ReducerInjector(initialReducers);
+const sagaMiddleware = createSagaMiddleware();
+
+const createReducer = injector.getReducerCreationFn();
+const runSaga = sagaMiddleware.run;
+
+const middleware = [
+  createInjectorsEnhancer({ createReducer, runSaga }),
+];
+
+const register = new ReduxRegister({
+  reducer,
+  initialState,
+  middleware,
+  injector,
+  sagaMiddleware,
+});</code></pre>
 
   </section>
   
@@ -188,7 +206,7 @@ const unsubscribeFn = register.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.9.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.10.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

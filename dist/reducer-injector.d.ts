@@ -39,7 +39,7 @@ interface CreateReducerFn {
  *   injector,
  *   sagaMiddleware,
  * });
-*   * ```
+ * ```
  */
 export declare class ReducerInjector {
     private readonly initialReducers;

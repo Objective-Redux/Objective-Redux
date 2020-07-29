@@ -46,7 +46,7 @@ exports.defaultReducer = () => ({});
  *   injector,
  *   sagaMiddleware,
  * });
-*   * ```
+ * ```
  */
 class ReducerInjector {
     /**
