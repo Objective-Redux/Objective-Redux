@@ -227,7 +227,7 @@ const universalRules = {
   'max-statements': [
     'error',
     {
-      max: 10,
+      max: 12,
     },
   ],
   'max-statements-per-line': [

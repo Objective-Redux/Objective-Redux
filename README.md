@@ -160,7 +160,7 @@ A slice of state never needs to know about what other slices are doing or how th
 ## Compatible with React-Redux
 
 ### Migrate over time
-You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`&mdash;all without disrupting Objective-Redux controllers. Simply pass the ReduxRegister to the React-Redux provider and use it normally.
+You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ReduxRegister to the React-Redux provider and use it normally.
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.
 

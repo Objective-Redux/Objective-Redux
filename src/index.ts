@@ -9,6 +9,7 @@
 // ================================================================================================
 
 import { ReduxRegister } from './redux-register';
+import { ReducerInjector } from './reducer-injector';
 import { StateController } from './state-controller';
 import { StatelessController } from './stateless-controller';
 import { createAction, getActionNameForController } from './action';
@@ -28,6 +29,7 @@ import { ControllerNameNotDefined } from './controllernamenotdefined';
 
 export {
   ReduxRegister,
+  ReducerInjector,
   StateController,
   StatelessController,
   createAction,

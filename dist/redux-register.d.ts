@@ -1,8 +1,19 @@
 import { Middleware, AnyAction, Unsubscribe } from 'redux';
+import { ReducerInjector } from '.';
 /**
  * @internal
  */
 declare type Reducer<S, A> = (prevState: S, action: A) => S;
+/**
+ * @internal
+ */
+interface RegisterOptions {
+    reducer?: Reducer<any, AnyAction>;
+    initialState?: any;
+    middleware?: Middleware<any>[];
+    sagaMiddleware?: Middleware<any>;
+    injector?: ReducerInjector;
+}
 /**
  * @internal
  */
@@ -13,16 +24,13 @@ export interface SagaFn<Payload> {
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
  * own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.
  *
- * The store is partitioned internally, making it safe to continue calling functions like replaceReducer without
- * affecting how Objective-Redux manages its own reducers.
- *
  * Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
  */
 export declare class ReduxRegister {
     private readonly store;
     private readonly sagaMiddleware;
+    private readonly injector;
     private registeredReducers;
-    private replacedReducer;
     private readonly storeFns;
     /**
      * Creates an instance of the ReduxRegister.
@@ -30,21 +38,48 @@ export declare class ReduxRegister {
      * In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be
      * setup automatically as well.
      *
-     * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
-     * @param initialState The initial state of the store. This should not include the state for any of the controllers.
-     * @param middleware Additional middleware to add to the store.
-     * @param sagaMiddleware The saga middleware to use, if you do not want Objective-Redux to create it for you.
+     * @param config The optional configuration for the controller.
+     * @param config.reducer The initial reducer for the store.
+     * @param config.initialState The initial state of the reducers.
+     * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
+     * @param config.sagaMiddleware The saga middleware, if you do not want Objective-Redux to create it for you.
+     * @param config.injector An instance of the ReducerInjector class.
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript
      * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
      * const register = new ReduxRegister();
      * ```
+     * @example
+     * ```typescript
+     * import { ReducerInjector, ReduxRegister } from 'objective-redux';
+     * import { createInjectorsEnhancer } from 'redux-injectors';
+     * import createSagaMiddleware from 'redux-saga';
+     * import { initialState, initialReducers } from './elsewhere';
+     *
+     * const injector = new ReducerInjector(initialReducers);
+     * const sagaMiddleware = createSagaMiddleware();
+     *
+     * const createReducer = injector.getReducerCreationFn();
+     * const runSaga = sagaMiddleware.run;
+     *
+     * const middleware = [
+     *   createInjectorsEnhancer({ createReducer, runSaga }),
+     * ];
+     *
+     * const register = new ReduxRegister({
+     *   reducer,
+     *   initialState,
+     *   middleware,
+     *   injector,
+     *   sagaMiddleware,
+     * });
+     * ```
      */
-    constructor(reducer?: Reducer<any, AnyAction> | null, initialState?: any, middleware?: Middleware<any>[], sagaMiddleware?: Middleware<any> | null);
+    constructor(config?: RegisterOptions);
     private setupSagaMiddleware;
     /**
-     * Monkey-patch the redux store so that the register can properly partition the store for internal and external use.
+     * Monkey-patch the redux store so that the register can properly bind the store.
      *
      * @returns The original store methods.
      */
@@ -84,7 +119,6 @@ export declare class ReduxRegister {
      * ```
      */
     getState(): any;
-    private updateReducers;
     private runSaga;
     private addControllerReducer;
     /**

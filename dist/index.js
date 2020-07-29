@@ -9,9 +9,11 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ControllerNameNotDefined = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = exports.getActionNameForController = exports.useController = exports.useRegister = exports.getControllerFromSagaContext = exports.getRegisterFromSagaContext = exports.ComponentConnector = exports.RegisterProvider = exports.createAction = exports.StatelessController = exports.StateController = exports.ReduxRegister = void 0;
+exports.ControllerNameNotDefined = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = exports.getActionNameForController = exports.useController = exports.useRegister = exports.getControllerFromSagaContext = exports.getRegisterFromSagaContext = exports.ComponentConnector = exports.RegisterProvider = exports.createAction = exports.StatelessController = exports.StateController = exports.ReducerInjector = exports.ReduxRegister = void 0;
 const redux_register_1 = require("./redux-register");
 Object.defineProperty(exports, "ReduxRegister", { enumerable: true, get: function () { return redux_register_1.ReduxRegister; } });
+const reducer_injector_1 = require("./reducer-injector");
+Object.defineProperty(exports, "ReducerInjector", { enumerable: true, get: function () { return reducer_injector_1.ReducerInjector; } });
 const state_controller_1 = require("./state-controller");
 Object.defineProperty(exports, "StateController", { enumerable: true, get: function () { return state_controller_1.StateController; } });
 const stateless_controller_1 = require("./stateless-controller");

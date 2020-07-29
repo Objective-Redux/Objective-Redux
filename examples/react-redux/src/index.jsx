@@ -25,7 +25,9 @@ const sagaMiddleware = createSagaMiddleware({
   },
 });
 
-export const register = new ReduxRegister(null, {}, [], sagaMiddleware);
+export const register = new ReduxRegister({
+  sagaMiddleware,
+});
 register.dispatch(createAction(getActionNameForController('lazy', 'test'))());
 
 ReactDOM.render(

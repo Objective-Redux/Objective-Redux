@@ -1,4 +1,5 @@
 import { ReduxRegister } from './redux-register';
+import { ReducerInjector } from './reducer-injector';
 import { StateController } from './state-controller';
 import { StatelessController } from './stateless-controller';
 import { createAction, getActionNameForController } from './action';
@@ -10,5 +11,5 @@ import { useRegister } from './use-register';
 import { useController } from './use-controller';
 import { configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce } from './take-type';
 import { ControllerNameNotDefined } from './controllernamenotdefined';
-export { ReduxRegister, StateController, StatelessController, createAction, RegisterProvider, ComponentConnector, getRegisterFromSagaContext, getControllerFromSagaContext, useRegister, useController, getActionNameForController, configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce, ControllerNameNotDefined, };
+export { ReduxRegister, ReducerInjector, StateController, StatelessController, createAction, RegisterProvider, ComponentConnector, getRegisterFromSagaContext, getControllerFromSagaContext, useRegister, useController, getActionNameForController, configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce, ControllerNameNotDefined, };
 //# sourceMappingURL=index.d.ts.map

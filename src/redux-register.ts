@@ -10,15 +10,17 @@
 
 import {
   Store,
-  combineReducers,
-  createStore,
   applyMiddleware,
+  createStore,
+  compose,
   Middleware,
   AnyAction,
   Unsubscribe,
 } from 'redux';
 import { LazyLoader } from './lazy-loader';
 import { getReduxSagaModule, getReduxSagaEffects } from './get-redux-saga-module';
+import { defaultReducer } from './reducer-injector';
+import { ReducerInjector } from '.';
 
 /**
  * @internal
@@ -45,22 +47,24 @@ interface StoreFns {
 /**
  * @internal
  */
-export interface SagaFn<Payload> {
-  (payload: Payload): any;
+interface RegisterOptions {
+  reducer?: Reducer<any, AnyAction>;
+  initialState?: any;
+  middleware?: Middleware<any>[];
+  sagaMiddleware?: Middleware<any>;
+  injector?: ReducerInjector;
 }
 
 /**
  * @internal
  */
-/* istanbul ignore next */
-const defaultReducer = (): any => ({});
+export interface SagaFn<Payload> {
+  (payload: Payload): any;
+}
 
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
  * own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.
- *
- * The store is partitioned internally, making it safe to continue calling functions like replaceReducer without
- * affecting how Objective-Redux manages its own reducers.
  *
  * Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
  */
@@ -69,9 +73,9 @@ export class ReduxRegister {
 
   private readonly sagaMiddleware: any;
 
-  private registeredReducers: ReducerMap = {};
+  private readonly injector: ReducerInjector;
 
-  private replacedReducer: Reducer<any, AnyAction>|null = null;
+  private registeredReducers: ReducerMap = {};
 
   private readonly storeFns: StoreFns;
 
@@ -81,38 +85,70 @@ export class ReduxRegister {
    * In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be
    * setup automatically as well.
    *
-   * @param reducer The initial reducer for the store. This should not include any of the reducers for the controllers.
-   * @param initialState The initial state of the store. This should not include the state for any of the controllers.
-   * @param middleware Additional middleware to add to the store.
-   * @param sagaMiddleware The saga middleware to use, if you do not want Objective-Redux to create it for you.
+   * @param config The optional configuration for the controller.
+   * @param config.reducer The initial reducer for the store.
+   * @param config.initialState The initial state of the reducers.
+   * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
+   * @param config.sagaMiddleware The saga middleware, if you do not want Objective-Redux to create it for you.
+   * @param config.injector An instance of the ReducerInjector class.
    * @returns An instance of the ReduxRegister.
    * @example
    * ```typescript
    * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
    * const register = new ReduxRegister();
    * ```
+   * @example
+   * ```typescript
+   * import { ReducerInjector, ReduxRegister } from 'objective-redux';
+   * import { createInjectorsEnhancer } from 'redux-injectors';
+   * import createSagaMiddleware from 'redux-saga';
+   * import { initialState, initialReducers } from './elsewhere';
+   *
+   * const injector = new ReducerInjector(initialReducers);
+   * const sagaMiddleware = createSagaMiddleware();
+   *
+   * const createReducer = injector.getReducerCreationFn();
+   * const runSaga = sagaMiddleware.run;
+   *
+   * const middleware = [
+   *   createInjectorsEnhancer({ createReducer, runSaga }),
+   * ];
+   *
+   * const register = new ReduxRegister({
+   *   reducer,
+   *   initialState,
+   *   middleware,
+   *   injector,
+   *   sagaMiddleware,
+   * });
+   * ```
    */
-  // eslint-disable-next-line max-params
-  public constructor(
-    reducer: Reducer<any, AnyAction>|null = null,
-    initialState: any = {},
-    middleware: Middleware<any>[] = [],
-    sagaMiddleware: Middleware<any>|null = null
-  ) {
+  public constructor(config: RegisterOptions = {}) {
+    const {
+      reducer = null,
+      initialState = {},
+      middleware = [],
+      sagaMiddleware = null,
+      injector = new ReducerInjector(),
+    } = config;
+
+    this.injector = injector;
+    this.injector.setGetObjectiveReduxReducers(() => this.registeredReducers);
+
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
-    const internalMiddleware: Middleware<any>[] = [];
+    const internalMiddleware: any[] = [];
     this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
 
     /* istanbul ignore else */
     if (this.sagaMiddleware) {
-      internalMiddleware[0] = this.sagaMiddleware;
+      internalMiddleware[0] = applyMiddleware(this.sagaMiddleware);
     }
 
     this.store = createStore(
-      defaultReducer,
+      reducer || defaultReducer,
       initialState,
-      applyMiddleware(
+      compose(
         ...middleware,
         ...internalMiddleware
       )
@@ -139,7 +175,7 @@ export class ReduxRegister {
   }
 
   /**
-   * Monkey-patch the redux store so that the register can properly partition the store for internal and external use.
+   * Monkey-patch the redux store so that the register can properly bind the store.
    *
    * @returns The original store methods.
    */
@@ -149,14 +185,23 @@ export class ReduxRegister {
     (this as any).dispatch = (action: any): any => internalDispatch(action);
 
     const { store } = this;
+    const {
+      dispatch,
+      subscribe,
+      replaceReducer,
+      getState,
+      ...otherFns
+    } = store;
 
     // Keep the original store functions for use later
     const storeFns = {
-      dispatch: store.dispatch.bind(this.store),
-      subscribe: store.subscribe.bind(this.store),
-      replaceReducer: store.replaceReducer.bind(this.store),
-      getState: store.getState.bind(this.store),
+      dispatch: dispatch.bind(this.store),
+      subscribe: subscribe.bind(this.store),
+      replaceReducer: replaceReducer.bind(this.store),
+      getState: getState.bind(this.store),
     };
+
+    Object.assign(this, otherFns);
 
     // Map the store functions to register functions
     store.dispatch = this.dispatch.bind(this) as any;
@@ -212,22 +257,7 @@ export class ReduxRegister {
    * ```
    */
   public getState(): any {
-    const { external, internal } = this.storeFns.getState();
-
-    return {
-      ...external,
-      ...internal,
-    };
-  }
-
-  private updateReducers(): void {
-    const external = this.replacedReducer || defaultReducer;
-    const internal = combineReducers(this.registeredReducers);
-
-    this.storeFns.replaceReducer(combineReducers({
-      external,
-      internal,
-    }));
+    return this.storeFns.getState();
   }
 
   private runSaga(sagaFn: SagaFn<void>): void {
@@ -236,7 +266,7 @@ export class ReduxRegister {
 
   private addControllerReducer(controller: any): void {
     this.registeredReducers[controller.constructor.getName()] = controller.reducer.bind(controller);
-    this.updateReducers();
+    this.storeFns.replaceReducer(this.injector.getReducerCreationFn()());
   }
 
   /**
@@ -249,8 +279,7 @@ export class ReduxRegister {
    * @param nextReducer The new reducer that will replace the existing reducer.
    */
   public replaceReducer(nextReducer: Reducer<any, AnyAction>): void {
-    this.replacedReducer = nextReducer;
-    this.updateReducers();
+    this.storeFns.replaceReducer(nextReducer);
   }
 
   /**
