@@ -8,10 +8,34 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComponentConnector = void 0;
-const React = require("react");
-const context_1 = require("./context");
+var React = require("react");
+var context_1 = require("./context");
 /**
  * Builder that connections a React component to the Objective Redux register, allowing the component to use the states
  * and dispatch events.
@@ -30,8 +54,8 @@ const context_1 = require("./context");
  *   .connect();
  * ```
  */
-class ComponentConnector {
-    constructor(component) {
+var ComponentConnector = /** @class */ (function () {
+    function ComponentConnector(component) {
         this.component = component;
         this.controllers = [];
     }
@@ -41,9 +65,9 @@ class ComponentConnector {
      * @param component The React component to which the props will be added.
      * @returns An instance of the ComponentConnector builder.
      */
-    static addPropsTo(component) {
+    ComponentConnector.addPropsTo = function (component) {
         return new ComponentConnector(component);
-    }
+    };
     /**
      * Gets parameters from the specified StateController and injects them into the properties of the component.
      *
@@ -52,65 +76,70 @@ class ComponentConnector {
      * @param selector An optional mapping function.
      * @returns An instance of the ComponentConnector builder.
      */
-    from(controller, selector = null) {
+    ComponentConnector.prototype.from = function (controller, selector) {
+        if (selector === void 0) { selector = null; }
         this.controllers.push({
-            controller,
-            selector: selector || ((state) => state),
+            controller: controller,
+            selector: selector || (function (state) { return state; }),
         });
         return this;
-    }
+    };
     /**
      * Finishes the builder and provides the connected component.
      *
      * @returns The connected React component.
      */
-    connect() {
+    ComponentConnector.prototype.connect = function () {
         var _a;
-        const Component = this.component;
-        const { controllers } = this;
-        const connected = (_a = class extends React.Component {
-                constructor(props, context) {
-                    super(props, context);
-                    this.unsubscribe = null;
-                    this.unsubscribe = null;
-                    this.mounted = false;
+        var Component = this.component;
+        var controllers = this.controllers;
+        var connected = (_a = /** @class */ (function (_super) {
+                __extends(class_1, _super);
+                function class_1(props, context) {
+                    var _this = _super.call(this, props, context) || this;
+                    _this.unsubscribe = null;
+                    _this.unsubscribe = null;
+                    _this.mounted = false;
+                    return _this;
                 }
-                shouldComponentUpdate() {
+                class_1.prototype.shouldComponentUpdate = function () {
                     return false;
-                }
-                render() {
+                };
+                class_1.prototype.render = function () {
                     if (!this.unsubscribe && this.mounted) {
                         return null;
                     }
                     this.mounted = true;
-                    const register = this.context;
-                    let state = {};
-                    for (let i = 0; i < controllers.length; i++) {
-                        const slice = controllers[i].controller.getInstance(register).getStateSlice();
-                        state = Object.assign(Object.assign({}, state), controllers[i].selector(slice));
+                    var register = this.context;
+                    var state = {};
+                    for (var i = 0; i < controllers.length; i++) {
+                        var slice = controllers[i].controller.getInstance(register).getStateSlice();
+                        state = __assign(__assign({}, state), controllers[i].selector(slice));
                     }
-                    return (React.createElement(Component, Object.assign({}, this.props, state, { register })));
-                }
-                componentDidMount() {
-                    const register = this.context;
+                    return (React.createElement(Component, __assign({}, this.props, state, { register: register })));
+                };
+                class_1.prototype.componentDidMount = function () {
+                    var register = this.context;
                     this.unsubscribe = register.subscribe(this.handleChange.bind(this));
-                }
-                componentWillUnmount() {
+                };
+                class_1.prototype.componentWillUnmount = function () {
                     if (this.unsubscribe) {
                         this.unsubscribe();
                         this.unsubscribe = null;
                     }
-                }
-                handleChange() {
+                };
+                class_1.prototype.handleChange = function () {
                     if (this.unsubscribe) {
                         this.forceUpdate();
                     }
-                }
-            },
+                };
+                return class_1;
+            }(React.Component)),
             _a.contextType = context_1.RegisterProviderContext,
             _a.displayName = 'ComponentConnector',
             _a);
         return connected;
-    }
-}
+    };
+    return ComponentConnector;
+}());
 exports.ComponentConnector = ComponentConnector;

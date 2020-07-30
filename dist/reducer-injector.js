@@ -8,14 +8,25 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReducerInjector = exports.defaultReducer = void 0;
-const redux_1 = require("redux");
+var redux_1 = require("redux");
 /**
  * @internal
  */
 /* istanbul ignore next */
-exports.defaultReducer = () => ({});
+exports.defaultReducer = function () { return ({}); };
 /**
  * An object that handles injection of reducers into the Redux store that is managed by a ReduxRegister.
  *
@@ -48,7 +59,7 @@ exports.defaultReducer = () => ({});
  * });
  * ```
  */
-class ReducerInjector {
+var ReducerInjector = /** @class */ (function () {
     /**
      * Creates an injector instance.
      *
@@ -60,7 +71,8 @@ class ReducerInjector {
      * });
      * ```
      */
-    constructor(initialReducers = {}) {
+    function ReducerInjector(initialReducers) {
+        if (initialReducers === void 0) { initialReducers = {}; }
         this.initialReducers = initialReducers;
         this.getObjectiveReduxReducers = null;
         this.injectedReducers = {};
@@ -79,9 +91,9 @@ class ReducerInjector {
      * // Do not use this function directly!
      * ```
      */
-    setGetObjectiveReduxReducers(getObjectiveReduxReducers) {
+    ReducerInjector.prototype.setGetObjectiveReduxReducers = function (getObjectiveReduxReducers) {
         this.getObjectiveReduxReducers = getObjectiveReduxReducers;
-    }
+    };
     /**
      * A function that can be used to get add additional reducers to the store.
      *
@@ -108,14 +120,17 @@ class ReducerInjector {
      * register.replaceReducer(nextReducer);
      * ```
      */
-    getReducerCreationFn() {
-        return (injectedReducers = this.injectedReducers) => {
-            this.injectedReducers = injectedReducers;
-            const reducers = Object.assign(Object.assign(Object.assign({}, this.initialReducers), this.injectedReducers), (this.getObjectiveReduxReducers && this.getObjectiveReduxReducers()));
+    ReducerInjector.prototype.getReducerCreationFn = function () {
+        var _this = this;
+        return function (injectedReducers) {
+            if (injectedReducers === void 0) { injectedReducers = _this.injectedReducers; }
+            _this.injectedReducers = injectedReducers;
+            var reducers = __assign(__assign(__assign({}, _this.initialReducers), _this.injectedReducers), (_this.getObjectiveReduxReducers && _this.getObjectiveReduxReducers()));
             return Object.keys(reducers).length > 0
                 ? redux_1.combineReducers(reducers)
                 : exports.defaultReducer;
         };
-    }
-}
+    };
+    return ReducerInjector;
+}());
 exports.ReducerInjector = ReducerInjector;

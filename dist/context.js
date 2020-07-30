@@ -10,7 +10,7 @@ exports.RegisterProviderContext = void 0;
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-const React = require("react");
+var React = require("react");
 /**
  * @internal
  */

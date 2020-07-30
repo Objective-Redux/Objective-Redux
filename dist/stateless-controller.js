@@ -8,21 +8,34 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatelessController = exports.SagaBuilder = void 0;
-const action_1 = require("./action");
-const controller_1 = require("./controller");
+var action_1 = require("./action");
+var controller_1 = require("./controller");
 /**
  * Builder that is returned by the [[StatelessController]] to create and register a saga.
  *
  * @template Payload The payload that the action and the saga will use.
  */
-class SagaBuilder {
+var SagaBuilder = /** @class */ (function () {
     // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param
     /**
      * @internal
      */
-    constructor(registerFn) {
+    function SagaBuilder(registerFn) {
         this.registerFn = registerFn;
         this.name = null;
         this.takeBuilder = null;
@@ -34,10 +47,10 @@ class SagaBuilder {
      * @param name The name/type of the action.
      * @returns An instance of the SagaBuilder.
      */
-    withAddressableName(name) {
+    SagaBuilder.prototype.withAddressableName = function (name) {
         this.name = name;
         return this;
-    }
+    };
     /**
      * Adds a simple watcher to the saga.
      *
@@ -45,24 +58,25 @@ class SagaBuilder {
      * functions, such as configureTakeLatest or configureDebounce.
      * @returns An instance of the SagaBuilder.
      */
-    withTake(takeBuilder) {
+    SagaBuilder.prototype.withTake = function (takeBuilder) {
         this.takeBuilder = takeBuilder;
         return this;
-    }
+    };
     /**
      * Completes the builder and adds the saga to the register.
      *
      * @param sagaFn The saga function to add to the ReduxRegister.
      * @returns An action for calling the saga.
      */
-    register(sagaFn) {
+    SagaBuilder.prototype.register = function (sagaFn) {
         return this.registerFn({
             name: this.name,
             takeBuilder: this.takeBuilder,
-            sagaFn,
+            sagaFn: sagaFn,
         });
-    }
-}
+    };
+    return SagaBuilder;
+}());
 exports.SagaBuilder = SagaBuilder;
 /**
  * Create and manage sagas that are associated with a Redux store.
@@ -89,7 +103,8 @@ exports.SagaBuilder = SagaBuilder;
  * instance.toggleSwitch();
  * ```
  */
-class StatelessController extends controller_1.Controller {
+var StatelessController = /** @class */ (function (_super) {
+    __extends(StatelessController, _super);
     /**
      * Registers and starts the sagas.
      *
@@ -101,8 +116,8 @@ class StatelessController extends controller_1.Controller {
      * @returns An instance of the StatelessController.
      */
     // eslint-disable-next-line no-useless-constructor
-    constructor(register) {
-        super(register);
+    function StatelessController(register) {
+        return _super.call(this, register) || this;
     }
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
@@ -110,20 +125,21 @@ class StatelessController extends controller_1.Controller {
      * @template Payload the payload the action and the saga will take.
      * @returns A builder that registers the saga.
      */
-    createSaga() {
+    StatelessController.prototype.createSaga = function () {
         return new SagaBuilder(this.buildSaga.bind(this));
-    }
-    buildSaga(config) {
-        const name = this.createActionName(config.name);
-        let { sagaFn } = config;
+    };
+    StatelessController.prototype.buildSaga = function (config) {
+        var name = this.createActionName(config.name);
+        var sagaFn = config.sagaFn;
         if (config.takeBuilder !== null) {
             sagaFn = config.takeBuilder({
-                name,
-                sagaFn,
+                name: name,
+                sagaFn: sagaFn,
             });
         }
         this.register.registerSaga(sagaFn);
         return action_1.createConnectedAction(name, this.register);
-    }
-}
+    };
+    return StatelessController;
+}(controller_1.Controller));
 exports.StatelessController = StatelessController;

@@ -8,10 +8,23 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StateController = void 0;
-const action_1 = require("./action");
-const controller_1 = require("./controller");
+var action_1 = require("./action");
+var controller_1 = require("./controller");
 /**
  * Creates and manages a slice of Redux state.
  *
@@ -70,7 +83,8 @@ const controller_1 = require("./controller");
  * const slice = controller.getStateSlice();
  * ```
  */
-class StateController extends controller_1.Controller {
+var StateController = /** @class */ (function (_super) {
+    __extends(StateController, _super);
     /**
      * Registers the controller, sets up the reducer, and sets the initial state.
      *
@@ -83,10 +97,11 @@ class StateController extends controller_1.Controller {
      * @returns The ReduxRegister instance to which the controller will be connected.
      */
     // eslint-disable-next-line max-params
-    constructor(initialState, register) {
-        super(register);
-        this.initialState = initialState;
-        this.reducerMap = {};
+    function StateController(initialState, register) {
+        var _this = _super.call(this, register) || this;
+        _this.initialState = initialState;
+        _this.reducerMap = {};
+        return _this;
     }
     /**
      * Creates groupings of state slices in the store by moving them into an object of the namespace.
@@ -138,9 +153,9 @@ class StateController extends controller_1.Controller {
      * // }
      * ```
      */
-    static getNamespace() {
+    StateController.getNamespace = function () {
         return null;
-    }
+    };
     /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
      *
@@ -159,10 +174,11 @@ class StateController extends controller_1.Controller {
      * This action producing function also has a `withAddressableName` function that can be called to change the action
      * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
      */
-    registerAction(fn) {
-        const actionName = this.createActionName();
+    StateController.prototype.registerAction = function (fn) {
+        var _this = this;
+        var actionName = this.createActionName();
         this.reducerMap[actionName] = fn;
-        const actionFn = action_1.createConnectedAction(actionName, this.register);
+        var actionFn = action_1.createConnectedAction(actionName, this.register);
         /**
          * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
          * this builder.
@@ -170,14 +186,14 @@ class StateController extends controller_1.Controller {
          * @param name The name of the action.
          * @returns The action producing function for calling the mutating function.
          */
-        actionFn.withAddressableName = (name) => {
-            this.reducerMap[actionName] = null;
-            const addressableActionName = this.createActionName(name);
-            this.reducerMap[addressableActionName] = fn;
-            return action_1.createConnectedAction(addressableActionName, this.register);
+        actionFn.withAddressableName = function (name) {
+            _this.reducerMap[actionName] = null;
+            var addressableActionName = _this.createActionName(name);
+            _this.reducerMap[addressableActionName] = fn;
+            return action_1.createConnectedAction(addressableActionName, _this.register);
         };
         return actionFn;
-    }
+    };
     /**
      * The reducer, which handles mutations to the state slice.
      *
@@ -185,23 +201,26 @@ class StateController extends controller_1.Controller {
      * @param action The action being performed on the state.
      * @returns The new state resulting from the action.
      */
-    reducer(state = this.initialState, action = null) {
-        const reducerFn = this.reducerMap[(action === null || action === void 0 ? void 0 : action.type) || ''];
+    StateController.prototype.reducer = function (state, action) {
+        if (state === void 0) { state = this.initialState; }
+        if (action === void 0) { action = null; }
+        var reducerFn = this.reducerMap[(action === null || action === void 0 ? void 0 : action.type) || ''];
         if (!reducerFn || !action) {
             return state;
         }
         return reducerFn(state, action.payload);
-    }
+    };
     /**
      * Gets the current value for this slice of the Redux state.
      *
      * @returns The current slice of the state related to this controller.
      */
-    getStateSlice() {
-        let state = this.register.getState();
-        const namespace = this.constructor.getNamespace();
+    StateController.prototype.getStateSlice = function () {
+        var state = this.register.getState();
+        var namespace = this.constructor.getNamespace();
         state = namespace ? state[namespace] : state;
         return state[this.constructor.getName()];
-    }
-}
+    };
+    return StateController;
+}(controller_1.Controller));
 exports.StateController = StateController;

@@ -10,8 +10,8 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useRegister = void 0;
-const react_1 = require("react");
-const context_1 = require("./context");
+var react_1 = require("react");
+var context_1 = require("./context");
 /**
  * Gets the ReduxRegister from the React context for use in a functional component.
  *
@@ -34,12 +34,12 @@ const context_1 = require("./context");
  * }
  * ```
  */
-exports.useRegister = () => {
-    const register = react_1.useContext(context_1.RegisterProviderContext);
-    const [, forceUpdate] = react_1.useReducer(c => c + 1, 0);
+exports.useRegister = function () {
+    var register = react_1.useContext(context_1.RegisterProviderContext);
+    var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
     /* istanbul ignore else */
     if (register) {
-        register.subscribe(() => forceUpdate());
+        register.subscribe(function () { return forceUpdate(); });
     }
     return register;
 };

@@ -10,8 +10,8 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterProvider = void 0;
-const React = require("react");
-const context_1 = require("./context");
+var React = require("react");
+var context_1 = require("./context");
 /**
  * Provides a ReduxRegister to child React components.
  *
@@ -33,7 +33,8 @@ const context_1 = require("./context");
  *
  * @returns The provider that will render with its child components.
  */
-function RegisterProvider({ register, children }) {
+function RegisterProvider(_a) {
+    var register = _a.register, children = _a.children;
     return (React.createElement(context_1.RegisterProviderContext.Provider, { value: register }, children));
 }
 exports.RegisterProvider = RegisterProvider;

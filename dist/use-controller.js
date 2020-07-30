@@ -10,7 +10,7 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useController = void 0;
-const _1 = require("./");
+var _1 = require("./");
 /**
  * Gets a controller from the ReduxRegister using hook.
  *
@@ -33,8 +33,8 @@ const _1 = require("./");
  * }
  * ```
  */
-exports.useController = (controller) => {
-    const register = _1.useRegister();
+exports.useController = function (controller) {
+    var register = _1.useRegister();
     if (!register) {
         return null;
     }

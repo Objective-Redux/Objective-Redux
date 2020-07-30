@@ -13,43 +13,43 @@ exports.LazyLoader = void 0;
 /**
  * @internal
  */
-let LazyLoader = /** @class */ (() => {
-    class LazyLoader {
-        static registerController(controller) {
-            this.loadableControllers[controller.getName()] = controller;
-        }
-        static getControllerForAction(action) {
-            let controller = null;
-            const type = (action === null || action === void 0 ? void 0 : action.type) || '';
-            const match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
-            if (match) {
-                controller = LazyLoader.loadableControllers[match[1]];
-            }
-            return controller;
-        }
-        static addRegister(register, registerReducerFn) {
-            this.reducerFns.set(register, registerReducerFn);
-            this.controllers.set(register, {});
-        }
-        // eslint-disable-next-line max-statements
-        static getController(register, ControllerClass) {
-            const name = ControllerClass.getName();
-            const controllerMap = this.controllers.get(register);
-            const existing = controllerMap[name];
-            if (existing) {
-                return existing;
-            }
-            const instance = new ControllerClass(register);
-            controllerMap[name] = instance;
-            if (instance.reducer) {
-                this.reducerFns.get(register)(instance);
-            }
-            return instance;
-        }
+var LazyLoader = /** @class */ (function () {
+    function LazyLoader() {
     }
+    LazyLoader.registerController = function (controller) {
+        this.loadableControllers[controller.getName()] = controller;
+    };
+    LazyLoader.getControllerForAction = function (action) {
+        var controller = null;
+        var type = (action === null || action === void 0 ? void 0 : action.type) || '';
+        var match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
+        if (match) {
+            controller = LazyLoader.loadableControllers[match[1]];
+        }
+        return controller;
+    };
+    LazyLoader.addRegister = function (register, registerReducerFn) {
+        this.reducerFns.set(register, registerReducerFn);
+        this.controllers.set(register, {});
+    };
+    // eslint-disable-next-line max-statements
+    LazyLoader.getController = function (register, ControllerClass) {
+        var name = ControllerClass.getName();
+        var controllerMap = this.controllers.get(register);
+        var existing = controllerMap[name];
+        if (existing) {
+            return existing;
+        }
+        var instance = new ControllerClass(register);
+        controllerMap[name] = instance;
+        if (instance.reducer) {
+            this.reducerFns.get(register)(instance);
+        }
+        return instance;
+    };
     LazyLoader.loadableControllers = {};
     LazyLoader.reducerFns = new WeakMap();
     LazyLoader.controllers = new WeakMap();
     return LazyLoader;
-})();
+}());
 exports.LazyLoader = LazyLoader;

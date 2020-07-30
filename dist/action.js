@@ -25,7 +25,7 @@ exports.createConnectedAction = exports.createAction = exports.getActionNameForC
  * ```
  */
 function getActionNameForController(controllerName, actionName) {
-    return `OBJECTIVE-REDUX-ACTION/${controllerName.replace('/', '-')}/${actionName}`;
+    return "OBJECTIVE-REDUX-ACTION/" + controllerName.replace('/', '-') + "/" + actionName;
 }
 exports.getActionNameForController = getActionNameForController;
 /**
@@ -46,10 +46,10 @@ exports.getActionNameForController = getActionNameForController;
  * ```
  */
 function createAction(type) {
-    return (payload) => ({
-        type,
-        payload,
-    });
+    return function (payload) { return ({
+        type: type,
+        payload: payload,
+    }); };
 }
 exports.createAction = createAction;
 /**
@@ -61,9 +61,9 @@ exports.createAction = createAction;
  * @internal
  */
 function createConnectedAction(type, register) {
-    return (payload) => register.dispatch({
-        type,
-        payload,
-    });
+    return function (payload) { return register.dispatch({
+        type: type,
+        payload: payload,
+    }); };
 }
 exports.createConnectedAction = createConnectedAction;

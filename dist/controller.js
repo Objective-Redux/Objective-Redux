@@ -10,14 +10,14 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
-const lazy_loader_1 = require("./lazy-loader");
-const controllernamenotdefined_1 = require("./controllernamenotdefined");
-const _1 = require("./");
+var lazy_loader_1 = require("./lazy-loader");
+var controllernamenotdefined_1 = require("./controllernamenotdefined");
+var _1 = require("./");
 /**
  * @internal
  */
-class Controller {
-    constructor(register) {
+var Controller = /** @class */ (function () {
+    function Controller(register) {
         this.count = 0;
         this.register = register;
     }
@@ -32,20 +32,21 @@ class Controller {
      * @throws {ControllerNameNotDefined} Thrown when the method has not been overloaded to return a proper name.
      * @returns The name of the state slice.
      */
-    static getName() {
+    Controller.getName = function () {
         throw new controllernamenotdefined_1.ControllerNameNotDefined('No name was defined for this controller');
-    }
+    };
     /**
      * Generates a unique, default action name.
      *
      * @param name The name of the action or null to generate a unique, default action name.
      * @returns An action name.
      */
-    createActionName(name = null) {
-        const actionName = name || `${this.count++}`;
-        const controllerName = this.constructor.getName();
+    Controller.prototype.createActionName = function (name) {
+        if (name === void 0) { name = null; }
+        var actionName = name || "" + this.count++;
+        var controllerName = this.constructor.getName();
         return _1.getActionNameForController(controllerName, actionName);
-    }
+    };
     /**
      * Gets an instance of the class, creating one if it does not yet exist.
      *
@@ -61,9 +62,9 @@ class Controller {
      * const instance = MyController.getInstance(register);
      * ```
      */
-    static getInstance(register) {
+    Controller.getInstance = function (register) {
         return lazy_loader_1.LazyLoader.getController(register, this);
-    }
+    };
     /**
      * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
      *
@@ -98,8 +99,9 @@ class Controller {
      * register.dispatch(myAction);
      * ```
      */
-    static initializeOnExternalAction() {
+    Controller.initializeOnExternalAction = function () {
         lazy_loader_1.LazyLoader.registerController(this);
-    }
-}
+    };
+    return Controller;
+}());
 exports.Controller = Controller;
