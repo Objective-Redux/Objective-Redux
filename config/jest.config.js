@@ -29,4 +29,9 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   testMatch: ['**/tests/unit/**/*.test.[jt]s?(x)'],
+  globals: {
+    'ts-jest': {
+      tsconfig: path.resolve(__dirname, './tsconfig.json'),
+    },
+  },
 };
