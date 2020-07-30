@@ -20,7 +20,7 @@ export class SwitchStateSagas extends StatelessController {
   }
 
   toggleSwitch = this.createSaga()
-    .withTake(configureTakeLatest())
+    .withEffect(configureTakeLatest())
     .withAddressableName('update-switch')
     .register(
       function* () {

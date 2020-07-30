@@ -18,6 +18,7 @@ import {
   Unsubscribe,
   combineReducers,
 } from 'redux';
+import { Action } from './action';
 import { LazyLoader } from './lazy-loader';
 import { getReduxSagaModule, getReduxSagaEffects } from './get-redux-saga-module';
 import { defaultReducer } from './reducer-injector';
@@ -53,7 +54,7 @@ interface RegisterOptions {
  * @internal
  */
 export interface SagaFn<Payload> {
-  (payload: Payload): any;
+  (action?: Action<Payload>): any;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { Middleware, AnyAction, Unsubscribe } from 'redux';
+import { Action } from './action';
 import { ReducerInjector } from '.';
 /**
  * @internal
@@ -18,7 +19,7 @@ interface RegisterOptions {
  * @internal
  */
 export interface SagaFn<Payload> {
-    (payload: Payload): any;
+    (action?: Action<Payload>): any;
 }
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its

@@ -11,14 +11,14 @@
 import { ReduxRegister, SagaFn } from './redux-register';
 import { createConnectedAction, ActionFn } from './action';
 import { Controller } from './controller';
-import { TakeBuilder } from './take-type';
+import { EffectBuilder } from './effect-type';
 
 /**
  * @internal
  */
 interface SagaConfig {
   name: string|null;
-  takeBuilder: TakeBuilder|null;
+  effectBuilder: EffectBuilder|null;
   sagaFn: SagaFn<any>;
 }
 
@@ -32,7 +32,7 @@ export class SagaBuilder<Payload> {
 
   private name: string|null;
 
-  private takeBuilder: TakeBuilder|null;
+  private effectBuilder: EffectBuilder|null;
 
   // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param
   /**
@@ -41,7 +41,7 @@ export class SagaBuilder<Payload> {
   public constructor(registerFn: (config: SagaConfig) => ActionFn<Payload>) {
     this.registerFn = registerFn;
     this.name = null;
-    this.takeBuilder = null;
+    this.effectBuilder = null;
   }
 
   /**
@@ -59,12 +59,12 @@ export class SagaBuilder<Payload> {
   /**
    * Adds a simple watcher to the saga.
    *
-   * @param takeBuilder The builder function for the saga watcher. This can be generating using one of the configure
+   * @param effectBuilder The builder function for the saga watcher. This can be generating using one of the configure
    * functions, such as configureTakeLatest or configureDebounce.
    * @returns An instance of the SagaBuilder.
    */
-  public withTake(takeBuilder: TakeBuilder): SagaBuilder<Payload> {
-    this.takeBuilder = takeBuilder;
+  public withEffect(effectBuilder: EffectBuilder): SagaBuilder<Payload> {
+    this.effectBuilder = effectBuilder;
     return this;
   }
 
@@ -77,7 +77,7 @@ export class SagaBuilder<Payload> {
   public register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
     return this.registerFn({
       name: this.name,
-      takeBuilder: this.takeBuilder,
+      effectBuilder: this.effectBuilder,
       sagaFn,
     });
   }
@@ -94,7 +94,7 @@ export class SagaBuilder<Payload> {
  *  }
  *
  *  toggleSwitch = this.createSaga()
- *    .withTake(configureTakeLatest())
+ *    .withEffect(configureTakeLatest())
  *    .register(
  *      function* () {
  *        const controller = yield getControllerFromSagaContext(SwitchStateController);
@@ -139,8 +139,8 @@ export abstract class StatelessController extends Controller {
 
     let { sagaFn } = config;
 
-    if (config.takeBuilder !== null) {
-      sagaFn = config.takeBuilder({
+    if (config.effectBuilder !== null) {
+      sagaFn = config.effectBuilder({
         name,
         sagaFn,
       });

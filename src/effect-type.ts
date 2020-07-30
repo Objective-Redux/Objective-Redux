@@ -21,7 +21,7 @@ export interface DebounceTakeConfig {
 /**
  * @internal
  */
-interface TakeSagaConfig {
+interface SagaEffectConfig {
   name: string;
   sagaFn: SagaFn<any>;
 }
@@ -29,12 +29,12 @@ interface TakeSagaConfig {
 /**
  * @internal
  */
-export interface TakeBuilder {
-  (config: TakeSagaConfig): () => Generator;
+export interface EffectBuilder {
+  (config: SagaEffectConfig): () => Generator;
 }
 
 /**
- * Returns a function that will create a takeLatest saga watcher. This can be used with the SagaBuilder::withTake()
+ * Returns a function that will create a takeLatest saga watcher. This can be used with the SagaBuilder::withEffect()
  * method.
  *
  * @returns A function that creates a takeLatest watching function.
@@ -43,15 +43,15 @@ export interface TakeBuilder {
  * configureTakeLatest();
  * ```
  */
-export function configureTakeLatest(): TakeBuilder {
+export function configureTakeLatest(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
     yield effects.takeLatest(config.name, config.sagaFn);
   };
 }
 
 /**
- * Returns a function that will create a takeEvery saga watcher. This can be used with the SagaBuilder::withTake()
+ * Returns a function that will create a takeEvery saga watcher. This can be used with the SagaBuilder::withEffect()
  * method.
  *
  * @returns A function that creates a takeEvery watching function.
@@ -60,15 +60,15 @@ export function configureTakeLatest(): TakeBuilder {
  * configureTakeEvery();
  * ```
  */
-export function configureTakeEvery(): TakeBuilder {
+export function configureTakeEvery(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
     yield effects.takeEvery(config.name, config.sagaFn);
   };
 }
 
 /**
- * Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withTake()
+ * Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withEffect()
  * method.
  *
  * @returns A function that creates a takeLeading watching function.
@@ -77,15 +77,15 @@ export function configureTakeEvery(): TakeBuilder {
  * configureTakeLeading();
  * ```
  */
-export function configureTakeLeading(): TakeBuilder {
+export function configureTakeLeading(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
     yield effects.takeLeading(config.name, config.sagaFn);
   };
 }
 
 /**
- * Returns a function that will create a debounce saga watcher. This can be used with the SagaBuilder::withTake()
+ * Returns a function that will create a debounce saga watcher. This can be used with the SagaBuilder::withEffect()
  * method.
  *
  * @param debounceConfig The configuration for the watcher.
@@ -95,9 +95,9 @@ export function configureTakeLeading(): TakeBuilder {
  * configureDebounce({ debounceTime: 1000 });
  * ```
  */
-export function configureDebounce(debounceConfig: DebounceTakeConfig): TakeBuilder {
+export function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: TakeSagaConfig): (() => Generator) => function* (): any {
+  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
     yield effects.debounce(debounceConfig?.debounceTime || 0, config.name, config.sagaFn);
   };
 }

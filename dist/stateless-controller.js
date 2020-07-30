@@ -38,7 +38,7 @@ var SagaBuilder = /** @class */ (function () {
     function SagaBuilder(registerFn) {
         this.registerFn = registerFn;
         this.name = null;
-        this.takeBuilder = null;
+        this.effectBuilder = null;
     }
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this
@@ -54,12 +54,12 @@ var SagaBuilder = /** @class */ (function () {
     /**
      * Adds a simple watcher to the saga.
      *
-     * @param takeBuilder The builder function for the saga watcher. This can be generating using one of the configure
+     * @param effectBuilder The builder function for the saga watcher. This can be generating using one of the configure
      * functions, such as configureTakeLatest or configureDebounce.
      * @returns An instance of the SagaBuilder.
      */
-    SagaBuilder.prototype.withTake = function (takeBuilder) {
-        this.takeBuilder = takeBuilder;
+    SagaBuilder.prototype.withEffect = function (effectBuilder) {
+        this.effectBuilder = effectBuilder;
         return this;
     };
     /**
@@ -71,7 +71,7 @@ var SagaBuilder = /** @class */ (function () {
     SagaBuilder.prototype.register = function (sagaFn) {
         return this.registerFn({
             name: this.name,
-            takeBuilder: this.takeBuilder,
+            effectBuilder: this.effectBuilder,
             sagaFn: sagaFn,
         });
     };
@@ -89,7 +89,7 @@ exports.SagaBuilder = SagaBuilder;
  *  }
  *
  *  toggleSwitch = this.createSaga()
- *    .withTake(configureTakeLatest())
+ *    .withEffect(configureTakeLatest())
  *    .register(
  *      function* () {
  *        const controller = yield getControllerFromSagaContext(SwitchStateController);
@@ -131,8 +131,8 @@ var StatelessController = /** @class */ (function (_super) {
     StatelessController.prototype.buildSaga = function (config) {
         var name = this.createActionName(config.name);
         var sagaFn = config.sagaFn;
-        if (config.takeBuilder !== null) {
-            sagaFn = config.takeBuilder({
+        if (config.effectBuilder !== null) {
+            sagaFn = config.effectBuilder({
                 name: name,
                 sagaFn: sagaFn,
             });

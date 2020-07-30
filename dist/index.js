@@ -9,7 +9,6 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ControllerNameNotDefined = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = exports.getActionNameForController = exports.useController = exports.useRegister = exports.getControllerFromSagaContext = exports.getRegisterFromSagaContext = exports.ComponentConnector = exports.RegisterProvider = exports.createAction = exports.StatelessController = exports.StateController = exports.ReducerInjector = exports.ReduxRegister = void 0;
 var redux_register_1 = require("./redux-register");
 Object.defineProperty(exports, "ReduxRegister", { enumerable: true, get: function () { return redux_register_1.ReduxRegister; } });
 var reducer_injector_1 = require("./reducer-injector");
@@ -33,10 +32,10 @@ var use_register_1 = require("./use-register");
 Object.defineProperty(exports, "useRegister", { enumerable: true, get: function () { return use_register_1.useRegister; } });
 var use_controller_1 = require("./use-controller");
 Object.defineProperty(exports, "useController", { enumerable: true, get: function () { return use_controller_1.useController; } });
-var take_type_1 = require("./take-type");
-Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: function () { return take_type_1.configureTakeLatest; } });
-Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return take_type_1.configureTakeEvery; } });
-Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return take_type_1.configureTakeLeading; } });
-Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return take_type_1.configureDebounce; } });
+var effect_type_1 = require("./effect-type");
+Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: function () { return effect_type_1.configureTakeLatest; } });
+Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return effect_type_1.configureTakeEvery; } });
+Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return effect_type_1.configureTakeLeading; } });
+Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return effect_type_1.configureDebounce; } });
 var controllernamenotdefined_1 = require("./controllernamenotdefined");
 Object.defineProperty(exports, "ControllerNameNotDefined", { enumerable: true, get: function () { return controllernamenotdefined_1.ControllerNameNotDefined; } });

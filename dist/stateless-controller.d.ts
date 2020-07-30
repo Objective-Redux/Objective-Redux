@@ -1,13 +1,13 @@
 import { ReduxRegister, SagaFn } from './redux-register';
 import { ActionFn } from './action';
 import { Controller } from './controller';
-import { TakeBuilder } from './take-type';
+import { EffectBuilder } from './effect-type';
 /**
  * @internal
  */
 interface SagaConfig {
     name: string | null;
-    takeBuilder: TakeBuilder | null;
+    effectBuilder: EffectBuilder | null;
     sagaFn: SagaFn<any>;
 }
 /**
@@ -18,7 +18,7 @@ interface SagaConfig {
 export declare class SagaBuilder<Payload> {
     private readonly registerFn;
     private name;
-    private takeBuilder;
+    private effectBuilder;
     /**
      * @internal
      */
@@ -34,11 +34,11 @@ export declare class SagaBuilder<Payload> {
     /**
      * Adds a simple watcher to the saga.
      *
-     * @param takeBuilder The builder function for the saga watcher. This can be generating using one of the configure
+     * @param effectBuilder The builder function for the saga watcher. This can be generating using one of the configure
      * functions, such as configureTakeLatest or configureDebounce.
      * @returns An instance of the SagaBuilder.
      */
-    withTake(takeBuilder: TakeBuilder): SagaBuilder<Payload>;
+    withEffect(effectBuilder: EffectBuilder): SagaBuilder<Payload>;
     /**
      * Completes the builder and adds the saga to the register.
      *
@@ -58,7 +58,7 @@ export declare class SagaBuilder<Payload> {
  *  }
  *
  *  toggleSwitch = this.createSaga()
- *    .withTake(configureTakeLatest())
+ *    .withEffect(configureTakeLatest())
  *    .register(
  *      function* () {
  *        const controller = yield getControllerFromSagaContext(SwitchStateController);

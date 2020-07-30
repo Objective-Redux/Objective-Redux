@@ -37,7 +37,7 @@ import {
   configureDebounce,
   ControllerNameNotDefined,
 } from '../../src';
-import { TakeBuilder } from '../../src/take-type';
+import { EffectBuilder } from '../../src/effect-type';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
@@ -80,11 +80,11 @@ describe('stateless-controller', () => {
   });
 
   describe('createSaga', () => {
-    function checkSaga(takeBuilder: TakeBuilder, verify: () => void): void {
+    function checkSaga(effectBuilder: EffectBuilder, verify: () => void): void {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
       instance.createSagaHandle()
-        .withTake(takeBuilder)
+        .withEffect(effectBuilder)
         .register(testSaga);
 
       expect(registerSaga).toHaveBeenCalled();
@@ -144,7 +144,7 @@ describe('stateless-controller', () => {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
       instance.createSagaHandle()
-        .withTake(configureTakeLeading())
+        .withEffect(configureTakeLeading())
         .withAddressableName('NAME')
         .register(testSaga);
       const { mock: { calls: [[saga]] } } = registerSaga;
@@ -152,7 +152,7 @@ describe('stateless-controller', () => {
       expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/NAME', testSaga);
     });
 
-    it('should create saga without take', () => {
+    it('should create saga without effect', () => {
       const reduxRegisterMock: any = { registerSaga };
       const instance = TestController.getInstance(reduxRegisterMock);
       instance.createSagaHandle()
