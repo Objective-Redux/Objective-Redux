@@ -86,12 +86,15 @@ describe('state-controller', () => {
   });
 
   describe('registerAction', () => {
-    const instance = TestController.getInstance(reduxRegisterMock);
+    const instance = NamespacedTestController.getInstance(reduxRegisterMock);
     instance.unnamedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/::TestSlice/0', payload: true });
+    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/0', payload: true });
 
     instance.namedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/::TestSlice/NAME', payload: true });
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/NAME',
+      payload: true,
+    });
   });
 
   describe('reducer', () => {
@@ -112,7 +115,10 @@ describe('state-controller', () => {
 
     it('should call named mutation', () => {
       const instance = TestController.getInstance(reduxRegisterMock);
-      const reduced = instance.reducerHandle(false, { type: 'OBJECTIVE-REDUX-ACTION/::TestSlice/NAME', payload: true });
+      const reduced = instance.reducerHandle(
+        false,
+        { type: 'OBJECTIVE-REDUX-ACTION/::TestSlice/NAME', payload: true }
+      );
       expect(reduced).toEqual(true);
     });
   });

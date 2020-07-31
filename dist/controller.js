@@ -98,7 +98,8 @@ var Controller = /** @class */ (function () {
         if (name === void 0) { name = null; }
         var actionName = name || "" + this.count++;
         var controllerName = this.constructor.getName();
-        return _1.getActionNameForController(controllerName, actionName);
+        var controllerNamespace = this.constructor.getNamespace() || '';
+        return _1.getActionNameForController(controllerName, actionName, controllerNamespace);
     };
     /**
      * Gets an instance of the class, creating one if it does not yet exist.

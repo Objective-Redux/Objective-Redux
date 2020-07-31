@@ -110,7 +110,8 @@ export abstract class Controller {
   protected createActionName(name: string|null = null): string {
     const actionName = name || `${this.count++}`;
     const controllerName: string = (this.constructor as any).getName();
-    return getActionNameForController(controllerName, actionName);
+    const controllerNamespace: string = (this.constructor as any).getNamespace() || '';
+    return getActionNameForController(controllerName, actionName, controllerNamespace);
   }
 
   /**
