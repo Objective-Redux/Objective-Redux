@@ -18,7 +18,7 @@ describe('action', () => {
   describe('getActionNameForController', () => {
     it('should generate the correctly formatted action name', () => {
       expect(getActionNameForController('controller/name', 'action-name'))
-        .toEqual('OBJECTIVE-REDUX-ACTION/controller-name/action-name');
+        .toEqual('OBJECTIVE-REDUX-ACTION/::controller-name/action-name');
     });
   });
 

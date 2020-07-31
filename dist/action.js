@@ -17,6 +17,7 @@ exports.createConnectedAction = exports.createAction = exports.getActionNameForC
  *
  * @param controllerName The name of the controller the action should target.
  * @param actionName The name of the registered action the action should target.
+ * @param namespace The namespace of the controller. Defaults to a non-namespaced controller.
  * @returns The generated action name.
  *
  * @example
@@ -24,8 +25,10 @@ exports.createConnectedAction = exports.createAction = exports.getActionNameForC
  * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
  * ```
  */
-function getActionNameForController(controllerName, actionName) {
-    return "OBJECTIVE-REDUX-ACTION/" + controllerName.replace('/', '-') + "/" + actionName;
+// eslint-disable-next-line max-params
+function getActionNameForController(controllerName, actionName, namespace) {
+    if (namespace === void 0) { namespace = ''; }
+    return "OBJECTIVE-REDUX-ACTION/" + namespace.replace('/', '-') + "::" + controllerName.replace('/', '-') + "/" + actionName;
 }
 exports.getActionNameForController = getActionNameForController;
 /**

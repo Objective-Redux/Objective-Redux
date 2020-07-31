@@ -43,6 +43,65 @@ export abstract class Controller {
   }
 
   /**
+   * Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need
+   * to be unique within a namespace.
+   *
+   * In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace
+   * name.
+   *
+   * @returns Null if the state is not namespaced.
+   *
+   * @example
+   * ```typescript
+   * // For StateControllers, the namespace also groups slices in the store.
+   *
+   * class MyFirstController extends StateController {
+   *   // ...
+   *
+   *   static getName() {
+   *     return 'MY_FIRST_CONTROLLER';
+   *   }
+   *
+   *   static getNamespace() {
+   *     return 'MY_NAMESPACE';
+   *   }
+   *
+   *   // ...
+   * }
+   *
+   * class MySecondController extends StateController {
+   *   // ...
+   *
+   *   static getName() {
+   *     return 'MY_SECOND_CONTROLLER';
+   *   }
+   *
+   *   static getNamespace() {
+   *     return 'MY_NAMESPACE';
+   *   }
+   *
+   *   // ...
+   * }
+   *
+   * // Creates a state of the form:
+   * //
+   * // {
+   * //   MY_NAMESPACE: {
+   * //     MY_FIRST_CONTROLLER: {
+   * //       // ...
+   * //     },
+   * //     MY_SECOND_CONTROLLER: {
+   * //       // ...
+   * //     },
+   * //   },
+   * // }
+   * ```
+   */
+  public static getNamespace(): string|null {
+    return null;
+  }
+
+  /**
    * Generates a unique, default action name.
    *
    * @param name The name of the action or null to generate a unique, default action name.

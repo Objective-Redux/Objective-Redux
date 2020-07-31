@@ -12,9 +12,16 @@ import { LazyLoader } from '../../src/lazy-loader';
 
 const mockController: any = {
   getName: () => 'TEST-CONTROLLER',
+  getNamespace: () => null,
+};
+
+const namespacedMockController: any = {
+  getName: () => 'TEST-CONTROLLER',
+  getNamespace: () => 'NAMESPACE',
 };
 
 LazyLoader.registerController(mockController);
+LazyLoader.registerController(namespacedMockController);
 
 describe('LazyLoader', () => {
   describe('getControllerForAction', () => {
@@ -32,25 +39,40 @@ describe('LazyLoader', () => {
 
     it('should return matching controller', () => {
       const controller = LazyLoader.getControllerForAction({
-        type: 'OBJECTIVE-REDUX-ACTION/TEST-CONTROLLER/SOME-ACTION',
+        type: 'OBJECTIVE-REDUX-ACTION/::TEST-CONTROLLER/SOME-ACTION',
       });
       expect(controller).toEqual(mockController);
+    });
+
+    it('should return matching namespaced controller', () => {
+      const controller = LazyLoader.getControllerForAction({
+        type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TEST-CONTROLLER/SOME-ACTION',
+      });
+      expect(controller).toEqual(namespacedMockController);
     });
   });
 
   describe('getController', () => {
-    it('created one instance of each controller', () => {
+    it('creates one instance of each controller', () => {
       class TestControllerOne {
-        public reducer(): any {}
-
         public static getName(): string {
           return 'A';
         }
+
+        public static getNamespace(): string|null {
+          return null;
+        }
+
+        public reducer(): any {}
       }
 
       class TestControllerTwo {
         public static getName(): string {
           return 'B';
+        }
+
+        public static getNamespace(): string|null {
+          return 'MY_NAMESPACE';
         }
       }
 

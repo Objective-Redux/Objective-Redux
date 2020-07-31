@@ -17,14 +17,19 @@ var LazyLoader = /** @class */ (function () {
     function LazyLoader() {
     }
     LazyLoader.registerController = function (controller) {
-        this.loadableControllers[controller.getName()] = controller;
+        var namespace = controller.getNamespace() || '';
+        /* istanbul ignore else */
+        if (this.loadableControllers[namespace] == null) {
+            this.loadableControllers[namespace] = {};
+        }
+        this.loadableControllers[namespace][controller.getName()] = controller;
     };
     LazyLoader.getControllerForAction = function (action) {
         var controller = null;
         var type = (action === null || action === void 0 ? void 0 : action.type) || '';
-        var match = type.match('^OBJECTIVE-REDUX-ACTION/([^/]*)/.*$');
-        if (match) {
-            controller = LazyLoader.loadableControllers[match[1]];
+        var match = type.match('^OBJECTIVE-REDUX-ACTION/(.*?)::([^/]*)/.*$');
+        if (match && LazyLoader.loadableControllers[match[1]]) {
+            controller = LazyLoader.loadableControllers[match[1]][match[2]];
         }
         return controller;
     };
@@ -35,13 +40,17 @@ var LazyLoader = /** @class */ (function () {
     // eslint-disable-next-line max-statements
     LazyLoader.getController = function (register, ControllerClass) {
         var name = ControllerClass.getName();
+        var namespace = ControllerClass.getNamespace() || '';
         var controllerMap = this.controllers.get(register);
-        var existing = controllerMap[name];
+        if (controllerMap[namespace] == null) {
+            controllerMap[namespace] = {};
+        }
+        var existing = controllerMap[namespace][name];
         if (existing) {
             return existing;
         }
         var instance = new ControllerClass(register);
-        controllerMap[name] = instance;
+        controllerMap[namespace][name] = instance;
         if (instance.reducer) {
             this.reducerFns.get(register)(instance);
         }

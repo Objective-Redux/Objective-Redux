@@ -59,8 +59,14 @@ function* testSaga(): Generator {
 
 describe('stateless-controller', () => {
   describe('getName', () => {
-    it('should throw an error when the name is not defined', () => {
+    it('defaults to the class name', () => {
       expect(StatelessController.getName()).toEqual('StatelessController');
+    });
+  });
+
+  describe('getNamespace', () => {
+    it('defaults to null', () => {
+      expect(StatelessController.getNamespace()).toBeNull();
     });
   });
 
@@ -92,21 +98,21 @@ describe('stateless-controller', () => {
     it('should create saga with takeLatest', () => {
       checkSaga(
         configureTakeLatest(),
-        () => expect(takeLatest).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(takeLatest).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
     it('should create saga with takeEvery', () => {
       checkSaga(
         configureTakeEvery(),
-        () => expect(takeEvery).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(takeEvery).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
     it('should create saga with takeLeading', () => {
       checkSaga(
         configureTakeLeading(),
-        () => expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
@@ -114,7 +120,7 @@ describe('stateless-controller', () => {
       const debounceTime = 1000;
       checkSaga(
         configureDebounce({ debounceTime }),
-        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
@@ -122,7 +128,7 @@ describe('stateless-controller', () => {
       const debounceTime = 0;
       checkSaga(
         configureDebounce({} as any),
-        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
@@ -130,7 +136,7 @@ describe('stateless-controller', () => {
       const debounceTime = 0;
       checkSaga(
         configureDebounce(null as any),
-        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/test-saga/0', testSaga)
+        () => expect(debounce).toHaveBeenCalledWith(debounceTime, 'OBJECTIVE-REDUX-ACTION/::test-saga/0', testSaga)
       );
     });
 
@@ -143,7 +149,7 @@ describe('stateless-controller', () => {
         .register(testSaga);
       const { mock: { calls: [[saga]] } } = registerSaga;
       saga().next();
-      expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/test-saga/NAME', testSaga);
+      expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/::test-saga/NAME', testSaga);
     });
 
     it('should create saga without effect', () => {

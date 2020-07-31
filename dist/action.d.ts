@@ -25,6 +25,7 @@ export interface ActionExtendFn<Payload> extends ActionFn<Payload> {
  *
  * @param controllerName The name of the controller the action should target.
  * @param actionName The name of the registered action the action should target.
+ * @param namespace The namespace of the controller. Defaults to a non-namespaced controller.
  * @returns The generated action name.
  *
  * @example
@@ -32,7 +33,7 @@ export interface ActionExtendFn<Payload> extends ActionFn<Payload> {
  * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
  * ```
  */
-export declare function getActionNameForController(controllerName: string, actionName: string): string;
+export declare function getActionNameForController(controllerName: string, actionName: string, namespace?: string): string;
 /**
  * Returns a function that generates a Redux action of the form { type, payload }.
  *

@@ -108,65 +108,10 @@ export abstract class StateController<State> extends Controller {
    * @param register The redux register instance to which the component is being connected.
    * @returns The ReduxRegister instance to which the controller will be connected.
    */
-  // eslint-disable-next-line max-params
   protected constructor(initialState: State, register: ReduxRegister) {
     super(register);
     this.initialState = initialState;
     this.reducerMap = {};
-  }
-
-  /**
-   * Creates groupings of state slices in the store by moving them into an object of the namespace.
-   *
-   * @returns Null if the state should be on the root level of the store, or a string representing the structure of the
-   * object that the slice belongs in.
-   *
-   * @example
-   * ```typescript
-   * class MyFirstController extends StateController {
-   *   // ...
-   *
-   *   static getName() {
-   *     return 'MY_FIRST_CONTROLLER';
-   *   }
-   *
-   *   static getNamespace() {
-   *     return 'MY_NAMESPACE';
-   *   }
-   *
-   *   // ...
-   * }
-   *
-   * class MySecondController extends StateController {
-   *   // ...
-   *
-   *   static getName() {
-   *     return 'MY_SECOND_CONTROLLER';
-   *   }
-   *
-   *   static getNamespace() {
-   *     return 'MY_NAMESPACE';
-   *   }
-   *
-   *   // ...
-   * }
-   *
-   * // Creates a state of the form:
-   * //
-   * // {
-   * //   MY_NAMESPACE: {
-   * //     MY_FIRST_CONTROLLER: {
-   * //       // ...
-   * //     },
-   * //     MY_SECOND_CONTROLLER: {
-   * //       // ...
-   * //     },
-   * //   },
-   * // }
-   * ```
-   */
-  public static getNamespace(): string|null {
-    return null;
   }
 
   /**
@@ -179,6 +124,7 @@ export abstract class StateController<State> extends Controller {
    * class MyFirstController extends StateController {
    *   // ...
    *
+   *   // Since getStoreName is not overloaded, this will be used as the slice name in the store
    *   static getName() {
    *     return 'MY_FIRST_CONTROLLER';
    *   }
@@ -189,10 +135,12 @@ export abstract class StateController<State> extends Controller {
    * class MySecondController extends StateController {
    *   // ...
    *
+   *   // Since getStoreName is overloaded, this will identify the controller but not be used as the slice name
    *   static getName() {
    *     return 'MY_SECOND_CONTROLLER';
    *   }
    *
+   *   // This will be used as the slice name in the store
    *   static getStoreName() {
    *     return 'Second';
    *   }

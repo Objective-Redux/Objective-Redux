@@ -39,6 +39,7 @@ export interface ActionExtendFn<Payload> extends ActionFn<Payload> {
  *
  * @param controllerName The name of the controller the action should target.
  * @param actionName The name of the registered action the action should target.
+ * @param namespace The namespace of the controller. Defaults to a non-namespaced controller.
  * @returns The generated action name.
  *
  * @example
@@ -46,8 +47,9 @@ export interface ActionExtendFn<Payload> extends ActionFn<Payload> {
  * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
  * ```
  */
-export function getActionNameForController(controllerName: string, actionName: string): string {
-  return `OBJECTIVE-REDUX-ACTION/${controllerName.replace('/', '-')}/${actionName}`;
+// eslint-disable-next-line max-params
+export function getActionNameForController(controllerName: string, actionName: string, namespace: string = ''): string {
+  return `OBJECTIVE-REDUX-ACTION/${namespace.replace('/', '-')}::${controllerName.replace('/', '-')}/${actionName}`;
 }
 
 /**
