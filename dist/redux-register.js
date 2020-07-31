@@ -229,7 +229,7 @@ var ReduxRegister = /** @class */ (function () {
         this.sagaMiddleware.run(sagaFn);
     };
     ReduxRegister.prototype.addControllerReducer = function (controller) {
-        var name = controller.constructor.getName();
+        var name = controller.constructor.getStoreName();
         var namespace = controller.constructor.getNamespace();
         var placement = this.registeredReducers;
         if (namespace) {

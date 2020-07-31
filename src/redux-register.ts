@@ -274,7 +274,7 @@ export class ReduxRegister {
   }
 
   private addControllerReducer(controller: any): void {
-    const name = controller.constructor.getName();
+    const name = controller.constructor.getStoreName();
     const namespace = controller.constructor.getNamespace();
     let placement = this.registeredReducers;
     if (namespace) {

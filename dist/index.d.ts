@@ -10,5 +10,4 @@ export { getControllerFromSagaContext } from './get-controller-from-saga-context
 export { useRegister } from './use-register';
 export { useController } from './use-controller';
 export { configureTakeLatest, configureTakeEvery, configureTakeLeading, configureDebounce, } from './effect-type';
-export { ControllerNameNotDefined } from './controllernamenotdefined';
 //# sourceMappingURL=index.d.ts.map

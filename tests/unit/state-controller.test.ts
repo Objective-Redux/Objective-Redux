@@ -29,7 +29,7 @@ jest.mock('../../src/lazy-loader', () => ({
   },
 }));
 
-import { StateController, ControllerNameNotDefined } from '../../src';
+import { StateController } from '../../src';
 
 class TestController extends StateController<boolean> {
   public constructor(register: any) {
@@ -66,13 +66,8 @@ describe('state-controller', () => {
   });
 
   describe('getName', () => {
-    it('should throw an error when the name is not defined', () => {
-      try {
-        StateController.getName();
-        expect(false).toBeTruthy();
-      } catch (e) {
-        expect(e).toBeInstanceOf(ControllerNameNotDefined);
-      }
+    it('should be the class name', () => {
+      expect(StateController.getName()).toEqual('StateController');
     });
   });
 

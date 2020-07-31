@@ -157,6 +157,52 @@ var StateController = /** @class */ (function (_super) {
         return null;
     };
     /**
+     * Specified the name of the reducer/slice in the Redux store. Defaults to the value of getName.
+     *
+     * @returns The name of the controller in the store. Defaults to the value of getName.
+     *
+     * @example
+     * ```typescript
+     * class MyFirstController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_FIRST_CONTROLLER';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * class MySecondController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_SECOND_CONTROLLER';
+     *   }
+     *
+     *   static getStoreName() {
+     *     return 'Second';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * // Creates a state of the form:
+     * //
+     * // {
+     * //   MY_FIRST_CONTROLLER: {
+     * //     // ...
+     * //   },
+     * //   Second: {
+     * //     // ...
+     * //   },
+     * // }
+     * ```
+     */
+    StateController.getStoreName = function () {
+        return this.getName();
+    };
+    /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
      *
      * @template Payload The interface to which the payload of the action will adhere. If the type is void, no payload
@@ -219,7 +265,7 @@ var StateController = /** @class */ (function (_super) {
         var state = this.register.getState();
         var namespace = this.constructor.getNamespace();
         state = namespace ? state[namespace] : state;
-        return state[this.constructor.getName()];
+        return state[this.constructor.getStoreName()];
     };
     return StateController;
 }(controller_1.Controller));

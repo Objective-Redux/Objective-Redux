@@ -11,7 +11,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
 var lazy_loader_1 = require("./lazy-loader");
-var controllernamenotdefined_1 = require("./controllernamenotdefined");
 var _1 = require("./");
 /**
  * @internal
@@ -22,18 +21,14 @@ var Controller = /** @class */ (function () {
         this.register = register;
     }
     /**
-     * Gets the name of the state slice.
-     *
-     * This must be overloaded and defined for each controller. Failure to override the controller will result
-     * in ControllerNameNotDefined errors.
+     * Gets the unique name of the controller. By default, the name of the class.
      *
      * The name of the controller should be globally unique for all Objective-Redux controllers in the application.
      *
-     * @throws {ControllerNameNotDefined} Thrown when the method has not been overloaded to return a proper name.
      * @returns The name of the state slice.
      */
     Controller.getName = function () {
-        throw new controllernamenotdefined_1.ControllerNameNotDefined('No name was defined for this controller');
+        return this.name;
     };
     /**
      * Generates a unique, default action name.

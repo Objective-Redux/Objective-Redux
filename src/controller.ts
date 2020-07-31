@@ -9,7 +9,6 @@
 // ================================================================================================
 
 import { LazyLoader } from './lazy-loader';
-import { ControllerNameNotDefined } from './controllernamenotdefined';
 import { ReduxRegister, getActionNameForController } from './';
 
 /**
@@ -33,18 +32,14 @@ export abstract class Controller {
   }
 
   /**
-   * Gets the name of the state slice.
-   *
-   * This must be overloaded and defined for each controller. Failure to override the controller will result
-   * in ControllerNameNotDefined errors.
+   * Gets the unique name of the controller. By default, the name of the class.
    *
    * The name of the controller should be globally unique for all Objective-Redux controllers in the application.
    *
-   * @throws {ControllerNameNotDefined} Thrown when the method has not been overloaded to return a proper name.
    * @returns The name of the state slice.
    */
   public static getName(): string {
-    throw new ControllerNameNotDefined('No name was defined for this controller');
+    return this.name;
   }
 
   /**

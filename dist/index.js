@@ -37,5 +37,3 @@ Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: f
 Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return effect_type_1.configureTakeEvery; } });
 Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return effect_type_1.configureTakeLeading; } });
 Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return effect_type_1.configureDebounce; } });
-var controllernamenotdefined_1 = require("./controllernamenotdefined");
-Object.defineProperty(exports, "ControllerNameNotDefined", { enumerable: true, get: function () { return controllernamenotdefined_1.ControllerNameNotDefined; } });

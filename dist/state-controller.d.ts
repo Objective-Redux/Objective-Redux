@@ -144,6 +144,50 @@ export declare abstract class StateController<State> extends Controller {
      */
     static getNamespace(): string | null;
     /**
+     * Specified the name of the reducer/slice in the Redux store. Defaults to the value of getName.
+     *
+     * @returns The name of the controller in the store. Defaults to the value of getName.
+     *
+     * @example
+     * ```typescript
+     * class MyFirstController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_FIRST_CONTROLLER';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * class MySecondController extends StateController {
+     *   // ...
+     *
+     *   static getName() {
+     *     return 'MY_SECOND_CONTROLLER';
+     *   }
+     *
+     *   static getStoreName() {
+     *     return 'Second';
+     *   }
+     *
+     *   // ...
+     * }
+     *
+     * // Creates a state of the form:
+     * //
+     * // {
+     * //   MY_FIRST_CONTROLLER: {
+     * //     // ...
+     * //   },
+     * //   Second: {
+     * //     // ...
+     * //   },
+     * // }
+     * ```
+     */
+    static getStoreName(): string;
+    /**
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
      *
      * @template Payload The interface to which the payload of the action will adhere. If the type is void, no payload

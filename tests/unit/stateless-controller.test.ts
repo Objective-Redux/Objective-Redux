@@ -35,7 +35,6 @@ import {
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
-  ControllerNameNotDefined,
 } from '../../src';
 import { EffectBuilder } from '../../src/effect-type';
 
@@ -61,12 +60,7 @@ function* testSaga(): Generator {
 describe('stateless-controller', () => {
   describe('getName', () => {
     it('should throw an error when the name is not defined', () => {
-      try {
-        StatelessController.getName();
-        expect(false).toBeTruthy();
-      } catch (e) {
-        expect(e).toBeInstanceOf(ControllerNameNotDefined);
-      }
+      expect(StatelessController.getName()).toEqual('StatelessController');
     });
   });
 

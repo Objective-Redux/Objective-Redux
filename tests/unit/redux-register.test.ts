@@ -187,8 +187,9 @@ describe('redux-register', () => {
       const reducer = jest.fn();
       const controller = {
         constructor: {
-          getName: (): string => 'TEST',
+          getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): null => null,
+          getStoreName: (): string => 'TEST',
         },
         reducer,
       };
@@ -205,8 +206,9 @@ describe('redux-register', () => {
       const reducer = jest.fn();
       const controller = {
         constructor: {
-          getName: (): string => 'TEST',
+          getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): string => 'NAMESPACE',
+          getStoreName: (): string => 'TEST',
         },
         reducer,
       };

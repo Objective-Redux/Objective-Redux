@@ -25,4 +25,3 @@ export {
   configureTakeLeading,
   configureDebounce,
 } from './effect-type';
-export { ControllerNameNotDefined } from './controllernamenotdefined';
