@@ -43,7 +43,6 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
@@ -67,13 +66,13 @@
         
   <section>
     <h2 class="code">configureDebounce</h2>
-    <p class="code">function configureDebounce(debounceConfig: DebounceTakeConfig): TakeBuilder</p>
-    <p>Returns a function that will create a debounce saga watcher. This can be used with the SagaBuilder::withTake() method.<br /></p>
+    <p class="code">function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBuilder</p>
+    <p>Returns a function that will create a debounce saga watcher. This can be used with the SagaBuilder::withEffect() method.<br /></p>
     
     <h3>Parameters</h3>
 <p><dt>debounceConfig: DebounceTakeConfig</dt><dd><br />The configuration for the watcher.</dd><p>
     <h3>Returns</h3>
-    <p><dt>TakeBuilder</dt><dd>A function that creates a debounce watching function.</dd></p>
+    <p><dt>EffectBuilder</dt><dd>A function that creates a debounce watching function.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">configureDebounce({ debounceTime: 1000 });</code></pre>
@@ -86,7 +85,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.12.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

@@ -43,7 +43,6 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
@@ -67,12 +66,12 @@
         
   <section>
     <h2 class="code">configureTakeLeading</h2>
-    <p class="code">function configureTakeLeading(): TakeBuilder</p>
-    <p>Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withTake() method.<br /></p>
+    <p class="code">function configureTakeLeading(): EffectBuilder</p>
+    <p>Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withEffect() method.<br /></p>
     
     
     <h3>Returns</h3>
-    <p><dt>TakeBuilder</dt><dd>A function that creates a takeLeading watching function.</dd></p>
+    <p><dt>EffectBuilder</dt><dd>A function that creates a takeLeading watching function.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">configureTakeLeading();</code></pre>
@@ -85,7 +84,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.12.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

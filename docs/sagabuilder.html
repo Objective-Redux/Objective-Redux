@@ -43,7 +43,6 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
@@ -100,12 +99,12 @@
   
 
   <section>
-    <h2 class="code">withTake</h2>
-    <p class="code">public withTake(takeBuilder: TakeBuilder): SagaBuilder&lt;Payload&gt;</p>
+    <h2 class="code">withEffect</h2>
+    <p class="code">public withEffect(effectBuilder: EffectBuilder): SagaBuilder&lt;Payload&gt;</p>
     <p>Adds a simple watcher to the saga.<br /></p>
     
     <h3>Parameters</h3>
-<p><dt>takeBuilder: TakeBuilder</dt><dd><br />The builder function for the saga watcher. This can be generating using one of the configure
+<p><dt>effectBuilder: EffectBuilder</dt><dd><br />The builder function for the saga watcher. This can be generating using one of the configure
 functions, such as configureTakeLatest or configureDebounce.</dd><p>
     <h3>Returns</h3>
     <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
@@ -119,7 +118,7 @@ functions, such as configureTakeLatest or configureDebounce.</dd><p>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.12.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

@@ -43,7 +43,6 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
@@ -67,12 +66,13 @@
         
   <section>
     <h2 class="code">getActionNameForController</h2>
-    <p class="code">function getActionNameForController(controllerName: string, actionName: string): string</p>
+    <p class="code">function getActionNameForController(controllerName: string, actionName: string, namespace: string = ""): string</p>
     <p>Gets an action name that can be used to fire a controller's action without using the controller.<br />This can be used along with [[createAction]] to create an action. </p>
     
     <h3>Parameters</h3>
 <p><dt>controllerName: string</dt><dd><br />The name of the controller the action should target.</dd><p>
 <p><dt>actionName: string</dt><dd><br />The name of the registered action the action should target.</dd><p>
+<p><dt>namespace: string = ""</dt><dd><br />The namespace of the controller. Defaults to a non-namespaced controller.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>The generated action name.<br /></dd></p>
     <h3>Examples</h3>
@@ -87,7 +87,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.12.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

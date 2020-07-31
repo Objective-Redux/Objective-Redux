@@ -43,7 +43,6 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
-<p><a href="controllernamenotdefined.html">ControllerNameNotDefined</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
 <p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
@@ -77,7 +76,7 @@
  }
 
  toggleSwitch = this.createSaga()
-   .withTake(configureTakeLatest())
+   .withEffect(configureTakeLatest())
    .register(
      function* () {
        const controller = yield getControllerFromSagaContext(SwitchStateController);
@@ -160,15 +159,69 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">getName</h2>
     <p class="code">public static getName(): string</p>
-    <p>Gets the name of the state slice.<br />This must be overloaded and defined for each controller. Failure to override the controller will result in ControllerNameNotDefined errors.
-
-The name of the controller should be globally unique for all Objective-Redux controllers in the application.
-</p>
+    <p>Gets the unique name of the controller. By default, the name of the class.<br />The name of the controller should be globally unique for all Objective-Redux controllers in the application. </p>
     
     
     <h3>Returns</h3>
     <p><dt>string</dt><dd>The name of the state slice.<br /></dd></p>
     
+  </section>
+  
+
+  <section>
+    <h2 class="code">getNamespace</h2>
+    <p class="code">public static getNamespace(): string|null</p>
+    <p>Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need to be unique within a namespace.<br />In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace name.
+</p>
+    
+    
+    <h3>Returns</h3>
+    <p><dt>string|null</dt><dd>Null if the state is not namespaced.<br /></dd></p>
+    <h3>Examples</h3>
+
+<pre><code class="language-typescript">// For StateControllers, the namespace also groups slices in the store.
+
+class MyFirstController extends StateController {
+  // ...
+
+  static getName() {
+    return 'MY_FIRST_CONTROLLER';
+  }
+
+  static getNamespace() {
+    return 'MY_NAMESPACE';
+  }
+
+  // ...
+}
+
+class MySecondController extends StateController {
+  // ...
+
+  static getName() {
+    return 'MY_SECOND_CONTROLLER';
+  }
+
+  static getNamespace() {
+    return 'MY_NAMESPACE';
+  }
+
+  // ...
+}
+
+// Creates a state of the form:
+//
+// {
+//   MY_NAMESPACE: {
+//     MY_FIRST_CONTROLLER: {
+//       // ...
+//     },
+//     MY_SECOND_CONTROLLER: {
+//       // ...
+//     },
+//   },
+// }</code></pre>
+
   </section>
   
 
@@ -218,7 +271,7 @@ register.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.12.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
