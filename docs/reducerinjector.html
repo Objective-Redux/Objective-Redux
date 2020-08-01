@@ -73,14 +73,12 @@
 
 <pre><code class="language-typescript">import { ReducerInjector, ReduxRegister } from 'objective-redux';
 import { createInjectorsEnhancer } from 'redux-injectors';
-import createSagaMiddleware from 'redux-saga';
 import { initialState, initialReducers } from './elsewhere';
 
 const injector = new ReducerInjector(initialReducers);
-const sagaMiddleware = createSagaMiddleware();
 
 const createReducer = injector.getReducerCreationFn();
-const runSaga = sagaMiddleware.run;
+const runSaga = injector.getRunSagaFn();
 
 const middleware = [
   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -91,7 +89,6 @@ const register = new ReduxRegister({
   initialState,
   middleware,
   injector,
-  sagaMiddleware,
 });</code></pre>
 
     
@@ -146,6 +143,18 @@ register.replaceReducer(nextReducer);</code></pre>
   
 
   <section>
+    <h2 class="code">getSagaRunningFn</h2>
+    <p class="code">public getSagaRunningFn(): RunSagaFn</p>
+    <p></p>
+    
+    
+    <h3>Returns</h3>
+    <p><dt>RunSagaFn</dt><dd></dd></p>
+    
+  </section>
+  
+
+  <section>
     <h2 class="code">setGetObjectiveReduxReducers</h2>
     <p class="code">public setGetObjectiveReduxReducers(getObjectiveReduxReducers: () =&gt; Record&lt;string, Reducer&gt;): void</p>
     <p>This function should not be called directly.<br />Sets the get function for retrieving the reducers internal to Objective-Redux. </p>
@@ -162,6 +171,23 @@ This only be used by the ReduxRegister and should not be called directly.
 
   </section>
   
+
+  <section>
+    <h2 class="code">setSagaRunningFn</h2>
+    <p class="code">public setSagaRunningFn(sagaRunningFn: any): void</p>
+    <p>This function should not be called directly.<br />Sets the get function for running a Saga. </p>
+    
+    <h3>Parameters</h3>
+<p><dt>sagaRunningFn: any</dt><dd><br />Function used to run a saga.
+</dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
+    <h3>Examples</h3>
+
+<pre><code class="language-typescript">// Do not use this function directly!</code></pre>
+
+  </section>
+  
   
       </div>
     </div>
@@ -169,7 +195,7 @@ This only be used by the ReduxRegister and should not be called directly.
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.14.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

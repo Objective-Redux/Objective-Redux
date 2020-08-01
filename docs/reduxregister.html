@@ -88,14 +88,12 @@ const register = new ReduxRegister();</code></pre>
 
 <pre><code class="language-typescript">import { ReducerInjector, ReduxRegister } from 'objective-redux';
 import { createInjectorsEnhancer } from 'redux-injectors';
-import createSagaMiddleware from 'redux-saga';
 import { initialState, initialReducers } from './elsewhere';
 
 const injector = new ReducerInjector(initialReducers);
-const sagaMiddleware = createSagaMiddleware();
 
 const createReducer = injector.getReducerCreationFn();
-const runSaga = sagaMiddleware.run;
+const runSaga = injector.getRunSagaFn();
 
 const middleware = [
   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -106,7 +104,6 @@ const register = new ReduxRegister({
   initialState,
   middleware,
   injector,
-  sagaMiddleware,
 });</code></pre>
 
   </section>
@@ -205,7 +202,7 @@ const unsubscribeFn = register.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.13.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.14.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
