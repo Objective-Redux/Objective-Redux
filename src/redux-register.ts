@@ -135,9 +135,12 @@ export class ReduxRegister {
 
     /* istanbul ignore else */
     if (reduxSaga) {
+      const register = this;
       this.sagaMiddleware = reduxSaga.default({
-        ...sagaContext,
-        register: this,
+        context: {
+          ...sagaContext,
+          register,
+        },
       });
       internalMiddleware[0] = applyMiddleware(this.sagaMiddleware);
     }

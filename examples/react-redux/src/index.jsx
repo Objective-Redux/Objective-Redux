@@ -19,14 +19,10 @@ import HookComponent from './hook-component';
 import './store/lazy-loaded-state-controller';
 import ReactReduxComponent from './react-redux-component';
 
-const sagaMiddleware = createSagaMiddleware({
-  context: {
+export const register = new ReduxRegister({
+  sagaContext: {
     test: 'Some Value',
   },
-});
-
-export const register = new ReduxRegister({
-  sagaMiddleware,
 });
 register.dispatch(createAction(getActionNameForController('lazy', 'test'))());
 

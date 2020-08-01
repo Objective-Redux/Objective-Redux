@@ -37,14 +37,12 @@ exports.defaultReducer = function () { return ({}); };
  * ```typescript
  * import { ReducerInjector, ReduxRegister } from 'objective-redux';
  * import { createInjectorsEnhancer } from 'redux-injectors';
- * import createSagaMiddleware from 'redux-saga';
  * import { initialState, initialReducers } from './elsewhere';
  *
  * const injector = new ReducerInjector(initialReducers);
- * const sagaMiddleware = createSagaMiddleware();
  *
  * const createReducer = injector.getReducerCreationFn();
- * const runSaga = sagaMiddleware.run;
+ * const runSaga = injector.getRunSagaFn();
  *
  * const middleware = [
  *   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -55,7 +53,6 @@ exports.defaultReducer = function () { return ({}); };
  *   initialState,
  *   middleware,
  *   injector,
- *   sagaMiddleware,
  * });
  * ```
  */
@@ -77,7 +74,6 @@ var ReducerInjector = /** @class */ (function () {
         this.getObjectiveReduxReducers = null;
         this.injectedReducers = {};
     }
-    ;
     /**
      * This function should not be called directly.
      *
@@ -93,6 +89,21 @@ var ReducerInjector = /** @class */ (function () {
      */
     ReducerInjector.prototype.setGetObjectiveReduxReducers = function (getObjectiveReduxReducers) {
         this.getObjectiveReduxReducers = getObjectiveReduxReducers;
+    };
+    /**
+     * This function should not be called directly.
+     *
+     * Sets the get function for running a Saga.
+     *
+     * @param sagaRunningFn Function used to run a saga.
+     *
+     * @example
+     * ```typescript
+     * // Do not use this function directly!
+     * ```
+     */
+    ReducerInjector.prototype.setSagaRunningFn = function (sagaRunningFn) {
+        this.sagaRunningFn = sagaRunningFn;
     };
     /**
      * A function that can be used to get add additional reducers to the store.
@@ -130,6 +141,10 @@ var ReducerInjector = /** @class */ (function () {
                 ? redux_1.combineReducers(reducers)
                 : exports.defaultReducer;
         };
+    };
+    ReducerInjector.prototype.getSagaRunningFn = function () {
+        var _this = this;
+        return function (saga) { return _this.sagaRunningFn(saga); };
     };
     return ReducerInjector;
 }());

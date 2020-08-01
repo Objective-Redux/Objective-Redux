@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { SagaFn } from './redux-register';
 /**
  * @internal
  */
@@ -8,6 +9,9 @@ export declare const defaultReducer: () => any;
  */
 interface CreateReducerFn {
     (injectedReducer?: Record<string, any>): any;
+}
+interface RunSagaFn {
+    (saga: SagaFn<void>): void;
 }
 /**
  * An object that handles injection of reducers into the Redux store that is managed by a ReduxRegister.
@@ -19,14 +23,12 @@ interface CreateReducerFn {
  * ```typescript
  * import { ReducerInjector, ReduxRegister } from 'objective-redux';
  * import { createInjectorsEnhancer } from 'redux-injectors';
- * import createSagaMiddleware from 'redux-saga';
  * import { initialState, initialReducers } from './elsewhere';
  *
  * const injector = new ReducerInjector(initialReducers);
- * const sagaMiddleware = createSagaMiddleware();
  *
  * const createReducer = injector.getReducerCreationFn();
- * const runSaga = sagaMiddleware.run;
+ * const runSaga = injector.getRunSagaFn();
  *
  * const middleware = [
  *   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -37,13 +39,13 @@ interface CreateReducerFn {
  *   initialState,
  *   middleware,
  *   injector,
- *   sagaMiddleware,
  * });
  * ```
  */
 export declare class ReducerInjector {
     private readonly initialReducers;
     private injectedReducers;
+    private sagaRunningFn;
     private getObjectiveReduxReducers;
     /**
      * Creates an injector instance.
@@ -72,6 +74,19 @@ export declare class ReducerInjector {
      */
     setGetObjectiveReduxReducers(getObjectiveReduxReducers: () => Record<string, Reducer>): void;
     /**
+     * This function should not be called directly.
+     *
+     * Sets the get function for running a Saga.
+     *
+     * @param sagaRunningFn Function used to run a saga.
+     *
+     * @example
+     * ```typescript
+     * // Do not use this function directly!
+     * ```
+     */
+    setSagaRunningFn(sagaRunningFn: any): void;
+    /**
      * A function that can be used to get add additional reducers to the store.
      *
      * @returns A function that takes a map of reducers. The reducers are added to the initial reducers and the reducers
@@ -98,6 +113,7 @@ export declare class ReducerInjector {
      * ```
      */
     getReducerCreationFn(): CreateReducerFn;
+    getSagaRunningFn(): RunSagaFn;
 }
 export {};
 //# sourceMappingURL=reducer-injector.d.ts.map

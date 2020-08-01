@@ -12,7 +12,7 @@ interface RegisterOptions {
     reducer?: Reducer<any, AnyAction>;
     initialState?: any;
     middleware?: Middleware<any>[];
-    sagaMiddleware?: Middleware<any>;
+    sagaContext?: any;
     injector?: ReducerInjector;
 }
 /**
@@ -43,7 +43,7 @@ export declare class ReduxRegister {
      * @param config.reducer The initial reducer for the store.
      * @param config.initialState The initial state of the reducers.
      * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
-     * @param config.sagaMiddleware The saga middleware, if you do not want Objective-Redux to create it for you.
+     * @param config.sagaContext The context to be used when creating the Saga middleware.
      * @param config.injector An instance of the ReducerInjector class.
      * @returns An instance of the ReduxRegister.
      * @example
@@ -55,14 +55,12 @@ export declare class ReduxRegister {
      * ```typescript
      * import { ReducerInjector, ReduxRegister } from 'objective-redux';
      * import { createInjectorsEnhancer } from 'redux-injectors';
-     * import createSagaMiddleware from 'redux-saga';
      * import { initialState, initialReducers } from './elsewhere';
      *
      * const injector = new ReducerInjector(initialReducers);
-     * const sagaMiddleware = createSagaMiddleware();
      *
      * const createReducer = injector.getReducerCreationFn();
-     * const runSaga = sagaMiddleware.run;
+     * const runSaga = injector.getRunSagaFn();
      *
      * const middleware = [
      *   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -73,12 +71,10 @@ export declare class ReduxRegister {
      *   initialState,
      *   middleware,
      *   injector,
-     *   sagaMiddleware,
      * });
      * ```
      */
     constructor(config?: RegisterOptions);
-    private setupSagaMiddleware;
     /**
      * Monkey-patch the redux store so that the register can properly bind the store.
      *
@@ -121,7 +117,6 @@ export declare class ReduxRegister {
      * ```
      */
     getState(): any;
-    private runSaga;
     private addControllerReducer;
     /**
      * Replaced the existing reducer with a new one.
