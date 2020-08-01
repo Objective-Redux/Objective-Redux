@@ -125,9 +125,6 @@ export class ReduxRegister {
       injector = new ReducerInjector(),
     } = config;
 
-    this.injector = injector;
-    this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
-
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
     const reduxSaga = getReduxSagaModule();
@@ -144,6 +141,10 @@ export class ReduxRegister {
       });
       internalMiddleware[0] = applyMiddleware(this.sagaMiddleware);
     }
+
+    this.injector = injector;
+    this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
+    this.injector.setSagaRunningFn(this.sagaMiddleware.run);
 
     this.store = createStore(
       reducer || defaultReducer,

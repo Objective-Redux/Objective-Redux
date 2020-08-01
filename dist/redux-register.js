@@ -97,8 +97,6 @@ var ReduxRegister = /** @class */ (function () {
         if (config === void 0) { config = {}; }
         this.registeredReducers = {};
         var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e;
-        this.injector = injector;
-        this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
         lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
         var internalMiddleware = [];
@@ -110,6 +108,9 @@ var ReduxRegister = /** @class */ (function () {
             });
             internalMiddleware[0] = redux_1.applyMiddleware(this.sagaMiddleware);
         }
+        this.injector = injector;
+        this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
+        this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, redux_1.compose.apply(void 0, __spreadArrays(middleware, internalMiddleware)));
         this.storeFns = this.wrapStore();
         if (reducer) {

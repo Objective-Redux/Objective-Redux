@@ -55,12 +55,15 @@ jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 jest.mock('redux-saga/effects', () => ({ setContext }));
 
 const setGetObjectiveReduxReducers = jest.fn();
+const setSagaRunningFn = jest.fn();
 const reducerCreationFn = jest.fn(() => 'TESTING_REDUCER');
 
 jest.mock('../../src/reducer-injector', () => ({
   ReducerInjector: jest.fn().mockImplementation(() => ({
     setGetObjectiveReduxReducers,
     getReducerCreationFn: (): any => reducerCreationFn,
+    setSagaRunningFn,
+    getSagaRunningFn: (): any => {},
   })),
 }));
 
@@ -89,10 +92,12 @@ describe('redux-register', () => {
       expect(compose).toBeCalledWith([middleware]);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([[middleware]]);
       expect(setGetObjectiveReduxReducers).toHaveBeenCalled();
+      expect(setSagaRunningFn).toHaveBeenCalled();
     });
 
     it('should set up the store with parameters', () => {
       const setGetObjectiveReduxReducersMock = jest.fn();
+      const setSagaRunningFnMock = jest.fn();
 
       const reducer = (): any => {};
       const initialState = {};
@@ -100,6 +105,7 @@ describe('redux-register', () => {
       const sagaContext: any = { foo: 'bar' };
       const injector: any = {
         setGetObjectiveReduxReducers: setGetObjectiveReduxReducersMock,
+        setSagaRunningFn: setSagaRunningFnMock,
       };
 
       const register = new ReduxRegister({
@@ -126,6 +132,7 @@ describe('redux-register', () => {
       expect(setGetObjectiveReduxReducersMock).toHaveBeenCalled();
       const [[fn]] = setGetObjectiveReduxReducersMock.mock.calls;
       expect(fn()).toEqual({});
+      expect(setSagaRunningFnMock).toHaveBeenCalled();
     });
   });
 
