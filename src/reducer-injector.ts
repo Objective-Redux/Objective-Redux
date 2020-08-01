@@ -9,6 +9,7 @@
 // ================================================================================================
 
 import { combineReducers, Reducer } from 'redux';
+import { SagaFn } from './redux-register';
 
 /**
  * @internal
@@ -23,6 +24,10 @@ interface CreateReducerFn {
   (injectedReducer?: Record<string, any>): any;
 }
 
+interface RunSagaFn {
+  (saga: SagaFn<void>): void;
+}
+
 /**
  * An object that handles injection of reducers into the Redux store that is managed by a ReduxRegister.
  *
@@ -33,14 +38,12 @@ interface CreateReducerFn {
  * ```typescript
  * import { ReducerInjector, ReduxRegister } from 'objective-redux';
  * import { createInjectorsEnhancer } from 'redux-injectors';
- * import createSagaMiddleware from 'redux-saga';
  * import { initialState, initialReducers } from './elsewhere';
  *
  * const injector = new ReducerInjector(initialReducers);
- * const sagaMiddleware = createSagaMiddleware();
  *
  * const createReducer = injector.getReducerCreationFn();
- * const runSaga = sagaMiddleware.run;
+ * const runSaga = injector.getRunSagaFn();
  *
  * const middleware = [
  *   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -51,14 +54,15 @@ interface CreateReducerFn {
  *   initialState,
  *   middleware,
  *   injector,
- *   sagaMiddleware,
  * });
  * ```
  */
 export class ReducerInjector {
   private readonly initialReducers: Record<string, any>;
 
-  private injectedReducers: Record<string, any>;;
+  private injectedReducers: Record<string, any>;
+
+  private sagaRunningFn: any;
 
   private getObjectiveReduxReducers: (() => Record<string, Reducer>) | null;
 
@@ -94,6 +98,22 @@ export class ReducerInjector {
    */
   public setGetObjectiveReduxReducers(getObjectiveReduxReducers: () => Record<string, Reducer>): void {
     this.getObjectiveReduxReducers = getObjectiveReduxReducers;
+  }
+
+  /**
+   * This function should not be called directly.
+   *
+   * Sets the get function for running a Saga.
+   *
+   * @param sagaRunningFn Function used to run a saga.
+   *
+   * @example
+   * ```typescript
+   * // Do not use this function directly!
+   * ```
+   */
+  public setSagaRunningFn(sagaRunningFn: any): void {
+    this.sagaRunningFn = sagaRunningFn;
   }
 
   /**
@@ -136,5 +156,9 @@ export class ReducerInjector {
         ? combineReducers(reducers)
         : defaultReducer;
     };
+  }
+
+  public getSagaRunningFn(): RunSagaFn {
+    return (saga: SagaFn<any>): void => this.sagaRunningFn(saga);
   }
 }

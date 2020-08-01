@@ -38,4 +38,15 @@ describe('ReducerInjector', () => {
       expect(combineReducers).toBeCalled();
     });
   });
+
+  describe('getSagaRunningFn', () => {
+    it('returns the saga running functions', () => {
+      const fn = jest.fn();
+      const saga: any = jest.fn();
+      const injector = new ReducerInjector();
+      injector.setSagaRunningFn(fn);
+      injector.getSagaRunningFn()(saga);
+      expect(fn).toBeCalledWith(saga);
+    });
+  });
 });

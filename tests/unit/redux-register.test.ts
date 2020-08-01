@@ -80,7 +80,9 @@ describe('redux-register', () => {
     it('should set up the store without parameters', () => {
       const register = new ReduxRegister();
       expect(register).toBeInstanceOf(ReduxRegister);
-      expect(createSagaMiddleware).toBeCalledWith();
+      expect(createSagaMiddleware).toBeCalledWith({
+        register,
+      });
       expect(applyMiddleware).toBeCalledWith(middleware);
       expect(compose).toBeCalledWith([middleware]);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([[middleware]]);
@@ -93,7 +95,7 @@ describe('redux-register', () => {
       const reducer = (): any => {};
       const initialState = {};
       const initialMiddleware: any = [{}];
-      const sagaMiddleware: any = {};
+      const sagaContext: any = { foo: 'bar' };
       const injector: any = {
         setGetObjectiveReduxReducers: setGetObjectiveReduxReducersMock,
       };
@@ -102,17 +104,20 @@ describe('redux-register', () => {
         reducer,
         initialState,
         middleware: initialMiddleware,
-        sagaMiddleware,
+        sagaContext,
         injector,
       });
 
       expect(register).toBeInstanceOf(ReduxRegister);
-      expect(createSagaMiddleware).toBeCalledTimes(0);
-      expect((applyMiddleware.mock.calls[0] as any)[0]).toBe(sagaMiddleware);
+      expect(createSagaMiddleware).toBeCalledWith({
+        ...sagaContext,
+        register,
+      });
+      expect((applyMiddleware.mock.calls[0] as any)[0]).toBe(middleware);
       expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([
         ...initialMiddleware,
-        [sagaMiddleware],
+        [middleware],
       ]);
       expect(setGetObjectiveReduxReducersMock).toHaveBeenCalled();
       const [[fn]] = setGetObjectiveReduxReducersMock.mock.calls;
@@ -233,15 +238,13 @@ describe('redux-register', () => {
 
   describe('registerSaga', () => {
     it('should add the saga to the middleware', () => {
-      const saga1 = jest.fn();
+      const saga1 = function* (): Generator {};
+      const saga2 = function* (): Generator {};
       const register = new ReduxRegister();
       register.registerSaga(saga1);
-      const [[resultingSaga]]: any = run.mock.calls;
-      const call = resultingSaga();
-      call.next();
-      expect(setContext).toHaveBeenCalled();
-      call.next();
-      expect(saga1).toHaveBeenCalled();
+      expect(run).toBeCalledWith(saga1);
+      register.registerSaga(saga2);
+      expect(run).toBeCalledWith(saga2);
     });
   });
 });

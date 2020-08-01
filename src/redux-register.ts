@@ -20,7 +20,7 @@ import {
 } from 'redux';
 import { Action } from './action';
 import { LazyLoader } from './lazy-loader';
-import { getReduxSagaModule, getReduxSagaEffects } from './get-redux-saga-module';
+import { getReduxSagaModule } from './get-redux-saga-module';
 import { defaultReducer } from './reducer-injector';
 import { ReducerInjector } from '.';
 
@@ -46,7 +46,7 @@ interface RegisterOptions {
   reducer?: Reducer<any, AnyAction>;
   initialState?: any;
   middleware?: Middleware<any>[];
-  sagaMiddleware?: Middleware<any>;
+  sagaContext?: any;
   injector?: ReducerInjector;
 }
 
@@ -84,7 +84,7 @@ export class ReduxRegister {
    * @param config.reducer The initial reducer for the store.
    * @param config.initialState The initial state of the reducers.
    * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
-   * @param config.sagaMiddleware The saga middleware, if you do not want Objective-Redux to create it for you.
+   * @param config.sagaContext The context to be used when creating the Saga middleware.
    * @param config.injector An instance of the ReducerInjector class.
    * @returns An instance of the ReduxRegister.
    * @example
@@ -96,14 +96,12 @@ export class ReduxRegister {
    * ```typescript
    * import { ReducerInjector, ReduxRegister } from 'objective-redux';
    * import { createInjectorsEnhancer } from 'redux-injectors';
-   * import createSagaMiddleware from 'redux-saga';
    * import { initialState, initialReducers } from './elsewhere';
    *
    * const injector = new ReducerInjector(initialReducers);
-   * const sagaMiddleware = createSagaMiddleware();
    *
    * const createReducer = injector.getReducerCreationFn();
-   * const runSaga = sagaMiddleware.run;
+   * const runSaga = injector.getRunSagaFn();
    *
    * const middleware = [
    *   createInjectorsEnhancer({ createReducer, runSaga }),
@@ -114,16 +112,16 @@ export class ReduxRegister {
    *   initialState,
    *   middleware,
    *   injector,
-   *   sagaMiddleware,
    * });
    * ```
    */
+  // eslint-disable-next-line max-statements
   public constructor(config: RegisterOptions = {}) {
     const {
       reducer = null,
       initialState = {},
       middleware = [],
-      sagaMiddleware = null,
+      sagaContext = null,
       injector = new ReducerInjector(),
     } = config;
 
@@ -132,11 +130,15 @@ export class ReduxRegister {
 
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
+    const reduxSaga = getReduxSagaModule();
     const internalMiddleware: any[] = [];
-    this.sagaMiddleware = this.setupSagaMiddleware(sagaMiddleware);
 
     /* istanbul ignore else */
-    if (this.sagaMiddleware) {
+    if (reduxSaga) {
+      this.sagaMiddleware = reduxSaga.default({
+        ...sagaContext,
+        register: this,
+      });
       internalMiddleware[0] = applyMiddleware(this.sagaMiddleware);
     }
 
@@ -154,19 +156,6 @@ export class ReduxRegister {
     if (reducer) {
       this.replaceReducer(reducer);
     }
-  }
-
-  private setupSagaMiddleware(sagaMiddleware: any): Middleware<any>|null {
-    let middleware = null;
-
-    if (sagaMiddleware) {
-      middleware = sagaMiddleware;
-    } else {
-      /* istanbul ignore next */
-      middleware = getReduxSagaModule()?.default();
-    }
-
-    return middleware;
   }
 
   /**
@@ -269,10 +258,6 @@ export class ReduxRegister {
     return this.storeFns.getState();
   }
 
-  private runSaga(sagaFn: SagaFn<void>): void {
-    this.sagaMiddleware.run(sagaFn);
-  }
-
   private addControllerReducer(controller: any): void {
     const name = controller.constructor.getStoreName();
     const namespace = controller.constructor.getNamespace();
@@ -316,11 +301,6 @@ export class ReduxRegister {
    * ```
    */
   public registerSaga(sagaFn: SagaFn<void>): void {
-    this.runSaga(
-      function* (this: any): any {
-        yield getReduxSagaEffects().setContext({ register: this });
-        yield sagaFn();
-      }.bind(this)
-    );
+    this.sagaMiddleware.run(sagaFn);
   }
 }
