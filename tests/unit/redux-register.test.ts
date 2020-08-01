@@ -81,7 +81,9 @@ describe('redux-register', () => {
       const register = new ReduxRegister();
       expect(register).toBeInstanceOf(ReduxRegister);
       expect(createSagaMiddleware).toBeCalledWith({
-        register,
+        context: {
+          register,
+        },
       });
       expect(applyMiddleware).toBeCalledWith(middleware);
       expect(compose).toBeCalledWith([middleware]);
@@ -110,8 +112,10 @@ describe('redux-register', () => {
 
       expect(register).toBeInstanceOf(ReduxRegister);
       expect(createSagaMiddleware).toBeCalledWith({
-        ...sagaContext,
-        register,
+        context: {
+          ...sagaContext,
+          register,
+        },
       });
       expect((applyMiddleware.mock.calls[0] as any)[0]).toBe(middleware);
       expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
