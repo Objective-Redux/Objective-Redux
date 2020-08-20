@@ -8,7 +8,7 @@
 <a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/minzip/objective-redux" alt="bundle size" /></a>
 <a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
 
-Object-oriented, light-weight, and TypeScript compatible.
+Make organizing and managing your Redux store easy.
 
 <br />
 
