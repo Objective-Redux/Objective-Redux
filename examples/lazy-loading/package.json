@@ -19,7 +19,7 @@
     "@babel/preset-react": "^7.10.4",
     "@babel/runtime": "^7.10.5",
     "babel-loader": "^8.1.0",
-    "cypress": "^4.11.0",
+    "cypress": "file:../../node_modules/cypress",
     "html-webpack-plugin": "^4.3.0",
     "objective-redux": "file:../../",
     "redux": "4.0.5",
