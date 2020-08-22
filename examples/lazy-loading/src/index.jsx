@@ -24,7 +24,7 @@ const load = () => {
 
 ReactDOM.render(
   <RegisterProvider register={register}>
-    <button onClick={load}>Click Me</button>
+    <button onClick={load} id="load-bundle">Click Me</button>
   </RegisterProvider>,
   applicationRoot
 );

@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "start": "npm run build && node node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "start": "npm run build && node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "test-e2e": "start-server-and-test start http://localhost:3000 test-e2e-run",
+    "test-e2e-ui": "start-server-and-test start http://localhost:3000 test-e2e-open",
+    "test-e2e-run": "cypress run --config-file ../../config/cypress.json",
+    "test-e2e-open": "cypress open --config-file ../../config/cypress.json"
   },
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
@@ -15,9 +19,11 @@
     "@babel/preset-react": "^7.10.4",
     "@babel/runtime": "^7.10.5",
     "babel-loader": "^8.1.0",
+    "cypress": "file:../../node_modules/cypress",
     "html-webpack-plugin": "^4.3.0",
     "objective-redux": "file:../../",
     "redux": "4.0.5",
+    "start-server-and-test": "file:../../node_modules/start-server-and-test",
     "webpack": "^4.44.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"

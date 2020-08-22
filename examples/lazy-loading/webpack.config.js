@@ -44,8 +44,8 @@ module.exports = function(_env, argv) {
     devServer: {
       compress: true,
       historyApiFallback: true,
-      open: true,
       overlay: true,
+      port: 3000,
     },
   };
 };

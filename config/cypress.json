@@ -6,5 +6,6 @@
   "testFiles": [
     "**/*.test.js"
   ],
-  "supportFile": "tests/e2e/support/index.js"
+  "supportFile": "tests/e2e/support/index.js",
+  "video": false
 }

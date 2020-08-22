@@ -25,10 +25,7 @@
     "prepublishOnly": "npm run build",
     "start-server": "cd examples/react-redux && npm start",
     "test": "npm run test-unit && npm run test-e2e",
-    "test-e2e": "start-server-and-test start-server http://localhost:3000 test-e2e-run",
-    "test-e2e-ui": "start-server-and-test start-server http://localhost:3000 test-e2e-open",
-    "test-e2e-run": "cypress run --config-file ./config/cypress.json",
-    "test-e2e-open": "cypress open --config-file ./config/cypress.json",
+    "test-e2e": "cd examples/react-redux && npm run test-e2e && cd ../lazy-loading && npm run test-e2e",
     "test-unit": "jest --no-cache --config ./config/jest.config.js"
   },
   "keywords": [
