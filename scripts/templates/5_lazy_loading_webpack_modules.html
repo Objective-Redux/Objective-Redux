@@ -1,0 +1,80 @@
+<h1>Lazy Loading Webpack Modules</h1>
+
+<p>Objective-Redux makes it simple to dynamically load webpack modules, connect their controllers, and fire actions.</p>
+
+<p>For example, suppose that you want to render a modal when the user clicks on a button, but you don't want to include the modal and its associated controllers on page load. Objective-Redux can listen to the action the button fires, load the webpack module that handles the action, then handle the action normally.</p>
+
+<p>As a pre-requisite, you'll need to <a href="./code-splitting.html">code split</a> the controller(s) that will be bundled and targeted separately.</p>
+
+<pre><code class="language-typescript">
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import { RegisterProvider, ReduxRegister } from 'objective-redux';
+  import App from './app';
+
+  // We create a pre-dispatch hook, which is function that returns a promise.
+  // The promise should resolve when the app is ready for the action to be fired.
+  const preDispatchHook = (action) => {
+    let result = Promise.resolve();
+
+    switch (action.type) {
+      case myAction:
+        result = import(/* webpackChunkName: "lazyLoadingPack" */ './lazy-loaded-module');
+        break;
+      // other actions here
+    }
+
+    return result;
+  }
+  
+  export const register = new ReduxRegister({
+    preDispatchHook,
+  });
+  
+  ReactDOM.render(
+    &lt;RegisterProvider register={register}&gt;
+      &lt;App /&gt;
+    &lt;/RegisterProvider&gt;,
+    document.getElementById('root')
+  );
+</code></pre>
+
+<p>Now, we can simply fire the action targeting our ObjectiveRedux controller normally.</p>
+
+<pre><code class="language-typescript">
+  import React from 'react';
+  import {
+    useRegister,
+    createAction,
+    getActionNameForController,
+  } from 'objective-redux';
+  
+  const myAction = createAction(
+    getActionNameForController('MyController', 'MyAction');
+  );
+
+  function ButtonComponent() {
+    const register = useRegister();
+
+    const fireAction = () => {
+      register.dispatch(myAction());
+    }
+  
+    return (
+        &lt;button onClick={fireAction}&gt;
+          Click to target an action in another bundle
+        &lt;/button&gt;
+    );
+  }
+</code></pre>
+
+<p>Now, when the button is clicked:</p>
+
+<ol>
+  <li>The webpack bundle is loaded</li>
+  <li>The Objective-Redux controllers in the bundle are registered</li>
+  <li>The controller handling the action is instantiated (its reducers are connected/sagas are run)</li>
+  <li>The action is fired</li>
+</ol>
+
+<p>See the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/master/examples/lazy-loading">working example</a> in the <a href="https://github.com/Objective-Redux/Objective-Redux">public GitHub repository</a>.</p>

@@ -8,22 +8,34 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-const subscribe = jest.fn();
-const registerMock = {
-  subscribe,
-};
+const registerMock = {};
 
 const forceUpdate = jest.fn();
 const useContext = jest.fn(() => registerMock);
 const useReducer = jest.fn(() => [null, forceUpdate]);
+const useMemo = jest.fn((fn: any) => fn());
+const useEffect = jest.fn();
 
 jest.mock('react', () => ({
   useContext,
   useReducer,
   createContext: jest.fn(),
+  useMemo,
+  useEffect,
+}));
+
+const subscribe = jest.fn();
+const unsubscribe = jest.fn();
+
+jest.mock('../../src/hook-subscriber', () => ({
+  HookSubscriber: jest.fn().mockImplementation(() => ({
+    subscribe,
+    unsubscribe,
+  })),
 }));
 
 import { useRegister } from '../../src';
+import { HookSubscriber } from '../../src/hook-subscriber';
 
 describe('use-register', () => {
   describe('hook', () => {
@@ -32,9 +44,15 @@ describe('use-register', () => {
       expect(register).toBe(registerMock);
 
       const { mock: { calls: [[reducingFn]] } } = useReducer as any;
+      const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
       expect(reducingFn(0)).toEqual(1);
+      expect(subscribe).toBeCalled();
+      expect(watchParams).toEqual([registerMock]);
 
-      const { mock: { calls: [[update]] } } = subscribe;
+      unmountFn()();
+      expect(unsubscribe).toBeCalled();
+
+      const { mock: { calls: [[, update]] } } = HookSubscriber as any;
       update();
       expect(forceUpdate).toHaveBeenCalled();
     });

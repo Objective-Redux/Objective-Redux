@@ -19,7 +19,7 @@ const dispatch = jest.fn(d => d);
 const subscribe = jest.fn(() => mockUnsubscribe);
 const getState = jest.fn(() => MOCK_STATE);
 
-const middleware = {
+const sagaMiddleware = {
   run,
 };
 
@@ -30,7 +30,7 @@ const createStore = jest.fn(() => mockStore);
 const compose = jest.fn((...m) => m);
 const combineReducers = jest.fn(() => COMBINED);
 const applyMiddleware = jest.fn((...m) => m);
-const createSagaMiddleware = jest.fn(() => middleware);
+const createSagaMiddleware = jest.fn(() => sagaMiddleware);
 
 jest.mock('redux', () => ({
   Store: {},
@@ -40,14 +40,24 @@ jest.mock('redux', () => ({
   applyMiddleware,
 }));
 
-const getControllerForAction = jest.fn();
 const addRegister = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
-    getControllerForAction,
     addRegister,
   },
+}));
+
+const lazyLoadingMiddlewareMock = jest.fn();
+const lazyLoadingMiddleware = jest.fn(() => lazyLoadingMiddlewareMock);
+jest.mock('../../src/lazy-loading-middleware', () => ({
+  lazyLoadingMiddleware,
+}));
+
+const preDispatchHookMiddlewareMock = jest.fn();
+const preDispatchHookMiddleware = jest.fn(() => preDispatchHookMiddlewareMock);
+jest.mock('../../src/pre-dispatch-hook-middleware', () => ({
+  preDispatchHookMiddleware,
 }));
 
 const setContext = jest.fn();
@@ -81,6 +91,11 @@ describe('redux-register', () => {
 
   describe('constructor', () => {
     it('should set up the store without parameters', () => {
+      const expectedMiddleware = [
+        preDispatchHookMiddlewareMock,
+        lazyLoadingMiddlewareMock,
+        sagaMiddleware,
+      ];
       const register = new ReduxRegister();
       expect(register).toBeInstanceOf(ReduxRegister);
       expect(createSagaMiddleware).toBeCalledWith({
@@ -88,9 +103,9 @@ describe('redux-register', () => {
           register,
         },
       });
-      expect(applyMiddleware).toBeCalledWith(middleware);
-      expect(compose).toBeCalledWith([middleware]);
-      expect((createStore.mock.calls[0] as any)[2]).toEqual([[middleware]]);
+      expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
+      expect(compose).toBeCalledWith([], expectedMiddleware);
+      expect((createStore.mock.calls[0] as any)[2]).toEqual([[], expectedMiddleware]);
       expect(setGetObjectiveReduxReducers).toHaveBeenCalled();
       expect(setSagaRunningFn).toHaveBeenCalled();
     });
@@ -107,6 +122,13 @@ describe('redux-register', () => {
         setGetObjectiveReduxReducers: setGetObjectiveReduxReducersMock,
         setSagaRunningFn: setSagaRunningFnMock,
       };
+      const preDispatchHook = (): Promise<any> => Promise.resolve();
+
+      const expectedMiddleware = [
+        preDispatchHookMiddlewareMock,
+        lazyLoadingMiddlewareMock,
+        sagaMiddleware,
+      ];
 
       const register = new ReduxRegister({
         reducer,
@@ -114,6 +136,7 @@ describe('redux-register', () => {
         middleware: initialMiddleware,
         sagaContext,
         injector,
+        preDispatchHook,
       });
 
       expect(register).toBeInstanceOf(ReduxRegister);
@@ -123,11 +146,12 @@ describe('redux-register', () => {
           register,
         },
       });
-      expect((applyMiddleware.mock.calls[0] as any)[0]).toBe(middleware);
+      expect(preDispatchHookMiddleware).toBeCalledWith(preDispatchHook);
+      expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
       expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([
-        ...initialMiddleware,
-        [middleware],
+        initialMiddleware,
+        expectedMiddleware,
       ]);
       expect(setGetObjectiveReduxReducersMock).toHaveBeenCalled();
       const [[fn]] = setGetObjectiveReduxReducersMock.mock.calls;
@@ -156,27 +180,13 @@ describe('redux-register', () => {
   });
 
   describe('dispatch', () => {
-    it('should dispatch an action and not lazy-load controller', () => {
+    it('should dispatch an action', () => {
       const register = new ReduxRegister();
       const action = {
         type: 'MyAction',
       };
       expect(register.dispatch(action)).toEqual(action);
       expect(dispatch).toHaveBeenCalledTimes(1);
-    });
-
-    it('should dispatch an action and lazy-load controller', () => {
-      const register = new ReduxRegister();
-      const action = {
-        type: 'MyAction',
-      };
-      const getInstance = jest.fn();
-      getControllerForAction.mockReturnValue({
-        getInstance,
-      });
-      expect(register.dispatch(action)).toEqual(action);
-      expect(dispatch).toHaveBeenCalledTimes(1);
-      expect(getControllerForAction).toHaveBeenCalled();
     });
   });
 

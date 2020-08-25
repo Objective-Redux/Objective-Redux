@@ -8,5 +8,23 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-// eslint-disable-next-line no-alert
-alert('Hello');
+import { StateController } from 'objective-redux';
+
+const initialState = '';
+
+class LazyStateController extends StateController {
+  constructor(register) {
+    super(initialState, register);
+  }
+
+  static getName() {
+    return 'lazy';
+  }
+
+  action = this.registerAction(() => {
+    document.getElementById('lazyTarget').innerHTML = 'Lazy loaded data worked';
+    return '';
+  }).withAddressableName('test');
+}
+
+LazyStateController.initializeOnExternalAction();

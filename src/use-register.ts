@@ -8,8 +8,14 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { useContext, useReducer } from 'react';
+import {
+  useContext,
+  useReducer,
+  useMemo,
+  useEffect,
+} from 'react';
 import { RegisterProviderContext } from './context';
+import { HookSubscriber } from './hook-subscriber';
 import { ReduxRegister } from '.';
 
 /**
@@ -38,10 +44,13 @@ export const useRegister = (): ReduxRegister|null => {
   const register = useContext(RegisterProviderContext);
   const [, forceUpdate] = useReducer(c => c + 1, 0);
 
-  /* istanbul ignore else */
-  if (register) {
-    register.subscribe(() => forceUpdate());
-  }
+  const subscription = useMemo(() => new HookSubscriber(register, forceUpdate), [register]);
+  subscription.subscribe();
+
+  useEffect(
+    () => subscription.unsubscribe.bind(subscription),
+    [register]
+  );
 
   return register;
 };

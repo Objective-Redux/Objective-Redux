@@ -7,7 +7,15 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+import { preDispatchHookMiddleware } from '../../src/pre-dispatch-hook-middleware';
+
+describe('preDispatchHookMiddleware', () => {
+  it('should call the pre-dispatch function', done => {
+    const preDispatchHookFn = jest.fn(() => Promise.resolve());
+    const next = jest.fn(() => done());
+    const action = {};
+    preDispatchHookMiddleware(preDispatchHookFn)()(next)(action);
+    expect(preDispatchHookFn).toBeCalledWith(action);
+  });
+});

@@ -7,7 +7,11 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-};
+
+import { Action } from './action';
+import { PreDispatchHookFn } from './redux-register';
+
+export function preDispatchHookMiddleware(preDispatchHook: PreDispatchHookFn): any {
+  // eslint-disable-next-line max-len
+  return (): Function => (next: Function): Function => (action: Action<any>): Promise<any> => preDispatchHook(action).then(() => next(action));
+}

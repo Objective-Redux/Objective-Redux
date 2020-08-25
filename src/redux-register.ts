@@ -22,6 +22,8 @@ import { Action } from './action';
 import { LazyLoader } from './lazy-loader';
 import { getReduxSagaModule } from './get-redux-saga-module';
 import { defaultReducer } from './reducer-injector';
+import { lazyLoadingMiddleware } from './lazy-loading-middleware';
+import { preDispatchHookMiddleware } from './pre-dispatch-hook-middleware';
 import { ReducerInjector } from '.';
 
 /**
@@ -32,12 +34,7 @@ type Reducer<S, A> = (prevState: S, action: A) => S
 /**
  * @internal
  */
-interface StoreFns {
-  dispatch: (action: AnyAction) => AnyAction;
-  subscribe(listener: () => void): Unsubscribe;
-  replaceReducer: (nextReducer: Reducer<any, AnyAction>) => void;
-  getState: () => any;
-}
+export type PreDispatchHookFn = (action: AnyAction) => Promise<any>;
 
 /**
  * @internal
@@ -48,6 +45,7 @@ interface RegisterOptions {
   middleware?: Middleware<any>[];
   sagaContext?: any;
   injector?: ReducerInjector;
+  preDispatchHook?: PreDispatchHookFn;
 }
 
 /**
@@ -56,6 +54,9 @@ interface RegisterOptions {
 export interface SagaFn<Payload> {
   (action?: Action<Payload>): any;
 }
+
+/* istanbul ignore next */
+const defaultPreDispatchHook = (): Promise<any> => Promise.resolve();
 
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
@@ -72,8 +73,6 @@ export class ReduxRegister {
 
   private readonly registeredReducers: any = {};
 
-  private readonly storeFns: StoreFns;
-
   /**
    * Creates an instance of the ReduxRegister.
    *
@@ -86,6 +85,7 @@ export class ReduxRegister {
    * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
    * @param config.sagaContext The context to be used when creating the Saga middleware.
    * @param config.injector An instance of the ReducerInjector class.
+   * @param config.preDispatchHook A function that takes an action and returns a promise.
    * @returns An instance of the ReduxRegister.
    * @example
    * ```typescript
@@ -123,12 +123,16 @@ export class ReduxRegister {
       middleware = [],
       sagaContext = null,
       injector = new ReducerInjector(),
+      preDispatchHook = defaultPreDispatchHook,
     } = config;
 
     LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
 
     const reduxSaga = getReduxSagaModule();
-    const internalMiddleware: any[] = [];
+    const internalMiddleware: any[] = [
+      preDispatchHookMiddleware(preDispatchHook),
+      lazyLoadingMiddleware(this),
+    ];
 
     /* istanbul ignore else */
     if (reduxSaga) {
@@ -139,7 +143,7 @@ export class ReduxRegister {
           register,
         },
       });
-      internalMiddleware[0] = applyMiddleware(this.sagaMiddleware);
+      internalMiddleware.push(this.sagaMiddleware);
     }
 
     this.injector = injector;
@@ -150,12 +154,12 @@ export class ReduxRegister {
       reducer || defaultReducer,
       initialState,
       compose(
-        ...middleware,
-        ...internalMiddleware
+        applyMiddleware(...middleware),
+        applyMiddleware(...internalMiddleware)
       )
     );
 
-    this.storeFns = this.wrapStore();
+    this.wrapStore();
 
     if (reducer) {
       this.replaceReducer(reducer);
@@ -167,37 +171,28 @@ export class ReduxRegister {
    *
    * @returns The original store methods.
    */
-  private wrapStore(): StoreFns {
-    // Prevent the dispatch method from being re-bound
-    const internalDispatch = this.dispatch.bind(this);
-    (this as any).dispatch = (action: any): any => internalDispatch(action);
+  private wrapStore(): void {
+    [
+      'dispatch',
+      'subscribe',
+      'replaceReducer',
+      'getState',
+    ].forEach(fn => {
+      const internalFn = (this as any)[fn].bind(this);
+      (this as any)[fn] = (...params: any): any => internalFn(...params);
+    });
 
-    const { store } = this;
     const {
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       dispatch,
       subscribe,
       replaceReducer,
       getState,
+      /* eslint-enable @typescript-eslint/no-unused-vars */
       ...otherFns
-    } = store;
-
-    // Keep the original store functions for use later
-    const storeFns = {
-      dispatch: dispatch.bind(this.store),
-      subscribe: subscribe.bind(this.store),
-      replaceReducer: replaceReducer.bind(this.store),
-      getState: getState.bind(this.store),
-    };
+    } = this.store;
 
     Object.assign(this, otherFns);
-
-    // Map the store functions to register functions
-    store.dispatch = this.dispatch.bind(this) as any;
-    store.subscribe = this.subscribe.bind(this);
-    store.replaceReducer = this.replaceReducer.bind(this);
-    store.getState = this.getState.bind(this);
-
-    return storeFns;
   }
 
   private getReducers(): any {
@@ -226,11 +221,7 @@ export class ReduxRegister {
    * ```
    */
   public dispatch(action: AnyAction): AnyAction {
-    const controller = LazyLoader.getControllerForAction(action);
-    if (controller) {
-      (controller as any).getInstance(this);
-    }
-    return this.storeFns.dispatch(action);
+    return this.store.dispatch(action);
   }
 
   /**
@@ -245,7 +236,7 @@ export class ReduxRegister {
    * ```
    */
   public subscribe(listener: () => void): Unsubscribe {
-    return this.storeFns.subscribe(listener);
+    return this.store.subscribe(listener);
   }
 
   /**
@@ -259,7 +250,7 @@ export class ReduxRegister {
    * ```
    */
   public getState(): any {
-    return this.storeFns.getState();
+    return this.store.getState();
   }
 
   private addControllerReducer(controller: any): void {
@@ -274,7 +265,7 @@ export class ReduxRegister {
       placement = placement[namespace];
     }
     placement[name] = controller.reducer.bind(controller);
-    this.storeFns.replaceReducer(this.injector.getReducerCreationFn()());
+    this.store.replaceReducer(this.injector.getReducerCreationFn()());
   }
 
   /**
@@ -287,7 +278,7 @@ export class ReduxRegister {
    * @param nextReducer The new reducer that will replace the existing reducer.
    */
   public replaceReducer(nextReducer: Reducer<any, AnyAction>): void {
-    this.storeFns.replaceReducer(nextReducer);
+    this.store.replaceReducer(nextReducer);
   }
 
   /**
