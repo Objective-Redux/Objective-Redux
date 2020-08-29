@@ -34,7 +34,7 @@ type Reducer<S, A> = (prevState: S, action: A) => S
 /**
  * @internal
  */
-export type PreDispatchHookFn = (action: AnyAction) => Promise<any>;
+export type PreDispatchHookFn = (action: AnyAction) => any;
 
 /**
  * @internal
@@ -56,7 +56,7 @@ export interface SagaFn<Payload> {
 }
 
 /* istanbul ignore next */
-const defaultPreDispatchHook = (): Promise<any> => Promise.resolve();
+const defaultPreDispatchHook = (): any => null;
 
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its

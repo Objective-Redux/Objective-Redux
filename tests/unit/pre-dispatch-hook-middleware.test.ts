@@ -11,8 +11,16 @@
 import { preDispatchHookMiddleware } from '../../src/pre-dispatch-hook-middleware';
 
 describe('preDispatchHookMiddleware', () => {
-  it('should call the pre-dispatch function', done => {
+  it('should call the pre-dispatch function returning promise', done => {
     const preDispatchHookFn = jest.fn(() => Promise.resolve());
+    const next = jest.fn(() => done());
+    const action = {};
+    preDispatchHookMiddleware(preDispatchHookFn)()(next)(action);
+    expect(preDispatchHookFn).toBeCalledWith(action);
+  });
+
+  it('should call the pre-dispatch function returning non-promise', done => {
+    const preDispatchHookFn = jest.fn(() => null);
     const next = jest.fn(() => done());
     const action = {};
     preDispatchHookMiddleware(preDispatchHookFn)()(next)(action);

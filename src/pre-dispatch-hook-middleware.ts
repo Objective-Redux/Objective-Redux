@@ -12,6 +12,12 @@ import { Action } from './action';
 import { PreDispatchHookFn } from './redux-register';
 
 export function preDispatchHookMiddleware(preDispatchHook: PreDispatchHookFn): any {
-  // eslint-disable-next-line max-len
-  return (): Function => (next: Function): Function => (action: Action<any>): Promise<any> => preDispatchHook(action).then(() => next(action));
+  return (): Function => (next: Function): Function => (action: Action<any>): any => {
+    const hookResult = preDispatchHook(action);
+    if (hookResult?.then) {
+      return hookResult.then(() => next(action));
+    } else {
+      return next(action);
+    }
+  };
 }

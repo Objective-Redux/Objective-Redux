@@ -21,15 +21,22 @@ const applicationRoot= document.createElement('div');
 applicationRoot.id = 'appMain';
 document.body.appendChild(applicationRoot);
 
-const preDispatchHook = action => import(/* webpackChunkName: "lazy" */ './LazyLoadedStateController');
+const lazyLoadAction = getActionNameForController('lazy', 'test');
+
+const preDispatchHook = action => {
+  switch (action?.type) {
+    case lazyLoadAction:
+      return import(/* webpackChunkName: "lazy" */ './LazyLoadedStateController');
+    default:
+      return null;
+  }
+};
 
 const register = new ReduxRegister({
   preDispatchHook,
 });
 
-const action = createAction(
-  getActionNameForController('lazy', 'test')
-);
+const action = createAction(lazyLoadAction);
 
 const load = () => {
   register.dispatch(action());
