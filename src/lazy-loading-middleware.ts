@@ -12,6 +12,10 @@ import { LazyLoader } from './lazy-loader';
 import { ReduxRegister } from './redux-register';
 import { Action } from './action';
 
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+/**
+ * @internal
+ */
 export function lazyLoadingMiddleware(register: ReduxRegister): any {
   return (): Function => (next: Function): Function => (action: Action<any>): any => {
     const controller = LazyLoader.getControllerForAction(action);

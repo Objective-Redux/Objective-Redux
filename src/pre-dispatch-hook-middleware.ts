@@ -11,6 +11,10 @@
 import { Action } from './action';
 import { PreDispatchHookFn } from './redux-register';
 
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+/**
+ * @internal
+ */
 export function preDispatchHookMiddleware(preDispatchHook: PreDispatchHookFn): any {
   return (): Function => (next: Function): Function => (action: Action<any>): any => {
     const hookResult = preDispatchHook(action);

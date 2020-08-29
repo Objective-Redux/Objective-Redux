@@ -40,6 +40,10 @@ var lazy_loading_middleware_1 = require("./lazy-loading-middleware");
 var pre_dispatch_hook_middleware_1 = require("./pre-dispatch-hook-middleware");
 var _1 = require(".");
 /* istanbul ignore next */
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-returns
+/**
+ * @internal
+ */
 var defaultPreDispatchHook = function () { return null; };
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its

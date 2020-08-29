@@ -56,6 +56,10 @@ export interface SagaFn<Payload> {
 }
 
 /* istanbul ignore next */
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-returns
+/**
+ * @internal
+ */
 const defaultPreDispatchHook = (): any => null;
 
 /**

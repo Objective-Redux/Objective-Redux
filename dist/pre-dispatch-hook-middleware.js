@@ -10,6 +10,10 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.preDispatchHookMiddleware = void 0;
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+/**
+ * @internal
+ */
 function preDispatchHookMiddleware(preDispatchHook) {
     return function () { return function (next) { return function (action) {
         var hookResult = preDispatchHook(action);

@@ -11,6 +11,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lazyLoadingMiddleware = void 0;
 var lazy_loader_1 = require("./lazy-loader");
+// eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+/**
+ * @internal
+ */
 function lazyLoadingMiddleware(register) {
     return function () { return function (next) { return function (action) {
         var controller = lazy_loader_1.LazyLoader.getControllerForAction(action);
