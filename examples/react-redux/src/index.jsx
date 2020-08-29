@@ -10,7 +10,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
 import {
   RegisterProvider, ReduxRegister, createAction, getActionNameForController,
 } from 'objective-redux';

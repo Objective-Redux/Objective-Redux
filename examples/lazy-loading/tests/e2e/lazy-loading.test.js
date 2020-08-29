@@ -11,6 +11,7 @@
 describe('Lazy-Loading example', () => {
   it('The page loads with a button', () => {
     cy.visit('/');
-    cy.get('#load-bundle').contains('Click Me');
+    cy.get('#load-bundle').click();
+    cy.get('#lazyTarget').contains('Lazy loaded data worked');
   });
 });

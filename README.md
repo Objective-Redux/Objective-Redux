@@ -83,9 +83,9 @@ In addition, you can take a look at the <a href="./examples">example apps</a> in
 
 <br />
 
-## Keep your bundle small
+## Keep your dependencies simple
 
-### Lots of features, one tiny package
+### Lots of features, one small package
 
 Objective-Redux replaces many of the packages you're already using.
 
@@ -135,11 +135,13 @@ Using Objective-Redux, your editor knows exactly where to find everything. That 
 
 <br />
 
-## Code splitting and lazy loading
+## Powerful code splitting and lazy loading
 
 ### Get the pieces of state you need, when you need them
 
 Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
+
+You can even use the pre-dispatch hook to load bundles when an action is fired. This allows you to fire actions that target controllers that haven't been downloaded, yet.
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> topic in the documentation for more.
 

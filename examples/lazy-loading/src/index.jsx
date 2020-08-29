@@ -10,20 +10,41 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ReduxRegister, RegisterProvider } from 'objective-redux';
+import {
+  ReduxRegister,
+  RegisterProvider,
+  createAction,
+  getActionNameForController,
+} from 'objective-redux';
 
 const applicationRoot= document.createElement('div');
 applicationRoot.id = 'appMain';
 document.body.appendChild(applicationRoot);
 
-const register = new ReduxRegister();
+const lazyLoadAction = getActionNameForController('lazy', 'test');
+
+const preDispatchHook = action => {
+  switch (action?.type) {
+    case lazyLoadAction:
+      return import(/* webpackChunkName: "lazy" */ './LazyLoadedStateController');
+    default:
+      return null;
+  }
+};
+
+const register = new ReduxRegister({
+  preDispatchHook,
+});
+
+const action = createAction(lazyLoadAction);
 
 const load = () => {
-  import(/* webpackChunkName: "lazy" */ './LazyLoadedStateController').then();
+  register.dispatch(action());
 };
 
 ReactDOM.render(
   <RegisterProvider register={register}>
+    <div id="lazyTarget" />
     <button onClick={load} id="load-bundle">Click Me</button>
   </RegisterProvider>,
   applicationRoot
