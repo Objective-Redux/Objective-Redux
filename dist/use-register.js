@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useRegister = void 0;
 var react_1 = require("react");
 var context_1 = require("./context");
+var hook_subscriber_1 = require("./hook-subscriber");
 /**
  * Gets the ReduxRegister from the React context for use in a functional component.
  *
@@ -37,9 +38,8 @@ var context_1 = require("./context");
 exports.useRegister = function () {
     var register = react_1.useContext(context_1.RegisterProviderContext);
     var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
-    /* istanbul ignore else */
-    if (register) {
-        register.subscribe(function () { return forceUpdate(); });
-    }
+    var subscription = react_1.useMemo(function () { return new hook_subscriber_1.HookSubscriber(register, forceUpdate); }, [register]);
+    subscription.subscribe();
+    react_1.useEffect(function () { return subscription.unsubscribe.bind(subscription); }, [register]);
     return register;
 };

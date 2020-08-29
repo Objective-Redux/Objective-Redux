@@ -67,82 +67,19 @@
     </nav>
     <div id="content">
       <div class="padded">
-        <h1>Use with React-Redux</h1>
-
-<p>Objective-Redux is fully compatible with <a href="https://react-redux.js.org/">React-Redux</a>. Just instantiate the ReduxRegister and use it as the store for the React-Redux provider.</p>
-
-<pre><code class="language-typescript">
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
-import { Provider } from 'react-redux';
-
-export const register = new ReduxRegister();
-
-ReactDOM.render(
-  &lt;RegisterProvider register={register}&gt;
-    &lt;Provider store={register}&gt;
-      // Your components here
-    &lt;/Provider&gt;
-  &lt;/RegisterProvider&gt;,
-  document.getElementById('root')
-);  
-</code></pre>
-
-<p>There's nothing special after that&mdash;the components can still be connected in the same way, as shown below.</p>
-
-<pre><code class="language-typescript">
-  import React from 'react';
-  import { connect } from 'react-redux';
+        
+  <section>
+    <h2 class="code">lazyLoadingMiddleware</h2>
+    <p class="code">function lazyLoadingMiddleware(register: ReduxRegister): any</p>
+    <p></p>
+    
+    <h3>Parameters</h3>
+<p><dt>register: ReduxRegister</dt><dd></dd><p>
+    <h3>Returns</h3>
+    <p><dt>any</dt><dd></dd></p>
+    
+  </section>
   
-  function ReactReduxComponent(props) {
-    const { isOn } = props;
-  
-    return(
-      &lt;button&gt;
-        Turn { isOn ? 'Off' : 'On' }
-      &lt;/button&gt;
-    );
-  }
-  
-  export default connect(
-    (state, ownProps) =&gt; ({
-      ...ownProps,
-      ...state['switch']
-    })
-  )(ReactReduxComponent);
-  </code></pre>
-
-<p>To fire events to Objective-Redux, use the createAction and getActionNameForController helper functions. Make sure that actions have a name set using the withAddressableName method. See the <a href="./code-splitting.html">code splitting topic</a> for more.</p>
-
-<pre><code class="language-typescript">
-import React from 'react';
-import { connect } from 'react-redux';
-import { createAction, getActionNameForController } from 'objective-redux';
-
-const action = createAction(getActionNameForController('switchSagas', 'update-switch'));
-
-function ReactReduxComponent(props) {
-  const { isOn, dispatch } = props;
-
-  const sendToggleAction = () =&gt; {
-    dispatch(action());
-  }
-
-  return(
-    &lt;button onClick={sendToggleAction}&gt;
-      Turn { isOn ? 'Off' : 'On' }
-    &lt;/button&gt;
-  );
-}
-
-export default connect(
-  (state, ownProps) =&gt; ({
-    ...ownProps,
-    ...state['switch']
-  })
-)(ReactReduxComponent);
-</code></pre>
       </div>
     </div>
   </div>

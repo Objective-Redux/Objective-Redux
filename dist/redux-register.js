@@ -30,20 +30,17 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReduxRegister = void 0;
 var redux_1 = require("redux");
 var lazy_loader_1 = require("./lazy-loader");
 var get_redux_saga_module_1 = require("./get-redux-saga-module");
 var reducer_injector_1 = require("./reducer-injector");
+var lazy_loading_middleware_1 = require("./lazy-loading-middleware");
+var pre_dispatch_hook_middleware_1 = require("./pre-dispatch-hook-middleware");
 var _1 = require(".");
+/* istanbul ignore next */
+var defaultPreDispatchHook = function () { return null; };
 /**
  * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
  * own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.
@@ -63,6 +60,7 @@ var ReduxRegister = /** @class */ (function () {
      * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
      * @param config.sagaContext The context to be used when creating the Saga middleware.
      * @param config.injector An instance of the ReducerInjector class.
+     * @param config.preDispatchHook A function that takes an action and returns a promise.
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript
@@ -96,23 +94,26 @@ var ReduxRegister = /** @class */ (function () {
     function ReduxRegister(config) {
         if (config === void 0) { config = {}; }
         this.registeredReducers = {};
-        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e;
+        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f;
         lazy_loader_1.LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
         var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
-        var internalMiddleware = [];
+        var internalMiddleware = [
+            pre_dispatch_hook_middleware_1.preDispatchHookMiddleware(preDispatchHook),
+            lazy_loading_middleware_1.lazyLoadingMiddleware(this),
+        ];
         /* istanbul ignore else */
         if (reduxSaga) {
             var register = this;
             this.sagaMiddleware = reduxSaga.default({
                 context: __assign(__assign({}, sagaContext), { register: register }),
             });
-            internalMiddleware[0] = redux_1.applyMiddleware(this.sagaMiddleware);
+            internalMiddleware.push(this.sagaMiddleware);
         }
         this.injector = injector;
         this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
         this.injector.setSagaRunningFn(this.sagaMiddleware.run);
-        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, redux_1.compose.apply(void 0, __spreadArrays(middleware, internalMiddleware)));
-        this.storeFns = this.wrapStore();
+        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, redux_1.compose(redux_1.applyMiddleware.apply(void 0, middleware), redux_1.applyMiddleware.apply(void 0, internalMiddleware)));
+        this.wrapStore();
         if (reducer) {
             this.replaceReducer(reducer);
         }
@@ -123,25 +124,28 @@ var ReduxRegister = /** @class */ (function () {
      * @returns The original store methods.
      */
     ReduxRegister.prototype.wrapStore = function () {
-        // Prevent the dispatch method from being re-bound
-        var internalDispatch = this.dispatch.bind(this);
-        this.dispatch = function (action) { return internalDispatch(action); };
-        var store = this.store;
-        var dispatch = store.dispatch, subscribe = store.subscribe, replaceReducer = store.replaceReducer, getState = store.getState, otherFns = __rest(store, ["dispatch", "subscribe", "replaceReducer", "getState"]);
-        // Keep the original store functions for use later
-        var storeFns = {
-            dispatch: dispatch.bind(this.store),
-            subscribe: subscribe.bind(this.store),
-            replaceReducer: replaceReducer.bind(this.store),
-            getState: getState.bind(this.store),
-        };
+        var _this = this;
+        [
+            'dispatch',
+            'subscribe',
+            'replaceReducer',
+            'getState',
+        ].forEach(function (fn) {
+            var internalFn = _this[fn].bind(_this);
+            _this[fn] = function () {
+                var params = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    params[_i] = arguments[_i];
+                }
+                return internalFn.apply(void 0, params);
+            };
+        });
+        var _a = this.store, 
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        dispatch = _a.dispatch, subscribe = _a.subscribe, replaceReducer = _a.replaceReducer, getState = _a.getState, 
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        otherFns = __rest(_a, ["dispatch", "subscribe", "replaceReducer", "getState"]);
         Object.assign(this, otherFns);
-        // Map the store functions to register functions
-        store.dispatch = this.dispatch.bind(this);
-        store.subscribe = this.subscribe.bind(this);
-        store.replaceReducer = this.replaceReducer.bind(this);
-        store.getState = this.getState.bind(this);
-        return storeFns;
     };
     ReduxRegister.prototype.getReducers = function () {
         var _this = this;
@@ -167,11 +171,7 @@ var ReduxRegister = /** @class */ (function () {
      * ```
      */
     ReduxRegister.prototype.dispatch = function (action) {
-        var controller = lazy_loader_1.LazyLoader.getControllerForAction(action);
-        if (controller) {
-            controller.getInstance(this);
-        }
-        return this.storeFns.dispatch(action);
+        return this.store.dispatch(action);
     };
     /**
      * Subscribes to the Redux store events.
@@ -185,7 +185,7 @@ var ReduxRegister = /** @class */ (function () {
      * ```
      */
     ReduxRegister.prototype.subscribe = function (listener) {
-        return this.storeFns.subscribe(listener);
+        return this.store.subscribe(listener);
     };
     /**
      * Gets the state object from the Redux store.
@@ -198,7 +198,7 @@ var ReduxRegister = /** @class */ (function () {
      * ```
      */
     ReduxRegister.prototype.getState = function () {
-        return this.storeFns.getState();
+        return this.store.getState();
     };
     ReduxRegister.prototype.addControllerReducer = function (controller) {
         var name = controller.constructor.getStoreName();
@@ -212,7 +212,7 @@ var ReduxRegister = /** @class */ (function () {
             placement = placement[namespace];
         }
         placement[name] = controller.reducer.bind(controller);
-        this.storeFns.replaceReducer(this.injector.getReducerCreationFn()());
+        this.store.replaceReducer(this.injector.getReducerCreationFn()());
     };
     /**
      * Replaced the existing reducer with a new one.
@@ -224,7 +224,7 @@ var ReduxRegister = /** @class */ (function () {
      * @param nextReducer The new reducer that will replace the existing reducer.
      */
     ReduxRegister.prototype.replaceReducer = function (nextReducer) {
-        this.storeFns.replaceReducer(nextReducer);
+        this.store.replaceReducer(nextReducer);
     };
     /**
      * Adds and and begins running a saga as part in the context of the store that the register manages.

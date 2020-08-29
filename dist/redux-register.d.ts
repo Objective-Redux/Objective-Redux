@@ -8,12 +8,17 @@ declare type Reducer<S, A> = (prevState: S, action: A) => S;
 /**
  * @internal
  */
+export declare type PreDispatchHookFn = (action: AnyAction) => any;
+/**
+ * @internal
+ */
 interface RegisterOptions {
     reducer?: Reducer<any, AnyAction>;
     initialState?: any;
     middleware?: Middleware<any>[];
     sagaContext?: any;
     injector?: ReducerInjector;
+    preDispatchHook?: PreDispatchHookFn;
 }
 /**
  * @internal
@@ -32,7 +37,6 @@ export declare class ReduxRegister {
     private readonly sagaMiddleware;
     private readonly injector;
     private readonly registeredReducers;
-    private readonly storeFns;
     /**
      * Creates an instance of the ReduxRegister.
      *
@@ -45,6 +49,7 @@ export declare class ReduxRegister {
      * @param config.middleware Middle to be added to the Redux store. This should not include the saga middleware.
      * @param config.sagaContext The context to be used when creating the Saga middleware.
      * @param config.injector An instance of the ReducerInjector class.
+     * @param config.preDispatchHook A function that takes an action and returns a promise.
      * @returns An instance of the ReduxRegister.
      * @example
      * ```typescript

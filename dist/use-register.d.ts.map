@@ -1,1 +1,1 @@
-{"version":3,"file":"use-register.d.ts","sourceRoot":"","sources":["../src/use-register.ts"],"names":[],"mappings":"AAYA,OAAO,EAAE,aAAa,EAAE,MAAM,GAAG,CAAC;AAElC;;;;;;;;;;;;;;;;;;;;;GAqBG;AACH,eAAO,MAAM,WAAW,QAAO,aAAa,GAAC,IAU5C,CAAC"}
+{"version":3,"file":"use-register.d.ts","sourceRoot":"","sources":["../src/use-register.ts"],"names":[],"mappings":"AAkBA,OAAO,EAAE,aAAa,EAAE,MAAM,GAAG,CAAC;AAElC;;;;;;;;;;;;;;;;;;;;;GAqBG;AACH,eAAO,MAAM,WAAW,QAAO,aAAa,GAAC,IAa5C,CAAC"}
