@@ -8,23 +8,5 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StateController } from 'objective-redux';
-
-const initialState = '';
-
-class LazyStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
-  }
-
-  static getName() {
-    return 'lazy';
-  }
-
-  action = this.registerAction(() => {
-    document.getElementById('lazyTarget').innerHTML = 'Lazy loaded data worked';
-    return '';
-  }).withAddressableName('test');
-}
-
-LazyStateController.initializeOnExternalAction();
+export { LazyComponent as default } from './LazyComponent';
+export { LazyLoadedStateController } from './LazyLoadedStateController';
