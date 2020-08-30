@@ -8,7 +8,7 @@ import { ReduxRegister } from '.';
  * @returns An instance of the ReduxRegister, if one exists.
  *
  * @example
- * ```
+ * ```typescript
  * import React from 'react';
  * import { useRegister } from 'objective-redux';
  * import { MyStateController } from './store/my-state-controller';
