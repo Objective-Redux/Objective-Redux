@@ -59,6 +59,8 @@ interface RegisterOptions {
   injector?: ReducerInjector;
   /**
    * A function that will be called before actions are dispatched.
+   * The function should take an action and return either null or a promise. If a promise is returned, the action will
+   * be dispatched when the promise resolves.
    */
   preDispatchHook?: PreDispatchHookFn;
 }
