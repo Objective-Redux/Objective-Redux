@@ -87,7 +87,17 @@ function applyFunctionTemplate(functionData) {
   let params = '';
   if (functionData.parameters.length > 0) {
     params = functionData.parameters
-      .map(p => `<p><dt>${p.name}: ${sanitizeAsHTML(p.type)}</dt><dd>${sanitizeDescription(p.description)}</dd><p>`)
+      .map(p => {
+        let subtypeData = '';
+        if (p.subtypes) {
+          subtypeData = p.subtypes
+            // eslint-disable-next-line max-len
+            .map(s => `${sanitizeAsHTML(s.name)}<br /><span style="display: inline-block; margin-left: 40px;">${sanitizeDescription(s.description)}</span>`)
+            .reduce((l, c) => `${l}<br />${c}`, '<br />');
+        }
+        // eslint-disable-next-line max-len
+        return `<p><dt>${p.name}: ${sanitizeAsHTML(p.type)}</dt><dd>${sanitizeDescription(p.description)}${subtypeData}</dd><p>`;
+      })
       .reduce((p, c) => `${p}\n${c}`, '<h3>Parameters</h3>');
   }
 
@@ -150,7 +160,7 @@ function sanitizeDescription(desc) {
     return '';
   }
 
-  return desc.replace('\n', '<br />');
+  return desc.trim().replace('\n', '<br />');
 }
 
 function getStaticLink(file) {

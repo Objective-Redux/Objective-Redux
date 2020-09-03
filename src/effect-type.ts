@@ -11,10 +11,10 @@
 import { getReduxSagaEffects } from './get-redux-saga-module';
 import { SagaFn } from './redux-register';
 
-/**
- * @internal
- */
 export interface DebounceTakeConfig {
+  /**
+   * The time debounce time in milliseconds.
+   */
   debounceTime: number;
 }
 

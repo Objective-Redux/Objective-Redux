@@ -67,7 +67,7 @@
         
     <h1 class="code">StatelessController</h1>
     <p class="code">abstract class StatelessController extends Controller</p>
-    <p>Create and manage sagas that are associated with a Redux store.<br /></p>
+    <p>Create and manage sagas that are associated with a Redux store.</p>
     
     <h3>Examples</h3>
 
@@ -94,7 +94,7 @@ instance.toggleSwitch();</code></pre>
   <section>
     <h2 class="code">register</h2>
     <p class="code">protected register: ReduxRegister</p>
-    <p>The ReduxController to which the controller belongs.<br /></p>
+    <p>The ReduxController to which the controller belongs.</p>
   </section>
   
     
@@ -102,13 +102,12 @@ instance.toggleSwitch();</code></pre>
     <h2 class="code">constructor</h2>
     <p class="code">public constructor(register: ReduxRegister): StatelessController</p>
     <p>Registers and starts the sagas.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-have adverse affects on the application._.
-</p>
+have adverse affects on the application._.</p>
     
     <h3>Parameters</h3>
-<p><dt>register: ReduxRegister</dt><dd>Rhe ReduxRegister instance to which the controller will be connected.<br /></dd><p>
+<p><dt>register: ReduxRegister</dt><dd>Rhe ReduxRegister instance to which the controller will be connected.</dd><p>
     <h3>Returns</h3>
-    <p><dt>StatelessController</dt><dd>An instance of the StatelessController.<br /></dd></p>
+    <p><dt>StatelessController</dt><dd>An instance of the StatelessController.</dd></p>
     
   </section>
   
@@ -116,12 +115,12 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">createActionName</h2>
     <p class="code">protected createActionName(name: string|null = null): string</p>
-    <p>Generates a unique, default action name.<br /></p>
+    <p>Generates a unique, default action name.</p>
     
     <h3>Parameters</h3>
-<p><dt>name: string|null = null</dt><dd><br />The name of the action or null to generate a unique, default action name.</dd><p>
+<p><dt>name: string|null = null</dt><dd>The name of the action or null to generate a unique, default action name.</dd><p>
     <h3>Returns</h3>
-    <p><dt>string</dt><dd>An action name.<br /></dd></p>
+    <p><dt>string</dt><dd>An action name.</dd></p>
     
   </section>
   
@@ -129,12 +128,12 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">createSaga</h2>
     <p class="code">protected createSaga&lt;Payload&gt;(): SagaBuilder&lt;Payload&gt;</p>
-    <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.<br /></p>
+    <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.</p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd><br />the payload the action and the saga will take.</dd></p>
+<p><dt>&lt;Payload&gt;</dt><dd>the payload the action and the saga will take.</dd></p>
     
     <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.<br /></dd></p>
+    <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.</dd></p>
     
   </section>
   
@@ -142,14 +141,14 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">getInstance</h2>
     <p class="code">public static getInstance&lt;T&gt;(this: Controller|ModelConstructor&lt;T&gt;, register: ReduxRegister): T</p>
-    <p>Gets an instance of the class, creating one if it does not yet exist.<br />This should be used as the method of instantiating controllers. </p>
+    <p>Gets an instance of the class, creating one if it does not yet exist.<br />This should be used as the method of instantiating controllers.</p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;T&gt;</dt><dd><br />the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
+<p><dt>&lt;T&gt;</dt><dd>the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
     <h3>Parameters</h3>
-<p><dt>this: Controller|ModelConstructor&lt;T&gt;</dt><dd><br />Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
-<p><dt>register: ReduxRegister</dt><dd><br />An instance of the ReduxRegister from which to get the controller.</dd><p>
+<p><dt>this: Controller|ModelConstructor&lt;T&gt;</dt><dd>Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
+<p><dt>register: ReduxRegister</dt><dd>An instance of the ReduxRegister from which to get the controller.</dd><p>
     <h3>Returns</h3>
-    <p><dt>T</dt><dd>An instance of the controller.<br /></dd></p>
+    <p><dt>T</dt><dd>An instance of the controller.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">const instance = MyController.getInstance(register);</code></pre>
@@ -160,11 +159,11 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">getName</h2>
     <p class="code">public static getName(): string</p>
-    <p>Gets the unique name of the controller. By default, the name of the class.<br />The name of the controller should be globally unique for all Objective-Redux controllers in the application. </p>
+    <p>Gets the unique name of the controller. By default, the name of the class.<br />The name of the controller should be globally unique for all Objective-Redux controllers in the application.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>string</dt><dd>The name of the state slice.<br /></dd></p>
+    <p><dt>string</dt><dd>The name of the state slice.</dd></p>
     
   </section>
   
@@ -172,12 +171,11 @@ have adverse affects on the application._.
   <section>
     <h2 class="code">getNamespace</h2>
     <p class="code">public static getNamespace(): string|null</p>
-    <p>Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need to be unique within a namespace.<br />In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace name.
-</p>
+    <p>Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need to be unique within a namespace.<br />In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace name.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>string|null</dt><dd>Null if the state is not namespaced.<br /></dd></p>
+    <p><dt>string|null</dt><dd>Null if the state is not namespaced.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">// For StateControllers, the namespace also groups slices in the store.
@@ -230,12 +228,11 @@ class MySecondController extends StateController {
     <h2 class="code">initializeOnExternalAction</h2>
     <p class="code">public static initializeOnExternalAction&lt;T&gt;(this: T): void</p>
     <p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.<br />In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load without using the controller directly, this needs to be used in conjunction with the method
-[[withAddressableName]].
-</p>
+[[withAddressableName]].</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd></dd></p>
     <h3>Parameters</h3>
-<p><dt>this: T</dt><dd><br />Implicit "this" parameter, which does not need to be supplied.</dd><p>
+<p><dt>this: T</dt><dd>Implicit "this" parameter, which does not need to be supplied.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>

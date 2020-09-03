@@ -69,8 +69,7 @@
     <p class="code">class ComponentConnector</p>
     <p>Builder that connections a React component to the Objective Redux register, allowing the component to use the states and dispatch events.<br />This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the components closest provided ancestor. It also provides props from the states that were added.
 
-As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
-</p>
+As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.</p>
     
     <h3>Examples</h3>
 
@@ -85,11 +84,11 @@ As an alternative for functional components, the useRegister hook can be used to
   <section>
     <h2 class="code">connect</h2>
     <p class="code">public connect(): ComponentClass</p>
-    <p>Finishes the builder and provides the connected component.<br /></p>
+    <p>Finishes the builder and provides the connected component.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>ComponentClass</dt><dd>The connected React component.<br /></dd></p>
+    <p><dt>ComponentClass</dt><dd>The connected React component.</dd></p>
     
   </section>
   
@@ -97,14 +96,14 @@ As an alternative for functional components, the useRegister hook can be used to
   <section>
     <h2 class="code">from</h2>
     <p class="code">public from&lt;C&gt;(controller: Class&lt;C&gt;, selector: StateSelectorFn&lt;C&gt;|null = null): ComponentConnector</p>
-    <p>Gets parameters from the specified StateController and injects them into the properties of the component.<br /></p>
+    <p>Gets parameters from the specified StateController and injects them into the properties of the component.</p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;C&gt;</dt><dd><br />The state controller class being connected. Will be inferred from the first parameter.</dd></p>
+<p><dt>&lt;C&gt;</dt><dd>The state controller class being connected. Will be inferred from the first parameter.</dd></p>
     <h3>Parameters</h3>
-<p><dt>controller: Class&lt;C&gt;</dt><dd><br />The state controller from which properties will be extracted.</dd><p>
-<p><dt>selector: StateSelectorFn&lt;C&gt;|null = null</dt><dd><br />An optional mapping function.</dd><p>
+<p><dt>controller: Class&lt;C&gt;</dt><dd>The state controller from which properties will be extracted.</dd><p>
+<p><dt>selector: StateSelectorFn&lt;C&gt;|null = null</dt><dd>An optional mapping function.</dd><p>
     <h3>Returns</h3>
-    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.<br /></dd></p>
+    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.</dd></p>
     
   </section>
   
@@ -112,12 +111,12 @@ As an alternative for functional components, the useRegister hook can be used to
   <section>
     <h2 class="code">addPropsTo</h2>
     <p class="code">public static addPropsTo(component: ComponentClass): ComponentConnector</p>
-    <p>Starts the builder for a React component.<br /></p>
+    <p>Starts the builder for a React component.</p>
     
     <h3>Parameters</h3>
-<p><dt>component: ComponentClass</dt><dd><br />The React component to which the props will be added.</dd><p>
+<p><dt>component: ComponentClass</dt><dd>The React component to which the props will be added.</dd><p>
     <h3>Returns</h3>
-    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.<br /></dd></p>
+    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.</dd></p>
     
   </section>
   

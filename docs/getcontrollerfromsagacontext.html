@@ -68,15 +68,13 @@
   <section>
     <h2 class="code">getControllerFromSagaContext</h2>
     <p class="code">function getControllerFromSagaContext&lt;C&gt;(controller: Controller|ModelConstructor&lt;C&gt;): Generator&lt;any, undefined, C&gt;</p>
-    <p>Gets a controller instance from the saga context.<br /></p>
+    <p>Gets a controller instance from the saga context.</p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;C&gt;</dt><dd><br />The type of controller that will be returned. This type is inferred and does not need to be specified in
-TypeScript.</dd></p>
+<p><dt>&lt;C&gt;</dt><dd>The type of controller that will be returned. This type is inferred and does not need to be specified in<br />TypeScript.</dd></p>
     <h3>Parameters</h3>
-<p><dt>controller: Controller|ModelConstructor&lt;C&gt;</dt><dd><br />The controller class of which an instance should be retrieved.</dd><p>
+<p><dt>controller: Controller|ModelConstructor&lt;C&gt;</dt><dd>The controller class of which an instance should be retrieved.</dd><p>
     <h3>Returns</h3>
-    <p><dt>Generator<any, undefined, C></dt><dd>A generator that yields an instance of the provided controller or null if there is no register in the saga's<br />context.
-</dd></p>
+    <p><dt>Generator<any, undefined, C></dt><dd>A generator that yields an instance of the provided controller or null if there is no register in the saga's<br />context.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">// Also works with a StateController

@@ -67,21 +67,21 @@
         
     <h1 class="code">SagaBuilder</h1>
     <p class="code">class SagaBuilder&lt;Payload&gt;</p>
-    <p>Builder that is returned by the [[StatelessController]] to create and register a saga.<br /></p>
+    <p>Builder that is returned by the [[StatelessController]] to create and register a saga.</p>
     <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd>The payload that the action and the saga will use.<br /></dd></p>
+<p><dt>&lt;Payload&gt;</dt><dd>The payload that the action and the saga will use.</dd></p>
     
     
     
   <section>
     <h2 class="code">register</h2>
     <p class="code">public register(sagaFn: SagaFn&lt;Payload&gt;): ActionFn&lt;Payload&gt;</p>
-    <p>Completes the builder and adds the saga to the register.<br /></p>
+    <p>Completes the builder and adds the saga to the register.</p>
     
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd><br />The saga function to add to the ReduxRegister.</dd><p>
+<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ReduxRegister.</dd><p>
     <h3>Returns</h3>
-    <p><dt>ActionFn<Payload></dt><dd>An action for calling the saga.<br /></dd></p>
+    <p><dt>ActionFn<Payload></dt><dd>An action for calling the saga.</dd></p>
     
   </section>
   
@@ -89,12 +89,12 @@
   <section>
     <h2 class="code">withAddressableName</h2>
     <p class="code">public withAddressableName(name: string): SagaBuilder&lt;Payload&gt;</p>
-    <p>Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.<br /></p>
+    <p>Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this builder.</p>
     
     <h3>Parameters</h3>
-<p><dt>name: string</dt><dd><br />The name/type of the action.</dd><p>
+<p><dt>name: string</dt><dd>The name/type of the action.</dd><p>
     <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
+    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.</dd></p>
     
   </section>
   
@@ -102,13 +102,12 @@
   <section>
     <h2 class="code">withEffect</h2>
     <p class="code">public withEffect(effectBuilder: EffectBuilder): SagaBuilder&lt;Payload&gt;</p>
-    <p>Adds a simple watcher to the saga.<br /></p>
+    <p>Adds a simple watcher to the saga.</p>
     
     <h3>Parameters</h3>
-<p><dt>effectBuilder: EffectBuilder</dt><dd><br />The builder function for the saga watcher. This can be generating using one of the configure
-functions, such as configureTakeLatest or configureDebounce.</dd><p>
+<p><dt>effectBuilder: EffectBuilder</dt><dd>The builder function for the saga watcher. This can be generating using one of the configure<br />functions, such as configureTakeLatest or configureDebounce.</dd><p>
     <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.<br /></dd></p>
+    <p><dt>SagaBuilder<Payload></dt><dd>An instance of the SagaBuilder.</dd></p>
     
   </section>
   

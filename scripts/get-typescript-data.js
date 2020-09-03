@@ -126,6 +126,26 @@ function getType(type) {
   }
 }
 
+function getSubtypes(paramName, type) {
+  if (
+    type
+    && type.reflection
+    && type.reflection.children
+    && type.reflection.kindString === 'Interface'
+    && !hasInternalTag(type.reflection)
+  ) {
+    return type.reflection.children.map(child => {
+      const optional = child.flags.find(flag => flag === 'Optional') ? '?' : '';
+      return ({
+        name: `${paramName}.${child.name}${optional}: ${getType(child.type)}`,
+        description: child.comment
+          ? `${child.comment.shortText.replace('\n', '')}\n${child.comment.text}`
+          : null,
+      });
+    });
+  }
+}
+
 function getParameters(paramDeclarations) {
   const parameters = [];
 
@@ -137,6 +157,7 @@ function getParameters(paramDeclarations) {
     parameters.push({
       name: parameter.name,
       type: `${getType(parameter.type)}${defaultValue}`,
+      subtypes: getSubtypes(parameter.name, parameter.type),
       description: parameter.comment
         ? `${parameter.comment.shortText.replace('\n', '')}\n${parameter.comment.text}`
         : null,
