@@ -44,10 +44,10 @@
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
   "peerDependencies": {
+    "react": "^16.8.0",
     "redux": "^4.0.0"
   },
   "optionalDependencies": {
-    "react": "^16.8.0",
     "redux-saga": "^1.1.0"
   },
   "devDependencies": {
