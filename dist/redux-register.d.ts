@@ -9,15 +9,32 @@ declare type Reducer<S, A> = (prevState: S, action: A) => S;
  * @internal
  */
 export declare type PreDispatchHookFn = (action: AnyAction) => any;
-/**
- * @internal
- */
 interface RegisterOptions {
+    /**
+     * The initial reducer for the store.
+     */
     reducer?: Reducer<any, AnyAction>;
+    /**
+     * The initial state to which the store should be initialized.
+     */
     initialState?: any;
+    /**
+     * Middleware that should be applied to the store. This should not include saga middleware.
+     */
     middleware?: Middleware<any>[];
+    /**
+     * The context that should be given to sagas.
+     */
     sagaContext?: any;
+    /**
+     * An injector object for adding reducers and sagas to the register.
+     */
     injector?: ReducerInjector;
+    /**
+     * A function that will be called before actions are dispatched.
+     * The function should take an action and return either null or a promise. If a promise is returned, the action will
+     * be dispatched when the promise resolves.
+     */
     preDispatchHook?: PreDispatchHookFn;
 }
 /**
