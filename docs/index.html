@@ -64,32 +64,132 @@
     </nav>
     <div id="content">
       <div class="padded">
-        
-<h1>Official Documentation</h1>
+        <h1 id="objective-redux">Objective Redux</h1>
+<h3 id="redux-made-better-objectively">Redux made better, objectively.</h3>
+<p><a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
+<a href="https://github.com/Objective-Redux/Objective-Redux/tree/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+<a href="https://github.com/Objective-Redux/Objective-Redux/tree/master/dist"><img src="https://badgen.net/npm/types/objective-redux" alt="Types included" /></a>
+<br />
+<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/minzip/objective-redux" alt="bundle size" /></a>
+<a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a></p>
+<p>Make organizing and managing your Redux store easy.</p>
+<br />
 
-<p><br /></p>
+<br />
 
-<h2>What is it?</h2>
+<h1 id="meet-your-new-redux-api">Meet your new Redux API</h1>
+<h2 id="install">Install</h2>
+<pre><code>npm install --save redux redux-saga objective-redux</code></pre>
+<h2 id="setup-for-react">Setup (for React)</h2>
+<pre><code class="language-javascript">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+import { RegisterProvider, ReduxRegister } from &#39;objective-redux&#39;;
+import App from &#39;./app&#39;;
 
-<p>Make managing and scaling your Redux store simple by abstracting slices into state controllers. State controllers are initialized on-demand with little to no effort required.</p>
+export const register = new ReduxRegister();
 
-<p>See <a href="https://www.npmjs.com/package/objective-redux">the NPM page</a> for more.</p>
+ReactDOM.render(
+  &lt;RegisterProvider register={register}&gt;
+    &lt;App /&gt;
+  &lt;/RegisterProvider&gt;,
+  document.getElementById(&#39;root&#39;)
+);</code></pre>
+<h2 id="example-slice">Example Slice</h2>
+<pre><code class="language-javascript">import { StateController } from &#39;objective-redux&#39;;
 
-<p><br /></p>
+const initialState = { isOn: false };
 
-<h2>Get Started</h2>
+export class SwitchStateController extends StateController {
+  constructor(register) {
+    super(initialState, register);
+  }
 
-<p>Use the navigation on the right or jump to the <a href="setup.html">Setup page</a>.</p>
+  static getName() {
+    return &#39;switch&#39;;
+  }
 
-<p>In addition to this documentation, you can check out the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/master/examples">working examples</a> in the <a href="https://github.com/Objective-Redux/Objective-Redux">public GitHub repository</a>.</p>
+  setSwitch = this.registerAction(
+    (state, isOn) =&gt; ({ isOn })
+  );
+}</code></pre>
+<pre><code class="language-javascript">SwitchOneController.getInstance(register).setSwitch(true);</code></pre>
+<br />
 
-<p><br /></p>
+<br />
 
-<p>
-  <a href="https://www.npmjs.com/package/objective-redux"><img src="https://img.shields.io/npm/v/objective-redux" alt="NPM Version" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
-  <a href="https://github.com/Objective-Redux/Objective-Redux/actions"><img src="https://github.com/Objective-Redux/Objective-Redux/workflows/Build/badge.svg" alt="build status" /></a>
+<h1 id="start-using-it-now">Start using it now</h1>
+<p>You can read the <a href="https://objective-redux.github.io/Objective-Redux/">full documentation</a> for more detailed information, along with examples.</p>
+<p><a href="https://objective-redux.github.io/Objective-Redux/" alt="documentation website screenshot"><img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/docs.png" style="width: 100%"></a></p>
+<p>In addition, you can take a look at the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/master/examples">example apps</a> in the project’s <a href="https://github.com/Objective-Redux/Objective-Redux/">GitHub repository</a>.</p>
+<br />
+
+<br />
+
+<h1 id="why-use-objective-redux">Why use Objective-Redux?</h1>
+<br />
+
+<h2 id="keep-your-dependencies-simple">Keep your dependencies simple</h2>
+<h3 id="lots-of-features-one-small-package">Lots of features, one small package</h3>
+<p>Objective-Redux replaces many of the packages you’re already using.</p>
+<p>For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit</p>
+<p><a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a></p>
+<p>you can simply use Objective-Redux</p>
+<p><a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a></p>
+<p><em>Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions.</em></p>
+<br />
+
+<h2 id="drop-the-boilerplate-code">Drop the boilerplate code</h2>
+<h3 id="actions-are-a-thing-of-the-past-among-other-things">Actions are a thing of the past&mdash; among other things</h3>
+<p>Object-Redux largely removes the need for action names, actions, switch-statement-reducers, selectors, and dispatching. You just need to write the mutating functions. Objective-Redux can take it from there.</p>
+<pre><code class="language-typescript">  // Define your mutation and forget about the rest.
+  myAction = this.registerAction(
+    (state, payload) =&gt; ({
+      ...state,
+      value: payload.value,
+    })
+  );</code></pre>
+<br />
+
+<h2 id="easy-debugging">Easy Debugging</h2>
+<h3 id="no-more-global-searches-for-action-names">No more global searches for action names</h3>
+<p>Using Objective-Redux, your editor knows exactly where to find everything. That means you get intellisense, jump to definition, and more. Plus, your actions and reducer will never get out-of-sync.</p>
+<p style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/debugging.png" alt="Debugging in VS Code" style="height: 500px;" />
 </p>
+
+<br />
+
+<h2 id="powerful-code-splitting-and-lazy-loading">Powerful code splitting and lazy loading</h2>
+<h3 id="get-the-pieces-of-state-you-need-when-you-need-them">Get the pieces of state you need, when you need them</h3>
+<p>Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what’s in it, leaving you free to move parts around as needed.</p>
+<p>You can even use the pre-dispatch hook to load bundles when an action is fired. This allows you to fire actions that target controllers that haven’t been downloaded, yet.</p>
+<p>See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> topic in the documentation for more.</p>
+<img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/lazy.png" alt="Lazy load reducers and controller when you need them" style="height: 200px;" />
+
+<br />
+
+<h2 id="organize-your-state">Organize your state</h2>
+<h3 id="one-slice-one-object">One slice, one object</h3>
+<p>Each controller class represents a slice, giving an intuitive way for developers to look at and conceptualize the state.</p>
+<p>A slice of state never needs to know about what other slices are doing or how they’re organized.</p>
+<img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/organize.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+
+<br />
+
+<h2 id="compatible-with-react-redux">Compatible with React-Redux</h2>
+<h3 id="migrate-over-time">Migrate over time</h3>
+<p>You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to <code>dispatch</code>, <code>subscribe</code>, <code>getState</code>, and even <code>replaceReducer</code>. Simply pass the ReduxRegister to the React-Redux provider and use it normally.</p>
+<p>See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.</p>
+<br />
+
+<h2 id="multiple-ways-to-connect">Multiple ways to connect</h2>
+<h3 id="inject-properties-or-use-hooks">Inject properties or use hooks</h3>
+<p>You can connect your components to Objective-Redux to inject props from the store. Or, skip the connection process and use React hooks, instead.</p>
+
       </div>
     </div>
   </div>

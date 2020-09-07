@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const package = require('../package.json');
 const TypeScriptDataProvider = require('./get-typescript-data');
+const marked = require('marked');
 
 const API_DIR = path.resolve(__dirname, '../docs');
 const TEMPLATE_DIRECTORY = path.resolve(__dirname, './templates');
@@ -196,7 +197,7 @@ const files = fs.readdirSync(TEMPLATE_DIRECTORY);
 typescriptData.classes.sort((a, b) => (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1));
 typescriptData.functions.sort((a, b) => (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1));
 
-let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html' && file !== 'index.html')
+let menu = files.filter(file => file.match(/.html$/) && file !== 'template.html')
   .map(file => `<p><a href="${getLink({ name: file })}">${getStaticLink(file)}</a></p>`)
   .reduce((p, c) => `${p}\n${c}`, '<p class="nav-section">Topics</p>');
 
@@ -241,3 +242,19 @@ typescriptData.classes.forEach(
     filename: getLink(d),
   })
 );
+
+writeFile({
+  body: marked(
+    fs.readFileSync(path.resolve(__dirname, '../README.md'), 'utf-8'),
+    {
+      baseUrl: 'https://github.com/Objective-Redux/Objective-Redux/tree/master',
+      gfm: true,
+      headerIds: true,
+      smartypants: true,
+      xhtml: true,
+    }
+  ).replace(/ src=".\/([^"]+?)"/g, ' src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/$1"')
+    .replace(/ href=".\/([^"]+?)"/g, ' href="https://github.com/Objective-Redux/Objective-Redux/tree/master/$1"'),
+  menu,
+  filename: 'index.html',
+});

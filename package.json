@@ -68,6 +68,7 @@
     "eslint-plugin-jsdoc": "^18.11.0",
     "eslint-plugin-react": "^7.19.0",
     "jest": "^26.0.1",
+    "marked": "^1.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "redux": "^4.0.5",
