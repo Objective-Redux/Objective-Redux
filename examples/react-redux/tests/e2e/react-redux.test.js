@@ -30,11 +30,6 @@ function assertSwitchElements(resultElements, numTimes) {
 }
 
 describe('React-Redux example', () => {
-  it('The lazy loaded controller executes', () => {
-    cy.visit('/');
-    cy.get('#lazy').contains('Lazy loaded data worked');
-  });
-
   it('The connected component lazy loads and renders', () => {
     cy.visit('/');
     clickAndAssert('#connected', 5);

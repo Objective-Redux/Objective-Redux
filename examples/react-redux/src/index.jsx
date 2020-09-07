@@ -10,12 +10,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import {
-  RegisterProvider, ReduxRegister, createAction, getActionNameForController,
-} from 'objective-redux';
+import { RegisterProvider, ReduxRegister } from 'objective-redux';
 import ConnectedComponent from './connected-component';
 import HookComponent from './hook-component';
-import './store/lazy-loaded-state-controller';
 import ReactReduxComponent from './react-redux-component';
 
 export const register = new ReduxRegister({
@@ -23,7 +20,6 @@ export const register = new ReduxRegister({
     test: 'Some Value',
   },
 });
-register.dispatch(createAction(getActionNameForController('lazy', 'test'))());
 
 ReactDOM.render(
   <React.StrictMode>
@@ -32,7 +28,6 @@ ReactDOM.render(
         <ConnectedComponent />
         <HookComponent />
         <ReactReduxComponent />
-        <div id="lazy">PROBLEM LAZY LOADING!!!</div>
       </Provider>
     </RegisterProvider>
   </React.StrictMode>,
