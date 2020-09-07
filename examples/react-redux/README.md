@@ -1,10 +1,11 @@
 # Summary
+
 This example contains:
-* Three action names
-* Three actions
-* A reducer for two actions
-* A saga
-* A take_every saga
-* A selector
-* "Wiring" up code for the reducer
-* "Wiring" up code for the Saga
+
+* A React-Redux/Objective-Redux setup
+* A state controller
+* A stateless controller
+* Firing an action using Objective-Redux hooks
+* Firing an action using an Objective-Redux connected component
+* Firing an action using a React-Redux connected component
+* Getting the state for the above components
