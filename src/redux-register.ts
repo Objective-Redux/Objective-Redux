@@ -155,6 +155,9 @@ export class ReduxRegister {
       lazyLoadingMiddleware(this),
     ];
 
+    this.injector = injector;
+    this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
+
     /* istanbul ignore else */
     if (reduxSaga) {
       const register = this;
@@ -165,11 +168,8 @@ export class ReduxRegister {
         },
       });
       internalMiddleware.push(this.sagaMiddleware);
+      this.injector.setSagaRunningFn(this.sagaMiddleware.run);
     }
-
-    this.injector = injector;
-    this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
-    this.injector.setSagaRunningFn(this.sagaMiddleware.run);
 
     this.store = createStore(
       reducer || defaultReducer,

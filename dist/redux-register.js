@@ -105,6 +105,8 @@ var ReduxRegister = /** @class */ (function () {
             pre_dispatch_hook_middleware_1.preDispatchHookMiddleware(preDispatchHook),
             lazy_loading_middleware_1.lazyLoadingMiddleware(this),
         ];
+        this.injector = injector;
+        this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
         /* istanbul ignore else */
         if (reduxSaga) {
             var register = this;
@@ -112,10 +114,8 @@ var ReduxRegister = /** @class */ (function () {
                 context: __assign(__assign({}, sagaContext), { register: register }),
             });
             internalMiddleware.push(this.sagaMiddleware);
+            this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         }
-        this.injector = injector;
-        this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
-        this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, redux_1.compose(redux_1.applyMiddleware.apply(void 0, middleware), redux_1.applyMiddleware.apply(void 0, internalMiddleware)));
         this.wrapStore();
         if (reducer) {
