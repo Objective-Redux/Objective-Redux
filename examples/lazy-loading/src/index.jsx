@@ -11,8 +11,8 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import {
-  ReduxRegister,
-  RegisterProvider,
+  ObjectiveStore,
+  ObjectiveStoreProvider,
   createAction,
   getActionNameForController,
 } from 'objective-redux';
@@ -37,22 +37,22 @@ const preDispatchHook = action => {
   }
 };
 
-const register = new ReduxRegister({
+const objectiveStore = new ObjectiveStore({
   preDispatchHook,
 });
 
 const action = createAction(lazyLoadAction);
 
 const load = () => {
-  register.dispatch(action());
+  objectiveStore.dispatch(action());
 };
 
 ReactDOM.render(
-  <RegisterProvider register={register}>
+  <ObjectiveStoreProvider objectiveStore={objectiveStore}>
     <Suspense fallback={<div>Click the button</div>}>
       <LazyComponent />
     </Suspense>
     <button onClick={load} id="load-bundle">Click Me</button>
-  </RegisterProvider>,
+  </ObjectiveStoreProvider>,
   applicationRoot
 );

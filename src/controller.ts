@@ -9,12 +9,12 @@
 // ================================================================================================
 
 import { LazyLoader } from './lazy-loader';
-import { ReduxRegister, getActionNameForController } from './';
+import { ObjectiveStore, getActionNameForController } from './';
 
 /**
  * @internal
  */
-export type ModelConstructor<T> = new (register: ReduxRegister) => T;
+export type ModelConstructor<T> = new (objectiveStore: ObjectiveStore) => T;
 
 /**
  * @internal
@@ -25,10 +25,10 @@ export abstract class Controller {
   /**
    * The ReduxController to which the controller belongs.
    */
-  protected register: ReduxRegister;
+  protected objectiveStore: ObjectiveStore;
 
-  protected constructor(register: ReduxRegister) {
-    this.register = register;
+  protected constructor(objectiveStore: ObjectiveStore) {
+    this.objectiveStore = objectiveStore;
   }
 
   /**
@@ -121,19 +121,19 @@ export abstract class Controller {
    *
    * @template T the controller type. Will be inferred from the class instance and does not need to be provided.
    * @param this Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.
-   * @param register An instance of the ReduxRegister from which to get the controller.
+   * @param objectiveStore An instance of the ObjectiveStore from which to get the controller.
    * @returns An instance of the controller.
    *
    * @example
    * ```typescript
-   * const instance = MyController.getInstance(register);
+   * const instance = MyController.getInstance(objectiveStore);
    * ```
    */
   public static getInstance<T extends Controller>(
     this: typeof Controller & ModelConstructor<T>,
-    register: ReduxRegister
+    objectiveStore: ObjectiveStore
   ): T {
-    return LazyLoader.getController(register, this);
+    return LazyLoader.getController(objectiveStore, this);
   }
 
   /**
@@ -167,7 +167,7 @@ export abstract class Controller {
    *
    * // By firing this action, the controller will now be instantiated (if it hasn't been).
    * const myAction = createAction(getActionNameForController('MY_CONTROLLER', 'MY_ACTION'));
-   * register.dispatch(myAction);
+   * objectiveStore.dispatch(myAction);
    * ```
    */
   public static initializeOnExternalAction<T extends typeof Controller>(this: T): void {

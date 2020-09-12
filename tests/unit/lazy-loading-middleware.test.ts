@@ -21,7 +21,7 @@ import { lazyLoadingMiddleware } from '../../src/lazy-loading-middleware';
 describe('lazyLoadingMiddleware', () => {
   it('returns the working middleware and loads a controller', () => {
     const getInstance = jest.fn();
-    const mockRegister: any = {};
+    const mockObjectiveStore: any = {};
     const next = jest.fn();
     const action = {
       type: 'test',
@@ -30,16 +30,16 @@ describe('lazyLoadingMiddleware', () => {
 
     getControllerForAction.mockReturnValue({ getInstance });
 
-    const middleware = lazyLoadingMiddleware(mockRegister);
+    const middleware = lazyLoadingMiddleware(mockObjectiveStore);
     middleware()(next)(action);
 
     expect(getControllerForAction).toBeCalledWith(action);
-    expect(getInstance).toBeCalledWith(mockRegister);
+    expect(getInstance).toBeCalledWith(mockObjectiveStore);
     expect(next).toBeCalledWith(action);
   });
 
   it('returns the working middleware and does not load a controller', () => {
-    const mockRegister: any = {};
+    const mockObjectiveStore: any = {};
     const next = jest.fn();
     const action = {
       type: 'test',
@@ -48,7 +48,7 @@ describe('lazyLoadingMiddleware', () => {
 
     getControllerForAction.mockReturnValue(null);
 
-    const middleware = lazyLoadingMiddleware(mockRegister);
+    const middleware = lazyLoadingMiddleware(mockObjectiveStore);
     middleware()(next)(action);
 
     expect(getControllerForAction).toBeCalledWith(action);

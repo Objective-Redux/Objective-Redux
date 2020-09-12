@@ -10,12 +10,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import ConnectedComponent from './connected-component';
 import HookComponent from './hook-component';
 import ReactReduxComponent from './react-redux-component';
 
-export const register = new ReduxRegister({
+export const objectiveStore = new ObjectiveStore({
   sagaContext: {
     test: 'Some Value',
   },
@@ -23,13 +23,13 @@ export const register = new ReduxRegister({
 
 ReactDOM.render(
   <React.StrictMode>
-    <RegisterProvider register={register}>
-      <Provider store={register}>
+    <ObjectiveStoreProvider objectiveStore={objectiveStore}>
+      <Provider store={objectiveStore}>
         <ConnectedComponent />
         <HookComponent />
         <ReactReduxComponent />
       </Provider>
-    </RegisterProvider>
+    </ObjectiveStoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

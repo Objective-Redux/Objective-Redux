@@ -36,11 +36,11 @@ describe('action', () => {
 
   describe('createConnectedAction', () => {
     it('should return function that dispatches an action', () => {
-      const register: any = {
+      const objectiveStore: any = {
         dispatch: jest.fn(),
       };
-      createConnectedAction<number>(type, register)(payload);
-      expect(register.dispatch).toBeCalledWith({ type, payload });
+      createConnectedAction<number>(type, objectiveStore)(payload);
+      expect(objectiveStore.dispatch).toBeCalledWith({ type, payload });
     });
   });
 });

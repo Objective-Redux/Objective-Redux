@@ -9,34 +9,36 @@
 // ================================================================================================
 
 import * as React from 'react';
-import { RegisterProviderContext } from './context';
-import { ReduxRegister } from './';
+import { ObjectiveStoreProviderContext } from './context';
+import { ObjectiveStore } from '.';
 
 /**
- * Provides a ReduxRegister to child React components.
+ * Provides a ObjectiveStore to child React components.
  *
  * @param object The properties being passed to the component.
  * @param object.children The child components of the provider.
- * @param object.register An instance of the ReduxRegister.
+ * @param object.objectiveStore An instance of the ObjectiveStore.
  *
  * @example
  * ```typescript
- * export const register = new ReduxRegister();
+ * export const store = new ObjectiveStore();
  *
  * ReactDOM.render(
- *   <RegisterProvider register={register}>
+ *   <ObjectiveStoreProvider objectiveStore={objectiveStore}>
  *     <App />
- *   </RegisterProvider>,
+ *   </ObjectiveStoreProvider>,
  *   document.getElementById('root')
  * );
  * ```
  *
  * @returns The provider that will render with its child components.
  */
-export function RegisterProvider({ register, children }: { register: ReduxRegister; children: any }): JSX.Element {
+export function ObjectiveStoreProvider(
+  { objectiveStore, children }: { objectiveStore: ObjectiveStore; children: any }
+): JSX.Element {
   return (
-    <RegisterProviderContext.Provider value={register}>
+    <ObjectiveStoreProviderContext.Provider value={objectiveStore}>
       {children}
-    </RegisterProviderContext.Provider>
+    </ObjectiveStoreProviderContext.Provider>
   );
 }

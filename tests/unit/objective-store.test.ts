@@ -40,11 +40,11 @@ jest.mock('redux', () => ({
   applyMiddleware,
 }));
 
-const addRegister = jest.fn();
+const addObjectiveStore = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
-    addRegister,
+    addObjectiveStore,
   },
 }));
 
@@ -77,9 +77,9 @@ jest.mock('../../src/reducer-injector', () => ({
   })),
 }));
 
-import { ReduxRegister } from '../../src';
+import { ObjectiveStore } from '../../src';
 
-describe('redux-register', () => {
+describe('objective-store', () => {
   beforeEach(() => {
     mockStore ={
       replaceReducer,
@@ -96,11 +96,11 @@ describe('redux-register', () => {
         lazyLoadingMiddlewareMock,
         sagaMiddleware,
       ];
-      const register = new ReduxRegister();
-      expect(register).toBeInstanceOf(ReduxRegister);
+      const store = new ObjectiveStore();
+      expect(store).toBeInstanceOf(ObjectiveStore);
       expect(createSagaMiddleware).toBeCalledWith({
         context: {
-          register,
+          store,
         },
       });
       expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
@@ -130,7 +130,7 @@ describe('redux-register', () => {
         sagaMiddleware,
       ];
 
-      const register = new ReduxRegister({
+      const store = new ObjectiveStore({
         reducer,
         initialState,
         middleware: initialMiddleware,
@@ -139,11 +139,11 @@ describe('redux-register', () => {
         preDispatchHook,
       });
 
-      expect(register).toBeInstanceOf(ReduxRegister);
+      expect(store).toBeInstanceOf(ObjectiveStore);
       expect(createSagaMiddleware).toBeCalledWith({
         context: {
           ...sagaContext,
-          register,
+          store,
         },
       });
       expect(preDispatchHookMiddleware).toBeCalledWith(preDispatchHook);
@@ -162,16 +162,16 @@ describe('redux-register', () => {
 
   describe('getReducers', () => {
     it('combines only nested reducers', () => {
-      const register: any = new ReduxRegister();
+      const store: any = new ObjectiveStore();
       const flat = (): any => {};
       const nested = {
         foo: (): any => {},
       };
-      register.registeredReducers = {
+      store.registeredReducers = {
         flat,
         nested,
       };
-      const resultingReducers = register.getReducers();
+      const resultingReducers = store.getReducers();
       expect(resultingReducers).toEqual({
         flat,
         nested: COMBINED,
@@ -181,20 +181,20 @@ describe('redux-register', () => {
 
   describe('dispatch', () => {
     it('should dispatch an action', () => {
-      const register = new ReduxRegister();
+      const store = new ObjectiveStore();
       const action = {
         type: 'MyAction',
       };
-      expect(register.dispatch(action)).toEqual(action);
+      expect(store.dispatch(action)).toEqual(action);
       expect(dispatch).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('subscribe', () => {
     it('should subscribe to the store', () => {
-      const register = new ReduxRegister();
+      const store = new ObjectiveStore();
       const fn = (): void => {};
-      const unsubscribe = register.subscribe(fn);
+      const unsubscribe = store.subscribe(fn);
       unsubscribe();
       expect(subscribe).toHaveBeenCalledWith(fn);
       expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
@@ -203,8 +203,8 @@ describe('redux-register', () => {
 
   describe('getState', () => {
     it('should get the state object from the store', () => {
-      const register = new ReduxRegister();
-      expect(register.getState()).toEqual({ foo: 'bar' });
+      const store = new ObjectiveStore();
+      expect(store.getState()).toEqual({ foo: 'bar' });
     });
   });
 
@@ -220,12 +220,12 @@ describe('redux-register', () => {
         reducer,
       };
 
-      const register = new ReduxRegister();
-      const [[, addControllerReducer]] = addRegister.mock.calls;
+      const store = new ObjectiveStore();
+      const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
       addControllerReducer(controller);
-      expect(register).toBeInstanceOf(ReduxRegister);
+      expect(store).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((register as any).registeredReducers.TEST).not.toBeNull();
+      expect((store as any).registeredReducers.TEST).not.toBeNull();
     });
 
     it('adds the new, namespaced reducer for state controllers', () => {
@@ -239,20 +239,20 @@ describe('redux-register', () => {
         reducer,
       };
 
-      const register = new ReduxRegister();
-      const [[, addControllerReducer]] = addRegister.mock.calls;
+      const store = new ObjectiveStore();
+      const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
       addControllerReducer(controller);
-      expect(register).toBeInstanceOf(ReduxRegister);
+      expect(store).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((register as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
+      expect((store as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
     });
   });
 
   describe('replaceReducer', () => {
     it('calls replaceReducer on the store', () => {
       const reducer = (): any => {};
-      const register = new ReduxRegister();
-      register.replaceReducer(reducer);
+      const store = new ObjectiveStore();
+      store.replaceReducer(reducer);
       expect(replaceReducer).toHaveBeenCalledWith(reducer);
     });
   });
@@ -261,10 +261,10 @@ describe('redux-register', () => {
     it('should add the saga to the middleware', () => {
       const saga1 = function* (): Generator {};
       const saga2 = function* (): Generator {};
-      const register = new ReduxRegister();
-      register.registerSaga(saga1);
+      const store = new ObjectiveStore();
+      store.registerSaga(saga1);
       expect(run).toBeCalledWith(saga1);
-      register.registerSaga(saga2);
+      store.registerSaga(saga2);
       expect(run).toBeCalledWith(saga2);
     });
   });

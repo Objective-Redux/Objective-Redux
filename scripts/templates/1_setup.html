@@ -12,20 +12,20 @@
 
 <h2>Adding a Provider (React)</h2>
 
-<p>If you're using React, you'll need to setup a provider for the ReduxRegister class. This will allow you to access the register instance from your components, either by connecting the component to the provider or by using the provided React hook.</p>
+<p>If you're using React, you'll need to setup a provider for the ObjectiveStore class. This will allow you to access the store instance from your components, either by connecting the component to the provider or by using the provided React hook.</p>
 
 <pre><code class="language-typescript">
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import App from './app';
 
-export const register = new ReduxRegister();
+export const objectiveStore = new ObjectiveStore();
 
 ReactDOM.render(
-  &lt;RegisterProvider register={register}&gt;
+  &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
     &lt;App /&gt;
-  &lt;/RegisterProvider&gt;,
+  &lt;/ObjectiveStoreProvider&gt;,
   document.getElementById('root')
 );
 </code></pre>

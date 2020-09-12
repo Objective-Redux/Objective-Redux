@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 
 type UpdateFn = (() => void);
 
@@ -16,21 +16,21 @@ type UpdateFn = (() => void);
  * @internal
  */
 export class HookSubscriber {
-  private readonly register: ReduxRegister|null;
+  private readonly store: ObjectiveStore|null;
 
   private readonly updateFn: UpdateFn;
 
   private unsubscribeFn: UpdateFn|null;
 
-  public constructor(register: ReduxRegister|null, updateFn: UpdateFn) {
-    this.register = register;
+  public constructor(store: ObjectiveStore|null, updateFn: UpdateFn) {
+    this.store = store;
     this.updateFn = updateFn;
     this.unsubscribeFn = null;
   }
 
   public subscribe(): void {
-    if (!this.unsubscribeFn && this.register) {
-      this.unsubscribeFn = this.register.subscribe(this.updateFn);
+    if (!this.unsubscribeFn && this.store) {
+      this.unsubscribeFn = this.store.subscribe(this.updateFn);
     }
   }
 

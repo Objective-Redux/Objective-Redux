@@ -14,43 +14,43 @@ import {
   useMemo,
   useEffect,
 } from 'react';
-import { RegisterProviderContext } from './context';
+import { ObjectiveStoreProviderContext } from './context';
 import { HookSubscriber } from './hook-subscriber';
-import { ReduxRegister } from '.';
+import { ObjectiveStore } from '.';
 
 /**
- * Gets the ReduxRegister from the React context for use in a functional component.
+ * Gets the ObjectiveStore from the React context for use in a functional component.
  *
  * As an alternative (for example, in class components where hooks cannot be used), the ComponentConnector may be used
  * instead.
  *
- * @returns An instance of the ReduxRegister, if one exists.
+ * @returns An instance of the ObjectiveStore, if one exists.
  *
  * @example
  * ```typescript
  * import React from 'react';
- * import { useRegister } from 'objective-redux';
+ * import { useObjectiveStore } from 'objective-redux';
  * import { MyStateController } from './store/my-state-controller';
  *
  * export default function() {
- *   const register = useRegister();
- *   const { value } = MyStateController.getInstance(register).getStateSlice();
+ *   const objectiveStore = useObjectiveStore();
+ *   const { value } = MyStateController.getInstance(objectiveStore).getStateSlice();
  *
  *   return <p>{ value }</p>;
  * }
  * ```
  */
-export const useRegister = (): ReduxRegister|null => {
-  const register = useContext(RegisterProviderContext);
+export const useObjectiveStore = (): ObjectiveStore|null => {
+  const objectiveStore = useContext(ObjectiveStoreProviderContext);
   const [, forceUpdate] = useReducer(c => c + 1, 0);
 
-  const subscription = useMemo(() => new HookSubscriber(register, forceUpdate), [register]);
+  const subscription = useMemo(() => new HookSubscriber(objectiveStore, forceUpdate), [objectiveStore]);
   subscription.subscribe();
 
   useEffect(
     () => subscription.unsubscribe.bind(subscription),
-    [register]
+    [objectiveStore]
   );
 
-  return register;
+  return objectiveStore;
 };

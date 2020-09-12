@@ -13,13 +13,13 @@ const registerMock = {
   registerStateController,
 };
 
-const useRegister = jest.fn();
+const useObjectiveStore = jest.fn();
 
-jest.mock('../../src/use-register', () => ({
-  useRegister,
+jest.mock('../../src/use-objective-store', () => ({
+  useObjectiveStore,
 }));
 
-const getController = jest.fn((register, CClass) => new CClass(register));
+const getController = jest.fn((store, CClass) => new CClass(store));
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
@@ -31,8 +31,8 @@ import { useController, StatelessController } from '../../src';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(register: any) {
-    super(register);
+  public constructor(store: any) {
+    super(store);
   }
 
   public static getName(): string {
@@ -41,14 +41,14 @@ class TestController extends StatelessController {
 }
 
 describe('use-controller', () => {
-  it('returns an instance of the controller when there is a register', () => {
-    useRegister.mockReturnValue(registerMock);
+  it('returns an instance of the controller when there is a store', () => {
+    useObjectiveStore.mockReturnValue(registerMock);
     const controller = useController(TestController);
     expect(controller).toBeInstanceOf(TestController);
   });
 
-  it('returns null when there is not a register', () => {
-    useRegister.mockReturnValue(null);
+  it('returns null when there is not a store', () => {
+    useObjectiveStore.mockReturnValue(null);
     const controller = useController(TestController);
     expect(controller).toBeNull();
   });

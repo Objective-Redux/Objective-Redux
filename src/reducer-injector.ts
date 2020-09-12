@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import { combineReducers, Reducer } from 'redux';
-import { SagaFn } from './redux-register';
+import { SagaFn } from './objective-store';
 
 /**
  * @internal
@@ -29,14 +29,14 @@ interface RunSagaFn {
 }
 
 /**
- * An object that handles injection of reducers into the Redux store that is managed by a ReduxRegister.
+ * An object that handles injection of reducers into the Redux store that is managed by an ObjectiveStore.
  *
  * This can be used when middleware or another part of the application also needs to handle injection. For example,
  * this should be used when Redux-Injectors is being used with Objective-Redux.
  *
  * @example
  * ```typescript
- * import { ReducerInjector, ReduxRegister } from 'objective-redux';
+ * import { ReducerInjector, ObjectiveStore } from 'objective-redux';
  * import { createInjectorsEnhancer } from 'redux-injectors';
  * import { initialState, initialReducers } from './elsewhere';
  *
@@ -49,7 +49,7 @@ interface RunSagaFn {
  *   createInjectorsEnhancer({ createReducer, runSaga }),
  * ];
  *
- * const register = new ReduxRegister({
+ * const store = new ObjectiveStore({
  *   reducer,
  *   initialState,
  *   middleware,
@@ -89,7 +89,7 @@ export class ReducerInjector {
    * Sets the get function for retrieving the reducers internal to Objective-Redux.
    *
    * @param getObjectiveReduxReducers Function that can be called to get the reducers internal to Objective-Redux.
-   * This only be used by the ReduxRegister and should not be called directly.
+   * This only be used by the ObjectiveStore and should not be called directly.
    *
    * @example
    * ```typescript
@@ -131,7 +131,7 @@ export class ReducerInjector {
    * const injector = new ReducerInjector(initialReducers);
    * const reducerCreationFn = injector.getReducerCreationFn();
    *
-   * const register = new ReduxRegister({
+   * const objectiveStore = new ObjectiveStore({
    *   injector,
    * });
    *
@@ -139,7 +139,7 @@ export class ReducerInjector {
    *   MyInitialReducer: reducerTwo,
    * });
    *
-   * register.replaceReducer(nextReducer);
+   * objectiveStore.replaceReducer(nextReducer);
    * ```
    */
   public getReducerCreationFn(): CreateReducerFn {

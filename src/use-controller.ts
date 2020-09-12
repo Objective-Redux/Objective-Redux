@@ -9,15 +9,15 @@
 // ================================================================================================
 
 import { Controller, ModelConstructor } from './controller';
-import { useRegister } from './';
+import { useObjectiveStore } from './';
 
 /**
- * Gets a controller from the ReduxRegister using hook.
+ * Gets a controller from the ObjectiveStore using hook.
  *
  * @template C The type of controller that will be returned. This type is inferred and does not need to be specified in
  * TypeScript.
  * @param controller The controller class of which an instance should be retrieved.
- * @returns An instance of the provided controller or null if there is no register in the components context.
+ * @returns An instance of the provided controller or null if there is no store in the components context.
  *
  * @example
  * ```typescript
@@ -34,11 +34,11 @@ import { useRegister } from './';
  * ```
  */
 export const useController = <C extends Controller>(controller: typeof Controller & ModelConstructor<C>): C|null => {
-  const register = useRegister();
+  const objectiveStore = useObjectiveStore();
 
-  if (!register) {
+  if (!objectiveStore) {
     return null;
   }
 
-  return controller.getInstance(register);
+  return controller.getInstance(objectiveStore);
 };

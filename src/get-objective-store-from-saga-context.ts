@@ -9,19 +9,19 @@
 // ================================================================================================
 
 import { getReduxSagaEffects } from './get-redux-saga-module';
-import { ReduxRegister } from './';
+import { ObjectiveStore } from '.';
 
 /**
- * Gets the register from the saga's context.
+ * Gets the store from the saga's context.
  *
- * @returns A generator that yields an instance of the ReduxRegister.
+ * @returns A generator that yields an instance of the ObjectiveStore.
  * @example
  * ```typescript
  * function* () {
- *   const register = yield getRegisterFromSagaContext();
+ *   const store = yield getObjectiveStoreFromSagaContext();
  * }
  * ```
  */
-export function* getRegisterFromSagaContext(): Generator<any, ReduxRegister, ReduxRegister> {
-  return yield getReduxSagaEffects().getContext('register');
+export function* getObjectiveStoreFromSagaContext(): Generator<any, ObjectiveStore, ObjectiveStore> {
+  return yield getReduxSagaEffects().getContext('store');
 }

@@ -8,9 +8,9 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 import * as React from 'react';
-import { ReduxRegister } from './';
+import { ObjectiveStore } from './';
 
 /**
  * @internal
  */
-export const RegisterProviderContext = React.createContext<ReduxRegister|null>(null);
+export const ObjectiveStoreProviderContext = React.createContext<ObjectiveStore|null>(null);

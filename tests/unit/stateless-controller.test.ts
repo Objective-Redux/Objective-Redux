@@ -21,7 +21,7 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-const getController = jest.fn((register, CClass) => new CClass(register));
+const getController = jest.fn((store, CClass) => new CClass(store));
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getController,
@@ -40,8 +40,8 @@ import { EffectBuilder } from '../../src/effect-type';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(register: any) {
-    super(register);
+  public constructor(store: any) {
+    super(store);
   }
 
   public static getName(): string {
@@ -75,9 +75,9 @@ describe('stateless-controller', () => {
   });
 
   describe('getInstance', () => {
-    it('should create only one instance per register', () => {
-      const reduxRegisterMock: any = { registerSaga };
-      const instance = TestController.getInstance(reduxRegisterMock);
+    it('should create only one instance per store', () => {
+      const objectiveStoreMock: any = { registerSaga };
+      const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);
       expect(instance).toBeInstanceOf(TestController);
     });
@@ -85,8 +85,8 @@ describe('stateless-controller', () => {
 
   describe('createSaga', () => {
     function checkSaga(effectBuilder: EffectBuilder, verify: () => void): void {
-      const reduxRegisterMock: any = { registerSaga };
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const objectiveStoreMock: any = { registerSaga };
+      const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
         .withEffect(effectBuilder)
         .register(testSaga);
@@ -157,8 +157,8 @@ describe('stateless-controller', () => {
     });
 
     it('should name actions', () => {
-      const reduxRegisterMock: any = { registerSaga };
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const objectiveStoreMock: any = { registerSaga };
+      const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
         .withEffect(configureTakeLeading())
         .withAddressableName('NAME')
@@ -169,8 +169,8 @@ describe('stateless-controller', () => {
     });
 
     it('should create saga without effect', () => {
-      const reduxRegisterMock: any = { registerSaga };
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const objectiveStoreMock: any = { registerSaga };
+      const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
         .register(testSaga);
       expect(registerSaga).toHaveBeenCalledWith(testSaga);
