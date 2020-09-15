@@ -13,8 +13,8 @@ import { StateController } from 'objective-redux';
 const initialState = 'No action fired';
 
 export class LazyLoadedStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
   }
 
   static getName() {

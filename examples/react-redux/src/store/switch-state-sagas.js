@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import {
-  StatelessController, configureTakeLatest, getRegisterFromSagaContext, getControllerFromSagaContext,
+  StatelessController, configureTakeLatest, getObjectiveStoreFromSagaContext, getControllerFromSagaContext,
 } from 'objective-redux';
 import { SwitchStateController } from './switch-state-controller';
 import { getContext } from 'redux-saga/effects';
@@ -24,14 +24,14 @@ export class SwitchStateSagas extends StatelessController {
     .withAddressableName('update-switch')
     .register(
       function* () {
-        const register = yield getRegisterFromSagaContext();
+        const store = yield getObjectiveStoreFromSagaContext();
         const testCanary = yield getContext('test');
         if (testCanary !== 'Some Value') {
           throw new Error('Original context is corrupt');
         }
         const switchStateController = yield getControllerFromSagaContext(SwitchStateController);
         yield switchStateController.toggleSwitchValue();
-        yield SwitchStateController.getInstance(register).incrementCount();
+        yield SwitchStateController.getInstance(store).incrementCount();
       }
     );
 }

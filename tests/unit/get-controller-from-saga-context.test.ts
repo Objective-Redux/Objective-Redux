@@ -9,16 +9,16 @@
 // ================================================================================================
 
 const registerStateController: any = jest.fn();
-const reduxRegisterMock: any = {
+const objectiveStoreMock: any = {
   registerStateController,
 };
 
-const getRegisterFromSagaContext = jest.fn();
-jest.mock('../../src/get-register-from-saga-context', () => ({
-  getRegisterFromSagaContext,
+const getObjectiveStoreFromSagaContext = jest.fn();
+jest.mock('../../src/get-objective-store-from-saga-context', () => ({
+  getObjectiveStoreFromSagaContext,
 }));
 
-const getController = jest.fn((register, CClass) => new CClass(register));
+const getController = jest.fn((store, CClass) => new CClass(store));
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getController,
@@ -28,8 +28,8 @@ jest.mock('../../src/lazy-loader', () => ({
 import { getControllerFromSagaContext, StateController } from '../../src';
 
 class TestStateController extends StateController<number> {
-  public constructor(register: any) {
-    super(42, register);
+  public constructor(objectiveStore: any) {
+    super(42, objectiveStore);
   }
 
   public static getName(): string {
@@ -38,14 +38,14 @@ class TestStateController extends StateController<number> {
 }
 
 describe('get-controller-from-saga-context', () => {
-  it('gets the controller from the store context when there is a register', () => {
+  it('gets the controller from the saga context when there is a store', () => {
     const generator = getControllerFromSagaContext(TestStateController);
     generator.next();
-    const resultingContext = generator.next(reduxRegisterMock).value;
+    const resultingContext = generator.next(objectiveStoreMock).value;
     expect(resultingContext).toBeInstanceOf(TestStateController);
   });
 
-  it('returns null when there is no register the store context', () => {
+  it('returns null when there is no store the saga context', () => {
     const generator = getControllerFromSagaContext(TestStateController);
     generator.next();
     const resultingContext = generator.next(null as any).value;

@@ -36,7 +36,7 @@ type Reducer<S, A> = (prevState: S, action: A) => S
  */
 export type PreDispatchHookFn = (action: AnyAction) => any;
 
-interface RegisterOptions {
+interface ObjectiveStoreOptions {
   /**
    * The initial reducer for the store.
    */
@@ -54,7 +54,7 @@ interface RegisterOptions {
    */
   sagaContext?: any;
   /**
-   * An injector object for adding reducers and sagas to the register.
+   * An injector object for adding reducers and sagas to the store.
    */
   injector?: ReducerInjector;
   /**
@@ -80,12 +80,12 @@ export interface SagaFn<Payload> {
 const defaultPreDispatchHook = (): any => null;
 
 /**
- * The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its
- * own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.
+ * The ObjectiveStore handles the connection of controllers, reducers, and sagas to Redux. Each ObjectiveStore has its
+ * own Redux store that it manages. The store will also setup the Redux-Saga middleware, if it finds the dependency.
  *
  * Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.
  */
-export class ReduxRegister {
+export class ObjectiveStore {
   private readonly store: Store;
 
   private readonly sagaMiddleware: any;
@@ -95,7 +95,7 @@ export class ReduxRegister {
   private readonly registeredReducers: any = {};
 
   /**
-   * Creates an instance of the ReduxRegister.
+   * Creates an instance of the ObjectiveStore.
    *
    * In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be
    * setup automatically as well.
@@ -107,15 +107,15 @@ export class ReduxRegister {
    * @param config.sagaContext The context to be used when creating the Saga middleware.
    * @param config.injector An instance of the ReducerInjector class.
    * @param config.preDispatchHook A function that takes an action and returns a promise.
-   * @returns An instance of the ReduxRegister.
+   * @returns An instance of the ObjectiveStore.
    * @example
    * ```typescript
    * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
-   * const register = new ReduxRegister();
+   * const store = new ObjectiveStore();
    * ```
    * @example
    * ```typescript
-   * import { ReducerInjector, ReduxRegister } from 'objective-redux';
+   * import { ReducerInjector, ObjectiveStore } from 'objective-redux';
    * import { createInjectorsEnhancer } from 'redux-injectors';
    * import { initialState, initialReducers } from './elsewhere';
    *
@@ -128,7 +128,7 @@ export class ReduxRegister {
    *   createInjectorsEnhancer({ createReducer, runSaga }),
    * ];
    *
-   * const register = new ReduxRegister({
+   * const store = new ObjectiveStore({
    *   reducer,
    *   initialState,
    *   middleware,
@@ -137,7 +137,7 @@ export class ReduxRegister {
    * ```
    */
   // eslint-disable-next-line max-statements
-  public constructor(config: RegisterOptions = {}) {
+  public constructor(config: ObjectiveStoreOptions = {}) {
     const {
       reducer = null,
       initialState = {},
@@ -147,7 +147,7 @@ export class ReduxRegister {
       preDispatchHook = defaultPreDispatchHook,
     } = config;
 
-    LazyLoader.addRegister(this, this.addControllerReducer.bind(this));
+    LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
 
     const reduxSaga = getReduxSagaModule();
     const internalMiddleware: any[] = [
@@ -160,11 +160,11 @@ export class ReduxRegister {
 
     /* istanbul ignore else */
     if (reduxSaga) {
-      const register = this;
+      const store = this;
       this.sagaMiddleware = reduxSaga.default({
         context: {
           ...sagaContext,
-          register,
+          store,
         },
       });
       internalMiddleware.push(this.sagaMiddleware);
@@ -188,7 +188,7 @@ export class ReduxRegister {
   }
 
   /**
-   * Monkey-patch the redux store so that the register can properly bind the store.
+   * Monkey-patch the redux store so that the objective store can properly bind the Redux store.
    *
    * @returns The original store methods.
    */
@@ -237,8 +237,8 @@ export class ReduxRegister {
    * @returns The action that was sent.
    * @example
    * ```typescript
-   * const register = new ReduxRegister();
-   * register.dispatch(myAction());
+   * const store = new ObjectiveStore();
+   * store.dispatch(myAction());
    * ```
    */
   public dispatch(action: AnyAction): AnyAction {
@@ -252,8 +252,8 @@ export class ReduxRegister {
    * @returns An unsubscribe function that can be called to stop listening.
    * @example
    * ```
-   * const register = new ReduxRegister();
-   * const unsubscribeFn = register.subscribe(myCallback);
+   * const store = new ObjectiveStore();
+   * const unsubscribeFn = store.subscribe(myCallback);
    * ```
    */
   public subscribe(listener: () => void): Unsubscribe {
@@ -266,8 +266,8 @@ export class ReduxRegister {
    * @returns The state object from Redux.
    * @example
    * ```
-   * const register = new ReduxRegister();
-   * const state = register.getState();
+   * const store = new ObjectiveStore();
+   * const state = store.getState();
    * ```
    */
   public getState(): any {
@@ -293,7 +293,7 @@ export class ReduxRegister {
    * Replaced the existing reducer with a new one.
    *
    * Note that, by design, this will not affect reducers generated by controllers. Controller reducers are
-   * handled separately, which allows other injection mechanisms to use the register without trampling
+   * handled separately, which allows other injection mechanisms to use the store without trampling
    * the registers own lazy loading.
    *
    * @param nextReducer The new reducer that will replace the existing reducer.
@@ -303,17 +303,17 @@ export class ReduxRegister {
   }
 
   /**
-   * Adds and and begins running a saga as part in the context of the store that the register manages.
+   * Adds and and begins running a saga as part in the context of the store that the store manages.
    *
-   * @param sagaFn The saga to add to the register.
+   * @param sagaFn The saga to add to the store.
    * @example
    * ```typescript
    * function* sagaFn() {
    *   yield console.log('Hello, world!');
    * }
    *
-   * const register = new ReduxRegister();
-   * register.registerSaga(sagaFn);
+   * const store = new ObjectiveStore();
+   * store.registerSaga(sagaFn);
    * ```
    */
   public registerSaga(sagaFn: SagaFn<void>): void {

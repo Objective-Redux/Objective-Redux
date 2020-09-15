@@ -16,8 +16,8 @@ const initialState = {
 };
 
 export class SwitchStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
   }
 
   static getName() {

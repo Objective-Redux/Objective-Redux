@@ -9,18 +9,18 @@
 // ================================================================================================
 
 import { LazyLoader } from './lazy-loader';
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 import { Action } from './action';
 
 // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
 /**
  * @internal
  */
-export function lazyLoadingMiddleware(register: ReduxRegister): any {
+export function lazyLoadingMiddleware(store: ObjectiveStore): any {
   return (): Function => (next: Function): Function => (action: Action<any>): any => {
     const controller = LazyLoader.getControllerForAction(action);
     if (controller) {
-      (controller as any).getInstance(register);
+      (controller as any).getInstance(store);
     }
     return next(action);
   };

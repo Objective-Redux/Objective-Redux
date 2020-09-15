@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import { Action } from './action';
-import { PreDispatchHookFn } from './redux-register';
+import { PreDispatchHookFn } from './objective-store';
 
 // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
 /**

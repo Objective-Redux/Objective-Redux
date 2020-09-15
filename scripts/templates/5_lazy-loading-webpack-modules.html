@@ -6,12 +6,12 @@
 
 <p>As a pre-requisite, you'll need to <a href="./code-splitting.html">code split</a> the controller(s) that will be bundled and targeted separately.</p>
 
-<p>To setup, we define a pre-dispatch hook and pass it to the ReduxRegister. This function takes an action as a parameter and can return either a promise (if the action should wait until the promise resolves to be fired) or null (if the action should be fired immediately).</p>
+<p>To setup, we define a pre-dispatch hook and pass it to the ObjectiveStore. This function takes an action as a parameter and can return either a promise (if the action should wait until the promise resolves to be fired) or null (if the action should be fired immediately).</p>
 
 <pre><code class="language-typescript">
   import React from 'react';
   import ReactDOM from 'react-dom';
-  import { RegisterProvider, ReduxRegister } from 'objective-redux';
+  import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
   import App from './app';
 
   // We create a pre-dispatch hook, which is function that returns a promise.
@@ -29,14 +29,14 @@
     return result;
   }
   
-  export const register = new ReduxRegister({
+  export const objectiveStore = new ObjectiveStore({
     preDispatchHook,
   });
   
   ReactDOM.render(
-    &lt;RegisterProvider register={register}&gt;
+    &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
       &lt;App /&gt;
-    &lt;/RegisterProvider&gt;,
+    &lt;/ObjectiveStoreProvider&gt;,
     document.getElementById('root')
   );
 </code></pre>
@@ -46,7 +46,7 @@
 <pre><code class="language-typescript">
   import React from 'react';
   import {
-    useRegister,
+    useObjectiveStore,
     createAction,
     getActionNameForController,
   } from 'objective-redux';
@@ -56,10 +56,10 @@
   );
 
   function ButtonComponent() {
-    const register = useRegister();
+    const objectiveStore = useObjectiveStore();
 
     const fireAction = () => {
-      register.dispatch(myAction());
+      objectiveStore.dispatch(myAction());
     }
   
     return (

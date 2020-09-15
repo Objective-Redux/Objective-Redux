@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ReduxRegister, SagaFn } from './redux-register';
+import { ObjectiveStore, SagaFn } from './objective-store';
 import { createConnectedAction, ActionFn } from './action';
 import { Controller } from './controller';
 import { EffectBuilder } from './effect-type';
@@ -23,7 +23,7 @@ interface SagaConfig {
 }
 
 /**
- * Builder that is returned by the [[StatelessController]] to create and register a saga.
+ * Builder that is returned by the [[StatelessController]] to create and store a saga.
  *
  * @template Payload The payload that the action and the saga will use.
  */
@@ -69,9 +69,9 @@ export class SagaBuilder<Payload> {
   }
 
   /**
-   * Completes the builder and adds the saga to the register.
+   * Completes the builder and adds the saga to the objectiveStore.
    *
-   * @param sagaFn The saga function to add to the ReduxRegister.
+   * @param sagaFn The saga function to add to the ObjectiveStore.
    * @returns An action for calling the saga.
    */
   public register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
@@ -84,7 +84,7 @@ export class SagaBuilder<Payload> {
 }
 
 /**
- * Create and manage sagas that are associated with a Redux store.
+ * Create and manage sagas that are associated with an objectiveStore.
  *
  * @example
  * ```typescript
@@ -104,24 +104,24 @@ export class SagaBuilder<Payload> {
  *    );
  * }
  *
- * const instance = SwitchStateSagas.getInstance(register);
+ * const instance = SwitchStateSagas.getInstance(objectiveStore);
  * instance.toggleSwitch();
  * ```
  */
 export abstract class StatelessController extends Controller {
   /**
-   * Registers and starts the sagas.
+   * ObjectiveStores and starts the sagas.
    *
    * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
    * have adverse affects on the application._.
    *
-   * @param register Rhe ReduxRegister instance to which the controller will be connected.
+   * @param objectiveStore The ObjectiveStore instance to which the controller will be connected.
    * @returns An instance of the StatelessController.
    */
   // eslint-disable-next-line no-useless-constructor
-  public constructor(register: ReduxRegister) {
-    super(register);
+  public constructor(objectiveStore: ObjectiveStore) {
+    super(objectiveStore);
   }
 
   /**
@@ -146,7 +146,7 @@ export abstract class StatelessController extends Controller {
       });
     }
 
-    this.register.registerSaga(sagaFn);
-    return createConnectedAction(name, this.register);
+    this.objectiveStore.registerSaga(sagaFn);
+    return createConnectedAction(name, this.objectiveStore);
   }
 }

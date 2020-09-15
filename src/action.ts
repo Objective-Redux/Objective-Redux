@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ReduxRegister } from './';
+import { ObjectiveStore } from './';
 
 /**
  * @internal
@@ -80,13 +80,13 @@ export function createAction<Payload>(type: string): (payload: Payload) => Actio
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
  * @param type The name of the action being sent.
- * @param register The ReduxRegister instance to which to connect.
+ * @param store The ObjectiveStore instance to which to connect.
  * @returns The action generating function.
  * @internal
  */
-export function createConnectedAction<Payload>(type: string, register: ReduxRegister):
+export function createConnectedAction<Payload>(type: string, store: ObjectiveStore):
   (payload: Payload) => Action<Payload> {
-  return (payload: Payload): Action<Payload> => register.dispatch({
+  return (payload: Payload): Action<Payload> => store.dispatch({
     type,
     payload,
   });

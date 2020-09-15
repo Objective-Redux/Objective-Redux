@@ -26,15 +26,15 @@ npm install --save redux redux-saga objective-redux
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import App from './app';
 
-export const register = new ReduxRegister();
+export const store = new ObjectiveStore();
 
 ReactDOM.render(
-  <RegisterProvider register={register}>
+  <ObjectiveStoreProvider objectiveStore={objectiveStore}>
     <App />
-  </RegisterProvider>,
+  </ObjectiveStoreProvider>,
   document.getElementById('root')
 );
 ```
@@ -46,8 +46,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 export class SwitchStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
   }
 
   static getName() {
@@ -60,7 +60,7 @@ export class SwitchStateController extends StateController {
 }
 ```
 ```javascript
-SwitchOneController.getInstance(register).setSwitch(true);
+SwitchOneController.getInstance(store).setSwitch(true);
 ```
 
 <br />
@@ -164,7 +164,7 @@ A slice of state never needs to know about what other slices are doing or how th
 ## Compatible with React-Redux
 
 ### Migrate over time
-You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ReduxRegister to the React-Redux provider and use it normally.
+You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.
 

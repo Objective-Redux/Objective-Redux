@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import { getReduxSagaEffects } from './get-redux-saga-module';
-import { SagaFn } from './redux-register';
+import { SagaFn } from './objective-store';
 
 export interface DebounceTakeConfig {
   /**

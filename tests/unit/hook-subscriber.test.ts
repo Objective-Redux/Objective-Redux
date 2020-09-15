@@ -11,21 +11,21 @@
 import { HookSubscriber } from '../../src/hook-subscriber';
 
 const subscribe = jest.fn(() => (): void => {});
-const mockRegister: any = {
+const mockObjectiveStore: any = {
   subscribe,
 };
 
 describe('HookSubscriber', () => {
   describe('subscribe', () => {
-    it('subscribes to the register', () => {
-      const subscriber = new HookSubscriber(mockRegister, () => {});
+    it('subscribes to the store', () => {
+      const subscriber = new HookSubscriber(mockObjectiveStore, () => {});
       subscriber.subscribe();
       subscriber.subscribe();
       subscriber.subscribe();
       expect(subscribe).toBeCalledTimes(1);
     });
 
-    it('does nothing when there is no register', () => {
+    it('does nothing when there is no store', () => {
       const subscriber = new HookSubscriber(null, () => {});
       expect(subscriber).toBeInstanceOf(HookSubscriber);
       expect(subscribe).toBeCalledTimes(0);

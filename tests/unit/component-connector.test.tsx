@@ -11,14 +11,14 @@
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
-import { RegisterProvider, ComponentConnector } from '../../src';
+import { ObjectiveStoreProvider, ComponentConnector } from '../../src';
 
 configure({ adapter: new Adapter() });
 
 const unsubscribe = jest.fn();
 const subscribe = jest.fn(() => unsubscribe);
 
-const registerMock: any = {
+const objectiveStoreMock: any = {
   subscribe,
 };
 
@@ -64,9 +64,9 @@ describe('component-connector', () => {
       .connect();
 
     const wrapper = mount(
-      <RegisterProvider register={registerMock}>
+      <ObjectiveStoreProvider objectiveStore={objectiveStoreMock}>
         <Connected />
-      </RegisterProvider>
+      </ObjectiveStoreProvider>
     );
 
     expect(wrapper.find('div')).toHaveLength(1);
@@ -74,7 +74,7 @@ describe('component-connector', () => {
     const connectedComponent = wrapper.find('ConnectedTest');
     expect(connectedComponent).toHaveLength(1);
     expect(connectedComponent.props()).toEqual({
-      register: registerMock,
+      store: objectiveStoreMock,
       a: 'A',
       b: 'B2',
       c: 'C1',
@@ -91,9 +91,9 @@ describe('component-connector', () => {
       .connect();
 
     const wrapper = mount(
-      <RegisterProvider register={registerMock}>
+      <ObjectiveStoreProvider objectiveStore={objectiveStoreMock}>
         <Connected />
-      </RegisterProvider>
+      </ObjectiveStoreProvider>
     );
 
     wrapper.unmount();

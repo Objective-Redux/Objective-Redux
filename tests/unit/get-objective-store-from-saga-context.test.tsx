@@ -16,11 +16,11 @@ jest.mock('redux-saga/effects', () => ({
   GetContextEffect: {},
 }));
 
-import { getRegisterFromSagaContext } from '../../src';
+import { getObjectiveStoreFromSagaContext } from '../../src';
 
-describe('get-register-from-saga-context', () => {
-  it('should get the register from the store context', () => {
-    const generator = getRegisterFromSagaContext();
+describe('get-objective-store-from-saga-context', () => {
+  it('should get the store from the store context', () => {
+    const generator = getObjectiveStoreFromSagaContext();
     const resultingContext = generator.next().value;
     expect(resultingContext).toEqual(context);
   });

@@ -10,8 +10,8 @@
 
 import * as React from 'react';
 import { Unsubscribe } from 'redux';
-import { RegisterProviderContext } from './context';
-import { StateController, ReduxRegister } from './';
+import { ObjectiveStoreProviderContext } from './context';
+import { StateController, ObjectiveStore } from './';
 
 /**
  * @internal
@@ -26,13 +26,13 @@ interface StateSelectorFn<T> {
 }
 
 /**
- * Builder that connections a React component to the Objective Redux register, allowing the component to use the states
+ * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the
+ * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
  * components closest provided ancestor. It also provides props from the states that were added.
  *
- * As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
+ * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *
  * @example
  * ```typescript
@@ -92,7 +92,7 @@ export class ComponentConnector {
     const { controllers } = this;
 
     const connected = class extends React.Component {
-      public static contextType = RegisterProviderContext;
+      public static contextType = ObjectiveStoreProviderContext;
 
       public unsubscribe: Unsubscribe|null = null;
 
@@ -116,10 +116,10 @@ export class ComponentConnector {
         }
 
         this.mounted = true;
-        const register: ReduxRegister = this.context;
+        const store: ObjectiveStore = this.context;
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
-          const slice = (controllers[i].controller as any).getInstance(register).getStateSlice();
+          const slice = (controllers[i].controller as any).getInstance(store).getStateSlice();
           state = {
             ...state,
             ...controllers[i].selector(slice),
@@ -129,14 +129,14 @@ export class ComponentConnector {
           <Component
             {...this.props}
             {...state}
-            {...{ register }}
+            {...{ store }}
           />
         );
       }
 
       public componentDidMount(): void {
-        const register: ReduxRegister = this.context;
-        this.unsubscribe = register.subscribe(this.handleChange.bind(this));
+        const store: ObjectiveStore = this.context;
+        this.unsubscribe = store.subscribe(this.handleChange.bind(this));
       }
 
       public componentWillUnmount(): void {

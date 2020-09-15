@@ -10,7 +10,7 @@
 
 import { AnyAction } from 'redux';
 import { Controller, ModelConstructor } from './controller';
-import { ReduxRegister } from '.';
+import { ObjectiveStore } from '.';
 
 /**
  * @internal
@@ -43,17 +43,18 @@ interface NamespacedControllerInstanceMap<T extends Controller> {
 /**
  * @interface
  */
-type RegisterToLoadedControllers<T extends Controller> = WeakMap<ReduxRegister, NamespacedControllerInstanceMap<T>>;
+type ObjectiveStoreToLoadedControllers<T extends Controller> =
+  WeakMap<ObjectiveStore, NamespacedControllerInstanceMap<T>>;
 
 /**
  * @internal
  */
-type ReduxRegisterFn = (controller: any) => void;
+type RegisterReducerFn = (controller: any) => void;
 
 /**
  * @internal
  */
-type RegisterReducerFnMap = WeakMap<ReduxRegister, ReduxRegisterFn>;
+type RegisterReducerFnMap = WeakMap<ObjectiveStore, RegisterReducerFn>;
 
 /**
  * @internal
@@ -63,7 +64,7 @@ export class LazyLoader {
 
   private static readonly reducerFns: RegisterReducerFnMap = new WeakMap();
 
-  private static readonly controllers: RegisterToLoadedControllers<any> = new WeakMap();
+  private static readonly controllers: ObjectiveStoreToLoadedControllers<any> = new WeakMap();
 
   public static registerController(controller: typeof Controller): void {
     const namespace = controller.getNamespace() || '';
@@ -86,19 +87,19 @@ export class LazyLoader {
     return controller;
   }
 
-  public static addRegister(register: ReduxRegister, registerReducerFn: ReduxRegisterFn): void {
-    this.reducerFns.set(register, registerReducerFn);
-    this.controllers.set(register, {});
+  public static addObjectiveStore(store: ObjectiveStore, registerReducerFn: RegisterReducerFn): void {
+    this.reducerFns.set(store, registerReducerFn);
+    this.controllers.set(store, {});
   }
 
   // eslint-disable-next-line max-statements
   public static getController<T extends Controller>(
-    register: ReduxRegister,
+    store: ObjectiveStore,
     ControllerClass: ModelConstructor<T> & typeof Controller
   ): T {
     const name = ControllerClass.getName();
     const namespace = ControllerClass.getNamespace() || '';
-    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(register) as any;
+    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(store) as any;
 
     if (controllerMap[namespace] == null) {
       controllerMap[namespace] = {};
@@ -110,11 +111,11 @@ export class LazyLoader {
       return existing;
     }
 
-    const instance: any = new ControllerClass(register);
+    const instance: any = new ControllerClass(store);
     controllerMap[namespace][name] = instance;
 
     if (instance.reducer) {
-      (this.reducerFns.get(register) as any)(instance);
+      (this.reducerFns.get(store) as any)(instance);
     }
 
     return instance;

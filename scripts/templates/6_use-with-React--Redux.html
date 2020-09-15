@@ -1,21 +1,21 @@
 <h1>Use with React-Redux</h1>
 
-<p>Objective-Redux is fully compatible with <a href="https://react-redux.js.org/">React-Redux</a>. Just instantiate the ReduxRegister and use it as the store for the React-Redux provider.</p>
+<p>Objective-Redux is fully compatible with <a href="https://react-redux.js.org/">React-Redux</a>. Just instantiate the ObjectiveStore and pass it as the store for the React-Redux provider.</p>
 
 <pre><code class="language-typescript">
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { RegisterProvider, ReduxRegister } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import { Provider } from 'react-redux';
 
-export const register = new ReduxRegister();
+export const objectiveStore = new ObjectiveStore();
 
 ReactDOM.render(
-  &lt;RegisterProvider register={register}&gt;
-    &lt;Provider store={register}&gt;
+  &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
+    &lt;Provider store={objectiveStore}&gt;
       // Your components here
     &lt;/Provider&gt;
-  &lt;/RegisterProvider&gt;,
+  &lt;/ObjectiveStoreProvider&gt;,
   document.getElementById('root')
 );  
 </code></pre>

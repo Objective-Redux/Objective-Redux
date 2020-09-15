@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 import {
   Action, createConnectedAction, ActionFn, ActionExtendFn,
 } from './action';
@@ -36,8 +36,8 @@ interface ReducerMap<State, Payload> {
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(register) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName() {
@@ -52,8 +52,8 @@ interface ReducerMap<State, Payload> {
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -64,8 +64,8 @@ interface ReducerMap<State, Payload> {
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(register: ReduxRegister) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore: ObjectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName(): string {
@@ -80,8 +80,8 @@ interface ReducerMap<State, Payload> {
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -105,11 +105,11 @@ export abstract class StateController<State> extends Controller {
    * have adverse affects on the application.
    *
    * @param initialState The initial value of the state slice in Redux.
-   * @param register The redux register instance to which the component is being connected.
-   * @returns The ReduxRegister instance to which the controller will be connected.
+   * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
+   * @returns An instance of the controller.
    */
-  protected constructor(initialState: State, register: ReduxRegister) {
-    super(register);
+  protected constructor(initialState: State, objectiveStore: ObjectiveStore) {
+    super(objectiveStore);
     this.initialState = initialState;
     this.reducerMap = {};
   }
@@ -186,7 +186,7 @@ export abstract class StateController<State> extends Controller {
     const actionName = this.createActionName();
     this.reducerMap[actionName] = fn;
 
-    const actionFn: any = createConnectedAction<Payload>(actionName, this.register);
+    const actionFn: any = createConnectedAction<Payload>(actionName, this.objectiveStore);
 
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
@@ -199,7 +199,7 @@ export abstract class StateController<State> extends Controller {
       this.reducerMap[actionName] = null;
       const addressableActionName = this.createActionName(name);
       this.reducerMap[addressableActionName] = fn;
-      return createConnectedAction<Payload>(addressableActionName, this.register);
+      return createConnectedAction<Payload>(addressableActionName, this.objectiveStore);
     };
 
     return actionFn;
@@ -228,7 +228,7 @@ export abstract class StateController<State> extends Controller {
    * @returns The current slice of the state related to this controller.
    */
   public getStateSlice(): State {
-    let state = this.register.getState();
+    let state = this.objectiveStore.getState();
     const namespace = (this.constructor as any).getNamespace();
     state = namespace ? state[namespace] : state;
     return state[(this.constructor as any).getStoreName()];

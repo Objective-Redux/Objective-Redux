@@ -11,22 +11,22 @@
 import * as React from 'react';
 import { configure, shallow } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
-import { RegisterProvider } from '../../src';
+import { ObjectiveStoreProvider } from '../../src';
 
 configure({ adapter: new Adapter() });
 
-describe('register-provider', () => {
+describe('objective-store-provider', () => {
   describe('create provider', () => {
     it('should render a provider and children components', () => {
       const child = <div />;
-      const register: any = {};
+      const objectiveStore: any = {};
       const wrapper = shallow(
-        <RegisterProvider register={register}>
+        <ObjectiveStoreProvider objectiveStore={objectiveStore}>
           {child}
-        </RegisterProvider>
+        </ObjectiveStoreProvider>
       );
       expect(wrapper.find('div')).toHaveLength(1);
-      expect(wrapper.prop('value')).toBe(register);
+      expect(wrapper.prop('value')).toBe(objectiveStore);
     });
   });
 });

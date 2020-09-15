@@ -76,18 +76,18 @@ describe('LazyLoader', () => {
         }
       }
 
-      const mockRegister: any = {};
+      const mockObjectiveStore: any = {};
       const registerReducerFn = jest.fn();
 
-      LazyLoader.addRegister(mockRegister, registerReducerFn);
+      LazyLoader.addObjectiveStore(mockObjectiveStore, registerReducerFn);
 
-      const instanceOneA = LazyLoader.getController(mockRegister, TestControllerOne as any);
-      const instanceOneB = LazyLoader.getController(mockRegister, TestControllerOne as any);
+      const instanceOneA = LazyLoader.getController(mockObjectiveStore, TestControllerOne as any);
+      const instanceOneB = LazyLoader.getController(mockObjectiveStore, TestControllerOne as any);
       expect(instanceOneA).toBeInstanceOf(TestControllerOne);
       expect(instanceOneB).toBe(instanceOneA);
 
-      const instanceTwoA = LazyLoader.getController(mockRegister, TestControllerTwo as any);
-      const instanceTwoB = LazyLoader.getController(mockRegister, TestControllerTwo as any);
+      const instanceTwoA = LazyLoader.getController(mockObjectiveStore, TestControllerTwo as any);
+      const instanceTwoB = LazyLoader.getController(mockObjectiveStore, TestControllerTwo as any);
       expect(instanceTwoA).toBeInstanceOf(TestControllerTwo);
       expect(instanceTwoB).toBe(instanceTwoA);
 

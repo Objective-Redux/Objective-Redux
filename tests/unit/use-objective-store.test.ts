@@ -34,14 +34,14 @@ jest.mock('../../src/hook-subscriber', () => ({
   })),
 }));
 
-import { useRegister } from '../../src';
+import { useObjectiveStore } from '../../src';
 import { HookSubscriber } from '../../src/hook-subscriber';
 
-describe('use-register', () => {
+describe('use-objective-store', () => {
   describe('hook', () => {
-    it('should get the register and re-render', () => {
-      const register = useRegister();
-      expect(register).toBe(registerMock);
+    it('should get the store and re-render', () => {
+      const store = useObjectiveStore();
+      expect(store).toBe(registerMock);
 
       const { mock: { calls: [[reducingFn]] } } = useReducer as any;
       const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;

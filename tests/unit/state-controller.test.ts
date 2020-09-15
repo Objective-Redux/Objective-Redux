@@ -9,7 +9,7 @@
 // ================================================================================================
 
 const dispatch = jest.fn();
-const reduxRegisterMock: any = {
+const objectiveStoreMock: any = {
   dispatch,
   getState: (): any => ({
     TestSlice: true,
@@ -20,7 +20,7 @@ const reduxRegisterMock: any = {
 };
 
 const registerController = jest.fn();
-const getController = jest.fn((register, CClass) => new CClass(register));
+const getController = jest.fn((store, CClass) => new CClass(store));
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
@@ -32,8 +32,8 @@ jest.mock('../../src/lazy-loader', () => ({
 import { StateController } from '../../src';
 
 class TestController extends StateController<boolean> {
-  public constructor(register: any) {
-    super(false, register);
+  public constructor(store: any) {
+    super(false, store);
   }
 
   public static getName(): string {
@@ -59,8 +59,8 @@ class NamespacedTestController extends TestController {
 
 describe('state-controller', () => {
   describe('constructor', () => {
-    it('should register the reducer', () => {
-      const instance = new TestController(reduxRegisterMock);
+    it('should store the reducer', () => {
+      const instance = new TestController(objectiveStoreMock);
       expect(instance).toBeInstanceOf(TestController);
     });
   });
@@ -78,15 +78,15 @@ describe('state-controller', () => {
   });
 
   describe('getInstance', () => {
-    it('should create one instance for each register', () => {
-      const instance = TestController.getInstance(reduxRegisterMock);
+    it('should create one instance for each store', () => {
+      const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);
       expect(instance).toBeInstanceOf(TestController);
     });
   });
 
   describe('registerAction', () => {
-    const instance = NamespacedTestController.getInstance(reduxRegisterMock);
+    const instance = NamespacedTestController.getInstance(objectiveStoreMock);
     instance.unnamedAction(true);
     expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/0', payload: true });
 
@@ -99,14 +99,14 @@ describe('state-controller', () => {
 
   describe('reducer', () => {
     it('should return initial state', () => {
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const instance = TestController.getInstance(objectiveStoreMock);
       const reduced = instance.reducerHandle();
       instance.reducerHandle();
       expect(reduced).toEqual(false);
     });
 
     it('should call unnamed mutation', () => {
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const instance = TestController.getInstance(objectiveStoreMock);
       instance.unnamedAction(true);
       const { mock: { calls: [[action]] } } = dispatch;
       const reduced = instance.reducerHandle(false, action);
@@ -114,7 +114,7 @@ describe('state-controller', () => {
     });
 
     it('should call named mutation', () => {
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const instance = TestController.getInstance(objectiveStoreMock);
       const reduced = instance.reducerHandle(
         false,
         { type: 'OBJECTIVE-REDUX-ACTION/::TestSlice/NAME', payload: true }
@@ -125,20 +125,20 @@ describe('state-controller', () => {
 
   describe('getStateSlice', () => {
     it('returns the state slice with no namespace', () => {
-      const instance = TestController.getInstance(reduxRegisterMock);
+      const instance = TestController.getInstance(objectiveStoreMock);
       const slice = instance.getStateSlice();
       expect(slice).toEqual(true);
     });
 
     it('returns the state slice with a namespace', () => {
-      const instance = NamespacedTestController.getInstance(reduxRegisterMock);
+      const instance = NamespacedTestController.getInstance(objectiveStoreMock);
       const slice = instance.getStateSlice();
       expect(slice).toEqual(false);
     });
   });
 
   describe('initializeOnExternalAction', () => {
-    it('should register the controller for lazy-loading', () => {
+    it('should store the controller for lazy-loading', () => {
       TestController.initializeOnExternalAction();
       expect(registerController).toHaveBeenCalledWith(TestController);
     });
