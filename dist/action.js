@@ -59,12 +59,12 @@ exports.createAction = createAction;
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
  * @param type The name of the action being sent.
- * @param register The ReduxRegister instance to which to connect.
+ * @param store The ObjectiveStore instance to which to connect.
  * @returns The action generating function.
  * @internal
  */
-function createConnectedAction(type, register) {
-    return function (payload) { return register.dispatch({
+function createConnectedAction(type, store) {
+    return function (payload) { return store.dispatch({
         type: type,
         payload: payload,
     }); };

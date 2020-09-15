@@ -1,4 +1,4 @@
-import { ReduxRegister } from './';
+import { ObjectiveStore } from './';
 /**
  * @internal
  */
@@ -56,9 +56,9 @@ export declare function createAction<Payload>(type: string): (payload: Payload) 
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
  * @param type The name of the action being sent.
- * @param register The ReduxRegister instance to which to connect.
+ * @param store The ObjectiveStore instance to which to connect.
  * @returns The action generating function.
  * @internal
  */
-export declare function createConnectedAction<Payload>(type: string, register: ReduxRegister): (payload: Payload) => Action<Payload>;
+export declare function createConnectedAction<Payload>(type: string, store: ObjectiveStore): (payload: Payload) => Action<Payload>;
 //# sourceMappingURL=action.d.ts.map

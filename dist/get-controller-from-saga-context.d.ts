@@ -5,8 +5,8 @@ import { Controller, ModelConstructor } from './controller';
  * @template C The type of controller that will be returned. This type is inferred and does not need to be specified in
  * TypeScript.
  * @param controller The controller class of which an instance should be retrieved.
- * @returns A generator that yields an instance of the provided controller or null if there is no register in the saga's
- * context.
+ * @returns A generator that yields an instance of the provided controller or null if there is no ObjectiveStore
+ * instance in the saga's context.
  *
  * @example
  * ```typescript

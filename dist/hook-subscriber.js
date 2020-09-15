@@ -14,14 +14,14 @@ exports.HookSubscriber = void 0;
  * @internal
  */
 var HookSubscriber = /** @class */ (function () {
-    function HookSubscriber(register, updateFn) {
-        this.register = register;
+    function HookSubscriber(store, updateFn) {
+        this.store = store;
         this.updateFn = updateFn;
         this.unsubscribeFn = null;
     }
     HookSubscriber.prototype.subscribe = function () {
-        if (!this.unsubscribeFn && this.register) {
-            this.unsubscribeFn = this.register.subscribe(this.updateFn);
+        if (!this.unsubscribeFn && this.store) {
+            this.unsubscribeFn = this.store.subscribe(this.updateFn);
         }
     };
     HookSubscriber.prototype.unsubscribe = function () {

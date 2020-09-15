@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ReduxRegister } from './';
+import { ObjectiveStore } from './';
 /**
  * @internal
  */
-export declare const RegisterProviderContext: React.Context<ReduxRegister | null>;
+export declare const ObjectiveStoreProviderContext: React.Context<ObjectiveStore | null>;
 //# sourceMappingURL=context.d.ts.map

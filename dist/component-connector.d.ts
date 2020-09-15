@@ -13,13 +13,13 @@ interface StateSelectorFn<T> {
     (state: T): any;
 }
 /**
- * Builder that connections a React component to the Objective Redux register, allowing the component to use the states
+ * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the
+ * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
  * components closest provided ancestor. It also provides props from the states that were added.
  *
- * As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
+ * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *
  * @example
  * ```typescript

@@ -33,8 +33,8 @@ var controller_1 = require("./controller");
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(register) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName() {
@@ -49,8 +49,8 @@ var controller_1 = require("./controller");
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -61,8 +61,8 @@ var controller_1 = require("./controller");
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(register: ReduxRegister) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore: ObjectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName(): string {
@@ -77,8 +77,8 @@ var controller_1 = require("./controller");
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -93,11 +93,11 @@ var StateController = /** @class */ (function (_super) {
      * have adverse affects on the application.
      *
      * @param initialState The initial value of the state slice in Redux.
-     * @param register The redux register instance to which the component is being connected.
-     * @returns The ReduxRegister instance to which the controller will be connected.
+     * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
+     * @returns An instance of the controller.
      */
-    function StateController(initialState, register) {
-        var _this = _super.call(this, register) || this;
+    function StateController(initialState, objectiveStore) {
+        var _this = _super.call(this, objectiveStore) || this;
         _this.initialState = initialState;
         _this.reducerMap = {};
         return _this;
@@ -173,7 +173,7 @@ var StateController = /** @class */ (function (_super) {
         var _this = this;
         var actionName = this.createActionName();
         this.reducerMap[actionName] = fn;
-        var actionFn = action_1.createConnectedAction(actionName, this.register);
+        var actionFn = action_1.createConnectedAction(actionName, this.objectiveStore);
         /**
          * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
          * this builder.
@@ -185,7 +185,7 @@ var StateController = /** @class */ (function (_super) {
             _this.reducerMap[actionName] = null;
             var addressableActionName = _this.createActionName(name);
             _this.reducerMap[addressableActionName] = fn;
-            return action_1.createConnectedAction(addressableActionName, _this.register);
+            return action_1.createConnectedAction(addressableActionName, _this.objectiveStore);
         };
         return actionFn;
     };
@@ -211,7 +211,7 @@ var StateController = /** @class */ (function (_super) {
      * @returns The current slice of the state related to this controller.
      */
     StateController.prototype.getStateSlice = function () {
-        var state = this.register.getState();
+        var state = this.objectiveStore.getState();
         var namespace = this.constructor.getNamespace();
         state = namespace ? state[namespace] : state;
         return state[this.constructor.getStoreName()];

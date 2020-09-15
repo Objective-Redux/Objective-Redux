@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useController = void 0;
 var _1 = require("./");
 /**
- * Gets a controller from the ReduxRegister using hook.
+ * Gets a controller from the ObjectiveStore using hook.
  *
  * @template C The type of controller that will be returned. This type is inferred and does not need to be specified in
  * TypeScript.
  * @param controller The controller class of which an instance should be retrieved.
- * @returns An instance of the provided controller or null if there is no register in the components context.
+ * @returns An instance of the provided controller or null if there is no store in the components context.
  *
  * @example
  * ```typescript
@@ -34,9 +34,9 @@ var _1 = require("./");
  * ```
  */
 exports.useController = function (controller) {
-    var register = _1.useRegister();
-    if (!register) {
+    var objectiveStore = _1.useObjectiveStore();
+    if (!objectiveStore) {
         return null;
     }
-    return controller.getInstance(register);
+    return controller.getInstance(objectiveStore);
 };

@@ -15,11 +15,11 @@ var lazy_loader_1 = require("./lazy-loader");
 /**
  * @internal
  */
-function lazyLoadingMiddleware(register) {
+function lazyLoadingMiddleware(store) {
     return function () { return function (next) { return function (action) {
         var controller = lazy_loader_1.LazyLoader.getControllerForAction(action);
         if (controller) {
-            controller.getInstance(register);
+            controller.getInstance(store);
         }
         return next(action);
     }; }; };

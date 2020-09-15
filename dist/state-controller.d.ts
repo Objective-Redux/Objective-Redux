@@ -1,4 +1,4 @@
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 import { Action, ActionExtendFn } from './action';
 import { Controller } from './controller';
 /**
@@ -21,8 +21,8 @@ interface ReducerMap<State, Payload> {
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(register) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName() {
@@ -37,8 +37,8 @@ interface ReducerMap<State, Payload> {
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -49,8 +49,8 @@ interface ReducerMap<State, Payload> {
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(register: ReduxRegister) {
- *     super({ isOn: false }, register);
+ *   constructor(objectiveStore: ObjectiveStore) {
+ *     super({ isOn: false }, objectiveStore);
  *   }
  *
  *   public static getName(): string {
@@ -65,8 +65,8 @@ interface ReducerMap<State, Payload> {
  *   ).withAddressableName('MY_ACTION');
  * }
  *
- * const register = new ReduxRegister();
- * const controller = SwitchStateController.getInstance(register);
+ * const objectiveStore = new ObjectiveStore();
+ * const controller = SwitchStateController.getInstance(objectiveStore);
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
@@ -88,10 +88,10 @@ export declare abstract class StateController<State> extends Controller {
      * have adverse affects on the application.
      *
      * @param initialState The initial value of the state slice in Redux.
-     * @param register The redux register instance to which the component is being connected.
-     * @returns The ReduxRegister instance to which the controller will be connected.
+     * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
+     * @returns An instance of the controller.
      */
-    protected constructor(initialState: State, register: ReduxRegister);
+    protected constructor(initialState: State, objectiveStore: ObjectiveStore);
     /**
      * Specified the name of the reducer/slice in the Redux store. Defaults to the value of getName.
      *

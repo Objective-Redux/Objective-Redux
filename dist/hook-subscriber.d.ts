@@ -1,13 +1,13 @@
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 declare type UpdateFn = (() => void);
 /**
  * @internal
  */
 export declare class HookSubscriber {
-    private readonly register;
+    private readonly store;
     private readonly updateFn;
     private unsubscribeFn;
-    constructor(register: ReduxRegister | null, updateFn: UpdateFn);
+    constructor(store: ObjectiveStore | null, updateFn: UpdateFn);
     subscribe(): void;
     unsubscribe(): void;
 }

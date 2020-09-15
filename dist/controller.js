@@ -16,9 +16,9 @@ var _1 = require("./");
  * @internal
  */
 var Controller = /** @class */ (function () {
-    function Controller(register) {
+    function Controller(objectiveStore) {
         this.count = 0;
-        this.register = register;
+        this.objectiveStore = objectiveStore;
     }
     /**
      * Gets the unique name of the controller. By default, the name of the class.
@@ -108,16 +108,16 @@ var Controller = /** @class */ (function () {
      *
      * @template T the controller type. Will be inferred from the class instance and does not need to be provided.
      * @param this Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.
-     * @param register An instance of the ReduxRegister from which to get the controller.
+     * @param objectiveStore An instance of the ObjectiveStore from which to get the controller.
      * @returns An instance of the controller.
      *
      * @example
      * ```typescript
-     * const instance = MyController.getInstance(register);
+     * const instance = MyController.getInstance(objectiveStore);
      * ```
      */
-    Controller.getInstance = function (register) {
-        return lazy_loader_1.LazyLoader.getController(register, this);
+    Controller.getInstance = function (objectiveStore) {
+        return lazy_loader_1.LazyLoader.getController(objectiveStore, this);
     };
     /**
      * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
@@ -150,7 +150,7 @@ var Controller = /** @class */ (function () {
      *
      * // By firing this action, the controller will now be instantiated (if it hasn't been).
      * const myAction = createAction(getActionNameForController('MY_CONTROLLER', 'MY_ACTION'));
-     * register.dispatch(myAction);
+     * objectiveStore.dispatch(myAction);
      * ```
      */
     Controller.initializeOnExternalAction = function () {

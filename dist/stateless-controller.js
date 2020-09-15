@@ -26,7 +26,7 @@ exports.StatelessController = exports.SagaBuilder = void 0;
 var action_1 = require("./action");
 var controller_1 = require("./controller");
 /**
- * Builder that is returned by the [[StatelessController]] to create and register a saga.
+ * Builder that is returned by the [[StatelessController]] to create and store a saga.
  *
  * @template Payload The payload that the action and the saga will use.
  */
@@ -63,9 +63,9 @@ var SagaBuilder = /** @class */ (function () {
         return this;
     };
     /**
-     * Completes the builder and adds the saga to the register.
+     * Completes the builder and adds the saga to the objectiveStore.
      *
-     * @param sagaFn The saga function to add to the ReduxRegister.
+     * @param sagaFn The saga function to add to the ObjectiveStore.
      * @returns An action for calling the saga.
      */
     SagaBuilder.prototype.register = function (sagaFn) {
@@ -79,7 +79,7 @@ var SagaBuilder = /** @class */ (function () {
 }());
 exports.SagaBuilder = SagaBuilder;
 /**
- * Create and manage sagas that are associated with a Redux store.
+ * Create and manage sagas that are associated with an objectiveStore.
  *
  * @example
  * ```typescript
@@ -99,25 +99,25 @@ exports.SagaBuilder = SagaBuilder;
  *    );
  * }
  *
- * const instance = SwitchStateSagas.getInstance(register);
+ * const instance = SwitchStateSagas.getInstance(objectiveStore);
  * instance.toggleSwitch();
  * ```
  */
 var StatelessController = /** @class */ (function (_super) {
     __extends(StatelessController, _super);
     /**
-     * Registers and starts the sagas.
+     * ObjectiveStores and starts the sagas.
      *
      * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
      * have adverse affects on the application._.
      *
-     * @param register Rhe ReduxRegister instance to which the controller will be connected.
+     * @param objectiveStore The ObjectiveStore instance to which the controller will be connected.
      * @returns An instance of the StatelessController.
      */
     // eslint-disable-next-line no-useless-constructor
-    function StatelessController(register) {
-        return _super.call(this, register) || this;
+    function StatelessController(objectiveStore) {
+        return _super.call(this, objectiveStore) || this;
     }
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
@@ -137,8 +137,8 @@ var StatelessController = /** @class */ (function (_super) {
                 sagaFn: sagaFn,
             });
         }
-        this.register.registerSaga(sagaFn);
-        return action_1.createConnectedAction(name, this.register);
+        this.objectiveStore.registerSaga(sagaFn);
+        return action_1.createConnectedAction(name, this.objectiveStore);
     };
     return StatelessController;
 }(controller_1.Controller));

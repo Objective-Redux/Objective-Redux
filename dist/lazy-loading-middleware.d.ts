@@ -1,6 +1,6 @@
-import { ReduxRegister } from './redux-register';
+import { ObjectiveStore } from './objective-store';
 /**
  * @internal
  */
-export declare function lazyLoadingMiddleware(register: ReduxRegister): any;
+export declare function lazyLoadingMiddleware(store: ObjectiveStore): any;
 //# sourceMappingURL=lazy-loading-middleware.d.ts.map

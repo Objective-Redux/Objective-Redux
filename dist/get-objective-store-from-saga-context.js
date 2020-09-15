@@ -36,42 +36,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getControllerFromSagaContext = void 0;
-var get_objective_store_from_saga_context_1 = require("./get-objective-store-from-saga-context");
+exports.getObjectiveStoreFromSagaContext = void 0;
+var get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
- * Gets a controller instance from the saga context.
+ * Gets the store from the saga's context.
  *
- * @template C The type of controller that will be returned. This type is inferred and does not need to be specified in
- * TypeScript.
- * @param controller The controller class of which an instance should be retrieved.
- * @returns A generator that yields an instance of the provided controller or null if there is no ObjectiveStore
- * instance in the saga's context.
- *
+ * @returns A generator that yields an instance of the ObjectiveStore.
  * @example
  * ```typescript
- * // Also works with a StateController
- * class MyController extends StatelessController {
- *   // ...
- * }
- *
- * function* foo(): any {
- *   const myController = yield getControllerFromSagaContext(MyController);
+ * function* () {
+ *   const store = yield getObjectiveStoreFromSagaContext();
  * }
  * ```
  */
-function getControllerFromSagaContext(controller) {
-    var store;
+function getObjectiveStoreFromSagaContext() {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, get_objective_store_from_saga_context_1.getObjectiveStoreFromSagaContext()];
-            case 1:
-                store = _a.sent();
-                if (!store) {
-                    return [2 /*return*/, null];
-                }
-                return [4 /*yield*/, controller.getInstance(store)];
-            case 2: return [2 /*return*/, _a.sent()];
+            case 0: return [4 /*yield*/, get_redux_saga_module_1.getReduxSagaEffects().getContext('store')];
+            case 1: return [2 /*return*/, _a.sent()];
         }
     });
 }
-exports.getControllerFromSagaContext = getControllerFromSagaContext;
+exports.getObjectiveStoreFromSagaContext = getObjectiveStoreFromSagaContext;

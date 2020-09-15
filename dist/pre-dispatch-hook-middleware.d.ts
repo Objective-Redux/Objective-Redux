@@ -1,4 +1,4 @@
-import { PreDispatchHookFn } from './redux-register';
+import { PreDispatchHookFn } from './objective-store';
 /**
  * @internal
  */

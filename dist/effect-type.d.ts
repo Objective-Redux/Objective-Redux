@@ -1,4 +1,4 @@
-import { SagaFn } from './redux-register';
+import { SagaFn } from './objective-store';
 export interface DebounceTakeConfig {
     /**
      * The time debounce time in milliseconds.

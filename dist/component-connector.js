@@ -37,13 +37,13 @@ exports.ComponentConnector = void 0;
 var React = require("react");
 var context_1 = require("./context");
 /**
- * Builder that connections a React component to the Objective Redux register, allowing the component to use the states
+ * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `register` prop, which is an instance of the ReduxRegister connected to the
+ * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
  * components closest provided ancestor. It also provides props from the states that were added.
  *
- * As an alternative for functional components, the useRegister hook can be used to get the ReduxRegister.
+ * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *
  * @example
  * ```typescript
@@ -110,17 +110,17 @@ var ComponentConnector = /** @class */ (function () {
                         return null;
                     }
                     this.mounted = true;
-                    var register = this.context;
+                    var store = this.context;
                     var state = {};
                     for (var i = 0; i < controllers.length; i++) {
-                        var slice = controllers[i].controller.getInstance(register).getStateSlice();
+                        var slice = controllers[i].controller.getInstance(store).getStateSlice();
                         state = __assign(__assign({}, state), controllers[i].selector(slice));
                     }
-                    return (React.createElement(Component, __assign({}, this.props, state, { register: register })));
+                    return (React.createElement(Component, __assign({}, this.props, state, { store: store })));
                 };
                 class_1.prototype.componentDidMount = function () {
-                    var register = this.context;
-                    this.unsubscribe = register.subscribe(this.handleChange.bind(this));
+                    var store = this.context;
+                    this.unsubscribe = store.subscribe(this.handleChange.bind(this));
                 };
                 class_1.prototype.componentWillUnmount = function () {
                     if (this.unsubscribe) {
@@ -135,7 +135,7 @@ var ComponentConnector = /** @class */ (function () {
                 };
                 return class_1;
             }(React.Component)),
-            _a.contextType = context_1.RegisterProviderContext,
+            _a.contextType = context_1.ObjectiveStoreProviderContext,
             _a.displayName = 'ComponentConnector',
             _a);
         return connected;

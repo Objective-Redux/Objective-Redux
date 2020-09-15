@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterProviderContext = void 0;
+exports.ObjectiveStoreProviderContext = void 0;
 // ================================================================================================
 //                                          OBJECTIVE REDUX
 //                                  Redux made better, objectively.
@@ -14,4 +14,4 @@ var React = require("react");
 /**
  * @internal
  */
-exports.RegisterProviderContext = React.createContext(null);
+exports.ObjectiveStoreProviderContext = React.createContext(null);
