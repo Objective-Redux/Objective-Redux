@@ -8,9 +8,9 @@
 
 <h3>Required Implementations</h3>
 
-<p>A StateController instance needs two things: (1) a construction that takes a store and calls super with the initial state and store; and (2) a static getName method that returns the string name of the state slice.</p>
+<p>A StateController instance needs two things: (1) a construction that takes an instance of an ObjectiveStore and calls super with the initial state and ObjectiveStore instance; and (2) a static getName method that returns the string name of the state slice.</p>
 
-<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
+<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers.<sup>1</sup> This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -126,3 +126,7 @@ export default ComponentConnector
     );
   }
 </code></pre>
+
+<h2>Notes</h2>
+
+<p><sup>1</sup> Optionally, namespaces can be used to help with scoping controllers and Redux store slices. See the <a href="./statecontroller.html">StateController API documentation</a> for more.</p>

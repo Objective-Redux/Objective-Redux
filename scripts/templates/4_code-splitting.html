@@ -26,7 +26,7 @@ class MyControllerClass extends StatelessController {
 }
 </code></pre>
 
-<p>You may also want to allow your controller to be initialized when a non-Objective-Redux action is performed. This ensures that, if an action targeting your controller is fired before you've used the controller, Objective-Redux can find the controller to handle the event.</p>
+<p>You may also want to allow your controller to be initialized when a non-Objective-Redux action is performed. This ensures that, if an action targeting your controller is fired before you've used the getInstance method for that controller in your application, Objective-Redux can find the controller to handle the event.</p>
 
 <pre><code class="language-typescript">
 MyControllerClass.initializeOnExternalAction();
@@ -38,5 +38,8 @@ MyControllerClass.initializeOnExternalAction();
 const myAction = createAction(
   getActionNameForController('My-Controller', 'SET_SWITCH_STATE')
 );
-store.dispatch(myAction(isOn));
+// The ObjectiveStore instance will see that the action targets MyControllerClass. It will
+// call MyControllerClass.getInstance(objectiveStore) for you to initialize the controller
+// prior to the action being fired.
+objectiveStore.dispatch(myAction(isOn));
 </code></pre>

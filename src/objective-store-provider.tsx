@@ -13,7 +13,7 @@ import { ObjectiveStoreProviderContext } from './context';
 import { ObjectiveStore } from '.';
 
 /**
- * Provides a ObjectiveStore to child React components.
+ * Provides an ObjectiveStore to child React components.
  *
  * @param object The properties being passed to the component.
  * @param object.children The child components of the provider.

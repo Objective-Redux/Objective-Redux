@@ -34,7 +34,7 @@
   });
   
   ReactDOM.render(
-    &lt;ObjectiveStoreProvider objectiveStore={store}&gt;
+    &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
       &lt;App /&gt;
     &lt;/ObjectiveStoreProvider&gt;,
     document.getElementById('root')
@@ -56,10 +56,10 @@
   );
 
   function ButtonComponent() {
-    const store = useObjectiveStore();
+    const objectiveStore = useObjectiveStore();
 
     const fireAction = () => {
-      store.dispatch(myAction());
+      objectiveStore.dispatch(myAction());
     }
   
     return (
