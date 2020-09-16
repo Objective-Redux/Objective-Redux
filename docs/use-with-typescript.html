@@ -82,10 +82,10 @@ class ThemeStateController extends StateController&lt;ThemeState&gt; {
 </code></pre>
 
 <pre><code class="language-typescript">
-ThemeStateController.getInstance(store).setTheme();       // error
-ThemeStateController.getInstance(store).setTheme(10);     // error
-ThemeStateController.getInstance(store).setTheme({});     // error
-ThemeStateController.getInstance(store).setTheme('dark'); // works
+ThemeStateController.getInstance(objectiveStore).setTheme();       // error
+ThemeStateController.getInstance(objectiveStore).setTheme(10);     // error
+ThemeStateController.getInstance(objectiveStore).setTheme({});     // error
+ThemeStateController.getInstance(objectiveStore).setTheme('dark'); // works
 </code></pre>
 
 <p>You can also set the action template type to &lt;void&gt; to indicate that no parameter should be taken by the action.</void>
@@ -117,7 +117,7 @@ this.registerAction&lt;void&gt;(a => a) // Good
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.17.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

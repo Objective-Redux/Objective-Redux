@@ -85,7 +85,7 @@ import ReactDOM from &#39;react-dom&#39;;
 import { ObjectiveStoreProvider, ObjectiveStore } from &#39;objective-redux&#39;;
 import App from &#39;./app&#39;;
 
-export const store = new ObjectiveStore();
+export const objectiveStore = new ObjectiveStore();
 
 ReactDOM.render(
   &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
@@ -99,8 +99,8 @@ ReactDOM.render(
 const initialState = { isOn: false };
 
 export class SwitchStateController extends StateController {
-  constructor(store) {
-    super(initialState, store);
+  constructor(objectiveStore) {
+    super(initialState, objectiveStore);
   }
 
   static getName() {
@@ -111,7 +111,7 @@ export class SwitchStateController extends StateController {
     (state, isOn) =&gt; ({ isOn })
   );
 }</code></pre>
-<pre><code class="language-javascript">SwitchOneController.getInstance(store).setSwitch(true);</code></pre>
+<pre><code class="language-javascript">SwitchOneController.getInstance(objectiveStore).setSwitch(true);</code></pre>
 <br />
 
 <br />
@@ -181,7 +181,7 @@ export class SwitchStateController extends StateController {
 
 <h2 id="compatible-with-react-redux">Compatible with React-Redux</h2>
 <h3 id="migrate-over-time">Migrate over time</h3>
-<p>You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated store object and can be used to <code>dispatch</code>, <code>subscribe</code>, <code>getState</code>, and even <code>replaceReducer</code>. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.</p>
+<p>You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated Redux store object and can be used to <code>dispatch</code>, <code>subscribe</code>, <code>getState</code>, and even <code>replaceReducer</code>. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.</p>
 <p>See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.</p>
 <br />
 
@@ -195,7 +195,7 @@ export class SwitchStateController extends StateController {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.17.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
