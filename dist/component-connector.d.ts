@@ -16,8 +16,8 @@ interface StateSelectorFn<T> {
  * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
- * components closest provided ancestor. It also provides props from the states that were added.
+ * This provides the React component with an `objectiveStore` prop, which is an instance of the ObjectiveStore
+ * connected to the components closest provided ancestor. It also provides props from the states that were added.
  *
  * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *

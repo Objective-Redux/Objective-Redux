@@ -21,7 +21,7 @@ var context_1 = require("./context");
  *
  * @example
  * ```typescript
- * export const store = new ObjectiveStore();
+ * export const objectiveStore = new ObjectiveStore();
  *
  * ReactDOM.render(
  *   <ObjectiveStoreProvider objectiveStore={objectiveStore}>

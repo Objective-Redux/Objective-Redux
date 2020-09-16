@@ -69,7 +69,7 @@ var ObjectiveStore = /** @class */ (function () {
      * @example
      * ```typescript
      * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
-     * const store = new ObjectiveStore();
+     * const objectiveStore = new ObjectiveStore();
      * ```
      * @example
      * ```typescript
@@ -86,7 +86,7 @@ var ObjectiveStore = /** @class */ (function () {
      *   createInjectorsEnhancer({ createReducer, runSaga }),
      * ];
      *
-     * const store = new ObjectiveStore({
+     * const objectiveStore = new ObjectiveStore({
      *   reducer,
      *   initialState,
      *   middleware,
@@ -109,9 +109,9 @@ var ObjectiveStore = /** @class */ (function () {
         this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
         /* istanbul ignore else */
         if (reduxSaga) {
-            var store = this;
+            var objectiveStore = this;
             this.sagaMiddleware = reduxSaga.default({
-                context: __assign(__assign({}, sagaContext), { store: store }),
+                context: __assign(__assign({}, sagaContext), { objectiveStore: objectiveStore }),
             });
             internalMiddleware.push(this.sagaMiddleware);
             this.injector.setSagaRunningFn(this.sagaMiddleware.run);
@@ -170,8 +170,8 @@ var ObjectiveStore = /** @class */ (function () {
      * @returns The action that was sent.
      * @example
      * ```typescript
-     * const store = new ObjectiveStore();
-     * store.dispatch(myAction());
+     * const objectiveStore = new ObjectiveStore();
+     * objectiveStore.dispatch(myAction());
      * ```
      */
     ObjectiveStore.prototype.dispatch = function (action) {
@@ -184,8 +184,8 @@ var ObjectiveStore = /** @class */ (function () {
      * @returns An unsubscribe function that can be called to stop listening.
      * @example
      * ```
-     * const store = new ObjectiveStore();
-     * const unsubscribeFn = store.subscribe(myCallback);
+     * const objectiveStore = new ObjectiveStore();
+     * const unsubscribeFn = objectiveStore.subscribe(myCallback);
      * ```
      */
     ObjectiveStore.prototype.subscribe = function (listener) {
@@ -197,8 +197,8 @@ var ObjectiveStore = /** @class */ (function () {
      * @returns The state object from Redux.
      * @example
      * ```
-     * const store = new ObjectiveStore();
-     * const state = store.getState();
+     * const objectiveStore = new ObjectiveStore();
+     * const state = objectiveStore.getState();
      * ```
      */
     ObjectiveStore.prototype.getState = function () {
@@ -240,8 +240,8 @@ var ObjectiveStore = /** @class */ (function () {
      *   yield console.log('Hello, world!');
      * }
      *
-     * const store = new ObjectiveStore();
-     * store.registerSaga(sagaFn);
+     * const objectiveStore = new ObjectiveStore();
+     * objectiveStore.registerSaga(sagaFn);
      * ```
      */
     ObjectiveStore.prototype.registerSaga = function (sagaFn) {

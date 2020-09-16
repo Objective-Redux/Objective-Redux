@@ -17,7 +17,8 @@ var _1 = require("./");
  * @template C The type of controller that will be returned. This type is inferred and does not need to be specified in
  * TypeScript.
  * @param controller The controller class of which an instance should be retrieved.
- * @returns An instance of the provided controller or null if there is no store in the components context.
+ * @returns An instance of the provided controller or null if there is no ObjectiveStore instance in the components
+ * context.
  *
  * @example
  * ```typescript

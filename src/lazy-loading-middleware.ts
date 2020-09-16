@@ -16,11 +16,11 @@ import { Action } from './action';
 /**
  * @internal
  */
-export function lazyLoadingMiddleware(store: ObjectiveStore): any {
+export function lazyLoadingMiddleware(objectiveStore: ObjectiveStore): any {
   return (): Function => (next: Function): Function => (action: Action<any>): any => {
     const controller = LazyLoader.getControllerForAction(action);
     if (controller) {
-      (controller as any).getInstance(store);
+      (controller as any).getInstance(objectiveStore);
     }
     return next(action);
   };

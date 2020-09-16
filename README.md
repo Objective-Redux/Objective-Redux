@@ -29,7 +29,7 @@ import ReactDOM from 'react-dom';
 import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import App from './app';
 
-export const store = new ObjectiveStore();
+export const objectiveStore = new ObjectiveStore();
 
 ReactDOM.render(
   <ObjectiveStoreProvider objectiveStore={objectiveStore}>
@@ -46,8 +46,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 export class SwitchStateController extends StateController {
-  constructor(store) {
-    super(initialState, store);
+  constructor(objectiveStore) {
+    super(initialState, objectiveStore);
   }
 
   static getName() {
@@ -60,7 +60,7 @@ export class SwitchStateController extends StateController {
 }
 ```
 ```javascript
-SwitchOneController.getInstance(store).setSwitch(true);
+SwitchOneController.getInstance(objectiveStore).setSwitch(true);
 ```
 
 <br />
@@ -164,7 +164,7 @@ A slice of state never needs to know about what other slices are doing or how th
 ## Compatible with React-Redux
 
 ### Migrate over time
-You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.
+You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated Redux store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.
 

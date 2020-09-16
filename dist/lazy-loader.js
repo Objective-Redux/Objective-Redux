@@ -33,15 +33,15 @@ var LazyLoader = /** @class */ (function () {
         }
         return controller;
     };
-    LazyLoader.addObjectiveStore = function (store, registerReducerFn) {
-        this.reducerFns.set(store, registerReducerFn);
-        this.controllers.set(store, {});
+    LazyLoader.addObjectiveStore = function (objectiveStore, registerReducerFn) {
+        this.reducerFns.set(objectiveStore, registerReducerFn);
+        this.controllers.set(objectiveStore, {});
     };
     // eslint-disable-next-line max-statements
-    LazyLoader.getController = function (store, ControllerClass) {
+    LazyLoader.getController = function (objectiveStore, ControllerClass) {
         var name = ControllerClass.getName();
         var namespace = ControllerClass.getNamespace() || '';
-        var controllerMap = this.controllers.get(store);
+        var controllerMap = this.controllers.get(objectiveStore);
         if (controllerMap[namespace] == null) {
             controllerMap[namespace] = {};
         }
@@ -49,10 +49,10 @@ var LazyLoader = /** @class */ (function () {
         if (existing) {
             return existing;
         }
-        var instance = new ControllerClass(store);
+        var instance = new ControllerClass(objectiveStore);
         controllerMap[namespace][name] = instance;
         if (instance.reducer) {
-            this.reducerFns.get(store)(instance);
+            this.reducerFns.get(objectiveStore)(instance);
         }
         return instance;
     };

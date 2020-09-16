@@ -19,8 +19,8 @@ const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
   // The construct should look like this
-  constructor(store) {
-    super(initialState, store);
+  constructor(objectiveStore) {
+    super(initialState, objectiveStore);
     // ... additional setup code can go here
   }
 
@@ -47,8 +47,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(store) {
-    super(initialState, store);
+  constructor(objectiveStore) {
+    super(initialState, objectiveStore);
   }
 
   static getName() {
@@ -81,12 +81,12 @@ import { ComponentConnector } from 'objective-redux';
 import { SwitchStateController } from './store/switch-state-controller';
 
 function AppComponent(props) {
-  const { isOn, store } = props;
+  const { isOn, objectiveStore } = props;
 
   const sendToggleAction = () => {
-    SwitchStateController.getInstance(store).toggleSwitch();
+    SwitchStateController.getInstance(objectiveStore).toggleSwitch();
     // or we could call our set method
-    // SwitchStateController.getInstance(store).setSwitch(!isOn);
+    // SwitchStateController.getInstance(objectiveStore).setSwitch(!isOn);
   }
 
   return (

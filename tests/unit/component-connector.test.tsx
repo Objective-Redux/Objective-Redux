@@ -74,7 +74,7 @@ describe('component-connector', () => {
     const connectedComponent = wrapper.find('ConnectedTest');
     expect(connectedComponent).toHaveLength(1);
     expect(connectedComponent.props()).toEqual({
-      store: objectiveStoreMock,
+      objectiveStore: objectiveStoreMock,
       a: 'A',
       b: 'B2',
       c: 'C1',

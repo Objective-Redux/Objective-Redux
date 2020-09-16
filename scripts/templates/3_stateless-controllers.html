@@ -12,7 +12,7 @@
 
 <p>The StatelessController required a static getName function be implemented to return a string name for the controller. The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly.</p>
 
-<p>If the constructor is overridden, it will need to take in an ObjectiveStore as a parameter and call the super constructor with the store instance.</p>
+<p>If the constructor is overridden, it will need to take in an ObjectiveStore as a parameter and call the super constructor with the ObjectiveStore instance.</p>
 
 <pre><code class="language-typescript">
   import { StatelessController } from 'objective-redux';

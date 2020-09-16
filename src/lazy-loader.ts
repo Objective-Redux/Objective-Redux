@@ -87,19 +87,19 @@ export class LazyLoader {
     return controller;
   }
 
-  public static addObjectiveStore(store: ObjectiveStore, registerReducerFn: RegisterReducerFn): void {
-    this.reducerFns.set(store, registerReducerFn);
-    this.controllers.set(store, {});
+  public static addObjectiveStore(objectiveStore: ObjectiveStore, registerReducerFn: RegisterReducerFn): void {
+    this.reducerFns.set(objectiveStore, registerReducerFn);
+    this.controllers.set(objectiveStore, {});
   }
 
   // eslint-disable-next-line max-statements
   public static getController<T extends Controller>(
-    store: ObjectiveStore,
+    objectiveStore: ObjectiveStore,
     ControllerClass: ModelConstructor<T> & typeof Controller
   ): T {
     const name = ControllerClass.getName();
     const namespace = ControllerClass.getNamespace() || '';
-    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(store) as any;
+    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(objectiveStore) as any;
 
     if (controllerMap[namespace] == null) {
       controllerMap[namespace] = {};
@@ -111,11 +111,11 @@ export class LazyLoader {
       return existing;
     }
 
-    const instance: any = new ControllerClass(store);
+    const instance: any = new ControllerClass(objectiveStore);
     controllerMap[namespace][name] = instance;
 
     if (instance.reducer) {
-      (this.reducerFns.get(store) as any)(instance);
+      (this.reducerFns.get(objectiveStore) as any)(instance);
     }
 
     return instance;

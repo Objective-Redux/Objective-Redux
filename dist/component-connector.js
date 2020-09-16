@@ -40,8 +40,8 @@ var context_1 = require("./context");
  * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
- * components closest provided ancestor. It also provides props from the states that were added.
+ * This provides the React component with an `objectiveStore` prop, which is an instance of the ObjectiveStore
+ * connected to the components closest provided ancestor. It also provides props from the states that were added.
  *
  * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *
@@ -110,17 +110,17 @@ var ComponentConnector = /** @class */ (function () {
                         return null;
                     }
                     this.mounted = true;
-                    var store = this.context;
+                    var objectiveStore = this.context;
                     var state = {};
                     for (var i = 0; i < controllers.length; i++) {
-                        var slice = controllers[i].controller.getInstance(store).getStateSlice();
+                        var slice = controllers[i].controller.getInstance(objectiveStore).getStateSlice();
                         state = __assign(__assign({}, state), controllers[i].selector(slice));
                     }
-                    return (React.createElement(Component, __assign({}, this.props, state, { store: store })));
+                    return (React.createElement(Component, __assign({}, this.props, state, { objectiveStore: objectiveStore })));
                 };
                 class_1.prototype.componentDidMount = function () {
-                    var store = this.context;
-                    this.unsubscribe = store.subscribe(this.handleChange.bind(this));
+                    var objectiveStore = this.context;
+                    this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
                 };
                 class_1.prototype.componentWillUnmount = function () {
                     if (this.unsubscribe) {

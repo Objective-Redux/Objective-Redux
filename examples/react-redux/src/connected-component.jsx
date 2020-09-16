@@ -14,10 +14,10 @@ import { SwitchStateController } from './store/switch-state-controller';
 import { SwitchStateSagas } from './store/switch-state-sagas';
 
 function ConnectedComponent(props) {
-  const { isOn, count, store } = props;
+  const { isOn, count, objectiveStore } = props;
 
   const sendToggleAction = () => {
-    SwitchStateSagas.getInstance(store).toggleSwitch();
+    SwitchStateSagas.getInstance(objectiveStore).toggleSwitch();
   };
 
   return (

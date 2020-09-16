@@ -19,7 +19,7 @@ jest.mock('../../src/use-objective-store', () => ({
   useObjectiveStore,
 }));
 
-const getController = jest.fn((store, CClass) => new CClass(store));
+const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
@@ -31,8 +31,8 @@ import { useController, StatelessController } from '../../src';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(store: any) {
-    super(store);
+  public constructor(objectiveStore: any) {
+    super(objectiveStore);
   }
 
   public static getName(): string {
@@ -41,13 +41,13 @@ class TestController extends StatelessController {
 }
 
 describe('use-controller', () => {
-  it('returns an instance of the controller when there is a store', () => {
+  it('returns an instance of the controller when there is a ObjectiveStore instance', () => {
     useObjectiveStore.mockReturnValue(registerMock);
     const controller = useController(TestController);
     expect(controller).toBeInstanceOf(TestController);
   });
 
-  it('returns null when there is not a store', () => {
+  it('returns null when there is not a ObjectiveStore instance', () => {
     useObjectiveStore.mockReturnValue(null);
     const controller = useController(TestController);
     expect(controller).toBeNull();

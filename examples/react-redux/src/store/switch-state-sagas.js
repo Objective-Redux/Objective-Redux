@@ -24,14 +24,14 @@ export class SwitchStateSagas extends StatelessController {
     .withAddressableName('update-switch')
     .register(
       function* () {
-        const store = yield getObjectiveStoreFromSagaContext();
+        const objectiveStore = yield getObjectiveStoreFromSagaContext();
         const testCanary = yield getContext('test');
         if (testCanary !== 'Some Value') {
           throw new Error('Original context is corrupt');
         }
         const switchStateController = yield getControllerFromSagaContext(SwitchStateController);
         yield switchStateController.toggleSwitchValue();
-        yield SwitchStateController.getInstance(store).incrementCount();
+        yield SwitchStateController.getInstance(objectiveStore).incrementCount();
       }
     );
 }

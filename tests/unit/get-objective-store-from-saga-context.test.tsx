@@ -19,7 +19,7 @@ jest.mock('redux-saga/effects', () => ({
 import { getObjectiveStoreFromSagaContext } from '../../src';
 
 describe('get-objective-store-from-saga-context', () => {
-  it('should get the store from the store context', () => {
+  it('should get the ObjectiveStore instance from the ObjectiveStore context', () => {
     const generator = getObjectiveStoreFromSagaContext();
     const resultingContext = generator.next().value;
     expect(resultingContext).toEqual(context);

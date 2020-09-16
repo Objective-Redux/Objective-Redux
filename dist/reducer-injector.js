@@ -48,7 +48,7 @@ exports.defaultReducer = function () { return ({}); };
  *   createInjectorsEnhancer({ createReducer, runSaga }),
  * ];
  *
- * const store = new ObjectiveStore({
+ * const objectiveStore = new ObjectiveStore({
  *   reducer,
  *   initialState,
  *   middleware,

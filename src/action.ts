@@ -80,13 +80,13 @@ export function createAction<Payload>(type: string): (payload: Payload) => Actio
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
  * @param type The name of the action being sent.
- * @param store The ObjectiveStore instance to which to connect.
+ * @param objectiveStore The ObjectiveStore instance to which to connect.
  * @returns The action generating function.
  * @internal
  */
-export function createConnectedAction<Payload>(type: string, store: ObjectiveStore):
+export function createConnectedAction<Payload>(type: string, objectiveStore: ObjectiveStore):
   (payload: Payload) => Action<Payload> {
-  return (payload: Payload): Action<Payload> => store.dispatch({
+  return (payload: Payload): Action<Payload> => objectiveStore.dispatch({
     type,
     payload,
   });

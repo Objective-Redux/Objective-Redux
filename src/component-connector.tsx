@@ -29,8 +29,8 @@ interface StateSelectorFn<T> {
  * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
  *
- * This provides the React component with a `store` prop, which is an instance of the ObjectiveStore connected to the
- * components closest provided ancestor. It also provides props from the states that were added.
+ * This provides the React component with an `objectiveStore` prop, which is an instance of the ObjectiveStore
+ * connected to the components closest provided ancestor. It also provides props from the states that were added.
  *
  * As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.
  *
@@ -116,10 +116,10 @@ export class ComponentConnector {
         }
 
         this.mounted = true;
-        const store: ObjectiveStore = this.context;
+        const objectiveStore: ObjectiveStore = this.context;
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
-          const slice = (controllers[i].controller as any).getInstance(store).getStateSlice();
+          const slice = (controllers[i].controller as any).getInstance(objectiveStore).getStateSlice();
           state = {
             ...state,
             ...controllers[i].selector(slice),
@@ -129,14 +129,14 @@ export class ComponentConnector {
           <Component
             {...this.props}
             {...state}
-            {...{ store }}
+            {...{ objectiveStore }}
           />
         );
       }
 
       public componentDidMount(): void {
-        const store: ObjectiveStore = this.context;
-        this.unsubscribe = store.subscribe(this.handleChange.bind(this));
+        const objectiveStore: ObjectiveStore = this.context;
+        this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
       }
 
       public componentWillUnmount(): void {

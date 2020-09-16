@@ -18,7 +18,7 @@ jest.mock('../../src/get-objective-store-from-saga-context', () => ({
   getObjectiveStoreFromSagaContext,
 }));
 
-const getController = jest.fn((store, CClass) => new CClass(store));
+const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getController,
@@ -38,14 +38,14 @@ class TestStateController extends StateController<number> {
 }
 
 describe('get-controller-from-saga-context', () => {
-  it('gets the controller from the saga context when there is a store', () => {
+  it('gets the controller from the saga context when there is an ObjectiveStore instance', () => {
     const generator = getControllerFromSagaContext(TestStateController);
     generator.next();
     const resultingContext = generator.next(objectiveStoreMock).value;
     expect(resultingContext).toBeInstanceOf(TestStateController);
   });
 
-  it('returns null when there is no store the saga context', () => {
+  it('returns null when there is no ObjectiveStore instance the saga context', () => {
     const generator = getControllerFromSagaContext(TestStateController);
     generator.next();
     const resultingContext = generator.next(null as any).value;

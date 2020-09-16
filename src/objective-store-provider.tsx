@@ -21,7 +21,7 @@ import { ObjectiveStore } from '.';
  *
  * @example
  * ```typescript
- * export const store = new ObjectiveStore();
+ * export const objectiveStore = new ObjectiveStore();
  *
  * ReactDOM.render(
  *   <ObjectiveStoreProvider objectiveStore={objectiveStore}>

@@ -2,5 +2,5 @@ import { ObjectiveStore } from './objective-store';
 /**
  * @internal
  */
-export declare function lazyLoadingMiddleware(store: ObjectiveStore): any;
+export declare function lazyLoadingMiddleware(objectiveStore: ObjectiveStore): any;
 //# sourceMappingURL=lazy-loading-middleware.d.ts.map

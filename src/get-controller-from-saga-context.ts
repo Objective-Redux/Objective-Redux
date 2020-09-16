@@ -35,11 +35,11 @@ import { getObjectiveStoreFromSagaContext } from './get-objective-store-from-sag
 export function* getControllerFromSagaContext<C extends Controller>(
   controller: typeof Controller & ModelConstructor<C>
 ): Generator<any, C|null, C> {
-  const store: any = yield getObjectiveStoreFromSagaContext();
+  const objectiveStore: any = yield getObjectiveStoreFromSagaContext();
 
-  if (!store) {
+  if (!objectiveStore) {
     return null;
   }
 
-  return yield controller.getInstance(store);
+  return yield controller.getInstance(objectiveStore);
 }

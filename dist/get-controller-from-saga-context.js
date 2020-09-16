@@ -60,16 +60,16 @@ var get_objective_store_from_saga_context_1 = require("./get-objective-store-fro
  * ```
  */
 function getControllerFromSagaContext(controller) {
-    var store;
+    var objectiveStore;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, get_objective_store_from_saga_context_1.getObjectiveStoreFromSagaContext()];
             case 1:
-                store = _a.sent();
-                if (!store) {
+                objectiveStore = _a.sent();
+                if (!objectiveStore) {
                     return [2 /*return*/, null];
                 }
-                return [4 /*yield*/, controller.getInstance(store)];
+                return [4 /*yield*/, controller.getInstance(objectiveStore)];
             case 2: return [2 /*return*/, _a.sent()];
         }
     });

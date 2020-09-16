@@ -20,7 +20,7 @@ const objectiveStoreMock: any = {
 };
 
 const registerController = jest.fn();
-const getController = jest.fn((store, CClass) => new CClass(store));
+const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
@@ -32,8 +32,8 @@ jest.mock('../../src/lazy-loader', () => ({
 import { StateController } from '../../src';
 
 class TestController extends StateController<boolean> {
-  public constructor(store: any) {
-    super(false, store);
+  public constructor(objectiveStore: any) {
+    super(false, objectiveStore);
   }
 
   public static getName(): string {
@@ -78,7 +78,7 @@ describe('state-controller', () => {
   });
 
   describe('getInstance', () => {
-    it('should create one instance for each store', () => {
+    it('should create one instance for each ObjectiveStore instance', () => {
       const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);
       expect(instance).toBeInstanceOf(TestController);

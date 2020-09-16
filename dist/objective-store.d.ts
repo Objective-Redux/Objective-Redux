@@ -71,7 +71,7 @@ export declare class ObjectiveStore {
      * @example
      * ```typescript
      * // No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
-     * const store = new ObjectiveStore();
+     * const objectiveStore = new ObjectiveStore();
      * ```
      * @example
      * ```typescript
@@ -88,7 +88,7 @@ export declare class ObjectiveStore {
      *   createInjectorsEnhancer({ createReducer, runSaga }),
      * ];
      *
-     * const store = new ObjectiveStore({
+     * const objectiveStore = new ObjectiveStore({
      *   reducer,
      *   initialState,
      *   middleware,
@@ -111,8 +111,8 @@ export declare class ObjectiveStore {
      * @returns The action that was sent.
      * @example
      * ```typescript
-     * const store = new ObjectiveStore();
-     * store.dispatch(myAction());
+     * const objectiveStore = new ObjectiveStore();
+     * objectiveStore.dispatch(myAction());
      * ```
      */
     dispatch(action: AnyAction): AnyAction;
@@ -123,8 +123,8 @@ export declare class ObjectiveStore {
      * @returns An unsubscribe function that can be called to stop listening.
      * @example
      * ```
-     * const store = new ObjectiveStore();
-     * const unsubscribeFn = store.subscribe(myCallback);
+     * const objectiveStore = new ObjectiveStore();
+     * const unsubscribeFn = objectiveStore.subscribe(myCallback);
      * ```
      */
     subscribe(listener: () => void): Unsubscribe;
@@ -134,8 +134,8 @@ export declare class ObjectiveStore {
      * @returns The state object from Redux.
      * @example
      * ```
-     * const store = new ObjectiveStore();
-     * const state = store.getState();
+     * const objectiveStore = new ObjectiveStore();
+     * const state = objectiveStore.getState();
      * ```
      */
     getState(): any;
@@ -160,8 +160,8 @@ export declare class ObjectiveStore {
      *   yield console.log('Hello, world!');
      * }
      *
-     * const store = new ObjectiveStore();
-     * store.registerSaga(sagaFn);
+     * const objectiveStore = new ObjectiveStore();
+     * objectiveStore.registerSaga(sagaFn);
      * ```
      */
     registerSaga(sagaFn: SagaFn<void>): void;

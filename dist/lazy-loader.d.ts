@@ -14,8 +14,8 @@ export declare class LazyLoader {
     private static readonly controllers;
     static registerController(controller: typeof Controller): void;
     static getControllerForAction(action: AnyAction): typeof Controller | null;
-    static addObjectiveStore(store: ObjectiveStore, registerReducerFn: RegisterReducerFn): void;
-    static getController<T extends Controller>(store: ObjectiveStore, ControllerClass: ModelConstructor<T> & typeof Controller): T;
+    static addObjectiveStore(objectiveStore: ObjectiveStore, registerReducerFn: RegisterReducerFn): void;
+    static getController<T extends Controller>(objectiveStore: ObjectiveStore, ControllerClass: ModelConstructor<T> & typeof Controller): T;
 }
 export {};
 //# sourceMappingURL=lazy-loader.d.ts.map

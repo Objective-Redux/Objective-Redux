@@ -16,21 +16,21 @@ type UpdateFn = (() => void);
  * @internal
  */
 export class HookSubscriber {
-  private readonly store: ObjectiveStore|null;
+  private readonly objectiveStore: ObjectiveStore|null;
 
   private readonly updateFn: UpdateFn;
 
   private unsubscribeFn: UpdateFn|null;
 
-  public constructor(store: ObjectiveStore|null, updateFn: UpdateFn) {
-    this.store = store;
+  public constructor(objectiveStore: ObjectiveStore|null, updateFn: UpdateFn) {
+    this.objectiveStore = objectiveStore;
     this.updateFn = updateFn;
     this.unsubscribeFn = null;
   }
 
   public subscribe(): void {
-    if (!this.unsubscribeFn && this.store) {
-      this.unsubscribeFn = this.store.subscribe(this.updateFn);
+    if (!this.unsubscribeFn && this.objectiveStore) {
+      this.unsubscribeFn = this.objectiveStore.subscribe(this.updateFn);
     }
   }
 

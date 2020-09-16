@@ -90,17 +90,17 @@ describe('objective-store', () => {
   });
 
   describe('constructor', () => {
-    it('should set up the store without parameters', () => {
+    it('should set up the ObjectiveStore instance without parameters', () => {
       const expectedMiddleware = [
         preDispatchHookMiddlewareMock,
         lazyLoadingMiddlewareMock,
         sagaMiddleware,
       ];
-      const store = new ObjectiveStore();
-      expect(store).toBeInstanceOf(ObjectiveStore);
+      const objectiveStore = new ObjectiveStore();
+      expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(createSagaMiddleware).toBeCalledWith({
         context: {
-          store,
+          objectiveStore,
         },
       });
       expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
@@ -110,7 +110,7 @@ describe('objective-store', () => {
       expect(setSagaRunningFn).toHaveBeenCalled();
     });
 
-    it('should set up the store with parameters', () => {
+    it('should set up the ObjectiveStore instance with parameters', () => {
       const setGetObjectiveReduxReducersMock = jest.fn();
       const setSagaRunningFnMock = jest.fn();
 
@@ -130,7 +130,7 @@ describe('objective-store', () => {
         sagaMiddleware,
       ];
 
-      const store = new ObjectiveStore({
+      const objectiveStore = new ObjectiveStore({
         reducer,
         initialState,
         middleware: initialMiddleware,
@@ -139,11 +139,11 @@ describe('objective-store', () => {
         preDispatchHook,
       });
 
-      expect(store).toBeInstanceOf(ObjectiveStore);
+      expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(createSagaMiddleware).toBeCalledWith({
         context: {
           ...sagaContext,
-          store,
+          objectiveStore,
         },
       });
       expect(preDispatchHookMiddleware).toBeCalledWith(preDispatchHook);
@@ -162,16 +162,16 @@ describe('objective-store', () => {
 
   describe('getReducers', () => {
     it('combines only nested reducers', () => {
-      const store: any = new ObjectiveStore();
+      const objectiveStore: any = new ObjectiveStore();
       const flat = (): any => {};
       const nested = {
         foo: (): any => {},
       };
-      store.registeredReducers = {
+      objectiveStore.registeredReducers = {
         flat,
         nested,
       };
-      const resultingReducers = store.getReducers();
+      const resultingReducers = objectiveStore.getReducers();
       expect(resultingReducers).toEqual({
         flat,
         nested: COMBINED,
@@ -181,20 +181,20 @@ describe('objective-store', () => {
 
   describe('dispatch', () => {
     it('should dispatch an action', () => {
-      const store = new ObjectiveStore();
+      const objectiveStore = new ObjectiveStore();
       const action = {
         type: 'MyAction',
       };
-      expect(store.dispatch(action)).toEqual(action);
+      expect(objectiveStore.dispatch(action)).toEqual(action);
       expect(dispatch).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('subscribe', () => {
-    it('should subscribe to the store', () => {
-      const store = new ObjectiveStore();
+    it('should subscribe to the ObjectiveStore instance', () => {
+      const objectiveStore = new ObjectiveStore();
       const fn = (): void => {};
-      const unsubscribe = store.subscribe(fn);
+      const unsubscribe = objectiveStore.subscribe(fn);
       unsubscribe();
       expect(subscribe).toHaveBeenCalledWith(fn);
       expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
@@ -202,9 +202,9 @@ describe('objective-store', () => {
   });
 
   describe('getState', () => {
-    it('should get the state object from the store', () => {
-      const store = new ObjectiveStore();
-      expect(store.getState()).toEqual({ foo: 'bar' });
+    it('should get the state object from the ObjectiveStore instance', () => {
+      const objectiveStore = new ObjectiveStore();
+      expect(objectiveStore.getState()).toEqual({ foo: 'bar' });
     });
   });
 
@@ -220,12 +220,12 @@ describe('objective-store', () => {
         reducer,
       };
 
-      const store = new ObjectiveStore();
+      const objectiveStore = new ObjectiveStore();
       const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
       addControllerReducer(controller);
-      expect(store).toBeInstanceOf(ObjectiveStore);
+      expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((store as any).registeredReducers.TEST).not.toBeNull();
+      expect((objectiveStore as any).registeredReducers.TEST).not.toBeNull();
     });
 
     it('adds the new, namespaced reducer for state controllers', () => {
@@ -239,20 +239,20 @@ describe('objective-store', () => {
         reducer,
       };
 
-      const store = new ObjectiveStore();
+      const objectiveStore = new ObjectiveStore();
       const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
       addControllerReducer(controller);
-      expect(store).toBeInstanceOf(ObjectiveStore);
+      expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((store as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
+      expect((objectiveStore as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
     });
   });
 
   describe('replaceReducer', () => {
-    it('calls replaceReducer on the store', () => {
+    it('calls replaceReducer on the ObjectiveStore instance', () => {
       const reducer = (): any => {};
-      const store = new ObjectiveStore();
-      store.replaceReducer(reducer);
+      const objectiveStore = new ObjectiveStore();
+      objectiveStore.replaceReducer(reducer);
       expect(replaceReducer).toHaveBeenCalledWith(reducer);
     });
   });
@@ -261,10 +261,10 @@ describe('objective-store', () => {
     it('should add the saga to the middleware', () => {
       const saga1 = function* (): Generator {};
       const saga2 = function* (): Generator {};
-      const store = new ObjectiveStore();
-      store.registerSaga(saga1);
+      const objectiveStore = new ObjectiveStore();
+      objectiveStore.registerSaga(saga1);
       expect(run).toBeCalledWith(saga1);
-      store.registerSaga(saga2);
+      objectiveStore.registerSaga(saga2);
       expect(run).toBeCalledWith(saga2);
     });
   });

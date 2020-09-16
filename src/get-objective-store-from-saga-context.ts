@@ -12,16 +12,16 @@ import { getReduxSagaEffects } from './get-redux-saga-module';
 import { ObjectiveStore } from '.';
 
 /**
- * Gets the store from the saga's context.
+ * Gets the ObjectiveStore instance from the saga's context.
  *
  * @returns A generator that yields an instance of the ObjectiveStore.
  * @example
  * ```typescript
  * function* () {
- *   const store = yield getObjectiveStoreFromSagaContext();
+ *   const objectiveStore = yield getObjectiveStoreFromSagaContext();
  * }
  * ```
  */
 export function* getObjectiveStoreFromSagaContext(): Generator<any, ObjectiveStore, ObjectiveStore> {
-  return yield getReduxSagaEffects().getContext('store');
+  return yield getReduxSagaEffects().getContext('objectiveStore');
 }

@@ -49,7 +49,7 @@ interface RunSagaFn {
  *   createInjectorsEnhancer({ createReducer, runSaga }),
  * ];
  *
- * const store = new ObjectiveStore({
+ * const objectiveStore = new ObjectiveStore({
  *   reducer,
  *   initialState,
  *   middleware,

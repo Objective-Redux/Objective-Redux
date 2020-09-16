@@ -39,20 +39,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getObjectiveStoreFromSagaContext = void 0;
 var get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
- * Gets the store from the saga's context.
+ * Gets the ObjectiveStore instance from the saga's context.
  *
  * @returns A generator that yields an instance of the ObjectiveStore.
  * @example
  * ```typescript
  * function* () {
- *   const store = yield getObjectiveStoreFromSagaContext();
+ *   const objectiveStore = yield getObjectiveStoreFromSagaContext();
  * }
  * ```
  */
 function getObjectiveStoreFromSagaContext() {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, get_redux_saga_module_1.getReduxSagaEffects().getContext('store')];
+            case 0: return [4 /*yield*/, get_redux_saga_module_1.getReduxSagaEffects().getContext('objectiveStore')];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });

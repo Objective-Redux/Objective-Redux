@@ -17,7 +17,7 @@ const mockObjectiveStore: any = {
 
 describe('HookSubscriber', () => {
   describe('subscribe', () => {
-    it('subscribes to the store', () => {
+    it('subscribes to the ObjectiveStore instance', () => {
       const subscriber = new HookSubscriber(mockObjectiveStore, () => {});
       subscriber.subscribe();
       subscriber.subscribe();
@@ -25,7 +25,7 @@ describe('HookSubscriber', () => {
       expect(subscribe).toBeCalledTimes(1);
     });
 
-    it('does nothing when there is no store', () => {
+    it('does nothing when there is no ObjectiveStore instance', () => {
       const subscriber = new HookSubscriber(null, () => {});
       expect(subscriber).toBeInstanceOf(HookSubscriber);
       expect(subscribe).toBeCalledTimes(0);

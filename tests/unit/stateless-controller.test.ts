@@ -21,7 +21,7 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-const getController = jest.fn((store, CClass) => new CClass(store));
+const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getController,
@@ -40,8 +40,8 @@ import { EffectBuilder } from '../../src/effect-type';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(store: any) {
-    super(store);
+  public constructor(objectiveStore: any) {
+    super(objectiveStore);
   }
 
   public static getName(): string {
@@ -75,7 +75,7 @@ describe('stateless-controller', () => {
   });
 
   describe('getInstance', () => {
-    it('should create only one instance per store', () => {
+    it('should create only one instance per ObjectiveStore instance', () => {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);

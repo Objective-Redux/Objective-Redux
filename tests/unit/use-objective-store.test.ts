@@ -39,9 +39,9 @@ import { HookSubscriber } from '../../src/hook-subscriber';
 
 describe('use-objective-store', () => {
   describe('hook', () => {
-    it('should get the store and re-render', () => {
-      const store = useObjectiveStore();
-      expect(store).toBe(registerMock);
+    it('should get the ObjectiveStore instance and re-render', () => {
+      const objectiveStore = useObjectiveStore();
+      expect(objectiveStore).toBe(registerMock);
 
       const { mock: { calls: [[reducingFn]] } } = useReducer as any;
       const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
