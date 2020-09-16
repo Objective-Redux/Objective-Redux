@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -92,7 +92,7 @@ class MyControllerClass extends StatelessController {
 }
 </code></pre>
 
-<p>You may also want to allow your controller to be initialized when a non-Objective-Redux action is performed. This ensures that, if an action targeting your controller is fired before you've used the controller, Objective-Redux can find the controller to handle the event.</p>
+<p>You may also want to allow your controller to be initialized when a non-Objective-Redux action is performed. This ensures that, if an action targeting your controller is fired before you've used the getInstance method for that controller in your application, Objective-Redux can find the controller to handle the event.</p>
 
 <pre><code class="language-typescript">
 MyControllerClass.initializeOnExternalAction();
@@ -104,7 +104,10 @@ MyControllerClass.initializeOnExternalAction();
 const myAction = createAction(
   getActionNameForController('My-Controller', 'SET_SWITCH_STATE')
 );
-register.dispatch(myAction(isOn));
+// The ObjectiveStore instance will see that the action targets MyControllerClass. It will
+// call MyControllerClass.getInstance(objectiveStore) for you to initialize the controller
+// prior to the action being fired.
+objectiveStore.dispatch(myAction(isOn));
 </code></pre>
       </div>
     </div>
@@ -112,7 +115,7 @@ register.dispatch(myAction(isOn));
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

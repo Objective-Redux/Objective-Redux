@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -82,15 +82,15 @@
 <pre><code>npm install --save redux redux-saga objective-redux</code></pre><h2 id="setup-for-react">Setup (for React)</h2>
 <pre><code class="language-javascript">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
-import { RegisterProvider, ReduxRegister } from &#39;objective-redux&#39;;
+import { ObjectiveStoreProvider, ObjectiveStore } from &#39;objective-redux&#39;;
 import App from &#39;./app&#39;;
 
-export const register = new ReduxRegister();
+export const store = new ObjectiveStore();
 
 ReactDOM.render(
-  &lt;RegisterProvider register={register}&gt;
+  &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
     &lt;App /&gt;
-  &lt;/RegisterProvider&gt;,
+  &lt;/ObjectiveStoreProvider&gt;,
   document.getElementById(&#39;root&#39;)
 );</code></pre>
 <h2 id="example-slice">Example Slice</h2>
@@ -99,8 +99,8 @@ ReactDOM.render(
 const initialState = { isOn: false };
 
 export class SwitchStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
   }
 
   static getName() {
@@ -111,7 +111,7 @@ export class SwitchStateController extends StateController {
     (state, isOn) =&gt; ({ isOn })
   );
 }</code></pre>
-<pre><code class="language-javascript">SwitchOneController.getInstance(register).setSwitch(true);</code></pre>
+<pre><code class="language-javascript">SwitchOneController.getInstance(store).setSwitch(true);</code></pre>
 <br />
 
 <br />
@@ -181,7 +181,7 @@ export class SwitchStateController extends StateController {
 
 <h2 id="compatible-with-react-redux">Compatible with React-Redux</h2>
 <h3 id="migrate-over-time">Migrate over time</h3>
-<p>You can use Objective-Redux and React-Redux together. The ReduxRegister is a decorated store object and can be used to <code>dispatch</code>, <code>subscribe</code>, <code>getState</code>, and even <code>replaceReducer</code>. Simply pass the ReduxRegister to the React-Redux provider and use it normally.</p>
+<p>You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated store object and can be used to <code>dispatch</code>, <code>subscribe</code>, <code>getState</code>, and even <code>replaceReducer</code>. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.</p>
 <p>See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.</p>
 <br />
 
@@ -195,7 +195,7 @@ export class SwitchStateController extends StateController {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

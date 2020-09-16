@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,32 +56,32 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
       <div class="padded">
         
   <section>
-    <h2 class="code">useRegister</h2>
-    <p class="code">function useRegister(): ReduxRegister|null</p>
-    <p>Gets the ReduxRegister from the React context for use in a functional component.<br />As an alternative (for example, in class components where hooks cannot be used), the ComponentConnector may be used instead.</p>
+    <h2 class="code">useObjectiveStore</h2>
+    <p class="code">function useObjectiveStore(): ObjectiveStore|null</p>
+    <p>Gets the ObjectiveStore from the React context for use in a functional component.<br />As an alternative (for example, in class components where hooks cannot be used), the ComponentConnector may be used instead.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>ReduxRegister|null</dt><dd>An instance of the ReduxRegister, if one exists.</dd></p>
+    <p><dt>ObjectiveStore|null</dt><dd>An instance of the ObjectiveStore, if one exists.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">import React from 'react';
-import { useRegister } from 'objective-redux';
+import { useObjectiveStore } from 'objective-redux';
 import { MyStateController } from './store/my-state-controller';
 
 export default function() {
-  const register = useRegister();
-  const { value } = MyStateController.getInstance(register).getStateSlice();
+  const objectiveStore = useObjectiveStore();
+  const { value } = MyStateController.getInstance(objectiveStore).getStateSlice();
 
   return &lt;p&gt;{ value }&lt;/p&gt;;
 }</code></pre>
@@ -94,7 +94,7 @@ export default function() {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

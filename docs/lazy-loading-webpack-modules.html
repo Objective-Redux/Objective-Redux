@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -72,12 +72,12 @@
 
 <p>As a pre-requisite, you'll need to <a href="./code-splitting.html">code split</a> the controller(s) that will be bundled and targeted separately.</p>
 
-<p>To setup, we define a pre-dispatch hook and pass it to the ReduxRegister. This function takes an action as a parameter and can return either a promise (if the action should wait until the promise resolves to be fired) or null (if the action should be fired immediately).</p>
+<p>To setup, we define a pre-dispatch hook and pass it to the ObjectiveStore. This function takes an action as a parameter and can return either a promise (if the action should wait until the promise resolves to be fired) or null (if the action should be fired immediately).</p>
 
 <pre><code class="language-typescript">
   import React from 'react';
   import ReactDOM from 'react-dom';
-  import { RegisterProvider, ReduxRegister } from 'objective-redux';
+  import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
   import App from './app';
 
   // We create a pre-dispatch hook, which is function that returns a promise.
@@ -95,14 +95,14 @@
     return result;
   }
   
-  export const register = new ReduxRegister({
+  export const objectiveStore = new ObjectiveStore({
     preDispatchHook,
   });
   
   ReactDOM.render(
-    &lt;RegisterProvider register={register}&gt;
+    &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
       &lt;App /&gt;
-    &lt;/RegisterProvider&gt;,
+    &lt;/ObjectiveStoreProvider&gt;,
     document.getElementById('root')
   );
 </code></pre>
@@ -112,7 +112,7 @@
 <pre><code class="language-typescript">
   import React from 'react';
   import {
-    useRegister,
+    useObjectiveStore,
     createAction,
     getActionNameForController,
   } from 'objective-redux';
@@ -122,10 +122,10 @@
   );
 
   function ButtonComponent() {
-    const register = useRegister();
+    const objectiveStore = useObjectiveStore();
 
     const fireAction = () => {
-      register.dispatch(myAction());
+      objectiveStore.dispatch(myAction());
     }
   
     return (
@@ -153,7 +153,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -78,7 +78,7 @@
 
 <p>The StatelessController required a static getName function be implemented to return a string name for the controller. The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly.</p>
 
-<p>If the constructor is overridden, it will need to take in a ReduxRegister as a parameter and call the super constructor with the register instance.</p>
+<p>If the constructor is overridden, it will need to take in an ObjectiveStore as a parameter and call the super constructor with the store instance.</p>
 
 <pre><code class="language-typescript">
   import { StatelessController } from 'objective-redux';
@@ -95,7 +95,7 @@
 
 <h3>Defining Actions</h3>
 
-<p>The withEffect can be used to add a watching generator function to the saga; it is passed a take configuration for the saga, defining how the events should be handled. Then, the register method is called and passed the generator function the saga will execute.</p>
+<p>The withEffect method can be used to add a watching generator function to the saga. It is passed a take configuration for the saga, defining how events should be handled. Then, the store method is called and passed the generator function the saga will execute.</p>
 
 <p>Below is an example of a Saga that will call the toggleSwitch method of our previously created SwitchStateController.</p>
 
@@ -128,7 +128,7 @@ export class SwitchStateSagas extends StatelessController {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

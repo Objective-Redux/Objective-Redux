@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -74,9 +74,9 @@
 
 <h3>Required Implementations</h3>
 
-<p>A StateController instance needs two things: (1) a construction that takes a register and calls super with the initial state and register; and (2) a static getName method that returns the string name of the state slice.</p>
+<p>A StateController instance needs two things: (1) a construction that takes an instance of an ObjectiveStore and calls super with the initial state and ObjectiveStore instance; and (2) a static getName method that returns the string name of the state slice.</p>
 
-<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
+<p>The getName method will need to return a string name that is unique for all of the Objective-Redux controllers.<sup>1</sup> This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -85,8 +85,8 @@ const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
   // The construct should look like this
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
     // ... additional setup code can go here
   }
 
@@ -113,8 +113,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(register) {
-    super(initialState, register);
+  constructor(store) {
+    super(initialState, store);
   }
 
   static getName() {
@@ -147,12 +147,12 @@ import { ComponentConnector } from 'objective-redux';
 import { SwitchStateController } from './store/switch-state-controller';
 
 function AppComponent(props) {
-  const { isOn, register } = props;
+  const { isOn, store } = props;
 
   const sendToggleAction = () => {
-    SwitchStateController.getInstance(register).toggleSwitch();
+    SwitchStateController.getInstance(store).toggleSwitch();
     // or we could call our set method
-    // SwitchStateController.getInstance(register).setSwitch(!isOn);
+    // SwitchStateController.getInstance(store).setSwitch(!isOn);
   }
 
   return (
@@ -193,13 +193,16 @@ export default ComponentConnector
   }
 </code></pre>
 
+<h2>Notes</h2>
+
+<p><sup>1</sup> Optionally, namespaces can be used to help with scoping controllers and Redux store slices. See the <a href="./statecontroller.html">StateController API documentation</a> for more.</p>
       </div>
     </div>
   </div>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

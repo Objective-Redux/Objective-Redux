@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -67,7 +67,7 @@
         
     <h1 class="code">StatelessController</h1>
     <p class="code">abstract class StatelessController extends Controller</p>
-    <p>Create and manage sagas that are associated with a Redux store.</p>
+    <p>Create and manage sagas that are associated with an objectiveStore.</p>
     
     <h3>Examples</h3>
 
@@ -87,25 +87,25 @@
    );
 }
 
-const instance = SwitchStateSagas.getInstance(register);
+const instance = SwitchStateSagas.getInstance(objectiveStore);
 instance.toggleSwitch();</code></pre>
 
     
   <section>
-    <h2 class="code">register</h2>
-    <p class="code">protected register: ReduxRegister</p>
+    <h2 class="code">objectiveStore</h2>
+    <p class="code">protected objectiveStore: ObjectiveStore</p>
     <p>The ReduxController to which the controller belongs.</p>
   </section>
   
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">public constructor(register: ReduxRegister): StatelessController</p>
-    <p>Registers and starts the sagas.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
+    <p class="code">public constructor(objectiveStore: ObjectiveStore): StatelessController</p>
+    <p>ObjectiveStores and starts the sagas.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
 have adverse affects on the application._.</p>
     
     <h3>Parameters</h3>
-<p><dt>register: ReduxRegister</dt><dd>Rhe ReduxRegister instance to which the controller will be connected.</dd><p>
+<p><dt>objectiveStore: ObjectiveStore</dt><dd>The ObjectiveStore instance to which the controller will be connected.</dd><p>
     <h3>Returns</h3>
     <p><dt>StatelessController</dt><dd>An instance of the StatelessController.</dd></p>
     
@@ -140,18 +140,18 @@ have adverse affects on the application._.</p>
 
   <section>
     <h2 class="code">getInstance</h2>
-    <p class="code">public static getInstance&lt;T&gt;(this: Controller|ModelConstructor&lt;T&gt;, register: ReduxRegister): T</p>
+    <p class="code">public static getInstance&lt;T&gt;(this: Controller|ModelConstructor&lt;T&gt;, objectiveStore: ObjectiveStore): T</p>
     <p>Gets an instance of the class, creating one if it does not yet exist.<br />This should be used as the method of instantiating controllers.</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;T&gt;</dt><dd>the controller type. Will be inferred from the class instance and does not need to be provided.</dd></p>
     <h3>Parameters</h3>
 <p><dt>this: Controller|ModelConstructor&lt;T&gt;</dt><dd>Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
-<p><dt>register: ReduxRegister</dt><dd>An instance of the ReduxRegister from which to get the controller.</dd><p>
+<p><dt>objectiveStore: ObjectiveStore</dt><dd>An instance of the ObjectiveStore from which to get the controller.</dd><p>
     <h3>Returns</h3>
     <p><dt>T</dt><dd>An instance of the controller.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-typescript">const instance = MyController.getInstance(register);</code></pre>
+<pre><code class="language-typescript">const instance = MyController.getInstance(objectiveStore);</code></pre>
 
   </section>
   
@@ -258,7 +258,7 @@ export MyController;
 
 // By firing this action, the controller will now be instantiated (if it hasn't been).
 const myAction = createAction(getActionNameForController('MY_CONTROLLER', 'MY_ACTION'));
-register.dispatch(myAction);</code></pre>
+objectiveStore.dispatch(myAction);</code></pre>
 
   </section>
   
@@ -269,7 +269,7 @@ register.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,27 +56,27 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
       <div class="padded">
         
   <section>
-    <h2 class="code">getRegisterFromSagaContext</h2>
-    <p class="code">function getRegisterFromSagaContext(): Generator&lt;any, ReduxRegister, ReduxRegister&gt;</p>
-    <p>Gets the register from the saga's context.</p>
+    <h2 class="code">getObjectiveStoreFromSagaContext</h2>
+    <p class="code">function getObjectiveStoreFromSagaContext(): Generator&lt;any, ObjectiveStore, ObjectiveStore&gt;</p>
+    <p>Gets the store from the saga's context.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>Generator<any, ReduxRegister, ReduxRegister></dt><dd>A generator that yields an instance of the ReduxRegister.</dd></p>
+    <p><dt>Generator<any, ObjectiveStore, ObjectiveStore></dt><dd>A generator that yields an instance of the ObjectiveStore.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">function* () {
-  const register = yield getRegisterFromSagaContext();
+  const store = yield getObjectiveStoreFromSagaContext();
 }</code></pre>
 
   </section>
@@ -87,7 +87,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

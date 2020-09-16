@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,37 +56,37 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
       <div class="padded">
         
-    <h1 class="code">ReduxRegister</h1>
-    <p class="code">class ReduxRegister</p>
-    <p>The ReduxRegister handles the connection of controllers, reducers, and sagas to Redux. Each ReduxRegister has its own Redux store that it manages. The register will also setup the Redux-Saga middleware, if it finds the dependency.<br />Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.</p>
+    <h1 class="code">ObjectiveStore</h1>
+    <p class="code">class ObjectiveStore</p>
+    <p>The ObjectiveStore handles the connection of controllers, reducers, and sagas to Redux. Each ObjectiveStore has its own Redux store that it manages. The store will also setup the Redux-Saga middleware, if it finds the dependency.<br />Middleware can be applied at construction. Sagas and reducers can be added at any time, as needed.</p>
     
     
     
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">public constructor(config: RegisterOptions = {}): ReduxRegister</p>
-    <p>Creates an instance of the ReduxRegister.<br />In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be setup automatically as well.</p>
+    <p class="code">public constructor(config: ObjectiveStoreOptions = {}): ObjectiveStore</p>
+    <p>Creates an instance of the ObjectiveStore.<br />In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be setup automatically as well.</p>
     
     <h3>Parameters</h3>
-<p><dt>config: RegisterOptions = {}</dt><dd>The optional configuration for the controller.<br /><br />config.initialState?: any<br /><span style="display: inline-block; margin-left: 40px;">The initial state to which the store should be initialized.</span><br />config.injector?: ReducerInjector<br /><span style="display: inline-block; margin-left: 40px;">An injector object for adding reducers and sagas to the register.</span><br />config.middleware?: Middleware&lt;any&gt;[]<br /><span style="display: inline-block; margin-left: 40px;">Middleware that should be applied to the store. This should not include saga middleware.</span><br />config.preDispatchHook?: PreDispatchHookFn<br /><span style="display: inline-block; margin-left: 40px;">A function that will be called before actions are dispatched.The function should take an action and return either null or a promise. If a promise is returned, the action will<br />be dispatched when the promise resolves.</span><br />config.reducer?: Reducer&lt;any, AnyAction&gt;<br /><span style="display: inline-block; margin-left: 40px;">The initial reducer for the store.</span><br />config.sagaContext?: any<br /><span style="display: inline-block; margin-left: 40px;">The context that should be given to sagas.</span></dd><p>
+<p><dt>config: ObjectiveStoreOptions = {}</dt><dd>The optional configuration for the controller.<br /><br />config.initialState?: any<br /><span style="display: inline-block; margin-left: 40px;">The initial state to which the store should be initialized.</span><br />config.injector?: ReducerInjector<br /><span style="display: inline-block; margin-left: 40px;">An injector object for adding reducers and sagas to the store.</span><br />config.middleware?: Middleware&lt;any&gt;[]<br /><span style="display: inline-block; margin-left: 40px;">Middleware that should be applied to the store. This should not include saga middleware.</span><br />config.preDispatchHook?: PreDispatchHookFn<br /><span style="display: inline-block; margin-left: 40px;">A function that will be called before actions are dispatched.The function should take an action and return either null or a promise. If a promise is returned, the action will<br />be dispatched when the promise resolves.</span><br />config.reducer?: Reducer&lt;any, AnyAction&gt;<br /><span style="display: inline-block; margin-left: 40px;">The initial reducer for the store.</span><br />config.sagaContext?: any<br /><span style="display: inline-block; margin-left: 40px;">The context that should be given to sagas.</span></dd><p>
     <h3>Returns</h3>
-    <p><dt>ReduxRegister</dt><dd>An instance of the ReduxRegister.</dd></p>
+    <p><dt>ObjectiveStore</dt><dd>An instance of the ObjectiveStore.</dd></p>
     <h3>Examples</h3>
 
 <pre><code class="language-typescript">// No need to setup the Redux-Saga middleware-- Objective-Redux will handle it.
-const register = new ReduxRegister();</code></pre>
+const store = new ObjectiveStore();</code></pre>
 
-<pre><code class="language-typescript">import { ReducerInjector, ReduxRegister } from 'objective-redux';
+<pre><code class="language-typescript">import { ReducerInjector, ObjectiveStore } from 'objective-redux';
 import { createInjectorsEnhancer } from 'redux-injectors';
 import { initialState, initialReducers } from './elsewhere';
 
@@ -99,7 +99,7 @@ const middleware = [
   createInjectorsEnhancer({ createReducer, runSaga }),
 ];
 
-const register = new ReduxRegister({
+const store = new ObjectiveStore({
   reducer,
   initialState,
   middleware,
@@ -120,8 +120,8 @@ const register = new ReduxRegister({
     <p><dt>AnyAction</dt><dd>The action that was sent.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-typescript">const register = new ReduxRegister();
-register.dispatch(myAction());</code></pre>
+<pre><code class="language-typescript">const store = new ObjectiveStore();
+store.dispatch(myAction());</code></pre>
 
   </section>
   
@@ -136,8 +136,8 @@ register.dispatch(myAction());</code></pre>
     <p><dt>any</dt><dd>The state object from Redux.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-">const register = new ReduxRegister();
-const state = register.getState();</code></pre>
+<pre><code class="language-">const store = new ObjectiveStore();
+const state = store.getState();</code></pre>
 
   </section>
   
@@ -145,10 +145,10 @@ const state = register.getState();</code></pre>
   <section>
     <h2 class="code">registerSaga</h2>
     <p class="code">public registerSaga(sagaFn: SagaFn&lt;void&gt;): void</p>
-    <p>Adds and and begins running a saga as part in the context of the store that the register manages.</p>
+    <p>Adds and and begins running a saga as part in the context of the store that the store manages.</p>
     
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn&lt;void&gt;</dt><dd>The saga to add to the register.</dd><p>
+<p><dt>sagaFn: SagaFn&lt;void&gt;</dt><dd>The saga to add to the store.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
@@ -157,8 +157,8 @@ const state = register.getState();</code></pre>
   yield console.log('Hello, world!');
 }
 
-const register = new ReduxRegister();
-register.registerSaga(sagaFn);</code></pre>
+const store = new ObjectiveStore();
+store.registerSaga(sagaFn);</code></pre>
 
   </section>
   
@@ -166,7 +166,7 @@ register.registerSaga(sagaFn);</code></pre>
   <section>
     <h2 class="code">replaceReducer</h2>
     <p class="code">public replaceReducer(nextReducer: Reducer&lt;any, AnyAction&gt;): void</p>
-    <p>Replaced the existing reducer with a new one.<br />Note that, by design, this will not affect reducers generated by controllers. Controller reducers are handled separately, which allows other injection mechanisms to use the register without trampling
+    <p>Replaced the existing reducer with a new one.<br />Note that, by design, this will not affect reducers generated by controllers. Controller reducers are handled separately, which allows other injection mechanisms to use the store without trampling
 the registers own lazy loading.</p>
     
     <h3>Parameters</h3>
@@ -188,8 +188,8 @@ the registers own lazy loading.</p>
     <p><dt>Unsubscribe</dt><dd>An unsubscribe function that can be called to stop listening.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-">const register = new ReduxRegister();
-const unsubscribeFn = register.subscribe(myCallback);</code></pre>
+<pre><code class="language-">const store = new ObjectiveStore();
+const unsubscribeFn = store.subscribe(myCallback);</code></pre>
 
   </section>
   
@@ -200,7 +200,7 @@ const unsubscribeFn = register.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

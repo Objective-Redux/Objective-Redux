@@ -44,8 +44,8 @@
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
+<p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
-<p><a href="reduxregister.html">ReduxRegister</a></p>
 <p><a href="sagabuilder.html">SagaBuilder</a></p>
 <p><a href="statecontroller.html">StateController</a></p>
 <p><a href="statelesscontroller.html">StatelessController</a></p><p class="nav-section">Functions</p>
@@ -56,10 +56,10 @@
 <p><a href="createaction.html">createAction</a></p>
 <p><a href="getactionnameforcontroller.html">getActionNameForController</a></p>
 <p><a href="getcontrollerfromsagacontext.html">getControllerFromSagaContext</a></p>
-<p><a href="getregisterfromsagacontext.html">getRegisterFromSagaContext</a></p>
-<p><a href="registerprovider.html">RegisterProvider</a></p>
+<p><a href="getobjectivestorefromsagacontext.html">getObjectiveStoreFromSagaContext</a></p>
+<p><a href="objectivestoreprovider.html">ObjectiveStoreProvider</a></p>
 <p><a href="usecontroller.html">useController</a></p>
-<p><a href="useregister.html">useRegister</a></p>
+<p><a href="useobjectivestore.html">useObjectiveStore</a></p>
       </div>
     </nav>
     <div id="content">
@@ -67,7 +67,7 @@
         
     <h1 class="code">SagaBuilder</h1>
     <p class="code">class SagaBuilder&lt;Payload&gt;</p>
-    <p>Builder that is returned by the [[StatelessController]] to create and register a saga.</p>
+    <p>Builder that is returned by the [[StatelessController]] to create and store a saga.</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;Payload&gt;</dt><dd>The payload that the action and the saga will use.</dd></p>
     
@@ -76,10 +76,10 @@
   <section>
     <h2 class="code">register</h2>
     <p class="code">public register(sagaFn: SagaFn&lt;Payload&gt;): ActionFn&lt;Payload&gt;</p>
-    <p>Completes the builder and adds the saga to the register.</p>
+    <p>Completes the builder and adds the saga to the objectiveStore.</p>
     
     <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ReduxRegister.</dd><p>
+<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ObjectiveStore.</dd><p>
     <h3>Returns</h3>
     <p><dt>ActionFn<Payload></dt><dd>An action for calling the saga.</dd></p>
     
@@ -118,7 +118,7 @@
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.15.2 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.16.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
