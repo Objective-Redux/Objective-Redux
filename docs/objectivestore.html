@@ -78,7 +78,7 @@
     <p>Creates an instance of the ObjectiveStore.<br />In setting up the instance, the class will create a ReduxStore. If Redux-Saga is available, tbe middleware will be setup automatically as well.</p>
     
     <h3>Parameters</h3>
-<p><dt>config: ObjectiveStoreOptions = {}</dt><dd>The optional configuration for the controller.<br /><br />config.initialState?: any<br /><span style="display: inline-block; margin-left: 40px;">The initial state to which the store should be initialized.</span><br />config.injector?: ReducerInjector<br /><span style="display: inline-block; margin-left: 40px;">An injector object for adding reducers and sagas to the store.</span><br />config.middleware?: Middleware&lt;any&gt;[]<br /><span style="display: inline-block; margin-left: 40px;">Middleware that should be applied to the store. This should not include saga middleware.</span><br />config.preDispatchHook?: PreDispatchHookFn<br /><span style="display: inline-block; margin-left: 40px;">A function that will be called before actions are dispatched.The function should take an action and return either null or a promise. If a promise is returned, the action will<br />be dispatched when the promise resolves.</span><br />config.reducer?: Reducer&lt;any, AnyAction&gt;<br /><span style="display: inline-block; margin-left: 40px;">The initial reducer for the store.</span><br />config.sagaContext?: any<br /><span style="display: inline-block; margin-left: 40px;">The context that should be given to sagas.</span></dd><p>
+<p><dt>config: ObjectiveStoreOptions = {}</dt><dd>The optional configuration for the controller.<br /><br />config.composeMiddlewareFn?: any<br /><span style="display: inline-block; margin-left: 40px;">A function used to compose the Redux middleware.</span><br />config.initialState?: any<br /><span style="display: inline-block; margin-left: 40px;">The initial state to which the store should be initialized.</span><br />config.injector?: ReducerInjector<br /><span style="display: inline-block; margin-left: 40px;">An injector object for adding reducers and sagas to the store.</span><br />config.middleware?: Middleware&lt;any&gt;[]<br /><span style="display: inline-block; margin-left: 40px;">Middleware that should be applied to the store. This should not include saga middleware.</span><br />config.preDispatchHook?: PreDispatchHookFn<br /><span style="display: inline-block; margin-left: 40px;">A function that will be called before actions are dispatched.The function should take an action and return either null or a promise. If a promise is returned, the action will<br />be dispatched when the promise resolves.</span><br />config.reducer?: Reducer&lt;any, AnyAction&gt;<br /><span style="display: inline-block; margin-left: 40px;">The initial reducer for the store.</span><br />config.sagaContext?: any<br /><span style="display: inline-block; margin-left: 40px;">The context that should be given to sagas.</span></dd><p>
     <h3>Returns</h3>
     <p><dt>ObjectiveStore</dt><dd>An instance of the ObjectiveStore.</dd></p>
     <h3>Examples</h3>
@@ -200,7 +200,7 @@ const unsubscribeFn = objectiveStore.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.17.0 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.17.1 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
