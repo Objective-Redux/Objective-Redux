@@ -63,6 +63,10 @@ interface ObjectiveStoreOptions {
    * be dispatched when the promise resolves.
    */
   preDispatchHook?: PreDispatchHookFn;
+  /**
+   * A function used to compose the Redux middleware.
+   */
+  composeMiddlewareFn?: any;
 }
 
 /**
@@ -145,6 +149,7 @@ export class ObjectiveStore {
       sagaContext = null,
       injector = new ReducerInjector(),
       preDispatchHook = defaultPreDispatchHook,
+      composeMiddlewareFn = compose,
     } = config;
 
     LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
@@ -174,7 +179,7 @@ export class ObjectiveStore {
     this.store = createStore(
       reducer || defaultReducer,
       initialState,
-      compose(
+      composeMiddlewareFn(
         applyMiddleware(...middleware),
         applyMiddleware(...internalMiddleware)
       )

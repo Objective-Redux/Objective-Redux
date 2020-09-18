@@ -123,6 +123,7 @@ describe('objective-store', () => {
         setSagaRunningFn: setSagaRunningFnMock,
       };
       const preDispatchHook = (): Promise<any> => Promise.resolve();
+      const composeMiddlewareFn = compose;
 
       const expectedMiddleware = [
         preDispatchHookMiddlewareMock,
@@ -137,6 +138,7 @@ describe('objective-store', () => {
         sagaContext,
         injector,
         preDispatchHook,
+        composeMiddlewareFn,
       });
 
       expect(objectiveStore).toBeInstanceOf(ObjectiveStore);

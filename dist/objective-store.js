@@ -98,7 +98,7 @@ var ObjectiveStore = /** @class */ (function () {
     function ObjectiveStore(config) {
         if (config === void 0) { config = {}; }
         this.registeredReducers = {};
-        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f;
+        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f, _g = config.composeMiddlewareFn, composeMiddlewareFn = _g === void 0 ? redux_1.compose : _g;
         lazy_loader_1.LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
         var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
         var internalMiddleware = [
@@ -116,7 +116,7 @@ var ObjectiveStore = /** @class */ (function () {
             internalMiddleware.push(this.sagaMiddleware);
             this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         }
-        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, redux_1.compose(redux_1.applyMiddleware.apply(void 0, middleware), redux_1.applyMiddleware.apply(void 0, internalMiddleware)));
+        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, composeMiddlewareFn(redux_1.applyMiddleware.apply(void 0, middleware), redux_1.applyMiddleware.apply(void 0, internalMiddleware)));
         this.wrapStore();
         if (reducer) {
             this.replaceReducer(reducer);

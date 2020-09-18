@@ -36,6 +36,10 @@ interface ObjectiveStoreOptions {
      * be dispatched when the promise resolves.
      */
     preDispatchHook?: PreDispatchHookFn;
+    /**
+     * A function used to compose the Redux middleware.
+     */
+    composeMiddlewareFn?: any;
 }
 /**
  * @internal
