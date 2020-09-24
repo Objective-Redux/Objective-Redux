@@ -1,7 +1,7 @@
 {
   "name": "objective-redux",
   "productName": "Objective Redux",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "An powerful Redux wrapper for easy development and management.",
   "repository": {
     "url": "git@github.com:Objective-Redux/Objective-Redux.git"
