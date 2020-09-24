@@ -104,8 +104,8 @@ describe('objective-store', () => {
         },
       });
       expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
-      expect(compose).toBeCalledWith([], expectedMiddleware);
-      expect((createStore.mock.calls[0] as any)[2]).toEqual([[], expectedMiddleware]);
+      expect(compose).toBeCalledWith(expectedMiddleware);
+      expect((createStore.mock.calls[0] as any)[2]).toEqual([expectedMiddleware]);
       expect(setGetObjectiveReduxReducers).toHaveBeenCalled();
       expect(setSagaRunningFn).toHaveBeenCalled();
     });
@@ -152,7 +152,7 @@ describe('objective-store', () => {
       expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
       expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([
-        initialMiddleware,
+        ...initialMiddleware,
         expectedMiddleware,
       ]);
       expect(setGetObjectiveReduxReducersMock).toHaveBeenCalled();

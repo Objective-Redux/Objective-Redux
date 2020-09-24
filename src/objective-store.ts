@@ -180,7 +180,7 @@ export class ObjectiveStore {
       reducer || defaultReducer,
       initialState,
       composeMiddlewareFn(
-        applyMiddleware(...middleware),
+        ...middleware,
         applyMiddleware(...internalMiddleware)
       )
     );
