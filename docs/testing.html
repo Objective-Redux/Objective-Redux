@@ -65,63 +65,49 @@
     </nav>
     <div id="content">
       <div class="padded">
-        
-    <h1 class="code">ComponentConnector</h1>
-    <p class="code">class ComponentConnector</p>
-    <p>Builder that connections a React component to the Objective Redux store, allowing the component to use the states and dispatch events.<br />This provides the React component with an `objectiveStore` prop, which is an instance of the ObjectiveStore connected to the components closest provided ancestor. It also provides props from the states that were added.
+        <h1>Testing</h1>
 
-As an alternative for functional components, the useObjectiveStore hook can be used to get the ObjectiveStore.</p>
-    
-    <h3>Examples</h3>
+<p>Test helper classes for the controllers are provided in objective-redux/dist/test. For convenience, the index file also re-exports all files from the base objective-redux index.</p>
 
-<pre><code class="language-typescript">export default ComponentConnector
-  .addPropsTo(MyReactComponent)
-  .from(MyStateControllerOne)
-  .from(MyStateControllerTwo, slice =&gt; ({ a: slice.a }))
-  .connect();</code></pre>
+<h2>Setting up the Mocks</h2>
 
-    
-    
-  <section>
-    <h2 class="code">connect</h2>
-    <p class="code">public connect(): ComponentClass</p>
-    <p>Finishes the builder and provides the connected component.</p>
-    
-    
-    <h3>Returns</h3>
-    <p><dt>ComponentClass</dt><dd>The connected React component.</dd></p>
-    
-  </section>
-  
+<p>Using your mocking framework, you can map the test exports to the original exports.</p>
 
-  <section>
-    <h2 class="code">from</h2>
-    <p class="code">public from&lt;C&gt;(controller: Class&lt;C&gt;, selector: StateSelectorFn&lt;C&gt;|null = null): ComponentConnector</p>
-    <p>Gets parameters from the specified StateController and injects them into the properties of the component.</p>
-    <h3>Template Parameters</h3>
-<p><dt>&lt;C&gt;</dt><dd>The state controller class being connected. Will be inferred from the first parameter.</dd></p>
-    <h3>Parameters</h3>
-<p><dt>controller: Class&lt;C&gt;</dt><dd>The state controller from which properties will be extracted.</dd><p>
-<p><dt>selector: StateSelectorFn&lt;C&gt;|null = null</dt><dd>An optional mapping function.</dd><p>
-    <h3>Returns</h3>
-    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.</dd></p>
-    
-  </section>
-  
+<p>For example, using Jest:</p>
 
-  <section>
-    <h2 class="code">addPropsTo</h2>
-    <p class="code">public static addPropsTo(component: ComponentClass): ComponentConnector</p>
-    <p>Starts the builder for a React component.</p>
+<pre><code class="language-typescript">
+jest.mock('objective-redux', () => {
+  const mockObjectiveRedux = require('objective-redux/dist/test');
+  return {
+    ...mockObjectiveRedux,
+  };
+});
+</code></pre>
+
+<h2>StatelessController Test Helper</h2>
+
+<p>The StatelessController test mock will wire a decorator saga in place of the action.</p>
+
+<pre><code class="language-typescript">
+  it('has the correct configuration', () => {
+    // The actions now point directly to the saga that was passed into the register function
+    // In addition, the function has been decorated with additional properties provided when built
+    const controller: any = new MyStatelessController(objectiveStoreMock);
+    expect(controller.myAction.actionName).toEqual('MyActionName'); // Ensure the value of withAddressableName was used
+    expect(controller.myAction.effectType).toEqual('TAKE_EVERY'); // Ensure that the configureTakeEvery was used
+  });
+
+  it('calls saga correctly', () => {
+    const payload = { foo: 'bar' };
+    const controller = new MyStatelessController(objectiveStoreMock);
     
-    <h3>Parameters</h3>
-<p><dt>component: ComponentClass</dt><dd>The React component to which the props will be added.</dd><p>
-    <h3>Returns</h3>
-    <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.</dd></p>
-    
-  </section>
-  
-  
+    // The action points directly to the generator function passed into the register method
+    const saga: any = controller.myAction({ payload });
+    // We can now verify the generator function directly
+    saga.next();
+    expect(myInternalFunction).toBeCalledWith(myParams);
+  });
+</code></pre>
       </div>
     </div>
   </div>

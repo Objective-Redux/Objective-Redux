@@ -1,0 +1,43 @@
+<h1>Testing</h1>
+
+<p>Test helper classes for the controllers are provided in objective-redux/dist/test. For convenience, the index file also re-exports all files from the base objective-redux index.</p>
+
+<h2>Setting up the Mocks</h2>
+
+<p>Using your mocking framework, you can map the test exports to the original exports.</p>
+
+<p>For example, using Jest:</p>
+
+<pre><code class="language-typescript">
+jest.mock('objective-redux', () => {
+  const mockObjectiveRedux = require('objective-redux/dist/test');
+  return {
+    ...mockObjectiveRedux,
+  };
+});
+</code></pre>
+
+<h2>StatelessController Test Helper</h2>
+
+<p>The StatelessController test mock will wire a decorator saga in place of the action.</p>
+
+<pre><code class="language-typescript">
+  it('has the correct configuration', () => {
+    // The actions now point directly to the saga that was passed into the register function
+    // In addition, the function has been decorated with additional properties provided when built
+    const controller: any = new MyStatelessController(objectiveStoreMock);
+    expect(controller.myAction.actionName).toEqual('MyActionName'); // Ensure the value of withAddressableName was used
+    expect(controller.myAction.effectType).toEqual('TAKE_EVERY'); // Ensure that the configureTakeEvery was used
+  });
+
+  it('calls saga correctly', () => {
+    const payload = { foo: 'bar' };
+    const controller = new MyStatelessController(objectiveStoreMock);
+    
+    // The action points directly to the generator function passed into the register method
+    const saga: any = controller.myAction({ payload });
+    // We can now verify the generator function directly
+    saga.next();
+    expect(myInternalFunction).toBeCalledWith(myParams);
+  });
+</code></pre>
