@@ -1,0 +1,1 @@
+{"version":3,"file":"stateless-controller-mock.d.ts","sourceRoot":"","sources":["../../src/test/stateless-controller-mock.ts"],"names":[],"mappings":"AAUA,OAAO,EAAE,mBAAmB,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC;AAE1E,qBAAa,uBAAwB,SAAQ,mBAAmB;IAC9D,SAAS,CAAC,SAAS,CAAC,OAAO,EAAE,MAAM,EAAE,UAAU,GAAG,GAAG;CActD"}

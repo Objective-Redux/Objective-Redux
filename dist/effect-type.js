@@ -50,16 +50,18 @@ var get_redux_saga_module_1 = require("./get-redux-saga-module");
  */
 function configureTakeLatest() {
     var effects = get_redux_saga_module_1.getReduxSagaEffects();
-    return function (config) { return function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, effects.takeLatest(config.name, config.sagaFn)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }; };
+    return function TAKE_LATEST(config) {
+        return function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, effects.takeLatest(config.name, config.sagaFn)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        };
+    };
 }
 exports.configureTakeLatest = configureTakeLatest;
 /**
@@ -74,16 +76,18 @@ exports.configureTakeLatest = configureTakeLatest;
  */
 function configureTakeEvery() {
     var effects = get_redux_saga_module_1.getReduxSagaEffects();
-    return function (config) { return function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, effects.takeEvery(config.name, config.sagaFn)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }; };
+    return function TAKE_EVERY(config) {
+        return function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, effects.takeEvery(config.name, config.sagaFn)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        };
+    };
 }
 exports.configureTakeEvery = configureTakeEvery;
 /**
@@ -98,16 +102,18 @@ exports.configureTakeEvery = configureTakeEvery;
  */
 function configureTakeLeading() {
     var effects = get_redux_saga_module_1.getReduxSagaEffects();
-    return function (config) { return function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, effects.takeLeading(config.name, config.sagaFn)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }; };
+    return function TAKE_LEADING(config) {
+        return function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, effects.takeLeading(config.name, config.sagaFn)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        };
+    };
 }
 exports.configureTakeLeading = configureTakeLeading;
 /**
@@ -123,16 +129,18 @@ exports.configureTakeLeading = configureTakeLeading;
  */
 function configureDebounce(debounceConfig) {
     var effects = get_redux_saga_module_1.getReduxSagaEffects();
-    return function (config) { return function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, effects.debounce((debounceConfig === null || debounceConfig === void 0 ? void 0 : debounceConfig.debounceTime) || 0, config.name, config.sagaFn)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }; };
+    return function DEBOUNCE(config) {
+        return function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, effects.debounce((debounceConfig === null || debounceConfig === void 0 ? void 0 : debounceConfig.debounceTime) || 0, config.name, config.sagaFn)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        };
+    };
 }
 exports.configureDebounce = configureDebounce;
 // export function configureTake(): TakeBuilder {

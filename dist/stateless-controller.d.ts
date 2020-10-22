@@ -5,7 +5,7 @@ import { EffectBuilder } from './effect-type';
 /**
  * @internal
  */
-interface SagaConfig {
+export interface SagaConfig {
     name: string | null;
     effectBuilder: EffectBuilder | null;
     sagaFn: SagaFn<any>;
@@ -91,7 +91,6 @@ export declare abstract class StatelessController extends Controller {
      * @returns A builder that registers the saga.
      */
     protected createSaga<Payload>(): SagaBuilder<Payload>;
-    private buildSaga;
+    protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload>;
 }
-export {};
 //# sourceMappingURL=stateless-controller.d.ts.map

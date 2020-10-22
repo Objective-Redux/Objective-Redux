@@ -45,8 +45,10 @@ export interface EffectBuilder {
  */
 export function configureTakeLatest(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
-    yield effects.takeLatest(config.name, config.sagaFn);
+  return function TAKE_LATEST(config: SagaEffectConfig): (() => Generator) {
+    return function* (): any {
+      yield effects.takeLatest(config.name, config.sagaFn);
+    };
   };
 }
 
@@ -62,8 +64,10 @@ export function configureTakeLatest(): EffectBuilder {
  */
 export function configureTakeEvery(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
-    yield effects.takeEvery(config.name, config.sagaFn);
+  return function TAKE_EVERY(config: SagaEffectConfig): (() => Generator) {
+    return function* (): any {
+      yield effects.takeEvery(config.name, config.sagaFn);
+    };
   };
 }
 
@@ -79,8 +83,10 @@ export function configureTakeEvery(): EffectBuilder {
  */
 export function configureTakeLeading(): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
-    yield effects.takeLeading(config.name, config.sagaFn);
+  return function TAKE_LEADING(config: SagaEffectConfig): (() => Generator) {
+    return function* (): any {
+      yield effects.takeLeading(config.name, config.sagaFn);
+    };
   };
 }
 
@@ -97,8 +103,10 @@ export function configureTakeLeading(): EffectBuilder {
  */
 export function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBuilder {
   const effects = getReduxSagaEffects();
-  return (config: SagaEffectConfig): (() => Generator) => function* (): any {
-    yield effects.debounce(debounceConfig?.debounceTime || 0, config.name, config.sagaFn);
+  return function DEBOUNCE(config: SagaEffectConfig): (() => Generator) {
+    return function* (): any {
+      yield effects.debounce(debounceConfig?.debounceTime || 0, config.name, config.sagaFn);
+    };
   };
 }
 

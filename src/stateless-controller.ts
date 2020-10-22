@@ -16,7 +16,7 @@ import { EffectBuilder } from './effect-type';
 /**
  * @internal
  */
-interface SagaConfig {
+export interface SagaConfig {
   name: string|null;
   effectBuilder: EffectBuilder|null;
   sagaFn: SagaFn<any>;
@@ -134,7 +134,7 @@ export abstract class StatelessController extends Controller {
     return new SagaBuilder<Payload>(this.buildSaga.bind(this));
   }
 
-  private buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
+  protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
     const name = this.createActionName(config.name);
 
     let { sagaFn } = config;
