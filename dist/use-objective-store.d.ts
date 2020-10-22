@@ -1,4 +1,4 @@
-import { ObjectiveStore } from '.';
+import { ObjectiveStore } from './objective-store';
 /**
  * Gets the ObjectiveStore from the React context for use in a functional component.
  *

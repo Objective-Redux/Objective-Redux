@@ -10,6 +10,9 @@
 
 import { StatelessController, SagaConfig } from '../stateless-controller';
 
+/**
+ * @internal
+ */
 export class StatelessControllerMock extends StatelessController {
   protected buildSaga<Payload>(config: SagaConfig): any {
     const {

@@ -21,10 +21,9 @@ import {
 import { Action } from './action';
 import { LazyLoader } from './lazy-loader';
 import { getReduxSagaModule } from './get-redux-saga-module';
-import { defaultReducer } from './reducer-injector';
+import { ReducerInjector, defaultReducer } from './reducer-injector';
 import { lazyLoadingMiddleware } from './lazy-loading-middleware';
 import { preDispatchHookMiddleware } from './pre-dispatch-hook-middleware';
-import { ReducerInjector } from '.';
 
 /**
  * @internal

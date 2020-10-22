@@ -24,6 +24,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatelessControllerMock = void 0;
 var stateless_controller_1 = require("../stateless-controller");
+/**
+ * @internal
+ */
 var StatelessControllerMock = /** @class */ (function (_super) {
     __extends(StatelessControllerMock, _super);
     function StatelessControllerMock() {

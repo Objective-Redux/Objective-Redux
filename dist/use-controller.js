@@ -10,7 +10,7 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useController = void 0;
-var _1 = require("./");
+var use_objective_store_1 = require("./use-objective-store");
 /**
  * Gets a controller from the ObjectiveStore using hook.
  *
@@ -35,7 +35,7 @@ var _1 = require("./");
  * ```
  */
 exports.useController = function (controller) {
-    var objectiveStore = _1.useObjectiveStore();
+    var objectiveStore = use_objective_store_1.useObjectiveStore();
     if (!objectiveStore) {
         return null;
     }

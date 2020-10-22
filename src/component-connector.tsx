@@ -11,7 +11,8 @@
 import * as React from 'react';
 import { Unsubscribe } from 'redux';
 import { ObjectiveStoreProviderContext } from './context';
-import { StateController, ObjectiveStore } from './';
+import { ObjectiveStore } from './objective-store';
+import { StateController } from './state-controller';
 
 /**
  * @internal

@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import { getReduxSagaEffects } from './get-redux-saga-module';
-import { ObjectiveStore } from '.';
+import { ObjectiveStore } from './objective-store';
 
 /**
  * Gets the ObjectiveStore instance from the saga's context.

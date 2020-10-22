@@ -45,7 +45,6 @@ var get_redux_saga_module_1 = require("./get-redux-saga-module");
 var reducer_injector_1 = require("./reducer-injector");
 var lazy_loading_middleware_1 = require("./lazy-loading-middleware");
 var pre_dispatch_hook_middleware_1 = require("./pre-dispatch-hook-middleware");
-var _1 = require(".");
 /* istanbul ignore next */
 // eslint-disable-next-line jsdoc/require-description, jsdoc/require-returns
 /**
@@ -105,7 +104,7 @@ var ObjectiveStore = /** @class */ (function () {
     function ObjectiveStore(config) {
         if (config === void 0) { config = {}; }
         this.registeredReducers = {};
-        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new _1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f, _g = config.composeMiddlewareFn, composeMiddlewareFn = _g === void 0 ? redux_1.compose : _g;
+        var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new reducer_injector_1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f, _g = config.composeMiddlewareFn, composeMiddlewareFn = _g === void 0 ? redux_1.compose : _g;
         lazy_loader_1.LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
         var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
         var internalMiddleware = [

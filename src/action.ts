@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ObjectiveStore } from './';
+import { ObjectiveStore } from './objective-store';
 
 /**
  * @internal

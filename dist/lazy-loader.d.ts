@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { Controller, ModelConstructor } from './controller';
-import { ObjectiveStore } from '.';
+import { ObjectiveStore } from './objective-store';
 /**
  * @internal
  */

@@ -1,4 +1,4 @@
-import { ObjectiveStore } from './';
+import { ObjectiveStore } from './objective-store';
 /**
  * @internal
  */

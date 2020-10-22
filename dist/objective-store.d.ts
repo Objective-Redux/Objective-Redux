@@ -1,6 +1,6 @@
 import { Middleware, AnyAction, Unsubscribe } from 'redux';
 import { Action } from './action';
-import { ReducerInjector } from '.';
+import { ReducerInjector } from './reducer-injector';
 /**
  * @internal
  */

@@ -9,7 +9,7 @@
 // ================================================================================================
 
 import { Controller, ModelConstructor } from './controller';
-import { useObjectiveStore } from './';
+import { useObjectiveStore } from './use-objective-store';
 
 /**
  * Gets a controller from the ObjectiveStore using hook.

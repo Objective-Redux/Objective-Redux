@@ -10,7 +10,7 @@
 
 import * as React from 'react';
 import { ObjectiveStoreProviderContext } from './context';
-import { ObjectiveStore } from '.';
+import { ObjectiveStore } from './objective-store';
 
 /**
  * Provides an ObjectiveStore to child React components.

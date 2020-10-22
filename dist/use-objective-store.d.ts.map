@@ -1,1 +1,1 @@
-{"version":3,"file":"use-objective-store.d.ts","sourceRoot":"","sources":["../src/use-objective-store.ts"],"names":[],"mappings":"AAkBA,OAAO,EAAE,cAAc,EAAE,MAAM,GAAG,CAAC;AAEnC;;;;;;;;;;;;;;;;;;;;;GAqBG;AACH,eAAO,MAAM,iBAAiB,QAAO,cAAc,GAAC,IAanD,CAAC"}
+{"version":3,"file":"use-objective-store.d.ts","sourceRoot":"","sources":["../src/use-objective-store.ts"],"names":[],"mappings":"AAkBA,OAAO,EAAE,cAAc,EAAE,MAAM,mBAAmB,CAAC;AAEnD;;;;;;;;;;;;;;;;;;;;;GAqBG;AACH,eAAO,MAAM,iBAAiB,QAAO,cAAc,GAAC,IAanD,CAAC"}

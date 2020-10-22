@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ObjectiveStore } from '.';
+import { ObjectiveStore } from './objective-store';
 /**
  * Provides an ObjectiveStore to child React components.
  *

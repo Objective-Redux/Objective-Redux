@@ -11,7 +11,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
 var lazy_loader_1 = require("./lazy-loader");
-var _1 = require("./");
+var action_1 = require("./action");
 /**
  * @internal
  */
@@ -99,7 +99,7 @@ var Controller = /** @class */ (function () {
         var actionName = name || "" + this.count++;
         var controllerName = this.constructor.getName();
         var controllerNamespace = this.constructor.getNamespace() || '';
-        return _1.getActionNameForController(controllerName, actionName, controllerNamespace);
+        return action_1.getActionNameForController(controllerName, actionName, controllerNamespace);
     };
     /**
      * Gets an instance of the class, creating one if it does not yet exist.

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ObjectiveStore } from './';
+import { ObjectiveStore } from './objective-store';
 /**
  * @internal
  */

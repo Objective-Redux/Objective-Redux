@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StateController } from './';
+import { StateController } from './state-controller';
 /**
  * @internal
  */

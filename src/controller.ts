@@ -9,7 +9,8 @@
 // ================================================================================================
 
 import { LazyLoader } from './lazy-loader';
-import { ObjectiveStore, getActionNameForController } from './';
+import { ObjectiveStore } from './objective-store';
+import { getActionNameForController } from './action';
 
 /**
  * @internal
