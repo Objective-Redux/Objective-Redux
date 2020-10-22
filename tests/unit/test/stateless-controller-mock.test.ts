@@ -8,13 +8,13 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StatelessControllerMock } from '../../../src/test/index';
+import { StatelessController } from '../../../src/test/index';
 import { configureTakeEvery } from '../../../dist';
 
 describe('StatelessControllerMock', () => {
   describe('buildSaga', () => {
     it('returns full data', () => {
-      const controller: any = new StatelessControllerMock({} as any);
+      const controller: any = new StatelessController({} as any);
       const sagaFn = (): any => {};
       const mockFn = controller.buildSaga({
         name: 'TEST',
@@ -27,7 +27,7 @@ describe('StatelessControllerMock', () => {
     });
 
     it('returns partial data', () => {
-      const controller: any = new StatelessControllerMock({} as any);
+      const controller: any = new StatelessController({} as any);
       const sagaFn = (): any => {};
       const mockFn = controller.buildSaga({
         sagaFn,
