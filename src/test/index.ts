@@ -12,11 +12,11 @@
 
 // Mocked
 export { StatelessControllerMock as StatelessController } from './stateless-controller-mock';
+export { StateControllerMock as StateController } from './state-controller-mock';
 
 // Real
 export { ObjectiveStore } from '../objective-store';
 export { ReducerInjector } from '../reducer-injector';
-export { StateController } from '../state-controller';
 export { createAction, getActionNameForController } from '../action';
 export { ObjectiveStoreProvider } from '../objective-store-provider';
 export { ComponentConnector } from '../component-connector';
