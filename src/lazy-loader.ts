@@ -101,18 +101,25 @@ export class LazyLoader {
     const namespace = ControllerClass.getNamespace() || '';
     const controllerMap: ControllerInstanceMap<any> = this.controllers.get(objectiveStore) as any;
 
-    if (controllerMap[namespace] == null) {
-      controllerMap[namespace] = {};
-    }
+    /* istanbul ignore else */
+    if (controllerMap) {
+      if (controllerMap[namespace] == null) {
+        controllerMap[namespace] = {};
+      }
 
-    const existing = controllerMap[namespace][name];
+      const existing = controllerMap[namespace][name];
 
-    if (existing) {
-      return existing;
+      if (existing) {
+        return existing;
+      }
     }
 
     const instance: any = new ControllerClass(objectiveStore);
-    controllerMap[namespace][name] = instance;
+
+    /* istanbul ignore else */
+    if (controllerMap) {
+      controllerMap[namespace][name] = instance;
+    }
 
     if (instance.reducer) {
       (this.reducerFns.get(objectiveStore) as any)(instance);
