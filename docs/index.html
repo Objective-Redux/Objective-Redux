@@ -166,10 +166,12 @@ export class SwitchStateController extends StateController {
 <h2 id="powerful-code-splitting-and-lazy-loading">Powerful code splitting and lazy loading</h2>
 <h3 id="get-the-pieces-of-state-you-need-when-you-need-them">Get the pieces of state you need, when you need them</h3>
 <p>Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what’s in it, leaving you free to move parts around as needed.</p>
-<p>You can even use the pre-dispatch hook to load bundles when an action is fired. This allows you to fire actions that target controllers that haven’t been downloaded, yet.</p>
-<p>See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> topic in the documentation for more.</p>
 <img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/lazy.png" alt="Lazy load reducers and controller when you need them" style="height: 200px;" />
 
+<p>You can even use the pre-dispatch hook to load bundles when an action is fired. This allows you to fire actions that target controllers that haven’t been downloaded, yet.</p>
+<img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/pre-dispatch-hook.png" alt="Load bundles at runtime when an action targets a controller in the bundle" style="height: 200px;" />
+
+<p>See the <a href="https://objective-redux.github.io/Objective-Redux/code-splitting.html">Code Splitting</a> and <a href="https://objective-redux.github.io/Objective-Redux/lazy-loading-webpack-modules.html">Lazy Loading</a> topics in the documentation for more.</p>
 <br />
 
 <h2 id="organize-your-state">Organize your state</h2>

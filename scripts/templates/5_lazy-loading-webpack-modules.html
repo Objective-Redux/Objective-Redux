@@ -2,6 +2,8 @@
 
 <p>Objective-Redux makes it simple to dynamically load webpack modules, connect their controllers, and fire actions.</p>
 
+<p><img src="https://github.com/Objective-Redux/Objective-Redux/raw/master/statics/pre-dispatch-hook.png" alt="Load bundles at runtime when an action targets a controller in the bundle" style="height: 200px;" /></p>
+
 <p>For example, suppose that you want to render a modal when the user clicks on a button, but you don't want to include the modal and its associated controllers on page load. Objective-Redux can listen to the action the button fires, load the webpack module that handles the action, then handle the action normally.</p>
 
 <p>As a pre-requisite, you'll need to <a href="./code-splitting.html">code split</a> the controller(s) that will be bundled and targeted separately.</p>
