@@ -42,15 +42,21 @@ var LazyLoader = /** @class */ (function () {
         var name = ControllerClass.getName();
         var namespace = ControllerClass.getNamespace() || '';
         var controllerMap = this.controllers.get(objectiveStore);
-        if (controllerMap[namespace] == null) {
-            controllerMap[namespace] = {};
-        }
-        var existing = controllerMap[namespace][name];
-        if (existing) {
-            return existing;
+        /* istanbul ignore else */
+        if (controllerMap) {
+            if (controllerMap[namespace] == null) {
+                controllerMap[namespace] = {};
+            }
+            var existing = controllerMap[namespace][name];
+            if (existing) {
+                return existing;
+            }
         }
         var instance = new ControllerClass(objectiveStore);
-        controllerMap[namespace][name] = instance;
+        /* istanbul ignore else */
+        if (controllerMap) {
+            controllerMap[namespace][name] = instance;
+        }
         if (instance.reducer) {
             this.reducerFns.get(objectiveStore)(instance);
         }
