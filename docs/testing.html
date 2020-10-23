@@ -84,9 +84,27 @@ jest.mock('objective-redux', () => {
 });
 </code></pre>
 
+<h2>StateController Test Helper</h2>
+
+<p>The StateController test mock will return a decorated mutator in place of an action.</p>
+
+<pre><code class="language-typescript">
+it('returns the mutation function when withAddressableName is not called', () => {
+  const controller: any = new MyStateController();
+  expect(controller.myAction).toEqual(testMutationOne);
+  expect(controller.myAction.actionName).toBeUndefined();
+});
+
+it('returns the mutation function when withAddressableName is called', () => {
+  const controller: any = new MyStateController();
+  expect(controller.myActionWithName).toEqual(testMutationTwo);
+  expect(controller.myActionWithName.actionName).toEqual(testName);
+});
+</code></pre>
+
 <h2>StatelessController Test Helper</h2>
 
-<p>The StatelessController test mock will wire a decorator saga in place of the action.</p>
+<p>The StatelessController test mock will return a decorator saga in place of the action.</p>
 
 <pre><code class="language-typescript">
   it('has the correct configuration', () => {
@@ -114,7 +132,7 @@ jest.mock('objective-redux', () => {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.18.1 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.18.2 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

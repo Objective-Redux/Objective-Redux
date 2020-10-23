@@ -13,13 +13,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Mocked
 var stateless_controller_mock_1 = require("./stateless-controller-mock");
 Object.defineProperty(exports, "StatelessController", { enumerable: true, get: function () { return stateless_controller_mock_1.StatelessControllerMock; } });
+var state_controller_mock_1 = require("./state-controller-mock");
+Object.defineProperty(exports, "StateController", { enumerable: true, get: function () { return state_controller_mock_1.StateControllerMock; } });
 // Real
 var objective_store_1 = require("../objective-store");
 Object.defineProperty(exports, "ObjectiveStore", { enumerable: true, get: function () { return objective_store_1.ObjectiveStore; } });
 var reducer_injector_1 = require("../reducer-injector");
 Object.defineProperty(exports, "ReducerInjector", { enumerable: true, get: function () { return reducer_injector_1.ReducerInjector; } });
-var state_controller_1 = require("../state-controller");
-Object.defineProperty(exports, "StateController", { enumerable: true, get: function () { return state_controller_1.StateController; } });
 var action_1 = require("../action");
 Object.defineProperty(exports, "createAction", { enumerable: true, get: function () { return action_1.createAction; } });
 Object.defineProperty(exports, "getActionNameForController", { enumerable: true, get: function () { return action_1.getActionNameForController; } });
