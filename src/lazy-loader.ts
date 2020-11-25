@@ -11,6 +11,7 @@
 import { AnyAction } from 'redux';
 import { Controller, ModelConstructor } from './controller';
 import { ObjectiveStore } from './objective-store';
+import { StatelessController } from './stateless-controller';
 
 /**
  * @internal
@@ -49,12 +50,26 @@ type ObjectiveStoreToLoadedControllers<T extends Controller> =
 /**
  * @internal
  */
-type RegisterReducerFn = (controller: any) => void;
+type ReducerHandlingFn = (controller: any) => void;
 
 /**
  * @internal
  */
-type RegisterReducerFnMap = WeakMap<ObjectiveStore, RegisterReducerFn>;
+type SagaCancelingFn = (statelessController: StatelessController) => void;
+
+/**
+ * @internal
+ */
+interface StoreHandlingFns {
+  registerReducerFn: ReducerHandlingFn;
+  unregisterReducerFn: ReducerHandlingFn;
+  cancelSagasForController: SagaCancelingFn;
+}
+
+/**
+ * @internal
+ */
+type StoreFnsMap = WeakMap<ObjectiveStore, StoreHandlingFns>;
 
 /**
  * @internal
@@ -62,7 +77,7 @@ type RegisterReducerFnMap = WeakMap<ObjectiveStore, RegisterReducerFn>;
 export class LazyLoader {
   private static readonly loadableControllers: NamespacedControllerMap = {};
 
-  private static readonly reducerFns: RegisterReducerFnMap = new WeakMap();
+  private static readonly storeFns: StoreFnsMap = new WeakMap();
 
   private static readonly controllers: ObjectiveStoreToLoadedControllers<any> = new WeakMap();
 
@@ -87,8 +102,8 @@ export class LazyLoader {
     return controller;
   }
 
-  public static addObjectiveStore(objectiveStore: ObjectiveStore, registerReducerFn: RegisterReducerFn): void {
-    this.reducerFns.set(objectiveStore, registerReducerFn);
+  public static addObjectiveStore(objectiveStore: ObjectiveStore, storeFns: StoreHandlingFns): void {
+    this.storeFns.set(objectiveStore, storeFns);
     this.controllers.set(objectiveStore, {});
   }
 
@@ -122,9 +137,30 @@ export class LazyLoader {
     }
 
     if (instance.reducer) {
-      (this.reducerFns.get(objectiveStore) as any)(instance);
+      (this.storeFns.get(objectiveStore) as any).registerReducerFn(instance);
     }
 
     return instance;
+  }
+
+  public static removeController<T extends Controller>(
+    objectiveStore: ObjectiveStore,
+    ControllerClass: ModelConstructor<T> & typeof Controller
+  ): void {
+    const name = ControllerClass.getName();
+    const namespace = ControllerClass.getNamespace() || '';
+    const controllerMap: ControllerInstanceMap<any> = this.controllers.get(objectiveStore) || {};
+
+    if (controllerMap[namespace] != null && controllerMap[namespace][name] != null) {
+      const existing: any = controllerMap[namespace][name];
+
+      if (existing.reducer) {
+        (this.storeFns.get(objectiveStore) as any).unregisterReducerFn(existing);
+      } else {
+        (this.storeFns.get(objectiveStore) as any).cancelSagasForController(existing);
+      }
+
+      delete controllerMap[namespace][name];
+    }
   }
 }

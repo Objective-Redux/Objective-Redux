@@ -1,6 +1,7 @@
 import { Middleware, AnyAction, Unsubscribe } from 'redux';
 import { Action } from './action';
 import { ReducerInjector } from './reducer-injector';
+import { StatelessController } from './stateless-controller';
 /**
  * @internal
  */
@@ -58,6 +59,7 @@ export declare class ObjectiveStore {
     private readonly sagaMiddleware;
     private readonly injector;
     private readonly registeredReducers;
+    private readonly registeredSagas;
     /**
      * Creates an instance of the ObjectiveStore.
      *
@@ -144,6 +146,9 @@ export declare class ObjectiveStore {
      */
     getState(): any;
     private addControllerReducer;
+    private removeControllerReducer;
+    private useControllerReducer;
+    private cancelSagasForController;
     /**
      * Replaced the existing reducer with a new one.
      *
@@ -157,7 +162,12 @@ export declare class ObjectiveStore {
     /**
      * Adds and and begins running a saga as part in the context of the store that the store manages.
      *
+     * Note: This method should not be called manually for StatelessControllers! The controller will handle this call on
+     * its own when the controller is first initialized.
+     *
      * @param sagaFn The saga to add to the store.
+     * @param statelessController The StatelessController from which the saga is originating, or null if it does not come
+     * from a StatelessController.
      * @example
      * ```typescript
      * function* sagaFn() {
@@ -168,7 +178,7 @@ export declare class ObjectiveStore {
      * objectiveStore.registerSaga(sagaFn);
      * ```
      */
-    registerSaga(sagaFn: SagaFn<void>): void;
+    registerSaga(sagaFn: SagaFn<void>, statelessController?: StatelessController | null): void;
 }
 export {};
 //# sourceMappingURL=objective-store.d.ts.map

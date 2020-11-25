@@ -14,12 +14,17 @@ import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import ConnectedComponent from './connected-component';
 import HookComponent from './hook-component';
 import ReactReduxComponent from './react-redux-component';
+import { SwitchStateController } from './store/switch-state-controller';
+import { SwitchStateSagas } from './store/switch-state-sagas';
 
 export const objectiveStore = new ObjectiveStore({
   sagaContext: {
     test: 'Some Value',
   },
 });
+
+const removeStateController = () => SwitchStateController.removeInstance(objectiveStore);
+const removeStatelessController = () => SwitchStateSagas.removeInstance(objectiveStore);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,6 +33,11 @@ ReactDOM.render(
         <ConnectedComponent />
         <HookComponent />
         <ReactReduxComponent />
+        <button id="removeStateController" onClick={removeStateController}>Remove StateController</button>
+        <br />
+        <button id="removeStatelessController" onClick={removeStatelessController}>Remove StatelessController</button>
+        <br />
+        <p id="statelessConstructorCount" />
       </Provider>
     </ObjectiveStoreProvider>
   </React.StrictMode>,

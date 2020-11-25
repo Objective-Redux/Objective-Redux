@@ -22,9 +22,12 @@ jest.mock('redux-saga/effects', () => ({
 }));
 
 const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
+const removeController = jest.fn();
+
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     getController,
+    removeController,
   },
 }));
 
@@ -80,6 +83,14 @@ describe('stateless-controller', () => {
       const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);
       expect(instance).toBeInstanceOf(TestController);
+    });
+  });
+
+  describe('removeInstance', () => {
+    it('removes instance from ObjectiveStore', () => {
+      const objectiveStoreMock: any = { };
+      TestController.removeInstance(objectiveStoreMock);
+      expect(removeController).toBeCalledTimes(1);
     });
   });
 
@@ -173,7 +184,7 @@ describe('stateless-controller', () => {
       const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
         .register(testSaga);
-      expect(registerSaga).toHaveBeenCalledWith(testSaga);
+      expect(registerSaga).toHaveBeenCalledWith(testSaga, instance);
     });
   });
 });

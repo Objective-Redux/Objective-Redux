@@ -196,7 +196,7 @@ export abstract class StateController<State> extends Controller {
      * @returns The action producing function for calling the mutating function.
      */
     actionFn.withAddressableName = (name: string): ActionFn<Payload> => {
-      this.reducerMap[actionName] = null;
+      delete this.reducerMap[actionName];
       const addressableActionName = this.createActionName(name);
       this.reducerMap[addressableActionName] = fn;
       return createConnectedAction<Payload>(addressableActionName, this.objectiveStore);

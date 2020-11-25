@@ -10,8 +10,14 @@
 
 import { LazyLoader } from '../../src/lazy-loader';
 
-const mockController: any = {
+const mockControllerWithReducer: any = {
   getName: () => 'TEST-CONTROLLER',
+  getNamespace: () => null,
+  reducer: {},
+};
+
+const mockControllerWithSaga: any = {
+  getName: () => 'TEST-CONTROLLER-SAGA',
   getNamespace: () => null,
 };
 
@@ -20,7 +26,8 @@ const namespacedMockController: any = {
   getNamespace: () => 'NAMESPACE',
 };
 
-LazyLoader.registerController(mockController);
+LazyLoader.registerController(mockControllerWithReducer);
+LazyLoader.registerController(mockControllerWithSaga);
 LazyLoader.registerController(namespacedMockController);
 
 describe('LazyLoader', () => {
@@ -41,7 +48,7 @@ describe('LazyLoader', () => {
       const controller = LazyLoader.getControllerForAction({
         type: 'OBJECTIVE-REDUX-ACTION/::TEST-CONTROLLER/SOME-ACTION',
       });
-      expect(controller).toEqual(mockController);
+      expect(controller).toEqual(mockControllerWithReducer);
     });
 
     it('should return matching namespaced controller', () => {
@@ -78,8 +85,17 @@ describe('LazyLoader', () => {
 
       const mockObjectiveStore: any = {};
       const registerReducerFn = jest.fn();
+      const unregisterReducerFn = jest.fn();
+      const cancelSagasForController = jest.fn();
 
-      LazyLoader.addObjectiveStore(mockObjectiveStore, registerReducerFn);
+      LazyLoader.addObjectiveStore(
+        mockObjectiveStore,
+        {
+          registerReducerFn,
+          unregisterReducerFn,
+          cancelSagasForController,
+        }
+      );
 
       const instanceOneA = LazyLoader.getController(mockObjectiveStore, TestControllerOne as any);
       const instanceOneB = LazyLoader.getController(mockObjectiveStore, TestControllerOne as any);
@@ -92,6 +108,90 @@ describe('LazyLoader', () => {
       expect(instanceTwoB).toBe(instanceTwoA);
 
       expect(registerReducerFn).toBeCalledTimes(1);
+      expect(unregisterReducerFn).toBeCalledTimes(0);
+      expect(cancelSagasForController).toBeCalledTimes(0);
+    });
+  });
+
+  describe('removeController', () => {
+    it('removes a controller with a reducer', () => {
+      const mockObjectiveStore: any = {};
+      const registerReducerFn = jest.fn();
+      const unregisterReducerFn = jest.fn();
+      const cancelSagasForController = jest.fn();
+
+      LazyLoader.addObjectiveStore(
+        mockObjectiveStore,
+        {
+          registerReducerFn,
+          unregisterReducerFn,
+          cancelSagasForController,
+        }
+      );
+
+      const map = {
+        '': {
+          'TEST-CONTROLLER': mockControllerWithReducer,
+        },
+      };
+      (LazyLoader as any).controllers.set(mockObjectiveStore, map);
+
+      LazyLoader.removeController(mockObjectiveStore, mockControllerWithReducer);
+      expect(unregisterReducerFn).toBeCalledWith(mockControllerWithReducer);
+    });
+
+    it('removes a controller with a saga', () => {
+      const mockObjectiveStore: any = {};
+      const registerReducerFn = jest.fn();
+      const unregisterReducerFn = jest.fn();
+      const cancelSagasForController = jest.fn();
+
+      LazyLoader.addObjectiveStore(
+        mockObjectiveStore,
+        {
+          registerReducerFn,
+          unregisterReducerFn,
+          cancelSagasForController,
+        }
+      );
+
+      const map = {
+        '': {
+          'TEST-CONTROLLER-SAGA': mockControllerWithSaga,
+        },
+      };
+      (LazyLoader as any).controllers.set(mockObjectiveStore, map);
+
+      LazyLoader.removeController(mockObjectiveStore, mockControllerWithSaga);
+      expect(cancelSagasForController).toBeCalledWith(mockControllerWithSaga);
+    });
+
+    it('does nothing when the store is not found', () => {
+      const mockObjectiveStore: any = {};
+      LazyLoader.removeController(mockObjectiveStore, mockControllerWithSaga);
+    });
+
+    it('does nothing when the controller is not found', () => {
+      const mockObjectiveStore: any = {};
+      const registerReducerFn = jest.fn();
+      const unregisterReducerFn = jest.fn();
+      const cancelSagasForController = jest.fn();
+
+      LazyLoader.addObjectiveStore(
+        mockObjectiveStore,
+        {
+          registerReducerFn,
+          unregisterReducerFn,
+          cancelSagasForController,
+        }
+      );
+
+      const map = {};
+      (LazyLoader as any).controllers.set(mockObjectiveStore, map);
+
+      LazyLoader.removeController(mockObjectiveStore, mockControllerWithSaga);
+      expect(unregisterReducerFn).toBeCalledTimes(0);
+      expect(cancelSagasForController).toBeCalledTimes(0);
     });
   });
 });
