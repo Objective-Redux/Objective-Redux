@@ -24,6 +24,7 @@ import { getReduxSagaModule } from './get-redux-saga-module';
 import { ReducerInjector, defaultReducer } from './reducer-injector';
 import { lazyLoadingMiddleware } from './lazy-loading-middleware';
 import { preDispatchHookMiddleware } from './pre-dispatch-hook-middleware';
+import { StatelessController } from './stateless-controller';
 
 /**
  * @internal
@@ -97,6 +98,8 @@ export class ObjectiveStore {
 
   private readonly registeredReducers: any = {};
 
+  private readonly registeredSagas: any = {};
+
   /**
    * Creates an instance of the ObjectiveStore.
    *
@@ -151,7 +154,14 @@ export class ObjectiveStore {
       composeMiddlewareFn = compose,
     } = config;
 
-    LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
+    LazyLoader.addObjectiveStore(
+      this,
+      {
+        registerReducerFn: this.addControllerReducer.bind(this),
+        unregisterReducerFn: this.removeControllerReducer.bind(this),
+        cancelSagasForController: this.cancelSagasForController.bind(this),
+      }
+    );
 
     const reduxSaga = getReduxSagaModule();
     const internalMiddleware: any[] = [
@@ -279,9 +289,19 @@ export class ObjectiveStore {
   }
 
   private addControllerReducer(controller: any): void {
+    this.useControllerReducer(controller);
+  }
+
+  private removeControllerReducer(controller: any): void {
+    this.useControllerReducer(controller, true);
+  }
+
+  // eslint-disable-next-line max-statements
+  private useControllerReducer(controller: any, remove: boolean = false): void {
     const name = controller.constructor.getStoreName();
     const namespace = controller.constructor.getNamespace();
     let placement = this.registeredReducers;
+
     if (namespace) {
       /* istanbul ignore else */
       if (placement[namespace] == null) {
@@ -289,8 +309,28 @@ export class ObjectiveStore {
       }
       placement = placement[namespace];
     }
-    placement[name] = controller.reducer.bind(controller);
+
+    if (remove) {
+      if (namespace) {
+        delete this.registeredReducers[namespace];
+      } else {
+        delete placement[name];
+      }
+    } else {
+      placement[name] = controller.reducer.bind(controller);
+    }
+
     this.store.replaceReducer(this.injector.getReducerCreationFn()());
+  }
+
+  private cancelSagasForController(statelessController: StatelessController): void {
+    const name = (statelessController as any).constructor.getName();
+    const namespace = (statelessController as any).constructor.getNamespace() || '';
+    const placement = this.registeredSagas[namespace] || {};
+    (placement[name] || []).forEach((task: any) => {
+      task.cancel();
+    });
+    delete placement[name];
   }
 
   /**
@@ -309,7 +349,12 @@ export class ObjectiveStore {
   /**
    * Adds and and begins running a saga as part in the context of the store that the store manages.
    *
+   * Note: This method should not be called manually for StatelessControllers! The controller will handle this call on
+   * its own when the controller is first initialized.
+   *
    * @param sagaFn The saga to add to the store.
+   * @param statelessController The StatelessController from which the saga is originating, or null if it does not come
+   * from a StatelessController.
    * @example
    * ```typescript
    * function* sagaFn() {
@@ -320,7 +365,29 @@ export class ObjectiveStore {
    * objectiveStore.registerSaga(sagaFn);
    * ```
    */
-  public registerSaga(sagaFn: SagaFn<void>): void {
-    this.sagaMiddleware.run(sagaFn);
+  // eslint-disable-next-line max-statements
+  public registerSaga(sagaFn: SagaFn<void>, statelessController: StatelessController|null = null): void {
+    const task = this.sagaMiddleware.run(sagaFn);
+
+    if (!statelessController) {
+      return;
+    }
+
+    const name = (statelessController as any).constructor.getName();
+    const namespace = (statelessController as any).constructor.getNamespace() || '';
+    let placement = this.registeredSagas;
+
+    /* istanbul ignore else */
+    if (placement[namespace] == null) {
+      placement[namespace] = {};
+    }
+    placement = placement[namespace];
+
+    /* istanbul ignore else */
+    if (placement[name] == null) {
+      placement[name] = [];
+    }
+
+    placement[name].push(task);
   }
 }

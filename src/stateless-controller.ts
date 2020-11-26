@@ -146,7 +146,7 @@ export abstract class StatelessController extends Controller {
       });
     }
 
-    this.objectiveStore.registerSaga(sagaFn);
+    this.objectiveStore.registerSaga(sagaFn, this);
     return createConnectedAction(name, this.objectiveStore);
   }
 }

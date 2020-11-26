@@ -29,12 +29,21 @@ function assertSwitchElements(resultElements, numTimes) {
   );
 }
 
+function removeStateController() {
+  cy.get('#removeStateController').click({ force: true });
+  cy.get('.result').then(elements => {
+    assertSwitchElements(elements, 0);
+  });
+  cy.get('#statelessConstructorCount').then(elem => expect(elem).html(''));
+}
+
 describe('React-Redux example', () => {
   it('The connected component lazy loads and renders', () => {
     cy.visit('/');
     clickAndAssert('#connected', 5);
     clickAndAssert('#hook', 5, 5);
     clickAndAssert('#react-redux', 5, 10);
+    removeStateController();
   });
 
   it('The hook component lazy loads and renders', () => {
@@ -42,6 +51,7 @@ describe('React-Redux example', () => {
     clickAndAssert('#hook', 5);
     clickAndAssert('#react-redux', 5, 5);
     clickAndAssert('#connected', 5, 10);
+    removeStateController();
   });
 
   it('The react-redux component lazy loads and renders', () => {
@@ -49,5 +59,15 @@ describe('React-Redux example', () => {
     clickAndAssert('#react-redux', 5);
     clickAndAssert('#connected', 5, 5);
     clickAndAssert('#hook', 5, 10);
+    removeStateController();
+  });
+
+  it('removes the StatelessController', () => {
+    cy.visit('/');
+    cy.get('#removeStatelessController').click({ force: true });
+    cy.get('#hook')
+      .find('button')
+      .click({ force: true });
+    cy.get('#statelessConstructorCount').then(elem => expect(elem).html('SwitchStateSagas constructed 2 times'));
   });
 });

@@ -104,8 +104,13 @@ var ObjectiveStore = /** @class */ (function () {
     function ObjectiveStore(config) {
         if (config === void 0) { config = {}; }
         this.registeredReducers = {};
+        this.registeredSagas = {};
         var _a = config.reducer, reducer = _a === void 0 ? null : _a, _b = config.initialState, initialState = _b === void 0 ? {} : _b, _c = config.middleware, middleware = _c === void 0 ? [] : _c, _d = config.sagaContext, sagaContext = _d === void 0 ? null : _d, _e = config.injector, injector = _e === void 0 ? new reducer_injector_1.ReducerInjector() : _e, _f = config.preDispatchHook, preDispatchHook = _f === void 0 ? defaultPreDispatchHook : _f, _g = config.composeMiddlewareFn, composeMiddlewareFn = _g === void 0 ? redux_1.compose : _g;
-        lazy_loader_1.LazyLoader.addObjectiveStore(this, this.addControllerReducer.bind(this));
+        lazy_loader_1.LazyLoader.addObjectiveStore(this, {
+            registerReducerFn: this.addControllerReducer.bind(this),
+            unregisterReducerFn: this.removeControllerReducer.bind(this),
+            cancelSagasForController: this.cancelSagasForController.bind(this),
+        });
         var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
         var internalMiddleware = [
             pre_dispatch_hook_middleware_1.preDispatchHookMiddleware(preDispatchHook),
@@ -211,6 +216,14 @@ var ObjectiveStore = /** @class */ (function () {
         return this.store.getState();
     };
     ObjectiveStore.prototype.addControllerReducer = function (controller) {
+        this.useControllerReducer(controller);
+    };
+    ObjectiveStore.prototype.removeControllerReducer = function (controller) {
+        this.useControllerReducer(controller, true);
+    };
+    // eslint-disable-next-line max-statements
+    ObjectiveStore.prototype.useControllerReducer = function (controller, remove) {
+        if (remove === void 0) { remove = false; }
         var name = controller.constructor.getStoreName();
         var namespace = controller.constructor.getNamespace();
         var placement = this.registeredReducers;
@@ -221,8 +234,27 @@ var ObjectiveStore = /** @class */ (function () {
             }
             placement = placement[namespace];
         }
-        placement[name] = controller.reducer.bind(controller);
+        if (remove) {
+            if (namespace) {
+                delete this.registeredReducers[namespace];
+            }
+            else {
+                delete placement[name];
+            }
+        }
+        else {
+            placement[name] = controller.reducer.bind(controller);
+        }
         this.store.replaceReducer(this.injector.getReducerCreationFn()());
+    };
+    ObjectiveStore.prototype.cancelSagasForController = function (statelessController) {
+        var name = statelessController.constructor.getName();
+        var namespace = statelessController.constructor.getNamespace() || '';
+        var placement = this.registeredSagas[namespace] || {};
+        (placement[name] || []).forEach(function (task) {
+            task.cancel();
+        });
+        delete placement[name];
     };
     /**
      * Replaced the existing reducer with a new one.
@@ -239,7 +271,12 @@ var ObjectiveStore = /** @class */ (function () {
     /**
      * Adds and and begins running a saga as part in the context of the store that the store manages.
      *
+     * Note: This method should not be called manually for StatelessControllers! The controller will handle this call on
+     * its own when the controller is first initialized.
+     *
      * @param sagaFn The saga to add to the store.
+     * @param statelessController The StatelessController from which the saga is originating, or null if it does not come
+     * from a StatelessController.
      * @example
      * ```typescript
      * function* sagaFn() {
@@ -250,8 +287,26 @@ var ObjectiveStore = /** @class */ (function () {
      * objectiveStore.registerSaga(sagaFn);
      * ```
      */
-    ObjectiveStore.prototype.registerSaga = function (sagaFn) {
-        this.sagaMiddleware.run(sagaFn);
+    // eslint-disable-next-line max-statements
+    ObjectiveStore.prototype.registerSaga = function (sagaFn, statelessController) {
+        if (statelessController === void 0) { statelessController = null; }
+        var task = this.sagaMiddleware.run(sagaFn);
+        if (!statelessController) {
+            return;
+        }
+        var name = statelessController.constructor.getName();
+        var namespace = statelessController.constructor.getNamespace() || '';
+        var placement = this.registeredSagas;
+        /* istanbul ignore else */
+        if (placement[namespace] == null) {
+            placement[namespace] = {};
+        }
+        placement = placement[namespace];
+        /* istanbul ignore else */
+        if (placement[name] == null) {
+            placement[name] = [];
+        }
+        placement[name].push(task);
     };
     return ObjectiveStore;
 }());

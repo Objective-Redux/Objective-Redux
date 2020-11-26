@@ -137,7 +137,7 @@ var StatelessController = /** @class */ (function (_super) {
                 sagaFn: sagaFn,
             });
         }
-        this.objectiveStore.registerSaga(sagaFn);
+        this.objectiveStore.registerSaga(sagaFn, this);
         return action_1.createConnectedAction(name, this.objectiveStore);
     };
     return StatelessController;

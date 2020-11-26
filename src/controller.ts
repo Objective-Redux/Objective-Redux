@@ -50,6 +50,8 @@ export abstract class Controller {
    * In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace
    * name.
    *
+   * Note that falsy values like null and '' will evaluate to the same empty namespace.
+   *
    * @returns Null if the state is not namespaced.
    *
    * @example
@@ -135,6 +137,25 @@ export abstract class Controller {
     objectiveStore: ObjectiveStore
   ): T {
     return LazyLoader.getController(objectiveStore, this);
+  }
+
+  /**
+   * Removes the instance of the controller from the store. This will unregister reducers any stop saga associated with
+   * the controller.
+   *
+   * @param this Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.
+   * @param objectiveStore An instance of the ObjectiveStore from which to get the controller.
+   *
+   * @example
+   * ```typescript
+   * MyController.removeInstance(objectiveStore);
+   * ```
+   */
+  public static removeInstance<T extends Controller>(
+    this: typeof Controller & ModelConstructor<T>,
+    objectiveStore: ObjectiveStore
+  ): void {
+    LazyLoader.removeController(objectiveStore, this);
   }
 
   /**

@@ -182,7 +182,7 @@ var StateController = /** @class */ (function (_super) {
          * @returns The action producing function for calling the mutating function.
          */
         actionFn.withAddressableName = function (name) {
-            _this.reducerMap[actionName] = null;
+            delete _this.reducerMap[actionName];
             var addressableActionName = _this.createActionName(name);
             _this.reducerMap[addressableActionName] = fn;
             return action_1.createConnectedAction(addressableActionName, _this.objectiveStore);

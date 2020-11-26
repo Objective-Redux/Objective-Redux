@@ -12,7 +12,7 @@ const MOCK_STATE = {
   foo: 'bar',
 };
 
-const run = jest.fn();
+const run = jest.fn(() => 'TASK');
 const mockUnsubscribe = jest.fn();
 const replaceReducer = jest.fn();
 const dispatch = jest.fn(d => d);
@@ -223,8 +223,8 @@ describe('objective-store', () => {
       };
 
       const objectiveStore = new ObjectiveStore();
-      const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
-      addControllerReducer(controller);
+      const [[, { registerReducerFn }]] = addObjectiveStore.mock.calls;
+      registerReducerFn(controller);
       expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
       expect((objectiveStore as any).registeredReducers.TEST).not.toBeNull();
@@ -242,11 +242,51 @@ describe('objective-store', () => {
       };
 
       const objectiveStore = new ObjectiveStore();
-      const [[, addControllerReducer]] = addObjectiveStore.mock.calls;
-      addControllerReducer(controller);
+      const [[, { registerReducerFn }]] = addObjectiveStore.mock.calls;
+      registerReducerFn(controller);
       expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
       expect((objectiveStore as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
+    });
+  });
+
+  describe('removeControllerReducer', () => {
+    it('removes a reducer for state controllers', () => {
+      const reducer = jest.fn();
+      const controller = {
+        constructor: {
+          getName: (): string => 'TEST_CONTROLLER',
+          getNamespace: (): null => null,
+          getStoreName: (): string => 'TEST',
+        },
+        reducer,
+      };
+
+      const objectiveStore = new ObjectiveStore();
+      const [[, { unregisterReducerFn }]] = addObjectiveStore.mock.calls;
+      (objectiveStore as any).registeredReducers.TEST = {};
+      unregisterReducerFn(controller);
+      expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
+      expect((objectiveStore as any).registeredReducers.TEST).toBeUndefined();
+    });
+
+    it('removes a namespaced reducer for state controllers', () => {
+      const reducer = jest.fn();
+      const controller = {
+        constructor: {
+          getName: (): string => 'TEST_CONTROLLER',
+          getNamespace: (): string => 'NAMESPACE',
+          getStoreName: (): string => 'TEST',
+        },
+        reducer,
+      };
+
+      const objectiveStore = new ObjectiveStore();
+      const [[, { unregisterReducerFn }]] = addObjectiveStore.mock.calls;
+      (objectiveStore as any).registeredReducers.NAMESPACE = { TEST: {} };
+      unregisterReducerFn(controller);
+      expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
+      expect((objectiveStore as any).registeredReducers.NAMESPACE).toBeUndefined();
     });
   });
 
@@ -269,5 +309,90 @@ describe('objective-store', () => {
       objectiveStore.registerSaga(saga2);
       expect(run).toBeCalledWith(saga2);
     });
+
+    it('should add the saga to the middleware with a StatelessController', () => {
+      const saga1 = function* (): Generator {};
+      const mockStatelessController: any = {
+        constructor: {
+          getName: (): string => 'TEST',
+          getNamespace: (): null => null,
+        },
+      };
+      const objectiveStore = new ObjectiveStore();
+      objectiveStore.registerSaga(saga1, mockStatelessController);
+      expect(run).toBeCalledWith(saga1);
+      expect((objectiveStore as any).registeredSagas[''].TEST).toEqual(['TASK']);
+    });
+
+    it('should add the saga to the middleware with a StatelessController with namespace', () => {
+      const saga1 = function* (): Generator {};
+      const mockStatelessController: any = {
+        constructor: {
+          getName: (): string => 'TEST',
+          getNamespace: (): string => 'NAMESPACE',
+        },
+      };
+      const objectiveStore = new ObjectiveStore();
+      objectiveStore.registerSaga(saga1, mockStatelessController);
+      expect(run).toBeCalledWith(saga1);
+      expect((objectiveStore as any).registeredSagas.NAMESPACE.TEST).toEqual(['TASK']);
+    });
+  });
+
+  describe('cancelSagasForController', () => {
+    it('stops all of the saga tasks associated with a controller without namespace', () => {
+      const controller = {
+        constructor: {
+          getName: (): string => 'TEST',
+          getNamespace: (): null => null,
+        },
+      };
+      const objectiveStore: any = new ObjectiveStore();
+      const task1 = jest.fn();
+      const task2 = jest.fn();
+      objectiveStore.registeredSagas[''] = {
+        TEST: [
+          { cancel: task1 },
+          { cancel: task2 },
+        ],
+      };
+      objectiveStore.cancelSagasForController(controller);
+      expect(task1).toBeCalled();
+      expect(task2).toBeCalled();
+      expect(objectiveStore.registeredSagas[''].TEST).toBeUndefined();
+    });
+  });
+
+  it('stops all of the saga tasks associated with a controller with namespace', () => {
+    const controller = {
+      constructor: {
+        getName: (): string => 'TEST',
+        getNamespace: (): string => 'NAMESPACE',
+      },
+    };
+    const objectiveStore: any = new ObjectiveStore();
+    const task1 = jest.fn();
+    const task2 = jest.fn();
+    objectiveStore.registeredSagas.NAMESPACE = {
+      TEST: [
+        { cancel: task1 },
+        { cancel: task2 },
+      ],
+    };
+    objectiveStore.cancelSagasForController(controller);
+    expect(task1).toBeCalled();
+    expect(task2).toBeCalled();
+    expect(objectiveStore.registeredSagas.NAMESPACE.TEST).toBeUndefined();
+  });
+
+  it('does nothing when there is no tasks for the controller', () => {
+    const controller = {
+      constructor: {
+        getName: (): string => 'TEST',
+        getNamespace: (): string => 'NAMESPACE',
+      },
+    };
+    const objectiveStore: any = new ObjectiveStore();
+    objectiveStore.cancelSagasForController(controller);
   });
 });

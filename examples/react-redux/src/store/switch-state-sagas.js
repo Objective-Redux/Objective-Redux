@@ -15,8 +15,19 @@ import { SwitchStateController } from './switch-state-controller';
 import { getContext } from 'redux-saga/effects';
 
 export class SwitchStateSagas extends StatelessController {
+  static constructedTimes = 0;
+
   static getName() {
     return 'switchSagas';
+  }
+
+  constructor(objectiveStore) {
+    super(objectiveStore);
+    SwitchStateSagas.constructedTimes++;
+    const elem = document.getElementById('statelessConstructorCount');
+    if (elem) {
+      elem.innerHTML = `SwitchStateSagas constructed ${SwitchStateSagas.constructedTimes} times`;
+    }
   }
 
   toggleSwitch = this.createSaga()

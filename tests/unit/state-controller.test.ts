@@ -21,11 +21,13 @@ const objectiveStoreMock: any = {
 
 const registerController = jest.fn();
 const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
+const removeController = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
   LazyLoader: {
     registerController,
     getController,
+    removeController,
   },
 }));
 
@@ -82,6 +84,13 @@ describe('state-controller', () => {
       const instance = TestController.getInstance(objectiveStoreMock);
       expect(getController).toBeCalledTimes(1);
       expect(instance).toBeInstanceOf(TestController);
+    });
+  });
+
+  describe('removeInstance', () => {
+    it('removes instance from ObjectiveStore', () => {
+      TestController.removeInstance(objectiveStoreMock);
+      expect(removeController).toBeCalledTimes(1);
     });
   });
 
