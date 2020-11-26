@@ -145,11 +145,12 @@ const state = objectiveStore.getState();</code></pre>
 
   <section>
     <h2 class="code">registerSaga</h2>
-    <p class="code">public registerSaga(sagaFn: SagaFn&lt;void&gt;): void</p>
-    <p>Adds and and begins running a saga as part in the context of the store that the store manages.</p>
+    <p class="code">public registerSaga(sagaFn: SagaFn&lt;void&gt;, statelessController: StatelessController|null = null): void</p>
+    <p>Adds and and begins running a saga as part in the context of the store that the store manages.<br />Note: This method should not be called manually for StatelessControllers! The controller will handle this call on its own when the controller is first initialized.</p>
     
     <h3>Parameters</h3>
 <p><dt>sagaFn: SagaFn&lt;void&gt;</dt><dd>The saga to add to the store.</dd><p>
+<p><dt>statelessController: StatelessController|null = null</dt><dd>The StatelessController from which the saga is originating, or null if it does not come<br />from a StatelessController.</dd><p>
     <h3>Returns</h3>
     <p><dt>void</dt><dd></dd></p>
     <h3>Examples</h3>
@@ -201,7 +202,7 @@ const unsubscribeFn = objectiveStore.subscribe(myCallback);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.18.3 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.19.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>

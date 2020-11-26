@@ -186,7 +186,9 @@ have adverse affects on the application._.</p>
   <section>
     <h2 class="code">getNamespace</h2>
     <p class="code">public static getNamespace(): string|null</p>
-    <p>Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need to be unique within a namespace.<br />In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace name.</p>
+    <p>Creates groupings of controllers and state slices. This helps prevent naming collisions, because names only need to be unique within a namespace.<br />In addition, for StateControllers, the slice of state in the store is also saved into an object of the namespace name.
+
+Note that falsy values like null and '' will evaluate to the same empty namespace.</p>
     
     
     <h3>Returns</h3>
@@ -277,6 +279,24 @@ objectiveStore.dispatch(myAction);</code></pre>
 
   </section>
   
+
+  <section>
+    <h2 class="code">removeInstance</h2>
+    <p class="code">public static removeInstance&lt;T&gt;(this: Controller|ModelConstructor&lt;T&gt;, objectiveStore: ObjectiveStore): void</p>
+    <p>Removes the instance of the controller from the store. This will unregister reducers any stop saga associated with the controller.</p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;T&gt;</dt><dd></dd></p>
+    <h3>Parameters</h3>
+<p><dt>this: Controller|ModelConstructor&lt;T&gt;</dt><dd>Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.</dd><p>
+<p><dt>objectiveStore: ObjectiveStore</dt><dd>An instance of the ObjectiveStore from which to get the controller.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
+    <h3>Examples</h3>
+
+<pre><code class="language-typescript">MyController.removeInstance(objectiveStore);</code></pre>
+
+  </section>
+  
   
       </div>
     </div>
@@ -284,7 +304,7 @@ objectiveStore.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.18.3 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.19.0 | &copy; Copyright 2020 by Jason Mace.</p>
       </div>
     </div>
   </footer>
