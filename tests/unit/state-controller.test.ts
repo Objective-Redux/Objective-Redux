@@ -95,14 +95,16 @@ describe('state-controller', () => {
   });
 
   describe('registerAction', () => {
-    const instance = NamespacedTestController.getInstance(objectiveStoreMock);
-    instance.unnamedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/0', payload: true });
+    it('creates the action', () => {
+      const instance = NamespacedTestController.getInstance(objectiveStoreMock);
+      instance.unnamedAction(true);
+      expect(dispatch).toHaveBeenCalledWith({ type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/1', payload: true });
 
-    instance.namedAction(true);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/NAME',
-      payload: true,
+      instance.namedAction(true);
+      expect(dispatch).toHaveBeenCalledWith({
+        type: 'OBJECTIVE-REDUX-ACTION/NAMESPACE::TestSlice/NAME',
+        payload: true,
+      });
     });
   });
 
@@ -150,6 +152,16 @@ describe('state-controller', () => {
     it('should store the controller for lazy-loading', () => {
       TestController.initializeOnExternalAction();
       expect(registerController).toHaveBeenCalledWith(TestController);
+    });
+  });
+
+  describe('reset', () => {
+    it('sets the state back to the initial state', () => {
+      const instance: any = TestController.getInstance(objectiveStoreMock);
+      instance.reset();
+      const { mock: { calls: [[action]] } } = dispatch;
+      const reducingFn = instance.reducerMap[action.type];
+      expect(reducingFn()).toEqual(instance.initialState);
     });
   });
 });

@@ -95,7 +95,7 @@ export abstract class StateController<State> extends Controller {
   /**
    * A map of the reducer action names to the data mutation functions.
    */
-  protected readonly reducerMap: ReducerMap<State, any>;
+  protected readonly reducerMap: ReducerMap<State, any> = {};
 
   /**
    * Registers the controller, sets up the reducer, and sets the initial state.
@@ -111,7 +111,6 @@ export abstract class StateController<State> extends Controller {
   protected constructor(initialState: State, objectiveStore: ObjectiveStore) {
     super(objectiveStore);
     this.initialState = initialState;
-    this.reducerMap = {};
   }
 
   /**
@@ -233,4 +232,16 @@ export abstract class StateController<State> extends Controller {
     state = namespace ? state[namespace] : state;
     return state[(this.constructor as any).getStoreName()];
   }
+
+  /**
+   * Fires an action that resets the state back to the controller's initial state.
+   *
+   * @example
+   * ```typescript
+   * MyController.getInstance(objectiveStore).reset();
+   * ```
+   */
+  public readonly reset = this.registerAction<void>(
+    () => this.initialState
+  );
 }

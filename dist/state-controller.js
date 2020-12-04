@@ -98,8 +98,20 @@ var StateController = /** @class */ (function (_super) {
      */
     function StateController(initialState, objectiveStore) {
         var _this = _super.call(this, objectiveStore) || this;
-        _this.initialState = initialState;
+        /**
+         * A map of the reducer action names to the data mutation functions.
+         */
         _this.reducerMap = {};
+        /**
+         * Fires an action that resets the state back to the controller's initial state.
+         *
+         * @example
+         * ```typescript
+         * MyController.getInstance(objectiveStore).reset();
+         * ```
+         */
+        _this.reset = _this.registerAction(function () { return _this.initialState; });
+        _this.initialState = initialState;
         return _this;
     }
     /**

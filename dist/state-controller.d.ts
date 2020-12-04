@@ -172,6 +172,15 @@ export declare abstract class StateController<State> extends Controller {
      * @returns The current slice of the state related to this controller.
      */
     getStateSlice(): State;
+    /**
+     * Fires an action that resets the state back to the controller's initial state.
+     *
+     * @example
+     * ```typescript
+     * MyController.getInstance(objectiveStore).reset();
+     * ```
+     */
+    readonly reset: ActionExtendFn<void>;
 }
 export {};
 //# sourceMappingURL=state-controller.d.ts.map
