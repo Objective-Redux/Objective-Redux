@@ -69,17 +69,19 @@
 
 <h2>Installing Packages</h2>
 
-<p>In order to use Objective Redux in your project, you'll need to install it along with Redux. These should be saved as dependencies, since they need to be included in the final application.</p>
+<p>In order to use Objective Redux in your project, you'll need to install it along with Redux. These should be saved in the project's dependencies, since they need to be included in the final application.</p>
 
 <pre><code>npm install --save redux objective-redux</code></pre>
 
-<p>If you want to use Redux-Saga (required for StatelessControllers), install it as a dependency as well.</p>
+<p>If you want to use Redux-Saga (required is you want to use StatelessControllers), install it as a project dependency as well.</p>
 
 <pre><code>npm install --save redux-saga</code></pre>
 
 <h2>Adding a Provider (React)</h2>
 
-<p>If you're using React, you'll need to setup a provider for the ObjectiveStore class. This will allow you to access the ObjectiveStore instance from your components, either by connecting the component to the provider or by using the provided React hook.</p>
+<p>If you're using React, you'll need to setup a provider for the ObjectiveStore class. This will allow components to access the ObjectiveStore instance, either by connecting the component to the provider with the ComponentConnector or by using one of the provided React hook.</p>
+
+<p>Below is an example of how to setup the React provider.</p>
 
 <pre><code class="language-typescript">
 import React from 'react';
@@ -87,10 +89,11 @@ import ReactDOM from 'react-dom';
 import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import App from './app';
 
-export const objectiveStore = new ObjectiveStore();
+const objectiveStore = new ObjectiveStore();
 
 ReactDOM.render(
   &lt;ObjectiveStoreProvider objectiveStore={objectiveStore}&gt;
+    // Any child components have access to the store
     &lt;App /&gt;
   &lt;/ObjectiveStoreProvider&gt;,
   document.getElementById('root')
