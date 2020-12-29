@@ -5,7 +5,14 @@
   "scripts": {
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
-    "start": "NEXT_TELEMETRY_DISABLED=1 next start"
+    "start": "NEXT_TELEMETRY_DISABLED=1 next start",
+    "test-e2e": "start-server-and-test dev http://localhost:3000 test-e2e-run",
+    "test-e2e-ui": "start-server-and-test dev http://localhost:3000 test-e2e-open",
+    "test-e2e-run": "../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
+    "test-e2e-open": "../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
+  },
+  "devDependencies": {
+    "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
     "next": "10.0.4",

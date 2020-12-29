@@ -8,17 +8,11 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { useController } from 'objective-redux';
-import { SwitchStateController } from '../../state-controllers/switch-state-controller';
-
-export default function ToggleButton() {
-  const controller = useController(SwitchStateController);
-  const current = controller?.getStateSlice()?.isOn ? ' off' : ' on';
-
-  return (
-    <button id="toggle-btn" onClick={() => controller.toggleSwitchValue()}>
-      Toggle switch
-      {current}
-    </button>
-  );
-}
+describe('Lazy-Loading example', () => {
+  it('The page loads with a button', () => {
+    cy.visit('/');
+    cy.get('#toggle-btn').contains('Toggle switch on');
+    cy.get('#toggle-btn').click();
+    cy.get('#toggle-btn').contains('Toggle switch off');
+  });
+});
