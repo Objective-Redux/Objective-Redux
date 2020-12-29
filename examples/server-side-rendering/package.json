@@ -1,0 +1,17 @@
+{
+  "name": "server-side-rendering",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "start": "NEXT_TELEMETRY_DISABLED=1 next start"
+  },
+  "dependencies": {
+    "next": "10.0.4",
+    "objective-redux": "file:../../",
+    "react": "file:../../node_modules/react",
+    "react-dom": "^16.13.1",
+    "redux": "4.0.5"
+  }
+}
