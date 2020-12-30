@@ -8,11 +8,22 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-describe('Server-side rendering example', () => {
-  it('The page loads with a button', () => {
-    cy.visit('/');
-    cy.get('#toggle-btn').contains('Toggle switch on');
-    cy.get('#toggle-btn').click();
-    cy.get('#toggle-btn').contains('Toggle switch off');
-  });
-});
+import { StateController } from 'objective-redux';
+
+const initialState = 0;
+
+export class CountStateControllerOne extends StateController {
+  constructor(objectiveStore) {
+    super(initialState, objectiveStore);
+  }
+
+  static getName() {
+    return 'count-one';
+  }
+
+  increment = this.registerAction(
+    state => state + 1
+  );
+}
+
+CountStateControllerOne.initializeOnExternalAction();

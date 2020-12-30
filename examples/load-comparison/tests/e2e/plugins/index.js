@@ -7,12 +7,7 @@
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-
-describe('Server-side rendering example', () => {
-  it('The page loads with a button', () => {
-    cy.visit('/');
-    cy.get('#toggle-btn').contains('Toggle switch on');
-    cy.get('#toggle-btn').click();
-    cy.get('#toggle-btn').contains('Toggle switch off');
-  });
-});
+module.exports = (on, config) => {
+  // `on` is used to hook into various events Cypress emits
+  // `config` is the resolved Cypress config
+};

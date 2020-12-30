@@ -8,11 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-describe('Server-side rendering example', () => {
-  it('The page loads with a button', () => {
+describe('Load comparison example', () => {
+  it('', () => {
     cy.visit('/');
-    cy.get('#toggle-btn').contains('Toggle switch on');
-    cy.get('#toggle-btn').click();
-    cy.get('#toggle-btn').contains('Toggle switch off');
   });
 });
