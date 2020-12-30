@@ -176,7 +176,14 @@ ReactDOM.render(
         </div>
         {buttons}
         <Profiler id="content" onRender={callback}>
-          <div style={{ overflow: 'auto', height: '300px', border: '5px solid #000', padding: '10px' }}>
+          <div
+            style={{
+              overflow: 'auto',
+              height: '300px',
+              border: '5px solid #000',
+              padding: '10px',
+            }}
+          >
             <h2>Elements being rendered</h2>
             {items}
           </div>
