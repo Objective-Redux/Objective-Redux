@@ -60,7 +60,7 @@ export class SwitchStateController extends StateController {
 }
 ```
 ```javascript
-SwitchOneController.getInstance(objectiveStore).setSwitch(true);
+SwitchStateController.getInstance(objectiveStore).setSwitch(true);
 ```
 
 <br />
