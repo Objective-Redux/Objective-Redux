@@ -23,9 +23,9 @@ import { metrics } from './metrics';
 
 const USE_OBJECTIVE_REDUX = true;
 const TOP_LEVEL_ELEMENTS = 100;
-const NESTED_ELEMENT_DEPTH = 5;
+const NESTED_ELEMENT_DEPTH = 6;
 const SPLIT_ELEMENTS_BY = 2;
-const TOTAL_ACTIONS_TO_FIRE = 40;
+const TOTAL_ACTIONS_TO_FIRE = 100;
 
 let totalElements = 0;
 

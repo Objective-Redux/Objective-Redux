@@ -344,7 +344,6 @@ const universalRules = {
   ],
   'react/boolean-prop-naming': ['error'],
   'react/destructuring-assignment': ['error'],
-  'react/display-name': ['error'],
   'react/forbid-elements': [
     'error',
     {

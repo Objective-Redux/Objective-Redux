@@ -12,6 +12,7 @@ import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import { ObjectiveStoreProvider, ComponentConnector } from '../../src';
+import { deepEquals } from '../../src/component-connector';
 
 configure({ adapter: new Adapter() });
 
@@ -101,11 +102,12 @@ describe('component-connector', () => {
   });
 
   it('not update unless forced', () => {
-    const Connected = ComponentConnector
+    const Connected: any = ComponentConnector
       .addPropsTo(ConnectedTest)
-      .connect();
+      .connect()
+      .type;
 
-    const instance: any = new Connected({}, {});
+    const instance: any = new Connected({ foo: 'bar' });
     instance.unsubscribe = null;
     instance.mounted = true;
     instance.forceUpdate = null;
@@ -114,6 +116,36 @@ describe('component-connector', () => {
     instance.componentWillUnmount();
 
     expect(instance.render()).toBeNull();
-    expect(instance.shouldComponentUpdate()).toBeFalsy();
+    expect(instance.shouldComponentUpdate({ foo: 'bar' })).toBeFalsy();
+    expect(instance.shouldComponentUpdate({ bar: 'foo' })).toBeTruthy();
+    expect(instance.shouldComponentUpdate({})).toBeTruthy();
+  });
+
+  it('handleChange triggers only when state data has changed', () => {
+    const Connected: any = ComponentConnector
+      .addPropsTo(ConnectedTest)
+      .connect()
+      .type;
+
+    const instance: any = new Connected({ foo: 'bar' });
+    instance.unsubscribe = jest.fn();
+    instance.mounted = true;
+    instance.forceUpdate = jest.fn();
+    instance.getState = (): any => ({ a: 1 });
+
+    instance.handleChange();
+
+    expect(instance.forceUpdate).toBeCalledTimes(1);
+  });
+
+  it('compares objects correctly', () => {
+    expect(deepEquals({ a: 1 }, { a: 1 })).toBeTruthy();
+    expect(deepEquals({ a: { b: 1 } }, { a: { b: 1 } })).toBeTruthy();
+    expect(deepEquals({ a: { b: 1 } }, { a: { b: 2 } })).toBeFalsy();
+    expect(deepEquals({ a: { b: 1 } }, { a: { c: 2 } })).toBeFalsy();
+    expect(deepEquals({ a: { b: 1 } }, { a: {} })).toBeFalsy();
+    expect(deepEquals({ a: {} }, { a: { b: 1 } })).toBeFalsy();
+    expect(deepEquals({ a: {} }, {})).toBeFalsy();
+    expect(deepEquals({}, { a: {} })).toBeFalsy();
   });
 });

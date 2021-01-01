@@ -33,9 +33,34 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ComponentConnector = void 0;
+exports.ComponentConnector = exports.deepEquals = void 0;
 var React = require("react");
 var context_1 = require("./context");
+/**
+ * Checks if two values are deeply equal to each other.
+ *
+ * @param a First value to compare.
+ * @param b Second value to compare.
+ * @returns True if the objects match.
+ *
+ * @internal
+ */
+function deepEquals(a, b) {
+    if ((typeof a !== 'object' || a == null)
+        || (typeof b !== 'object' || b == null)) {
+        return a === b;
+    }
+    if (Object.keys(a).length !== Object.keys(b).length) {
+        return false;
+    }
+    for (var key in a) {
+        if (!(key in b) || !deepEquals(a[key], b[key])) {
+            return false;
+        }
+    }
+    return true;
+}
+exports.deepEquals = deepEquals;
 /**
  * Builder that connections a React component to the Objective Redux store, allowing the component to use the states
  * and dispatch events.
@@ -91,19 +116,19 @@ var ComponentConnector = /** @class */ (function () {
      */
     ComponentConnector.prototype.connect = function () {
         var _a;
-        var Component = this.component;
-        var controllers = this.controllers;
+        var _b = this, controllers = _b.controllers, Component = _b.component;
         var connected = (_a = /** @class */ (function (_super) {
                 __extends(class_1, _super);
-                function class_1(props, context) {
-                    var _this = _super.call(this, props, context) || this;
+                function class_1(props) {
+                    var _this = _super.call(this, props) || this;
                     _this.unsubscribe = null;
                     _this.unsubscribe = null;
                     _this.mounted = false;
+                    _this.existingState = null;
                     return _this;
                 }
-                class_1.prototype.shouldComponentUpdate = function () {
-                    return false;
+                class_1.prototype.shouldComponentUpdate = function (nextProps, nextState) {
+                    return !deepEquals(this.props, nextProps) || !deepEquals(this.state, nextState);
                 };
                 class_1.prototype.render = function () {
                     if (!this.unsubscribe && this.mounted) {
@@ -111,12 +136,20 @@ var ComponentConnector = /** @class */ (function () {
                     }
                     this.mounted = true;
                     var objectiveStore = this.context;
+                    // This will happen on this initial render of the component
+                    /* istanbul ignore else */
+                    if (this.existingState === null) {
+                        this.existingState = this.getState();
+                    }
+                    return (React.createElement(Component, __assign({}, this.existingState, this.props, { objectiveStore: objectiveStore })));
+                };
+                class_1.prototype.getState = function () {
                     var state = {};
                     for (var i = 0; i < controllers.length; i++) {
-                        var slice = controllers[i].controller.getInstance(objectiveStore).getStateSlice();
+                        var slice = controllers[i].controller.getInstance(this.context).getStateSlice();
                         state = __assign(__assign({}, state), controllers[i].selector(slice));
                     }
-                    return (React.createElement(Component, __assign({}, this.props, state, { objectiveStore: objectiveStore })));
+                    return state;
                 };
                 class_1.prototype.componentDidMount = function () {
                     var objectiveStore = this.context;
@@ -130,7 +163,11 @@ var ComponentConnector = /** @class */ (function () {
                 };
                 class_1.prototype.handleChange = function () {
                     if (this.unsubscribe) {
-                        this.forceUpdate();
+                        var newState = this.getState();
+                        if (!deepEquals(this.existingState, newState)) {
+                            this.existingState = newState;
+                            this.forceUpdate();
+                        }
                     }
                 };
                 return class_1;
@@ -138,7 +175,8 @@ var ComponentConnector = /** @class */ (function () {
             _a.contextType = context_1.ObjectiveStoreProviderContext,
             _a.displayName = 'ComponentConnector',
             _a);
-        return connected;
+        /* istanbul ignore next */
+        return React.memo(connected, function () { return true; });
     };
     return ComponentConnector;
 }());

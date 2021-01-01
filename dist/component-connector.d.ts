@@ -1,5 +1,16 @@
 import * as React from 'react';
+import { Controller, ModelConstructor } from './controller';
 import { StateController } from './state-controller';
+/**
+ * Checks if two values are deeply equal to each other.
+ *
+ * @param a First value to compare.
+ * @param b Second value to compare.
+ * @returns True if the objects match.
+ *
+ * @internal
+ */
+export declare function deepEquals(a: any, b: any): boolean;
 /**
  * @internal
  */
@@ -9,7 +20,7 @@ export interface Class<T> {
 /**
  * @internal
  */
-interface StateSelectorFn<T> {
+export interface StateSelectorFn<T> {
     (state: T): any;
 }
 /**
@@ -49,13 +60,12 @@ export declare class ComponentConnector {
      * @param selector An optional mapping function.
      * @returns An instance of the ComponentConnector builder.
      */
-    from<C extends StateController<any>>(controller: Class<C>, selector?: StateSelectorFn<C> | null): ComponentConnector;
+    from<C extends StateController<any>>(controller: typeof Controller & ModelConstructor<StateController<any>>, selector?: StateSelectorFn<C> | null): ComponentConnector;
     /**
      * Finishes the builder and provides the connected component.
      *
      * @returns The connected React component.
      */
-    connect(): React.ComponentClass;
+    connect(): React.MemoExoticComponent<any>;
 }
-export {};
 //# sourceMappingURL=component-connector.d.ts.map

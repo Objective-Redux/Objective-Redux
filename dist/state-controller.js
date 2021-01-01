@@ -225,8 +225,8 @@ var StateController = /** @class */ (function (_super) {
     StateController.prototype.getStateSlice = function () {
         var state = this.objectiveStore.getState();
         var namespace = this.constructor.getNamespace();
-        state = namespace ? state[namespace] : state;
-        return state[this.constructor.getStoreName()];
+        state = state && namespace ? state[namespace] : state;
+        return state && state[this.constructor.getStoreName()];
     };
     return StateController;
 }(controller_1.Controller));

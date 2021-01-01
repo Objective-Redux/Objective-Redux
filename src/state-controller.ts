@@ -229,8 +229,8 @@ export abstract class StateController<State> extends Controller {
   public getStateSlice(): State {
     let state = this.objectiveStore.getState();
     const namespace = (this.constructor as any).getNamespace();
-    state = namespace ? state[namespace] : state;
-    return state[(this.constructor as any).getStoreName()];
+    state = state && namespace ? state[namespace] : state;
+    return state && state[(this.constructor as any).getStoreName()];
   }
 
   /**

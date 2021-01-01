@@ -10,9 +10,40 @@
 
 import * as React from 'react';
 import { Unsubscribe } from 'redux';
+import { Controller, ModelConstructor } from './controller';
 import { ObjectiveStoreProviderContext } from './context';
 import { ObjectiveStore } from './objective-store';
 import { StateController } from './state-controller';
+
+/**
+ * Checks if two values are deeply equal to each other.
+ *
+ * @param a First value to compare.
+ * @param b Second value to compare.
+ * @returns True if the objects match.
+ *
+ * @internal
+ */
+export function deepEquals(a: any, b: any): boolean {
+  if (
+    (typeof a !== 'object' || a == null)
+    || (typeof b !== 'object' || b == null)
+  ) {
+    return a === b;
+  }
+
+  if (Object.keys(a).length !== Object.keys(b).length) {
+    return false;
+  }
+
+  for (const key in a) {
+    if (!(key in b) || !deepEquals(a[key], b[key])) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /**
  * @internal
@@ -22,7 +53,7 @@ export interface Class<T> { new (...parameters: any[]): T }
 /**
  * @internal
  */
-interface StateSelectorFn<T> {
+export interface StateSelectorFn<T> {
   (state: T): any;
 }
 
@@ -47,7 +78,10 @@ interface StateSelectorFn<T> {
 export class ComponentConnector {
   private readonly component: React.ComponentClass;
 
-  private readonly controllers: { controller: Class<StateController<any>>; selector: StateSelectorFn<any> }[];
+  private readonly controllers: {
+    controller: typeof Controller & ModelConstructor<StateController<any>>;
+    selector: StateSelectorFn<any>;
+  }[];
 
   /**
    * Starts the builder for a React component.
@@ -73,7 +107,7 @@ export class ComponentConnector {
    * @returns An instance of the ComponentConnector builder.
    */
   public from<C extends StateController<any>>(
-    controller: Class<C>,
+    controller: typeof Controller & ModelConstructor<StateController<any>>,
     selector: StateSelectorFn<C>|null = null
   ): ComponentConnector {
     this.controllers.push({
@@ -88,9 +122,11 @@ export class ComponentConnector {
    *
    * @returns The connected React component.
    */
-  public connect(): React.ComponentClass {
-    const Component = this.component;
-    const { controllers } = this;
+  public connect(): React.MemoExoticComponent<any> {
+    const {
+      controllers,
+      component: Component,
+    } = this;
 
     const connected = class extends React.Component {
       public static contextType = ObjectiveStoreProviderContext;
@@ -99,16 +135,19 @@ export class ComponentConnector {
 
       private mounted: boolean;
 
+      private existingState: any;
+
       public static displayName: string = 'ComponentConnector';
 
-      public constructor(props: any, context?: any) {
-        super(props, context);
+      public constructor(props: any) {
+        super(props);
         this.unsubscribe = null;
         this.mounted = false;
+        this.existingState = null;
       }
 
-      public shouldComponentUpdate(): boolean {
-        return false;
+      public shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+        return !deepEquals(this.props, nextProps) || !deepEquals(this.state, nextState);
       }
 
       public render(): JSX.Element|null {
@@ -118,21 +157,32 @@ export class ComponentConnector {
 
         this.mounted = true;
         const objectiveStore: ObjectiveStore = this.context;
+
+        // This will happen on this initial render of the component
+        /* istanbul ignore else */
+        if (this.existingState === null) {
+          this.existingState = this.getState();
+        }
+
+        return (
+          <Component
+            {...this.existingState}
+            {...this.props}
+            {...{ objectiveStore }}
+          />
+        );
+      }
+
+      private getState(): any {
         let state = {};
         for (let i = 0; i < controllers.length; i++) {
-          const slice = (controllers[i].controller as any).getInstance(objectiveStore).getStateSlice();
+          const slice = (controllers[i].controller as any).getInstance(this.context).getStateSlice();
           state = {
             ...state,
             ...controllers[i].selector(slice),
           };
         }
-        return (
-          <Component
-            {...this.props}
-            {...state}
-            {...{ objectiveStore }}
-          />
-        );
+        return state;
       }
 
       public componentDidMount(): void {
@@ -149,11 +199,16 @@ export class ComponentConnector {
 
       public handleChange(): void {
         if (this.unsubscribe) {
-          this.forceUpdate();
+          const newState = this.getState();
+          if (!deepEquals(this.existingState, newState)) {
+            this.existingState = newState;
+            this.forceUpdate();
+          }
         }
       }
     };
 
-    return connected;
+    /* istanbul ignore next */
+    return React.memo(connected, () => true);
   }
 }
