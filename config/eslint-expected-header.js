@@ -2,7 +2,7 @@
 //                                          OBJECTIVE REDUX
 //                                  Redux made better, objectively.
 //
-// (c) Copyright 2020 by Jason Mace (https://github.com/jmace01)
+// (c) Copyright 2021 by Jason Mace (https://github.com/jmace01)
 //
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
@@ -29,7 +29,7 @@ const HEADER_DATA = [
   },
   {
     alignment: 'left',
-    text: `(c) Copyright 2020 by ${packageJSON.author}`,
+    text: `(c) Copyright 2021 by ${packageJSON.author}`,
   },
   {
     alignment: 'left',

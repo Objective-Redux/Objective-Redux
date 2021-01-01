@@ -84,24 +84,24 @@ As an alternative for functional components, the useObjectiveStore hook can be u
     
   <section>
     <h2 class="code">connect</h2>
-    <p class="code">public connect(): ComponentClass</p>
+    <p class="code">public connect(): React.MemoExoticComponent&lt;any&gt;</p>
     <p>Finishes the builder and provides the connected component.</p>
     
     
     <h3>Returns</h3>
-    <p><dt>ComponentClass</dt><dd>The connected React component.</dd></p>
+    <p><dt>React.MemoExoticComponent<any></dt><dd>The connected React component.</dd></p>
     
   </section>
   
 
   <section>
     <h2 class="code">from</h2>
-    <p class="code">public from&lt;C&gt;(controller: Class&lt;C&gt;, selector: StateSelectorFn&lt;C&gt;|null = null): ComponentConnector</p>
+    <p class="code">public from&lt;C&gt;(controller: Controller|ModelConstructor&lt;StateController&gt;, selector: StateSelectorFn&lt;C&gt;|null = null): ComponentConnector</p>
     <p>Gets parameters from the specified StateController and injects them into the properties of the component.</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;C&gt;</dt><dd>The state controller class being connected. Will be inferred from the first parameter.</dd></p>
     <h3>Parameters</h3>
-<p><dt>controller: Class&lt;C&gt;</dt><dd>The state controller from which properties will be extracted.</dd><p>
+<p><dt>controller: Controller|ModelConstructor&lt;StateController&gt;</dt><dd>The state controller from which properties will be extracted.</dd><p>
 <p><dt>selector: StateSelectorFn&lt;C&gt;|null = null</dt><dd>An optional mapping function.</dd><p>
     <h3>Returns</h3>
     <p><dt>ComponentConnector</dt><dd>An instance of the ComponentConnector builder.</dd></p>
@@ -128,7 +128,7 @@ As an alternative for functional components, the useObjectiveStore hook can be u
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.20.1 | &copy; Copyright 2020 by Jason Mace.</p>
+        <p>Documentation for v 0.20.1 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>
