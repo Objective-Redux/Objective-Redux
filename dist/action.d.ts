@@ -56,9 +56,9 @@ export declare function createAction<Payload>(type: string): (payload: Payload) 
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
  * @param type The name of the action being sent.
- * @param objectiveStore The ObjectiveStore instance to which to connect.
+ * @param objectiveStoreFn A function that returns the ObjectiveStore that will dispatch the action.
  * @returns The action generating function.
  * @internal
  */
-export declare function createConnectedAction<Payload>(type: string, objectiveStore: ObjectiveStore): (payload: Payload) => Action<Payload>;
+export declare function createConnectedAction<Payload>(type: string, objectiveStoreFn: () => ObjectiveStore): (payload: Payload) => Action<Payload>;
 //# sourceMappingURL=action.d.ts.map

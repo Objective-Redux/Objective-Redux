@@ -46,8 +46,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 export class SwitchStateController extends StateController {
-  constructor(objectiveStore) {
-    super(initialState, objectiveStore);
+  constructor() {
+    super(initialState);
   }
 
   static getName() {

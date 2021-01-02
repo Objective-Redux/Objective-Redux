@@ -52,7 +52,8 @@ var LazyLoader = /** @class */ (function () {
                 return existing;
             }
         }
-        var instance = new ControllerClass(objectiveStore);
+        var instance = new ControllerClass();
+        instance.setObjectiveStore(objectiveStore);
         /* istanbul ignore else */
         if (controllerMap) {
             controllerMap[namespace][name] = instance;

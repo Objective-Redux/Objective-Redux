@@ -26,10 +26,10 @@ export abstract class Controller {
   /**
    * The ReduxController to which the controller belongs.
    */
-  protected objectiveStore: ObjectiveStore;
+  protected objectiveStore: ObjectiveStore|null;
 
-  protected constructor(objectiveStore: ObjectiveStore) {
-    this.objectiveStore = objectiveStore;
+  protected constructor() {
+    this.objectiveStore = null;
   }
 
   /**
@@ -102,6 +102,21 @@ export abstract class Controller {
    */
   public static getNamespace(): string|null {
     return null;
+  }
+
+  /**
+   * Sets the objective store for the controller.
+   *
+   * @param objectiveStore The objective store the controller should use.
+   *
+   * @internal
+   */
+  public setObjectiveStore(objectiveStore: ObjectiveStore): void {
+    // This should only be called once by the lazy-loader. We don't want to allow the ObjectiveStore to be changed.
+    /* istanbul ignore else */
+    if (this.objectiveStore === null) {
+      this.objectiveStore = objectiveStore;
+    }
   }
 
   /**

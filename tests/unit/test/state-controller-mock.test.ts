@@ -16,7 +16,7 @@ const testName = 'SAMPLE_NAME';
 
 class TestController extends StateController<any> {
   public constructor() {
-    super(null, {} as any);
+    super(null);
   }
 
   public myAction = this.registerAction(testMutationOne);

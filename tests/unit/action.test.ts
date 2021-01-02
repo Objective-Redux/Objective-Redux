@@ -39,7 +39,7 @@ describe('action', () => {
       const objectiveStore: any = {
         dispatch: jest.fn(),
       };
-      createConnectedAction<number>(type, objectiveStore)(payload);
+      createConnectedAction<number>(type, () => objectiveStore)(payload);
       expect(objectiveStore.dispatch).toBeCalledWith({ type, payload });
     });
   });

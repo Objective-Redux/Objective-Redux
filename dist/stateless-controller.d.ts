@@ -73,17 +73,17 @@ export declare class SagaBuilder<Payload> {
  * ```
  */
 export declare abstract class StatelessController extends Controller {
+    private readonly sagasToRegister;
     /**
      * ObjectiveStores and starts the sagas.
      *
-     * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+     * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-     * have adverse affects on the application._.
+     * have adverse affects on the application.
      *
-     * @param objectiveStore The ObjectiveStore instance to which the controller will be connected.
      * @returns An instance of the StatelessController.
      */
-    constructor(objectiveStore: ObjectiveStore);
+    constructor();
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
      *
@@ -92,5 +92,6 @@ export declare abstract class StatelessController extends Controller {
      */
     protected createSaga<Payload>(): SagaBuilder<Payload>;
     protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload>;
+    setObjectiveStore(objectiveStore: ObjectiveStore): void;
 }
 //# sourceMappingURL=stateless-controller.d.ts.map

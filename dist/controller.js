@@ -16,9 +16,9 @@ var action_1 = require("./action");
  * @internal
  */
 var Controller = /** @class */ (function () {
-    function Controller(objectiveStore) {
+    function Controller() {
         this.count = 0;
-        this.objectiveStore = objectiveStore;
+        this.objectiveStore = null;
     }
     /**
      * Gets the unique name of the controller. By default, the name of the class.
@@ -89,6 +89,20 @@ var Controller = /** @class */ (function () {
      */
     Controller.getNamespace = function () {
         return null;
+    };
+    /**
+     * Sets the objective store for the controller.
+     *
+     * @param objectiveStore The objective store the controller should use.
+     *
+     * @internal
+     */
+    Controller.prototype.setObjectiveStore = function (objectiveStore) {
+        // This should only be called once by the lazy-loader. We don't want to allow the ObjectiveStore to be changed.
+        /* istanbul ignore else */
+        if (this.objectiveStore === null) {
+            this.objectiveStore = objectiveStore;
+        }
     };
     /**
      * Generates a unique, default action name.

@@ -21,7 +21,11 @@ jest.mock('redux-saga/effects', () => ({
   debounce,
 }));
 
-const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
+const getController = jest.fn((objectiveStore, CClass) => {
+  const instance = new CClass();
+  instance.setObjectiveStore(objectiveStore);
+  return instance;
+});
 const removeController = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
@@ -43,8 +47,8 @@ import { EffectBuilder } from '../../src/effect-type';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(objectiveStore: any) {
-    super(objectiveStore);
+  public constructor() {
+    super();
   }
 
   public static getName(): string {
@@ -101,6 +105,10 @@ describe('stateless-controller', () => {
       instance.createSagaHandle()
         .withEffect(effectBuilder)
         .register(testSaga);
+      // Calling this to force the saga to be registered/started.
+      // Normally, this happens when the object is initialized; but because we are adding the saga
+      // dynamically after initialization, we have to manually call this to complete the setup.
+      instance.setObjectiveStore(objectiveStoreMock);
 
       expect(registerSaga).toHaveBeenCalled();
 
@@ -168,15 +176,19 @@ describe('stateless-controller', () => {
     });
 
     it('should name actions', () => {
-      const objectiveStoreMock: any = { registerSaga };
+      const objectiveStoreMock: any = { registerSaga, dispatch: jest.fn() };
       const instance = TestController.getInstance(objectiveStoreMock);
-      instance.createSagaHandle()
+      const action = instance.createSagaHandle<void>()
         .withEffect(configureTakeLeading())
         .withAddressableName('NAME')
         .register(testSaga);
+      // Manually calling. See previous comment.
+      instance.setObjectiveStore(objectiveStoreMock);
       const { mock: { calls: [[saga]] } } = registerSaga;
       saga().next();
       expect(takeLeading).toHaveBeenCalledWith('OBJECTIVE-REDUX-ACTION/MyNamespace::test-saga/NAME', testSaga);
+      action();
+      expect(objectiveStoreMock.dispatch).toBeCalled();
     });
 
     it('should create saga without effect', () => {
@@ -184,6 +196,8 @@ describe('stateless-controller', () => {
       const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
         .register(testSaga);
+      // Manually calling. See previous comment.
+      instance.setObjectiveStore(objectiveStoreMock);
       expect(registerSaga).toHaveBeenCalledWith(testSaga, instance);
     });
   });

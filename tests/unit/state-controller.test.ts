@@ -20,7 +20,11 @@ const objectiveStoreMock: any = {
 };
 
 const registerController = jest.fn();
-const getController = jest.fn((objectiveStore, CClass) => new CClass(objectiveStore));
+const getController = jest.fn((objectiveStore, CClass) => {
+  const instance = new CClass();
+  instance.setObjectiveStore(objectiveStore);
+  return instance;
+});
 const removeController = jest.fn();
 
 jest.mock('../../src/lazy-loader', () => ({
@@ -34,8 +38,8 @@ jest.mock('../../src/lazy-loader', () => ({
 import { StateController } from '../../src';
 
 class TestController extends StateController<boolean> {
-  public constructor(objectiveStore: any) {
-    super(false, objectiveStore);
+  public constructor() {
+    super(false);
   }
 
   public static getName(): string {
@@ -62,7 +66,7 @@ class NamespacedTestController extends TestController {
 describe('state-controller', () => {
   describe('constructor', () => {
     it('should store the reducer', () => {
-      const instance = new TestController(objectiveStoreMock);
+      const instance = new TestController();
       expect(instance).toBeInstanceOf(TestController);
     });
   });

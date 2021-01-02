@@ -70,6 +70,8 @@ describe('LazyLoader', () => {
           return null;
         }
 
+        public setObjectiveStore(): void {}
+
         public reducer(): any {}
       }
 
@@ -81,6 +83,8 @@ describe('LazyLoader', () => {
         public static getNamespace(): string|null {
           return 'MY_NAMESPACE';
         }
+
+        public setObjectiveStore(): void {}
       }
 
       const mockObjectiveStore: any = {};

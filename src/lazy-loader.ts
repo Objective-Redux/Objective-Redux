@@ -129,7 +129,8 @@ export class LazyLoader {
       }
     }
 
-    const instance: any = new ControllerClass(objectiveStore);
+    const instance: any = new ControllerClass();
+    instance.setObjectiveStore(objectiveStore);
 
     /* istanbul ignore else */
     if (controllerMap) {

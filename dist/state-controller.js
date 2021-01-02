@@ -33,8 +33,8 @@ var controller_1 = require("./controller");
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(objectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName() {
@@ -61,8 +61,8 @@ var controller_1 = require("./controller");
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(objectiveStore: ObjectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName(): string {
@@ -88,16 +88,15 @@ var StateController = /** @class */ (function (_super) {
     /**
      * Registers the controller, sets up the reducer, and sets the initial state.
      *
-     * WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+     * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
      * have adverse affects on the application.
      *
      * @param initialState The initial value of the state slice in Redux.
-     * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
      * @returns An instance of the controller.
      */
-    function StateController(initialState, objectiveStore) {
-        var _this = _super.call(this, objectiveStore) || this;
+    function StateController(initialState) {
+        var _this = _super.call(this) || this;
         /**
          * A map of the reducer action names to the data mutation functions.
          */
@@ -185,7 +184,7 @@ var StateController = /** @class */ (function (_super) {
         var _this = this;
         var actionName = this.createActionName();
         this.reducerMap[actionName] = fn;
-        var actionFn = action_1.createConnectedAction(actionName, this.objectiveStore);
+        var actionFn = action_1.createConnectedAction(actionName, function () { return _this.objectiveStore; });
         /**
          * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
          * this builder.
@@ -197,7 +196,7 @@ var StateController = /** @class */ (function (_super) {
             delete _this.reducerMap[actionName];
             var addressableActionName = _this.createActionName(name);
             _this.reducerMap[addressableActionName] = fn;
-            return action_1.createConnectedAction(addressableActionName, _this.objectiveStore);
+            return action_1.createConnectedAction(addressableActionName, function () { return _this.objectiveStore; });
         };
         return actionFn;
     };

@@ -1,4 +1,3 @@
-import { ObjectiveStore } from './objective-store';
 import { Action, ActionExtendFn } from './action';
 import { Controller } from './controller';
 /**
@@ -21,8 +20,8 @@ interface ReducerMap<State, Payload> {
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(objectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName() {
@@ -49,8 +48,8 @@ interface ReducerMap<State, Payload> {
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(objectiveStore: ObjectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName(): string {
@@ -83,15 +82,14 @@ export declare abstract class StateController<State> extends Controller {
     /**
      * Registers the controller, sets up the reducer, and sets the initial state.
      *
-     * WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+     * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
      * have adverse affects on the application.
      *
      * @param initialState The initial value of the state slice in Redux.
-     * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
      * @returns An instance of the controller.
      */
-    protected constructor(initialState: State, objectiveStore: ObjectiveStore);
+    protected constructor(initialState: State);
     /**
      * Specified the name of the reducer/slice in the Redux store. Defaults to the value of getName.
      *

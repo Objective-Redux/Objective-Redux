@@ -11,8 +11,8 @@ export declare abstract class Controller {
     /**
      * The ReduxController to which the controller belongs.
      */
-    protected objectiveStore: ObjectiveStore;
-    protected constructor(objectiveStore: ObjectiveStore);
+    protected objectiveStore: ObjectiveStore | null;
+    protected constructor();
     /**
      * Gets the unique name of the controller. By default, the name of the class.
      *
@@ -79,6 +79,14 @@ export declare abstract class Controller {
      * ```
      */
     static getNamespace(): string | null;
+    /**
+     * Sets the objective store for the controller.
+     *
+     * @param objectiveStore The objective store the controller should use.
+     *
+     * @internal
+     */
+    setObjectiveStore(objectiveStore: ObjectiveStore): void;
     /**
      * Generates a unique, default action name.
      *

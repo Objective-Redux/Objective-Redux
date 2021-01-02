@@ -8,7 +8,6 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { ObjectiveStore } from './objective-store';
 import {
   Action, createConnectedAction, ActionFn, ActionExtendFn,
 } from './action';
@@ -36,8 +35,8 @@ interface ReducerMap<State, Payload> {
  * @example JavaScript
  * ```javascript
  * class SwitchStateController extends StateController {
- *   constructor(objectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName() {
@@ -64,8 +63,8 @@ interface ReducerMap<State, Payload> {
  * }
  *
  * class SwitchStateController extends StateController<SwitchState> {
- *   constructor(objectiveStore: ObjectiveStore) {
- *     super({ isOn: false }, objectiveStore);
+ *   constructor() {
+ *     super({ isOn: false });
  *   }
  *
  *   public static getName(): string {
@@ -100,16 +99,15 @@ export abstract class StateController<State> extends Controller {
   /**
    * Registers the controller, sets up the reducer, and sets the initial state.
    *
-   * WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+   * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
    * have adverse affects on the application.
    *
    * @param initialState The initial value of the state slice in Redux.
-   * @param objectiveStore The ObjectiveStore instance to which the component is being connected.
    * @returns An instance of the controller.
    */
-  protected constructor(initialState: State, objectiveStore: ObjectiveStore) {
-    super(objectiveStore);
+  protected constructor(initialState: State) {
+    super();
     this.initialState = initialState;
   }
 
@@ -185,7 +183,7 @@ export abstract class StateController<State> extends Controller {
     const actionName = this.createActionName();
     this.reducerMap[actionName] = fn;
 
-    const actionFn: any = createConnectedAction<Payload>(actionName, this.objectiveStore);
+    const actionFn: any = createConnectedAction<Payload>(actionName, () => this.objectiveStore as any);
 
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
@@ -198,7 +196,7 @@ export abstract class StateController<State> extends Controller {
       delete this.reducerMap[actionName];
       const addressableActionName = this.createActionName(name);
       this.reducerMap[addressableActionName] = fn;
-      return createConnectedAction<Payload>(addressableActionName, this.objectiveStore);
+      return createConnectedAction<Payload>(addressableActionName, () => this.objectiveStore as any);
     };
 
     return actionFn;
@@ -227,7 +225,7 @@ export abstract class StateController<State> extends Controller {
    * @returns The current slice of the state related to this controller.
    */
   public getStateSlice(): State {
-    let state = this.objectiveStore.getState();
+    let state = (this.objectiveStore as any).getState();
     const namespace = (this.constructor as any).getNamespace();
     state = state && namespace ? state[namespace] : state;
     return state && state[(this.constructor as any).getStoreName()];

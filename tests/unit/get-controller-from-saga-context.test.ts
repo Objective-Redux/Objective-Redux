@@ -28,8 +28,8 @@ jest.mock('../../src/lazy-loader', () => ({
 import { getControllerFromSagaContext, StateController } from '../../src';
 
 class TestStateController extends StateController<number> {
-  public constructor(objectiveStore: any) {
-    super(42, objectiveStore);
+  public constructor() {
+    super(42);
   }
 
   public static getName(): string {

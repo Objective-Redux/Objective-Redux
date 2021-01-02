@@ -31,8 +31,8 @@ import { useController, StatelessController } from '../../src';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
-  public constructor(objectiveStore: any) {
-    super(objectiveStore);
+  public constructor() {
+    super();
   }
 
   public static getName(): string {

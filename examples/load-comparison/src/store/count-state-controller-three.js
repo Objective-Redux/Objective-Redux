@@ -13,8 +13,8 @@ import { StateController } from 'objective-redux';
 const initialState = 0;
 
 export class CountStateControllerThree extends StateController {
-  constructor(objectiveStore) {
-    super(initialState, objectiveStore);
+  constructor() {
+    super(initialState);
   }
 
   static getName() {

@@ -21,8 +21,8 @@ export class SwitchStateSagas extends StatelessController {
     return 'switchSagas';
   }
 
-  constructor(objectiveStore) {
-    super(objectiveStore);
+  constructor() {
+    super();
     SwitchStateSagas.constructedTimes++;
     const elem = document.getElementById('statelessConstructorCount');
     if (elem) {

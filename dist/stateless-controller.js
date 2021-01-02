@@ -108,16 +108,17 @@ var StatelessController = /** @class */ (function (_super) {
     /**
      * ObjectiveStores and starts the sagas.
      *
-     * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+     * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
      * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-     * have adverse affects on the application._.
+     * have adverse affects on the application.
      *
-     * @param objectiveStore The ObjectiveStore instance to which the controller will be connected.
      * @returns An instance of the StatelessController.
      */
     // eslint-disable-next-line no-useless-constructor
-    function StatelessController(objectiveStore) {
-        return _super.call(this, objectiveStore) || this;
+    function StatelessController() {
+        var _this = _super.call(this) || this;
+        _this.sagasToRegister = [];
+        return _this;
     }
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
@@ -129,6 +130,7 @@ var StatelessController = /** @class */ (function (_super) {
         return new SagaBuilder(this.buildSaga.bind(this));
     };
     StatelessController.prototype.buildSaga = function (config) {
+        var _this = this;
         var name = this.createActionName(config.name);
         var sagaFn = config.sagaFn;
         if (config.effectBuilder !== null) {
@@ -137,8 +139,14 @@ var StatelessController = /** @class */ (function (_super) {
                 sagaFn: sagaFn,
             });
         }
-        this.objectiveStore.registerSaga(sagaFn, this);
-        return action_1.createConnectedAction(name, this.objectiveStore);
+        this.sagasToRegister.push(sagaFn);
+        return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
+    };
+    StatelessController.prototype.setObjectiveStore = function (objectiveStore) {
+        _super.prototype.setObjectiveStore.call(this, objectiveStore);
+        while (this.sagasToRegister.length > 0) {
+            this.objectiveStore.registerSaga(this.sagasToRegister.pop(), this);
+        }
     };
     return StatelessController;
 }(controller_1.Controller));

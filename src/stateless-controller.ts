@@ -109,19 +109,21 @@ export class SagaBuilder<Payload> {
  * ```
  */
 export abstract class StatelessController extends Controller {
+  private readonly sagasToRegister: SagaFn<any>[];
+
   /**
    * ObjectiveStores and starts the sagas.
    *
-   * _WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the
+   * WARNING: While the constructor can be called directly, controllers are meant to be initialized with the
    * [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-   * have adverse affects on the application._.
+   * have adverse affects on the application.
    *
-   * @param objectiveStore The ObjectiveStore instance to which the controller will be connected.
    * @returns An instance of the StatelessController.
    */
   // eslint-disable-next-line no-useless-constructor
-  public constructor(objectiveStore: ObjectiveStore) {
-    super(objectiveStore);
+  public constructor() {
+    super();
+    this.sagasToRegister = [];
   }
 
   /**
@@ -146,7 +148,14 @@ export abstract class StatelessController extends Controller {
       });
     }
 
-    this.objectiveStore.registerSaga(sagaFn, this);
-    return createConnectedAction(name, this.objectiveStore);
+    this.sagasToRegister.push(sagaFn);
+    return createConnectedAction(name, () => (this.objectiveStore as any));
+  }
+
+  public setObjectiveStore(objectiveStore: ObjectiveStore): void {
+    super.setObjectiveStore(objectiveStore);
+    while (this.sagasToRegister.length > 0) {
+      (this.objectiveStore as any).registerSaga(this.sagasToRegister.pop(), this);
+    }
   }
 }
