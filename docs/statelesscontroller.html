@@ -94,19 +94,18 @@ instance.toggleSwitch();</code></pre>
     
   <section>
     <h2 class="code">objectiveStore</h2>
-    <p class="code">protected objectiveStore: ObjectiveStore</p>
+    <p class="code">protected objectiveStore: ObjectiveStore|null</p>
     <p>The ReduxController to which the controller belongs.</p>
   </section>
   
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">public constructor(objectiveStore: ObjectiveStore): StatelessController</p>
-    <p>ObjectiveStores and starts the sagas.<br />_WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
-have adverse affects on the application._.</p>
+    <p class="code">public constructor(): StatelessController</p>
+    <p>ObjectiveStores and starts the sagas.<br />WARNING: While the constructor can be called directly, controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
+have adverse affects on the application.</p>
     
-    <h3>Parameters</h3>
-<p><dt>objectiveStore: ObjectiveStore</dt><dd>The ObjectiveStore instance to which the controller will be connected.</dd><p>
+    
     <h3>Returns</h3>
     <p><dt>StatelessController</dt><dd>An instance of the StatelessController.</dd></p>
     
@@ -149,6 +148,19 @@ have adverse affects on the application._.</p>
     
     <h3>Returns</h3>
     <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.</dd></p>
+    
+  </section>
+  
+
+  <section>
+    <h2 class="code">setObjectiveStore</h2>
+    <p class="code">public setObjectiveStore(objectiveStore: ObjectiveStore): void</p>
+    <p></p>
+    
+    <h3>Parameters</h3>
+<p><dt>objectiveStore: ObjectiveStore</dt><dd></dd><p>
+    <h3>Returns</h3>
+    <p><dt>void</dt><dd></dd></p>
     
   </section>
   
@@ -304,7 +316,7 @@ objectiveStore.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.21.0 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 0.22.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>

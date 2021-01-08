@@ -74,8 +74,8 @@
     <h3>Examples</h3>
 JavaScript
 <pre><code class="language-javascript">class SwitchStateController extends StateController {
-  constructor(objectiveStore) {
-    super({ isOn: false }, objectiveStore);
+  constructor() {
+    super({ isOn: false });
   }
 
   public static getName() {
@@ -100,8 +100,8 @@ TypeScript
 }
 
 class SwitchStateController extends StateController&lt;SwitchState&gt; {
-  constructor(objectiveStore: ObjectiveStore) {
-    super({ isOn: false }, objectiveStore);
+  constructor() {
+    super({ isOn: false });
   }
 
   public static getName(): string {
@@ -131,7 +131,7 @@ const slice = controller.getStateSlice();</code></pre>
 
   <section>
     <h2 class="code">objectiveStore</h2>
-    <p class="code">protected objectiveStore: ObjectiveStore</p>
+    <p class="code">protected objectiveStore: ObjectiveStore|null</p>
     <p>The ReduxController to which the controller belongs.</p>
   </section>
   
@@ -152,13 +152,12 @@ const slice = controller.getStateSlice();</code></pre>
     
   <section>
     <h2 class="code">constructor</h2>
-    <p class="code">protected constructor(initialState: State, objectiveStore: ObjectiveStore): StateController</p>
-    <p>Registers the controller, sets up the reducer, and sets the initial state.<br />WARNING: While the constructor can be called directly, state controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
+    <p class="code">protected constructor(initialState: State): StateController</p>
+    <p>Registers the controller, sets up the reducer, and sets the initial state.<br />WARNING: While the constructor can be called directly, controllers are meant to be initialized with the [[getInstance]] method. Creating instances directly can lead to having more than one instance at a time, which may
 have adverse affects on the application.</p>
     
     <h3>Parameters</h3>
 <p><dt>initialState: State</dt><dd>The initial value of the state slice in Redux.</dd><p>
-<p><dt>objectiveStore: ObjectiveStore</dt><dd>The ObjectiveStore instance to which the component is being connected.</dd><p>
     <h3>Returns</h3>
     <p><dt>StateController</dt><dd>An instance of the controller.</dd></p>
     
@@ -426,7 +425,7 @@ objectiveStore.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.21.0 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 0.22.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>

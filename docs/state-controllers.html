@@ -83,7 +83,7 @@
 
 <h3>Constructor</h3>
 
-<p>The construction must takes an instance of an ObjectiveStore and call super with the initial state and ObjectiveStore instance.
+<p>The construction must call super with the initial state and ObjectiveStore instance.
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -92,8 +92,8 @@ const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
   // The construct should look like this
-  constructor(objectiveStore) {
-    super(initialState, objectiveStore);
+  constructor() {
+    super(initialState);
     // ... additional setup code can go here
   }
 }
@@ -111,8 +111,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(objectiveStore) {
-    super(initialState, objectiveStore);
+  constructor() {
+    super(initialState);
   }
 
   // The getName function must look like this
@@ -139,8 +139,8 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  constructor(objectiveStore) {
-    super(initialState, objectiveStore);
+  constructor() {
+    super(initialState);
   }
 
   static getName() {
@@ -237,7 +237,7 @@ export default ComponentConnector
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.21.0 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 0.22.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>
