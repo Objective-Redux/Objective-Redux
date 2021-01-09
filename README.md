@@ -149,6 +149,8 @@ Objective-Redux only requires peer dependencies on [Redux](https://www.npmjs.com
 
 Optionally, you can also add [Redux-Saga](https://www.npmjs.com/package/redux-saga) for StatelessControllers.
 
+<br />
+
 ## Keep your bundle small
 ### Lots of features, one small package
 

@@ -128,20 +128,6 @@ export class SwitchStateController extends StateController {
 <h1 id="why-use-objective-redux">Why use Objective-Redux?</h1>
 <br />
 
-<h2 id="keep-your-dependencies-simple">Keep your dependencies simple</h2>
-<h3 id="lots-of-features-one-small-package">Lots of features, one small package</h3>
-<p>Objective-Redux replaces many of the packages you’re already using.</p>
-<p>For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit</p>
-<p><a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
-+
-<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
-+
-<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a></p>
-<p>you can simply use Objective-Redux</p>
-<p><a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a></p>
-<p><em>Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions.</em></p>
-<br />
-
 <h2 id="drop-the-boilerplate-code">Drop the boilerplate code</h2>
 <h3 id="actions-are-a-thing-of-the-past-among-other-things">Actions are a thing of the past&mdash; among other things</h3>
 <p>Object-Redux largely removes the need for action names, actions, switch-statement-reducers, selectors, and dispatching. You just need to write the mutating functions. Objective-Redux can take it from there.</p>
@@ -180,6 +166,26 @@ export class SwitchStateController extends StateController {
 <p>A slice of state never needs to know about what other slices are doing or how they’re organized.</p>
 <img src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/statics/organize.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
 
+<br />
+
+<h2 id="keep-your-dependencies-simple">Keep your dependencies simple</h2>
+<h3 id="no-direct-dependencies">No direct dependencies</h3>
+<p>Objective-Redux only requires peer dependencies on <a href="https://www.npmjs.com/package/redux">Redux</a> and <a href="https://www.npmjs.com/package/react">React</a>.</p>
+<p>Optionally, you can also add <a href="https://www.npmjs.com/package/redux-saga">Redux-Saga</a> for StatelessControllers.</p>
+<br />
+
+<h2 id="keep-your-bundle-small">Keep your bundle small</h2>
+<h3 id="lots-of-features-one-small-package">Lots of features, one small package</h3>
+<p>Objective-Redux replaces many of the packages you’re already using.</p>
+<p>For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit</p>
+<p><a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a></p>
+<p>you can simply use Objective-Redux</p>
+<p><a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a></p>
+<p><em>Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions.</em></p>
 <br />
 
 <h2 id="compatible-with-react-redux">Compatible with React-Redux</h2>
