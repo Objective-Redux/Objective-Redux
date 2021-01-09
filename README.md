@@ -83,28 +83,6 @@ In addition, you can take a look at the <a href="./examples">example apps</a> in
 
 <br />
 
-## Keep your dependencies simple
-
-### Lots of features, one small package
-
-Objective-Redux replaces many of the packages you're already using.
-
-For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
-
-<a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
-+
-<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
-+
-<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
-
-you can simply use Objective-Redux
-
-<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a>
-
-_Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions._
-
-<br />
-
 ## Drop the boilerplate code
 
 ### Actions are a thing of the past&mdash; among other things
@@ -160,6 +138,35 @@ Each controller class represents a slice, giving an intuitive way for developers
 A slice of state never needs to know about what other slices are doing or how they're organized.
 
 <img src="./statics/organize.png" alt="organize reducing function into a single class that represents a slice" style="height: 200px;" />
+
+<br />
+
+## Keep your dependencies simple
+
+### No direct dependencies
+
+Objective-Redux only requires peer dependencies on [Redux](https://www.npmjs.com/package/redux) and [React](https://www.npmjs.com/package/react).
+
+Optionally, you can also add [Redux-Saga](https://www.npmjs.com/package/redux-saga) for StatelessControllers.
+
+## Keep your bundle small
+### Lots of features, one small package
+
+Objective-Redux replaces many of the packages you're already using.
+
+For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
+
+<a href="https://bundlephobia.com/result?p=react-redux"><img src="https://badgen.net/bundlephobia/min/react-redux" alt="react-redux bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-injectors"><img src="https://badgen.net/bundlephobia/min/redux-injectors" alt="redux-injectors bundle size" /></a>
++
+<a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
+
+you can simply use Objective-Redux
+
+<a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a>
+
+_Bundle sizes vary based on how much of the package is unused and how effectively your bundler can remove the unused portions._
 
 <br />
 
