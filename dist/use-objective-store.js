@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useObjectiveStore = void 0;
 var react_1 = require("react");
 var context_1 = require("./context");
-var hook_subscriber_1 = require("./hook-subscriber");
 /**
  * Gets the ObjectiveStore from the React context for use in a functional component.
  *
@@ -35,11 +34,4 @@ var hook_subscriber_1 = require("./hook-subscriber");
  * }
  * ```
  */
-exports.useObjectiveStore = function () {
-    var objectiveStore = react_1.useContext(context_1.ObjectiveStoreProviderContext);
-    var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
-    var subscription = react_1.useMemo(function () { return new hook_subscriber_1.HookSubscriber(objectiveStore, forceUpdate); }, [objectiveStore]);
-    subscription.subscribe();
-    react_1.useEffect(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
-    return objectiveStore;
-};
+exports.useObjectiveStore = function () { return react_1.useContext(context_1.ObjectiveStoreProviderContext); };

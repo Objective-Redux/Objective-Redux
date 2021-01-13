@@ -8,14 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import {
-  useContext,
-  useReducer,
-  useMemo,
-  useEffect,
-} from 'react';
+import { useContext } from 'react';
 import { ObjectiveStoreProviderContext } from './context';
-import { HookSubscriber } from './hook-subscriber';
 import { ObjectiveStore } from './objective-store';
 
 /**
@@ -40,17 +34,4 @@ import { ObjectiveStore } from './objective-store';
  * }
  * ```
  */
-export const useObjectiveStore = (): ObjectiveStore|null => {
-  const objectiveStore = useContext(ObjectiveStoreProviderContext);
-  const [, forceUpdate] = useReducer(c => c + 1, 0);
-
-  const subscription = useMemo(() => new HookSubscriber(objectiveStore, forceUpdate), [objectiveStore]);
-  subscription.subscribe();
-
-  useEffect(
-    () => subscription.unsubscribe.bind(subscription),
-    [objectiveStore]
-  );
-
-  return objectiveStore;
-};
+export const useObjectiveStore = (): ObjectiveStore|null => useContext(ObjectiveStoreProviderContext);

@@ -10,18 +10,29 @@
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HookSubscriber = void 0;
+var component_connector_1 = require("./component-connector");
 /**
  * @internal
  */
 var HookSubscriber = /** @class */ (function () {
-    function HookSubscriber(objectiveStore, updateFn) {
+    // eslint-disable-next-line max-params
+    function HookSubscriber(objectiveStore, getSlice, updateFn) {
         this.objectiveStore = objectiveStore;
+        this.getSlice = getSlice;
         this.updateFn = updateFn;
         this.unsubscribeFn = null;
+        this.previousSlice = this.getSlice();
     }
     HookSubscriber.prototype.subscribe = function () {
+        var _this = this;
         if (!this.unsubscribeFn && this.objectiveStore) {
-            this.unsubscribeFn = this.objectiveStore.subscribe(this.updateFn);
+            this.unsubscribeFn = this.objectiveStore.subscribe(function () {
+                var slice = _this.getSlice();
+                if (!component_connector_1.deepEquals(_this.previousSlice, slice)) {
+                    _this.previousSlice = slice;
+                    _this.updateFn();
+                }
+            });
         }
     };
     HookSubscriber.prototype.unsubscribe = function () {

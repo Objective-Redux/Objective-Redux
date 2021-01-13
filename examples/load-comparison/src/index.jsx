@@ -11,37 +11,61 @@
 import React, { Profiler } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore, StateController } from 'objective-redux';
 import ConnectedComponentMaker from './connected-component';
+import makeHookComponent from './hook-component';
 import ReactReduxComponentMaker from './react-redux-component';
-import { CountStateControllerOne } from './store/count-state-controller-one';
-import { CountStateControllerTwo } from './store/count-state-controller-two';
-import { CountStateControllerThree } from './store/count-state-controller-three';
-import { CountStateControllerFour } from './store/count-state-controller-four';
-import { CountStateControllerFive } from './store/count-state-controller-five';
+import makeReactReduxHookComponent from './react-redux-hook-component';
 import { metrics } from './metrics';
 
 const USE_OBJECTIVE_REDUX = true;
+const USE_HOOKS = false;
 const TOP_LEVEL_ELEMENTS = 100;
-const NESTED_ELEMENT_DEPTH = 6;
+const NESTED_ELEMENT_DEPTH = 7;
 const SPLIT_ELEMENTS_BY = 2;
 const TOTAL_ACTIONS_TO_FIRE = 100;
+const NUM_CONTROLLERS = 50;
 
 let totalElements = 0;
 
 export const objectiveStore = new ObjectiveStore();
 
-const controllers = [
-  CountStateControllerOne,
-  CountStateControllerTwo,
-  CountStateControllerThree,
-  CountStateControllerFour,
-  CountStateControllerFive,
-];
+const makeController = name => {
+  const initialState = 0;
+  const controller = class extends StateController {
+    constructor() {
+      super(initialState);
+    }
 
-const componentMaker = USE_OBJECTIVE_REDUX
-  ? ConnectedComponentMaker
-  : ReactReduxComponentMaker;
+    static getName() {
+      return name;
+    }
+
+    increment = this.registerAction(
+      state => state + 1
+    );
+  };
+
+  controller.initializeOnExternalAction();
+  return controller;
+};
+
+const controllers = [];
+for (let i = 0; i < NUM_CONTROLLERS; i++) {
+  controllers.push(makeController(`controller-${i}`));
+}
+
+let componentMaker = null;
+
+if (USE_HOOKS) {
+  componentMaker = USE_OBJECTIVE_REDUX
+    ? makeHookComponent
+    : makeReactReduxHookComponent;
+} else {
+  componentMaker = USE_OBJECTIVE_REDUX
+    ? ConnectedComponentMaker
+    : ReactReduxComponentMaker;
+}
 
 const buttonRefs = [];
 
@@ -63,10 +87,10 @@ const callback = (id, phase, actualTime, baseTime) => {
     metrics.basePaintTime += baseTime;
     document.getElementById('round').innerHTML = renderingRound;
     document.getElementById('passes').innerHTML = metrics.paintPasses;
-    document.getElementById('avgPaintTime').innerHTML = round(metrics.actualPaintTime / metrics.paintPasses);
-    document.getElementById('avgBasePaintTime').innerHTML = round(metrics.basePaintTime / metrics.paintPasses);
-    document.getElementById('totalPaintTime').innerHTML = round(metrics.actualPaintTime);
-    document.getElementById('totalBasePaintTime').innerHTML = round(metrics.basePaintTime);
+    document.getElementById('avgPaintTime').innerHTML = `${round(metrics.actualPaintTime / metrics.paintPasses)} ms`;
+    document.getElementById('avgBasePaintTime').innerHTML = `${round(metrics.basePaintTime / metrics.paintPasses)} ms`;
+    document.getElementById('totalPaintTime').innerHTML = `${round(metrics.actualPaintTime)} ms`;
+    document.getElementById('totalBasePaintTime').innerHTML = `${round(metrics.basePaintTime)} ms`;
   }
 
   if (renderingRound++ < TOTAL_ACTIONS_TO_FIRE) {
@@ -127,13 +151,19 @@ ReactDOM.render(
     <ObjectiveStoreProvider objectiveStore={objectiveStore}>
       <Provider store={objectiveStore}>
         <h1>Load Testing Tool</h1>
-        <div style={{ border: '1px solid #000', margin: '100px', padding: '100px 50px' }}>
+        <div style={{ border: '1px solid #000', margin: '75px', padding: '75px 50px' }}>
           <h2>
             {USE_OBJECTIVE_REDUX ? 'Objective-Redux' : 'React-Redux'}
+            :&nbsp;
+            {USE_HOOKS ? 'Hook Components' : 'Connected Components'}
           </h2>
           <p>
             Total Connected Elements:&nbsp;
             {totalElements}
+          </p>
+          <p>
+            Number of Controllers:&nbsp;
+            {NUM_CONTROLLERS}
           </p>
           <p>
             Elements Rendered:&nbsp;

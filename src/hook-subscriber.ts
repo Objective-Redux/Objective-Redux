@@ -8,6 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
+import { deepEquals } from './component-connector';
 import { ObjectiveStore } from './objective-store';
 
 type UpdateFn = (() => void);
@@ -18,19 +19,36 @@ type UpdateFn = (() => void);
 export class HookSubscriber {
   private readonly objectiveStore: ObjectiveStore|null;
 
+  private readonly getSlice: () => any;
+
   private readonly updateFn: UpdateFn;
 
   private unsubscribeFn: UpdateFn|null;
 
-  public constructor(objectiveStore: ObjectiveStore|null, updateFn: UpdateFn) {
+  private previousSlice: any;
+
+  // eslint-disable-next-line max-params
+  public constructor(
+    objectiveStore: ObjectiveStore|null,
+    getSlice: () => any,
+    updateFn: UpdateFn
+  ) {
     this.objectiveStore = objectiveStore;
+    this.getSlice = getSlice;
     this.updateFn = updateFn;
     this.unsubscribeFn = null;
+    this.previousSlice = this.getSlice();
   }
 
   public subscribe(): void {
     if (!this.unsubscribeFn && this.objectiveStore) {
-      this.unsubscribeFn = this.objectiveStore.subscribe(this.updateFn);
+      this.unsubscribeFn = this.objectiveStore.subscribe(() => {
+        const slice = this.getSlice();
+        if (!deepEquals(this.previousSlice, slice)) {
+          this.previousSlice = slice;
+          this.updateFn();
+        }
+      });
     }
   }
 

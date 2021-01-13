@@ -10,15 +10,15 @@
 
 import { HookSubscriber } from '../../src/hook-subscriber';
 
-const subscribe = jest.fn(() => (): void => {});
+const subscribe = jest.fn<() => void, [() => void]>(() => (): void => {});
 const mockObjectiveStore: any = {
   subscribe,
 };
 
 describe('HookSubscriber', () => {
   describe('subscribe', () => {
-    it('subscribes to the ObjectiveStore instance', () => {
-      const subscriber = new HookSubscriber(mockObjectiveStore, () => {});
+    it('subscribes once to the ObjectiveStore instance', () => {
+      const subscriber = new HookSubscriber(mockObjectiveStore, () => {}, () => {});
       subscriber.subscribe();
       subscriber.subscribe();
       subscriber.subscribe();
@@ -26,15 +26,15 @@ describe('HookSubscriber', () => {
     });
 
     it('does nothing when there is no ObjectiveStore instance', () => {
-      const subscriber = new HookSubscriber(null, () => {});
+      const subscriber = new HookSubscriber(null, () => {}, () => {});
       expect(subscriber).toBeInstanceOf(HookSubscriber);
       expect(subscribe).toBeCalledTimes(0);
     });
   });
 
   describe('unsubscribe', () => {
-    it('calls the unsubscribe function when it is set', () => {
-      const subscriber: any = new HookSubscriber(null, () => {});
+    it('calls the unsubscribe function once when it is set', () => {
+      const subscriber: any = new HookSubscriber(null, () => {}, () => {});
       const unsubscribeFn = jest.fn();
       subscriber.unsubscribeFn = unsubscribeFn;
       subscriber.unsubscribe();
@@ -45,9 +45,27 @@ describe('HookSubscriber', () => {
     });
 
     it('does nothing when the unsubscribe function is not set', () => {
-      const subscriber: any = new HookSubscriber(null, () => {});
+      const subscriber: any = new HookSubscriber(null, () => {}, () => {});
       subscriber.unsubscribe();
       expect(subscriber.unsubscribeFn).toBeNull();
+    });
+  });
+
+  describe('event handling', () => {
+    it('ignores unnecessary events', () => {
+      let i = 0;
+      const stateFn = jest.fn(() => i);
+      const updateFn = jest.fn();
+      const subscriber = new HookSubscriber(mockObjectiveStore, stateFn, updateFn);
+      subscriber.subscribe();
+      const { mock: { calls: [[fn]] } } = subscribe;
+      i++;
+      fn();
+      fn();
+      expect(updateFn).toHaveBeenCalledTimes(1);
+      i++;
+      fn();
+      expect(updateFn).toHaveBeenCalledTimes(2);
     });
   });
 });

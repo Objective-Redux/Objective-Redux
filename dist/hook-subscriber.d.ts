@@ -5,9 +5,11 @@ declare type UpdateFn = (() => void);
  */
 export declare class HookSubscriber {
     private readonly objectiveStore;
+    private readonly getSlice;
     private readonly updateFn;
     private unsubscribeFn;
-    constructor(objectiveStore: ObjectiveStore | null, updateFn: UpdateFn);
+    private previousSlice;
+    constructor(objectiveStore: ObjectiveStore | null, getSlice: () => any, updateFn: UpdateFn);
     subscribe(): void;
     unsubscribe(): void;
 }

@@ -8,22 +8,22 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StateController } from 'objective-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { metrics } from './metrics';
 
-const initialState = 0;
+export default function makeReactReduxHookComponent(controllerClass) {
+  return props => {
+    const { children } = props;
+    const count = useSelector(state => state[controllerClass.getName()]);
+    ++metrics.renders;
 
-export class CountStateControllerFive extends StateController {
-  constructor() {
-    super(initialState);
-  }
-
-  static getName() {
-    return 'count-five';
-  }
-
-  increment = this.registerAction(
-    state => state + 1
-  );
+    return (
+      <div className="result" style={{ borderLeft: '5px solid #000', padding: '5px' }}>
+        The count is&nbsp;
+        {count}
+        {children}
+      </div>
+    );
+  };
 }
-
-CountStateControllerFive.initializeOnExternalAction();

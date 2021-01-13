@@ -10,18 +10,11 @@
 
 const registerMock = {};
 
-const forceUpdate = jest.fn();
 const useContext = jest.fn(() => registerMock);
-const useReducer = jest.fn(() => [null, forceUpdate]);
-const useMemo = jest.fn((fn: any) => fn());
-const useEffect = jest.fn();
 
 jest.mock('react', () => ({
   useContext,
-  useReducer,
   createContext: jest.fn(),
-  useMemo,
-  useEffect,
 }));
 
 const subscribe = jest.fn();
@@ -35,26 +28,12 @@ jest.mock('../../src/hook-subscriber', () => ({
 }));
 
 import { useObjectiveStore } from '../../src';
-import { HookSubscriber } from '../../src/hook-subscriber';
 
 describe('use-objective-store', () => {
   describe('hook', () => {
-    it('should get the ObjectiveStore instance and re-render', () => {
+    it('should get the ObjectiveStore instance', () => {
       const objectiveStore = useObjectiveStore();
       expect(objectiveStore).toBe(registerMock);
-
-      const { mock: { calls: [[reducingFn]] } } = useReducer as any;
-      const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
-      expect(reducingFn(0)).toEqual(1);
-      expect(subscribe).toBeCalled();
-      expect(watchParams).toEqual([registerMock]);
-
-      unmountFn()();
-      expect(unsubscribe).toBeCalled();
-
-      const { mock: { calls: [[, update]] } } = HookSubscriber as any;
-      update();
-      expect(forceUpdate).toHaveBeenCalled();
     });
   });
 });
