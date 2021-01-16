@@ -37,3 +37,4 @@ Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: f
 Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return effect_type_1.configureTakeEvery; } });
 Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return effect_type_1.configureTakeLeading; } });
 Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return effect_type_1.configureDebounce; } });
+Object.defineProperty(exports, "configureTake", { enumerable: true, get: function () { return effect_type_1.configureTake; } });

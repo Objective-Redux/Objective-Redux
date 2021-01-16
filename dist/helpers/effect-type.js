@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = void 0;
+exports.configureTake = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = void 0;
 var get_redux_saga_module_1 = require("./get-redux-saga-module");
 /**
  * Returns a function that will create a takeLatest saga watcher. This can be used with the SagaBuilder::withEffect()
@@ -143,6 +143,41 @@ function configureDebounce(debounceConfig) {
     };
 }
 exports.configureDebounce = configureDebounce;
-// export function configureTake(): TakeBuilder {
-//   //
-// }
+/**
+ * Returns a function that will create a take saga watcher. This can be used with the SagaBuilder::withEffect()
+ * method.
+ *
+ * @param takeConfig The configuration for the watcher.
+ * @returns A function that creates a take watching function.
+ * @example
+ * ```typescript
+ * configureTake({ pattern: 'REQUEST' });
+ * ```
+ */
+function configureTake(takeConfig) {
+    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    return function TAKE(config) {
+        return function () {
+            var patternFn, payload;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!true) return [3 /*break*/, 3];
+                        patternFn = function (action) { return action.type === config.name
+                            || (typeof takeConfig.pattern === 'string' && action.type === takeConfig.pattern)
+                            || (typeof takeConfig.pattern === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
+                            || (typeof takeConfig.pattern === 'function' && takeConfig.pattern(action)); };
+                        return [4 /*yield*/, effects.take(patternFn)];
+                    case 1:
+                        payload = _a.sent();
+                        return [4 /*yield*/, effects.fork(config.sagaFn, payload)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 0];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        };
+    };
+}
+exports.configureTake = configureTake;

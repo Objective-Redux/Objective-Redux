@@ -6,6 +6,12 @@ export interface DebounceTakeConfig {
     debounceTime: number;
 }
 /**
+ * The pattern that for which to watch.
+ */
+export interface TakeConfig {
+    pattern?: string | string[] | ((action: any) => boolean);
+}
+/**
  * @internal
  */
 interface SagaEffectConfig {
@@ -63,5 +69,17 @@ export declare function configureTakeLeading(): EffectBuilder;
  * ```
  */
 export declare function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBuilder;
+/**
+ * Returns a function that will create a take saga watcher. This can be used with the SagaBuilder::withEffect()
+ * method.
+ *
+ * @param takeConfig The configuration for the watcher.
+ * @returns A function that creates a take watching function.
+ * @example
+ * ```typescript
+ * configureTake({ pattern: 'REQUEST' });
+ * ```
+ */
+export declare function configureTake(takeConfig: TakeConfig): EffectBuilder;
 export {};
 //# sourceMappingURL=effect-type.d.ts.map

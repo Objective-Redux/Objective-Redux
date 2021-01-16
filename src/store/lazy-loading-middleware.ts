@@ -8,9 +8,9 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
+import { Action } from '../helpers/action';
 import { LazyLoader } from './lazy-loader';
 import { ObjectiveStore } from './objective-store';
-import { Action } from '../helpers/action';
 
 // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
 /**

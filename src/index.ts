@@ -24,4 +24,5 @@ export {
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
+  configureTake,
 } from './helpers/effect-type';

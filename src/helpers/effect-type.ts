@@ -19,6 +19,13 @@ export interface DebounceTakeConfig {
 }
 
 /**
+ * The pattern that for which to watch.
+ */
+export interface TakeConfig {
+  pattern?: string | string[] | ((action: any) => boolean);
+}
+
+/**
  * @internal
  */
 interface SagaEffectConfig {
@@ -110,6 +117,32 @@ export function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBui
   };
 }
 
-// export function configureTake(): TakeBuilder {
-//   //
+/**
+ * Returns a function that will create a take saga watcher. This can be used with the SagaBuilder::withEffect()
+ * method.
+ *
+ * @param takeConfig The configuration for the watcher.
+ * @returns A function that creates a take watching function.
+ * @example
+ * ```typescript
+ * configureTake({ pattern: 'REQUEST' });
+ * ```
+ */
+// export function configureTake(takeConfig: TakeConfig): EffectBuilder {
+//   const effects = getReduxSagaEffects();
+//   return function TAKE(config: SagaEffectConfig): (() => Generator) {
+//     return function* (): any {
+//       while (true) {
+//         // Match the action if the assigned name is matched (e.g. if the controller function is called) or if
+//         // the provided pattern is a match.
+//         const patternFn = (action: any): boolean => action.type === config.name
+//             || (typeof takeConfig.pattern === 'string' && action.type === takeConfig.pattern)
+//             || (typeof takeConfig.pattern === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
+//             || (typeof takeConfig.pattern === 'function' && takeConfig.pattern(action));
+
+//         const payload = yield effects.take(patternFn);
+//         yield effects.fork(config.sagaFn, payload);
+//       }
+//     };
+//   };
 // }
