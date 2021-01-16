@@ -128,21 +128,21 @@ export function configureDebounce(debounceConfig: DebounceTakeConfig): EffectBui
  * configureTake({ pattern: 'REQUEST' });
  * ```
  */
-// export function configureTake(takeConfig: TakeConfig): EffectBuilder {
-//   const effects = getReduxSagaEffects();
-//   return function TAKE(config: SagaEffectConfig): (() => Generator) {
-//     return function* (): any {
-//       while (true) {
-//         // Match the action if the assigned name is matched (e.g. if the controller function is called) or if
-//         // the provided pattern is a match.
-//         const patternFn = (action: any): boolean => action.type === config.name
-//             || (typeof takeConfig.pattern === 'string' && action.type === takeConfig.pattern)
-//             || (typeof takeConfig.pattern === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
-//             || (typeof takeConfig.pattern === 'function' && takeConfig.pattern(action));
+export function configureTake(takeConfig?: TakeConfig): EffectBuilder {
+  const effects = getReduxSagaEffects();
+  return function TAKE(config: SagaEffectConfig): (() => Generator) {
+    return function* (): any {
+      while (true) {
+        // Match the action if the assigned name is matched (e.g. if the controller function is called) or if
+        // the provided pattern is a match.
+        const patternFn = (action: any): boolean => action.type === config.name
+            || (typeof takeConfig?.pattern === 'string' && action.type === takeConfig.pattern)
+            || (typeof takeConfig?.pattern === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
+            || (typeof takeConfig?.pattern === 'function' && takeConfig.pattern(action));
 
-//         const payload = yield effects.take(patternFn);
-//         yield effects.fork(config.sagaFn, payload);
-//       }
-//     };
-//   };
-// }
+        const payload = yield effects.take(patternFn);
+        yield effects.fork(config.sagaFn, payload);
+      }
+    };
+  };
+}

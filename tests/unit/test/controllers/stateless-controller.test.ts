@@ -13,12 +13,16 @@ const takeLatest = jest.fn();
 const takeEvery = jest.fn();
 const takeLeading = jest.fn();
 const debounce = jest.fn();
+const take = jest.fn();
+const fork = jest.fn();
 
 jest.mock('redux-saga/effects', () => ({
   takeLatest,
   takeEvery,
   takeLeading,
   debounce,
+  take,
+  fork,
 }));
 
 const getController = jest.fn((objectiveStore, CClass) => {
@@ -42,6 +46,7 @@ import {
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
+  configureTake,
 } from '../../../../src';
 import { EffectBuilder } from '../../../../src/helpers/effect-type';
 
@@ -99,7 +104,7 @@ describe('stateless-controller', () => {
   });
 
   describe('createSaga', () => {
-    function checkSaga(effectBuilder: EffectBuilder, verify: () => void): void {
+    function checkSaga(effectBuilder: EffectBuilder, verify: (saga: any) => void): void {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
       instance.createSagaHandle()
@@ -113,9 +118,10 @@ describe('stateless-controller', () => {
       expect(registerSaga).toHaveBeenCalled();
 
       const { mock: { calls: [[saga]] } } = registerSaga;
-      saga().next();
+      const fn = saga();
+      fn.next();
 
-      verify();
+      verify(fn);
     }
 
     it('should create saga with takeLatest', () => {
@@ -172,6 +178,57 @@ describe('stateless-controller', () => {
           'OBJECTIVE-REDUX-ACTION/MyNamespace::test-saga/0',
           testSaga
         )
+      );
+    });
+
+    it('should create saga with take and empty config', () => {
+      checkSaga(
+        configureTake(),
+        saga => {
+          expect(take).toHaveBeenCalled();
+          const { mock: { calls: [[fn]] } } = take;
+          expect(fn({ type: 'OBJECTIVE-REDUX-ACTION/MyNamespace::test-saga/0' })).toEqual(true);
+          expect(fn({ type: 'OBJECTIVE-REDUX-ACTION/MyNamespace::test-saga/1' })).toEqual(false);
+          const payload = 'SAMPLE';
+          saga.next(payload);
+          expect(fork).toHaveBeenCalledWith(testSaga, payload);
+        }
+      );
+    });
+
+    it('should create saga with take and a string pattern', () => {
+      checkSaga(
+        configureTake({ pattern: 'TEST' }),
+        () => {
+          expect(take).toHaveBeenCalled();
+          const { mock: { calls: [[fn]] } } = take;
+          expect(fn({ type: 'TEST' })).toEqual(true);
+          expect(fn({ type: 'Blah' })).toEqual(false);
+        }
+      );
+    });
+
+    it('should create saga with take and an array pattern', () => {
+      checkSaga(
+        configureTake({ pattern: ['TEST'] }),
+        () => {
+          expect(take).toHaveBeenCalled();
+          const { mock: { calls: [[fn]] } } = take;
+          expect(fn({ type: 'TEST' })).toEqual(true);
+          expect(fn({ type: 'Blah' })).toEqual(false);
+        }
+      );
+    });
+
+    it('should create saga with take and a function pattern', () => {
+      checkSaga(
+        configureTake({ pattern: action => action.type === 'TEST' }),
+        () => {
+          expect(take).toHaveBeenCalled();
+          const { mock: { calls: [[fn]] } } = take;
+          expect(fn({ type: 'TEST' })).toEqual(true);
+          expect(fn({ type: 'Blah' })).toEqual(false);
+        }
       );
     });
 

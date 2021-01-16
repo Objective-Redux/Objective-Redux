@@ -80,6 +80,6 @@ export declare function configureDebounce(debounceConfig: DebounceTakeConfig): E
  * configureTake({ pattern: 'REQUEST' });
  * ```
  */
-export declare function configureTake(takeConfig: TakeConfig): EffectBuilder;
+export declare function configureTake(takeConfig?: TakeConfig): EffectBuilder;
 export {};
 //# sourceMappingURL=effect-type.d.ts.map

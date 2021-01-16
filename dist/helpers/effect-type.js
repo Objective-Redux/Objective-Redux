@@ -164,9 +164,9 @@ function configureTake(takeConfig) {
                     case 0:
                         if (!true) return [3 /*break*/, 3];
                         patternFn = function (action) { return action.type === config.name
-                            || (typeof takeConfig.pattern === 'string' && action.type === takeConfig.pattern)
-                            || (typeof takeConfig.pattern === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
-                            || (typeof takeConfig.pattern === 'function' && takeConfig.pattern(action)); };
+                            || (typeof (takeConfig === null || takeConfig === void 0 ? void 0 : takeConfig.pattern) === 'string' && action.type === takeConfig.pattern)
+                            || (typeof (takeConfig === null || takeConfig === void 0 ? void 0 : takeConfig.pattern) === 'object' && takeConfig.pattern.indexOf(action.type) >= 0)
+                            || (typeof (takeConfig === null || takeConfig === void 0 ? void 0 : takeConfig.pattern) === 'function' && takeConfig.pattern(action)); };
                         return [4 /*yield*/, effects.take(patternFn)];
                     case 1:
                         payload = _a.sent();
