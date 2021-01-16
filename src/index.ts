@@ -8,20 +8,20 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-export { ObjectiveStore } from './objective-store';
-export { ReducerInjector } from './reducer-injector';
-export { StateController } from './state-controller';
-export { StatelessController } from './stateless-controller';
-export { createAction, getActionNameForController } from './action';
-export { ObjectiveStoreProvider } from './objective-store-provider';
-export { ComponentConnector } from './component-connector';
-export { getObjectiveStoreFromSagaContext } from './get-objective-store-from-saga-context';
-export { getControllerFromSagaContext } from './get-controller-from-saga-context';
-export { useObjectiveStore } from './use-objective-store';
-export { useController } from './use-controller';
+export { ObjectiveStore } from './store/objective-store';
+export { ReducerInjector } from './store/reducer-injector';
+export { StateController } from './controllers/state-controller';
+export { StatelessController } from './controllers/stateless-controller';
+export { createAction, getActionNameForController } from './helpers/action';
+export { ObjectiveStoreProvider } from './components/objective-store-provider';
+export { ComponentConnector } from './components/component-connector';
+export { getObjectiveStoreFromSagaContext } from './hooks/get-objective-store-from-saga-context';
+export { getControllerFromSagaContext } from './hooks/get-controller-from-saga-context';
+export { useObjectiveStore } from './hooks/use-objective-store';
+export { useController } from './hooks/use-controller';
 export {
   configureTakeLatest,
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
-} from './effect-type';
+} from './helpers/effect-type';

@@ -1,4 +1,4 @@
-import { StatelessController, SagaConfig } from '../stateless-controller';
+import { StatelessController, SagaConfig } from '../controllers/stateless-controller';
 /**
  * @internal
  */

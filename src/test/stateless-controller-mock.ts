@@ -8,7 +8,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StatelessController, SagaConfig } from '../stateless-controller';
+import { StatelessController, SagaConfig } from '../controllers/stateless-controller';
 
 /**
  * @internal

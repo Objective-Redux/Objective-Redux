@@ -23,7 +23,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StateControllerMock = void 0;
-var state_controller_1 = require("../state-controller");
+var state_controller_1 = require("../controllers/state-controller");
 /**
  * @internal
  */

@@ -8,8 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StateController, ReducerFn } from '../state-controller';
-import { ActionExtendFn, ActionFn } from '../action';
+import { StateController, ReducerFn } from '../controllers/state-controller';
+import { ActionExtendFn, ActionFn } from '../helpers/action';
 
 /**
  * @internal

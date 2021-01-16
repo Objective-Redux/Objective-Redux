@@ -1,5 +1,5 @@
-import { StateController, ReducerFn } from '../state-controller';
-import { ActionExtendFn } from '../action';
+import { StateController, ReducerFn } from '../controllers/state-controller';
+import { ActionExtendFn } from '../helpers/action';
 /**
  * @internal
  */
