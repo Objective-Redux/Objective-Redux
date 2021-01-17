@@ -12,7 +12,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
 import ConnectedComponent from './connected-component';
+import ConnectedStateComponent from './connected-state-component';
 import HookComponent from './hook-component';
+import HookStateComponent from './hook-state-component';
 import ReactReduxComponent from './react-redux-component';
 import { SwitchStateController } from './store/switch-state-controller';
 import { SwitchStateSagas } from './store/switch-state-sagas';
@@ -33,6 +35,8 @@ ReactDOM.render(
         <ConnectedComponent />
         <HookComponent />
         <ReactReduxComponent />
+        <ConnectedStateComponent />
+        <HookStateComponent />
         <button id="removeStateController" onClick={removeStateController}>Remove StateController</button>
         <br />
         <button id="removeStatelessController" onClick={removeStatelessController}>Remove StatelessController</button>
