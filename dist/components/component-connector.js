@@ -50,8 +50,8 @@ var deep_equals_1 = require("../helpers/deep-equals");
  * ```typescript
  * export default ComponentConnector
  *   .addPropsTo(MyReactComponent)
- *   .from(MyStateControllerOne)
- *   .from(MyStateControllerTwo, slice => ({ a: slice.a }))
+ *   .fromController(MyStateControllerOne)
+ *   .fromController(MyStateControllerTwo, slice => ({ a: slice.a }))
  *   .connect();
  * ```
  */
@@ -59,6 +59,7 @@ var ComponentConnector = /** @class */ (function () {
     function ComponentConnector(component) {
         this.component = component;
         this.controllers = [];
+        this.stateSelectors = [];
     }
     /**
      * Starts the builder for a React component.
@@ -77,12 +78,25 @@ var ComponentConnector = /** @class */ (function () {
      * @param selector An optional mapping function.
      * @returns An instance of the ComponentConnector builder.
      */
-    ComponentConnector.prototype.from = function (controller, selector) {
+    ComponentConnector.prototype.fromController = function (controller, selector) {
         if (selector === void 0) { selector = null; }
         this.controllers.push({
             controller: controller,
             selector: selector || (function (state) { return state; }),
         });
+        return this;
+    };
+    /**
+     * Adds a selection of the state to as props to the component.
+     *
+     * This method is provided for backward compatibility purposes. For flexibility and performance reasons, it is
+     * encouraged that fromController method be used instead of this method when possible.
+     *
+     * @param selectorFn A function that maps the state to a selected part of the state.
+     * @returns An instance of the ComponentConnector builder.
+     */
+    ComponentConnector.prototype.fromState = function (selectorFn) {
+        this.stateSelectors.push(selectorFn);
         return this;
     };
     /**
@@ -92,7 +106,7 @@ var ComponentConnector = /** @class */ (function () {
      */
     ComponentConnector.prototype.connect = function () {
         var _a;
-        var _b = this, controllers = _b.controllers, Component = _b.component;
+        var _b = this, controllers = _b.controllers, stateSelectors = _b.stateSelectors, Component = _b.component;
         var connected = (_a = /** @class */ (function (_super) {
                 __extends(class_1, _super);
                 function class_1(props) {
@@ -107,6 +121,8 @@ var ComponentConnector = /** @class */ (function () {
                     return !deep_equals_1.deepEquals(this.props, nextProps) || !deep_equals_1.deepEquals(this.state, nextState);
                 };
                 class_1.prototype.render = function () {
+                    // Render can be called even though the component is unmounted.
+                    // In that case, return null so that nothing is rendered.
                     if (!this.unsubscribe && this.mounted) {
                         return null;
                     }
@@ -119,12 +135,18 @@ var ComponentConnector = /** @class */ (function () {
                     return (React.createElement(Component, __assign({}, this.existingState, this.props, { objectiveStore: objectiveStore })));
                 };
                 class_1.prototype.getState = function () {
-                    var state = {};
+                    var _a;
+                    /* istanbul ignore next */
+                    var state = (_a = this.context) === null || _a === void 0 ? void 0 : _a.getState();
+                    var selectedState = {};
                     for (var i = 0; i < controllers.length; i++) {
                         var slice = controllers[i].controller.getInstance(this.context).getStateSlice();
-                        state = __assign(__assign({}, state), controllers[i].selector(slice));
+                        selectedState = __assign(__assign({}, selectedState), controllers[i].selector(slice));
                     }
-                    return state;
+                    for (var i = 0; i < stateSelectors.length; i++) {
+                        selectedState = __assign(__assign({}, selectedState), stateSelectors[i](state));
+                    }
+                    return selectedState;
                 };
                 class_1.prototype.componentDidMount = function () {
                     var objectiveStore = this.context;

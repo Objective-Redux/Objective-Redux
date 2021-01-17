@@ -26,14 +26,15 @@ export interface StateSelectorFn<T> {
  * ```typescript
  * export default ComponentConnector
  *   .addPropsTo(MyReactComponent)
- *   .from(MyStateControllerOne)
- *   .from(MyStateControllerTwo, slice => ({ a: slice.a }))
+ *   .fromController(MyStateControllerOne)
+ *   .fromController(MyStateControllerTwo, slice => ({ a: slice.a }))
  *   .connect();
  * ```
  */
 export declare class ComponentConnector {
     private readonly component;
     private readonly controllers;
+    private readonly stateSelectors;
     /**
      * Starts the builder for a React component.
      *
@@ -50,7 +51,17 @@ export declare class ComponentConnector {
      * @param selector An optional mapping function.
      * @returns An instance of the ComponentConnector builder.
      */
-    from<C extends StateController<any>>(controller: typeof Controller & ModelConstructor<StateController<any>>, selector?: StateSelectorFn<C> | null): ComponentConnector;
+    fromController<C extends StateController<any>>(controller: typeof Controller & ModelConstructor<StateController<any>>, selector?: StateSelectorFn<C> | null): ComponentConnector;
+    /**
+     * Adds a selection of the state to as props to the component.
+     *
+     * This method is provided for backward compatibility purposes. For flexibility and performance reasons, it is
+     * encouraged that fromController method be used instead of this method when possible.
+     *
+     * @param selectorFn A function that maps the state to a selected part of the state.
+     * @returns An instance of the ComponentConnector builder.
+     */
+    fromState(selectorFn: StateSelectorFn<any>): ComponentConnector;
     /**
      * Finishes the builder and provides the connected component.
      *

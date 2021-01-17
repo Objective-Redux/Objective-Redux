@@ -126,11 +126,11 @@ function AppComponent(props) {
 }
 
 export default ComponentConnector
-  .addPropsTo(AppComponent) // Our component we are connecting to the ObjectiveStore
-  .from(SwitchStateController) // (optional) Adds the StateController's state as properties to the component
-                               // This can also be done as .from(SwitchStateController, state => ({ isOn: state.isOn }))
-                               // for custom mappings. More than one controller can be chained with .from to add more
-                               // props to the component.
+  .addPropsTo(AppComponent)              // Our component we are connecting to the ObjectiveStore
+  .fromController(SwitchStateController) // (optional) Adds the StateController's state as properties to the component
+                                         // Alternatively, .fromController(SwitchStateController, state => ({ isOn: state.isOn }))
+                                         // for custom mappings. More than one controller can be chained with .from to add more
+                                         // props to the component.
   .connect(); // Returns a new component that wraps the provided component
 </code></pre>
 

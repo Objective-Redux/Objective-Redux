@@ -19,6 +19,7 @@ export { getObjectiveStoreFromSagaContext } from './hooks/get-objective-store-fr
 export { getControllerFromSagaContext } from './hooks/get-controller-from-saga-context';
 export { useObjectiveStore } from './hooks/use-objective-store';
 export { useController } from './hooks/use-controller';
+export { useSelector } from './hooks/use-selector';
 export {
   configureTakeLatest,
   configureTakeEvery,

@@ -28,6 +28,6 @@ function ConnectedComponent(props) {
 export default function ComponentConnectorMaker(controller) {
   return ComponentConnector
     .addPropsTo(ConnectedComponent)
-    .from(controller, count => ({ count }))
+    .fromController(controller, count => ({ count }))
     .connect();
 }

@@ -42,5 +42,5 @@ function ConnectedComponent(props) {
 
 export default ComponentConnector
   .addPropsTo(ConnectedComponent)
-  .from(SwitchStateController)
+  .fromController(SwitchStateController)
   .connect();

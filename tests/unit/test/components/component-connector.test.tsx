@@ -15,11 +15,14 @@ import { ObjectiveStoreProvider, ComponentConnector } from '../../../../src';
 
 configure({ adapter: new Adapter() });
 
+const mockState = { T: 'test' };
 const unsubscribe = jest.fn();
 const subscribe = jest.fn(() => unsubscribe);
+const getState = jest.fn(() => mockState);
 
 const objectiveStoreMock: any = {
   subscribe,
+  getState,
 };
 
 class ConnectedTest extends React.Component {
@@ -59,8 +62,9 @@ describe('component-connector', () => {
   it('creates a connected element', () => {
     const Connected = ComponentConnector
       .addPropsTo(ConnectedTest)
-      .from(SliceOne as any)
-      .from(SliceTwo as any, (slice: any) => ({ b: slice.b, foo: slice.c }))
+      .fromController(SliceOne as any)
+      .fromController(SliceTwo as any, (slice: any) => ({ b: slice.b, foo: slice.c }))
+      .fromState(state => ({ T: state.T }))
       .connect();
 
     const wrapper = mount(
@@ -79,6 +83,7 @@ describe('component-connector', () => {
       b: 'B2',
       c: 'C1',
       foo: 'C2',
+      T: 'test',
     });
 
     expect(subscribe).toHaveBeenCalled();

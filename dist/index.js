@@ -32,6 +32,8 @@ var use_objective_store_1 = require("./hooks/use-objective-store");
 Object.defineProperty(exports, "useObjectiveStore", { enumerable: true, get: function () { return use_objective_store_1.useObjectiveStore; } });
 var use_controller_1 = require("./hooks/use-controller");
 Object.defineProperty(exports, "useController", { enumerable: true, get: function () { return use_controller_1.useController; } });
+var use_selector_1 = require("./hooks/use-selector");
+Object.defineProperty(exports, "useSelector", { enumerable: true, get: function () { return use_selector_1.useSelector; } });
 var effect_type_1 = require("./helpers/effect-type");
 Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: function () { return effect_type_1.configureTakeLatest; } });
 Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return effect_type_1.configureTakeEvery; } });

@@ -18,7 +18,7 @@
   ],
   "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
-    "build": "tsc && cd examples/react-redux && npm i && cd ../lazy-loading && npm i",
+    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i",
     "docs": "node scripts/generate-docs.js",
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
@@ -28,6 +28,7 @@
     "test": "npm run test-unit && npm run test-e2e",
     "test-e2e": "cd examples/react-redux && npm run test-e2e && cd ../lazy-loading && npm run test-e2e",
     "test-unit": "jest --no-cache --config ./config/jest.config.js",
+    "transpile": "tsc",
     "version": "npm run build && npm run docs"
   },
   "keywords": [

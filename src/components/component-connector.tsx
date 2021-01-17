@@ -41,8 +41,8 @@ export interface StateSelectorFn<T> {
  * ```typescript
  * export default ComponentConnector
  *   .addPropsTo(MyReactComponent)
- *   .from(MyStateControllerOne)
- *   .from(MyStateControllerTwo, slice => ({ a: slice.a }))
+ *   .fromController(MyStateControllerOne)
+ *   .fromController(MyStateControllerTwo, slice => ({ a: slice.a }))
  *   .connect();
  * ```
  */
@@ -53,6 +53,8 @@ export class ComponentConnector {
     controller: typeof Controller & ModelConstructor<StateController<any>>;
     selector: StateSelectorFn<any>;
   }[];
+
+  private readonly stateSelectors: StateSelectorFn<any>[];
 
   /**
    * Starts the builder for a React component.
@@ -67,6 +69,7 @@ export class ComponentConnector {
   private constructor(component: React.ComponentClass) {
     this.component = component;
     this.controllers = [];
+    this.stateSelectors = [];
   }
 
   /**
@@ -77,7 +80,7 @@ export class ComponentConnector {
    * @param selector An optional mapping function.
    * @returns An instance of the ComponentConnector builder.
    */
-  public from<C extends StateController<any>>(
+  public fromController<C extends StateController<any>>(
     controller: typeof Controller & ModelConstructor<StateController<any>>,
     selector: StateSelectorFn<C>|null = null
   ): ComponentConnector {
@@ -89,6 +92,20 @@ export class ComponentConnector {
   }
 
   /**
+   * Adds a selection of the state to as props to the component.
+   *
+   * This method is provided for backward compatibility purposes. For flexibility and performance reasons, it is
+   * encouraged that fromController method be used instead of this method when possible.
+   *
+   * @param selectorFn A function that maps the state to a selected part of the state.
+   * @returns An instance of the ComponentConnector builder.
+   */
+  public fromState(selectorFn: StateSelectorFn<any>): ComponentConnector {
+    this.stateSelectors.push(selectorFn);
+    return this;
+  }
+
+  /**
    * Finishes the builder and provides the connected component.
    *
    * @returns The connected React component.
@@ -96,6 +113,7 @@ export class ComponentConnector {
   public connect(): React.MemoExoticComponent<any> {
     const {
       controllers,
+      stateSelectors,
       component: Component,
     } = this;
 
@@ -122,6 +140,8 @@ export class ComponentConnector {
       }
 
       public render(): JSX.Element|null {
+        // Render can be called even though the component is unmounted.
+        // In that case, return null so that nothing is rendered.
         if (!this.unsubscribe && this.mounted) {
           return null;
         }
@@ -144,15 +164,23 @@ export class ComponentConnector {
       }
 
       private getState(): any {
-        let state = {};
+        /* istanbul ignore next */
+        const state = this.context?.getState();
+        let selectedState = {};
         for (let i = 0; i < controllers.length; i++) {
           const slice = (controllers[i].controller as any).getInstance(this.context).getStateSlice();
-          state = {
-            ...state,
+          selectedState = {
+            ...selectedState,
             ...controllers[i].selector(slice),
           };
         }
-        return state;
+        for (let i = 0; i < stateSelectors.length; i++) {
+          selectedState = {
+            ...selectedState,
+            ...stateSelectors[i](state),
+          };
+        }
+        return selectedState;
       }
 
       public componentDidMount(): void {
