@@ -126,7 +126,6 @@ export class ComponentConnector {
           return null;
         }
 
-        this.mounted = true;
         const objectiveStore: ObjectiveStore = this.context;
 
         // This will happen on this initial render of the component
@@ -159,6 +158,7 @@ export class ComponentConnector {
       public componentDidMount(): void {
         const objectiveStore: ObjectiveStore = this.context;
         this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
+        this.mounted = true;
       }
 
       public componentWillUnmount(): void {

@@ -32,7 +32,24 @@ export declare class SagaBuilder<Payload> {
      */
     withAddressableName(name: string): SagaBuilder<Payload>;
     /**
-     * Adds a simple watcher to the saga.
+     * Adds a watcher to the saga.
+     *
+     * Objective-Redux provides some build in configurations, or custom one can be built by using the below paradigm.
+     *
+     * @example
+     * ```typescript
+     * // Example of a customer configuration
+     * export function configureExample(configurationParameters) {
+     *   // provides
+     *   //   config.name the which is the action name targeting the saga
+     *   //   config.sagaFn the saga function being wrapped
+     *   return function EXAMPLE(config) {
+     *     return function* () {
+     *       yield exampleEffect(config.name, config.sagaFn);
+     *     };
+     *   };
+     *  }
+     * ```
      *
      * @param effectBuilder The builder function for the saga watcher. This can be generating using one of the configure
      * functions, such as configureTakeLatest or configureDebounce.

@@ -110,7 +110,6 @@ var ComponentConnector = /** @class */ (function () {
                     if (!this.unsubscribe && this.mounted) {
                         return null;
                     }
-                    this.mounted = true;
                     var objectiveStore = this.context;
                     // This will happen on this initial render of the component
                     /* istanbul ignore else */
@@ -130,6 +129,7 @@ var ComponentConnector = /** @class */ (function () {
                 class_1.prototype.componentDidMount = function () {
                     var objectiveStore = this.context;
                     this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
+                    this.mounted = true;
                 };
                 class_1.prototype.componentWillUnmount = function () {
                     if (this.unsubscribe) {
