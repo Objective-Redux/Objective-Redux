@@ -69,16 +69,25 @@
       <div class="padded">
         
   <section>
-    <h2 class="code">configureTakeLeading</h2>
-    <p class="code">function configureTakeLeading(): EffectBuilder</p>
-    <p>Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withEffect() method.</p>
-    
-    
+    <h2 class="code">useSelector</h2>
+    <p class="code">function useSelector&lt;T&gt;(selectorFn: (state: any) =&gt; T): any</p>
+    <p>Gets a selection of the state from the store.</p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;T&gt;</dt><dd></dd></p>
+    <h3>Parameters</h3>
+<p><dt>selectorFn: (state: any) =&gt; T</dt><dd>A selector/mapping function used to select values out of the state.</dd><p>
     <h3>Returns</h3>
-    <p><dt>EffectBuilder</dt><dd>A function that creates a takeLeading watching function.</dd></p>
+    <p><dt>any</dt><dd>The selected piece of state from the store.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-typescript">configureTakeLeading();</code></pre>
+<pre><code class="language-typescript">import React from 'react';
+import { useSelector } from 'objective-redux';
+
+export function MyFunctionalComponent() {
+  const { isOn } = useSelector(state =&gt; ({ isOn: state.switch.isOn }));
+
+  return &lt;p&gt;Switch is { isOn ? 'On' : 'Off' }&lt;/p&gt;;
+}</code></pre>
 
   </section>
   

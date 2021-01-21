@@ -69,16 +69,17 @@
       <div class="padded">
         
   <section>
-    <h2 class="code">configureTakeLeading</h2>
-    <p class="code">function configureTakeLeading(): EffectBuilder</p>
-    <p>Returns a function that will create a takeLeading saga watcher. This can be used with the SagaBuilder::withEffect() method.</p>
+    <h2 class="code">configureTake</h2>
+    <p class="code">function configureTake(takeConfig: TakeConfig): EffectBuilder</p>
+    <p>Returns a function that will create a take saga watcher. This can be used with the SagaBuilder::withEffect() method.</p>
     
-    
+    <h3>Parameters</h3>
+<p><dt>takeConfig: TakeConfig</dt><dd>The configuration for the watcher.<br /><br />takeConfig.pattern?: string|string[]|(action: any) =&gt; boolean<br /><span style="display: inline-block; margin-left: 40px;"></span></dd><p>
     <h3>Returns</h3>
-    <p><dt>EffectBuilder</dt><dd>A function that creates a takeLeading watching function.</dd></p>
+    <p><dt>EffectBuilder</dt><dd>A function that creates a take watching function.</dd></p>
     <h3>Examples</h3>
 
-<pre><code class="language-typescript">configureTakeLeading();</code></pre>
+<pre><code class="language-typescript">configureTake({ pattern: 'REQUEST' });</code></pre>
 
   </section>
   
