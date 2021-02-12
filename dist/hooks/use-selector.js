@@ -31,7 +31,7 @@ var use_objective_store_1 = require("./use-objective-store");
  * }
  * ```
  */
-exports.useSelector = function (selectorFn) {
+var useSelector = function (selectorFn) {
     var objectiveStore = use_objective_store_1.useObjectiveStore();
     var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
     if (!objectiveStore) {
@@ -43,3 +43,4 @@ exports.useSelector = function (selectorFn) {
     react_1.useEffect(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
     return getSlice();
 };
+exports.useSelector = useSelector;
