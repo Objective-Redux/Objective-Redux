@@ -27,8 +27,8 @@
     "test": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts test",
     "test-e2e": "start-server-and-test start http://localhost:3000 test-e2e-run",
     "test-e2e-ui": "start-server-and-test start http://localhost:3000 test-e2e-open",
-    "test-e2e-run": "../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
-    "test-e2e-open": "../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
+    "test-e2e-run": "cross-env ../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
+    "test-e2e-open": "cross-env ../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
   },
   "browserslist": {
     "production": [
