@@ -12,7 +12,8 @@
     "test-e2e-open": "cross-env ../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
   },
   "devDependencies": {
-    "start-server-and-test": "^1.11.0"
+    "start-server-and-test": "^1.11.0",
+    "cross-env": "^7.0.3"
   },
   "dependencies": {
     "next": "10.0.4",
