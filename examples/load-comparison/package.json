@@ -19,13 +19,13 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test",
+    "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "test": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts test",
     "test-e2e": "start-server-and-test start http://localhost:3000 test-e2e-run",
     "test-e2e-ui": "start-server-and-test start http://localhost:3000 test-e2e-open",
-    "test-e2e-run": "../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
-    "test-e2e-open": "../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
+    "test-e2e-run": "cross-env ../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
+    "test-e2e-open": "cross-env ../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
   },
   "browserslist": {
     "production": [
@@ -39,5 +39,7 @@
       "not op_mini all"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }

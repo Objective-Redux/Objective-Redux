@@ -8,8 +8,8 @@
     "start": "npm run build && node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test-e2e": "start-server-and-test start http://localhost:3000 test-e2e-run",
     "test-e2e-ui": "start-server-and-test start http://localhost:3000 test-e2e-open",
-    "test-e2e-run": "../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
-    "test-e2e-open": "../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
+    "test-e2e-run": "cross-env ../../node_modules/cypress/bin/cypress run --config-file ../../config/cypress.json",
+    "test-e2e-open": "cross-env ../../node_modules/cypress/bin/cypress open --config-file ../../config/cypress.json"
   },
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "@babel/preset-react": "^7.10.4",
     "@babel/runtime": "^7.10.5",
     "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.3",
     "html-webpack-plugin": "^4.3.0",
     "objective-redux": "file:../../",
     "redux": "4.0.5",
