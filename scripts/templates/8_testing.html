@@ -1,6 +1,6 @@
 <h1>Testing</h1>
 
-<p>Test helper classes for the controllers are provided in objective-redux/dist/test. For convenience, the index file also re-exports all files from the base objective-redux index.</p>
+<p>Test helper classes for the controllers are provided in objective-redux/dist/test.</p>
 
 <h2>Setting up the Mocks</h2>
 
@@ -10,8 +10,10 @@
 
 <pre><code class="language-typescript">
 jest.mock('objective-redux', () => {
+  const objectiveRedux = require('objective-redux');
   const mockObjectiveRedux = require('objective-redux/dist/test');
   return {
+    ...objectiveRedux,
     ...mockObjectiveRedux,
   };
 });
