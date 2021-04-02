@@ -16,7 +16,7 @@ function ReactReduxComponent(props) {
   ++metrics.renders;
 
   return (
-    <div className="result" style={{ borderLeft: '5px solid #000', padding: '5px' }}>
+    <div className="result" style={{ borderLeft: '1px solid #000', paddingLeft: '1px' }}>
       The count is&nbsp;
       {count}
       {children}
@@ -28,7 +28,7 @@ export default function ReactReduxComponentMaker(controller) {
   return connect(
     (state, ownProps) => ({
       ...ownProps,
-      count: state[controller.getName()],
+      count: state[controller.getName()].incValue,
     })
   )(ReactReduxComponent);
 }

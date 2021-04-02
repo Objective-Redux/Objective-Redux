@@ -19,9 +19,9 @@ export default function makeHookComponent(controllerClass) {
     ++metrics.renders;
 
     return (
-      <div className="result" style={{ borderLeft: '5px solid #000', padding: '5px' }}>
+      <div className="result" style={{ borderLeft: '1px solid #000', paddingLeft: '1px' }}>
         The count is&nbsp;
-        {controller.getStateSlice()}
+        {controller.getStateSlice().incValue}
         {children}
       </div>
     );

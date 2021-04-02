@@ -20,7 +20,7 @@ import { metrics } from './metrics';
 
 const USE_OBJECTIVE_REDUX = true;
 const USE_HOOKS = false;
-const TOP_LEVEL_ELEMENTS = 100;
+const TOP_LEVEL_ELEMENTS = 112;
 const NESTED_ELEMENT_DEPTH = 7;
 const SPLIT_ELEMENTS_BY = 2;
 const TOTAL_ACTIONS_TO_FIRE = 100;
@@ -31,7 +31,69 @@ let totalElements = 0;
 export const objectiveStore = new ObjectiveStore();
 
 const makeController = name => {
-  const initialState = 0;
+  const initialState = {
+    incValue: 0,
+    // START FILLER VALUES
+    some: {
+      other: {
+        dataValues: {
+          goes: {
+            in: {
+              here: {
+                in: {
+                  a: {
+                    nested: {
+                      way: '',
+                    },
+                  },
+                },
+              },
+            },
+          },
+          and: {
+            also: {
+              goes: {
+                in: {
+                  here: {
+                    as: {
+                      well: {
+                        for: {
+                          good: {
+                            measure: '',
+                          },
+                        },
+                      },
+                    },
+                  },
+                  and: {
+                    also: {
+                      in: {
+                        here: {
+                          to: {
+                            make: {
+                              the: {
+                                state: {
+                                  bigger: '',
+                                },
+                              },
+                            },
+                          },
+                        },
+                        and: {
+                          here: '',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      // END FILLER VALUES
+    },
+  };
   const controller = class extends StateController {
     constructor() {
       super(initialState);
@@ -42,7 +104,10 @@ const makeController = name => {
     }
 
     increment = this.registerAction(
-      state => state + 1
+      state => ({
+        ...state,
+        incValue: state.incValue + 1,
+      })
     );
   };
 
@@ -124,7 +189,11 @@ const createNestedRecursively = (current, parentNum, depth) => {
 
 const items = [];
 for (let i = 0; i < TOP_LEVEL_ELEMENTS; i++) {
-  items.push(createNestedRecursively(0, i, NESTED_ELEMENT_DEPTH));
+  items.push(
+    <div style={{ float: 'left', border: '1px solid #000', width: '100px' }}>
+      {createNestedRecursively(0, i, NESTED_ELEMENT_DEPTH)}
+    </div>
+  );
 }
 
 const buttons = [];
@@ -147,80 +216,78 @@ for (let i = 0; i < controllers.length; i++) {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ObjectiveStoreProvider objectiveStore={objectiveStore}>
-      <Provider store={objectiveStore}>
-        <h1>Load Testing Tool</h1>
-        <div style={{ border: '1px solid #000', margin: '75px', padding: '75px 50px' }}>
-          <h2>
-            {USE_OBJECTIVE_REDUX ? 'Objective-Redux' : 'React-Redux'}
-            :&nbsp;
-            {USE_HOOKS ? 'Hook Components' : 'Connected Components'}
-          </h2>
-          <p>
-            Total Connected Elements:&nbsp;
-            {totalElements}
-          </p>
-          <p>
-            Number of Controllers:&nbsp;
-            {NUM_CONTROLLERS}
-          </p>
-          <p>
-            Elements Rendered:&nbsp;
-            <span id="paints">0</span>
-          </p>
-          <p><br /></p>
-          <p>
-            Initial Paint Time:&nbsp;
-            <span id="initialPaint">Loading</span>
-          </p>
-          <p><br /></p>
-          <p>
-            Round of Rendering:&nbsp;
-            <span id="round">0</span>
-            /
-            {TOTAL_ACTIONS_TO_FIRE}
-          </p>
-          <p><br /></p>
-          <p>
-            Passes:&nbsp;
-            <span id="passes">No additional Renders</span>
-          </p>
-          <p>
-            Average Paint Time:&nbsp;
-            <span id="avgPaintTime">No additional Renders</span>
-          </p>
-          <p>
-            Average Base Paint Time:&nbsp;
-            <span id="avgBasePaintTime">No additional Renders</span>
-          </p>
-          <p><br /></p>
-          <p>
-            Total Paint Time:&nbsp;
-            <span id="totalPaintTime">No additional Renders</span>
-          </p>
-          <p>
-            Total Base Paint Time:&nbsp;
-            <span id="totalBasePaintTime">No additional Renders</span>
-          </p>
+  <ObjectiveStoreProvider objectiveStore={objectiveStore}>
+    <Provider store={objectiveStore}>
+      <h1>Load Testing Tool</h1>
+      <div style={{ border: '1px solid #000', margin: '75px', padding: '75px 50px' }}>
+        <h2>
+          {USE_OBJECTIVE_REDUX ? 'Objective-Redux' : 'React-Redux'}
+          :&nbsp;
+          {USE_HOOKS ? 'Hook Components' : 'Connected Components'}
+        </h2>
+        <p>
+          Total Connected Elements:&nbsp;
+          {totalElements}
+        </p>
+        <p>
+          Number of Controllers:&nbsp;
+          {NUM_CONTROLLERS}
+        </p>
+        <p>
+          Elements Rendered:&nbsp;
+          <span id="paints">0</span>
+        </p>
+        <p><br /></p>
+        <p>
+          Initial Paint Time:&nbsp;
+          <span id="initialPaint">Loading</span>
+        </p>
+        <p><br /></p>
+        <p>
+          Round of Rendering:&nbsp;
+          <span id="round">0</span>
+          /
+          {TOTAL_ACTIONS_TO_FIRE}
+        </p>
+        <p><br /></p>
+        <p>
+          Passes:&nbsp;
+          <span id="passes">No additional Renders</span>
+        </p>
+        <p>
+          Average Paint Time:&nbsp;
+          <span id="avgPaintTime">No additional Renders</span>
+        </p>
+        <p>
+          Average Base Paint Time:&nbsp;
+          <span id="avgBasePaintTime">No additional Renders</span>
+        </p>
+        <p><br /></p>
+        <p>
+          Total Paint Time:&nbsp;
+          <span id="totalPaintTime">No additional Renders</span>
+        </p>
+        <p>
+          Total Base Paint Time:&nbsp;
+          <span id="totalBasePaintTime">No additional Renders</span>
+        </p>
+      </div>
+      {buttons}
+      <Profiler id="content" onRender={callback}>
+        <div
+          style={{
+            overflow: 'auto',
+            height: '95vh',
+            border: '5px solid #000',
+            padding: '10px',
+            fontSize: '10px',
+          }}
+        >
+          {items}
         </div>
-        {buttons}
-        <Profiler id="content" onRender={callback}>
-          <div
-            style={{
-              overflow: 'auto',
-              height: '300px',
-              border: '5px solid #000',
-              padding: '10px',
-            }}
-          >
-            <h2>Elements being rendered</h2>
-            {items}
-          </div>
-        </Profiler>
-      </Provider>
-    </ObjectiveStoreProvider>
-  </React.StrictMode>,
+      </Profiler>
+    </Provider>
+  </ObjectiveStoreProvider>,
   document.getElementById('root')
 );
 

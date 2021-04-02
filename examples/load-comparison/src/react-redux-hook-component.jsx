@@ -15,11 +15,11 @@ import { metrics } from './metrics';
 export default function makeReactReduxHookComponent(controllerClass) {
   return props => {
     const { children } = props;
-    const count = useSelector(state => state[controllerClass.getName()]);
+    const count = useSelector(state => state[controllerClass.getName()].incValue);
     ++metrics.renders;
 
     return (
-      <div className="result" style={{ borderLeft: '5px solid #000', padding: '5px' }}>
+      <div className="result" style={{ borderLeft: '1px solid #000', paddingLeft: '1px' }}>
         The count is&nbsp;
         {count}
         {children}
