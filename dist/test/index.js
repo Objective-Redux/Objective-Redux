@@ -9,7 +9,6 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StateController = exports.StatelessController = void 0;
 /* istanbul ignore file */
 var stateless_controller_mock_1 = require("./stateless-controller-mock");
 Object.defineProperty(exports, "StatelessController", { enumerable: true, get: function () { return stateless_controller_mock_1.StatelessControllerMock; } });
