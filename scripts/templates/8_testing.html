@@ -2,6 +2,8 @@
 
 <p>Test helper classes for the controllers are provided in objective-redux/dist/test.</p>
 
+<p>This file exports two sets of imports: actual and mocked. The actual imports are everything from the real objective-redux module. The mocked imports are a select few modules that have been altered to facilitate easier testing.</p>
+
 <h2>Setting up the Mocks</h2>
 
 <p>Using your mocking framework, you can map the test exports to the original exports.</p>
@@ -10,11 +12,10 @@
 
 <pre><code class="language-typescript">
 jest.mock('objective-redux', () => {
-  const objectiveRedux = require('objective-redux');
-  const mockObjectiveRedux = require('objective-redux/dist/test');
+  const { actual, mocked } = require('objective-redux/dist/test');
   return {
-    ...objectiveRedux,
-    ...mockObjectiveRedux,
+    ...actual,
+    ...mocked,
   };
 });
 </code></pre>

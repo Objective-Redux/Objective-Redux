@@ -10,5 +10,45 @@
 
 /* istanbul ignore file */
 
-export { StatelessControllerMock as StatelessController } from './stateless-controller-mock';
-export { StateControllerMock as StateController } from './state-controller-mock';
+import { ObjectiveStore } from '../store/objective-store';
+import { ReducerInjector } from '../store/reducer-injector';
+import { StateController } from '../controllers/state-controller';
+import { StatelessController } from '../controllers/stateless-controller';
+import { createAction, getActionNameForController } from '../helpers/action';
+import { ObjectiveStoreProvider } from '../components/objective-store-provider';
+import { ComponentConnector } from '../components/component-connector';
+import { getObjectiveStoreFromSagaContext } from '../hooks/get-objective-store-from-saga-context';
+import { getControllerFromSagaContext } from '../hooks/get-controller-from-saga-context';
+import { useObjectiveStore } from '../hooks/use-objective-store';
+import { useController } from '../hooks/use-controller';
+import { useSelector } from '../hooks/use-selector';
+import { StatelessControllerMock } from './stateless-controller-mock';
+import { StateControllerMock } from './state-controller-mock';
+export {
+  configureTakeLatest,
+  configureTakeEvery,
+  configureTakeLeading,
+  configureDebounce,
+  configureTake,
+} from '../helpers/effect-type';
+
+export const actual = {
+  ObjectiveStore,
+  ReducerInjector,
+  StateController,
+  StatelessController,
+  createAction,
+  getActionNameForController,
+  ObjectiveStoreProvider,
+  ComponentConnector,
+  getObjectiveStoreFromSagaContext,
+  getControllerFromSagaContext,
+  useObjectiveStore,
+  useController,
+  useSelector,
+};
+
+export const mocked = {
+  StatelessController: StatelessControllerMock,
+  StateController: StateControllerMock,
+};
