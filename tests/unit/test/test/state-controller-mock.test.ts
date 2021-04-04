@@ -8,13 +8,13 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import { StateController } from '../../../../src/test/index';
+import { mocked } from '../../../../src/test/index';
 
 const testMutationOne = (): any => {};
 const testMutationTwo = (): any => {};
 const testName = 'SAMPLE_NAME';
 
-class TestController extends StateController<any> {
+class TestController extends mocked.StateController<any> {
   public constructor() {
     super(null);
   }
