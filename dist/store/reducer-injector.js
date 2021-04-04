@@ -26,8 +26,7 @@ var redux_1 = require("redux");
  * @internal
  */
 /* istanbul ignore next */
-var defaultReducer = function () { return ({}); };
-exports.defaultReducer = defaultReducer;
+exports.defaultReducer = function () { return ({}); };
 /**
  * An object that handles injection of reducers into the Redux store that is managed by an ObjectiveStore.
  *
