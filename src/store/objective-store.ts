@@ -72,8 +72,8 @@ interface ObjectiveStoreOptions {
 /**
  * @internal
  */
-export interface SagaFn<Payload> {
-  (action?: Action<Payload>): any;
+export interface SagaFn<Payload = void> {
+  (action: Action<Payload>): any;
 }
 
 /* istanbul ignore next */

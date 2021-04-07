@@ -17,12 +17,13 @@ export interface SagaConfig {
  */
 export declare class SagaBuilder<Payload> {
     private readonly registerFn;
+    private readonly sagaFn;
     private name;
     private effectBuilder;
     /**
      * @internal
      */
-    constructor(registerFn: (config: SagaConfig) => ActionFn<Payload>);
+    constructor(sagaFn: SagaFn<Payload>, registerFn: (config: SagaConfig) => ActionFn<Payload>);
     /**
      * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by this
      * builder.
@@ -59,10 +60,9 @@ export declare class SagaBuilder<Payload> {
     /**
      * Completes the builder and adds the saga to the objectiveStore.
      *
-     * @param sagaFn The saga function to add to the ObjectiveStore.
      * @returns An action for calling the saga.
      */
-    register(sagaFn: SagaFn<Payload>): ActionFn<Payload>;
+    register(): ActionFn<Payload>;
 }
 /**
  * Create and manage sagas that are associated with an objectiveStore.
@@ -74,15 +74,15 @@ export declare class SagaBuilder<Payload> {
  *    return 'switch-sagas';
  *  }
  *
- *  toggleSwitch = this.createSaga()
+ *  toggleSwitch = this.createSaga(
+ *    function* () {
+ *      const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *      yield controller.toggleSwitchValue();
+ *      yield controller.incrementCount();
+ *    }
+ *  )
  *    .withEffect(configureTakeLatest())
- *    .register(
- *      function* () {
- *        const controller = yield getControllerFromSagaContext(SwitchStateController);
- *        yield controller.toggleSwitchValue();
- *        yield controller.incrementCount();
- *      }
- *    );
+ *    .register();
  * }
  *
  * const instance = SwitchStateSagas.getInstance(objectiveStore);
@@ -104,10 +104,12 @@ export declare abstract class StatelessController extends Controller {
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
      *
-     * @template Payload the payload the action and the saga will take.
+     * @param sagaFn The saga function to add to the ObjectiveStore.
+     * @template Payload the payload the action and the saga will take. If void, no action is expected.
+     * This template variable is optional.
      * @returns A builder that registers the saga.
      */
-    protected createSaga<Payload>(): SagaBuilder<Payload>;
+    protected createSaga<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload>;
     protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload>;
     setObjectiveStore(objectiveStore: ObjectiveStore): void;
 }

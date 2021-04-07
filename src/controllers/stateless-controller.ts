@@ -30,6 +30,8 @@ export interface SagaConfig {
 export class SagaBuilder<Payload> {
   private readonly registerFn: (config: SagaConfig) => ActionFn<Payload>;
 
+  private readonly sagaFn: SagaFn<Payload>;
+
   private name: string|null;
 
   private effectBuilder: EffectBuilder|null;
@@ -38,8 +40,9 @@ export class SagaBuilder<Payload> {
   /**
    * @internal
    */
-  public constructor(registerFn: (config: SagaConfig) => ActionFn<Payload>) {
+  public constructor(sagaFn: SagaFn<Payload>, registerFn: (config: SagaConfig) => ActionFn<Payload>) {
     this.registerFn = registerFn;
+    this.sagaFn = sagaFn;
     this.name = null;
     this.effectBuilder = null;
   }
@@ -88,14 +91,13 @@ export class SagaBuilder<Payload> {
   /**
    * Completes the builder and adds the saga to the objectiveStore.
    *
-   * @param sagaFn The saga function to add to the ObjectiveStore.
    * @returns An action for calling the saga.
    */
-  public register(sagaFn: SagaFn<Payload>): ActionFn<Payload> {
+  public register(): ActionFn<Payload> {
     return this.registerFn({
       name: this.name,
       effectBuilder: this.effectBuilder,
-      sagaFn,
+      sagaFn: this.sagaFn,
     });
   }
 }
@@ -105,23 +107,24 @@ export class SagaBuilder<Payload> {
  *
  * @example
  * ```typescript
- * class SwitchStateSagas extends StatelessController {
+ * class SwitchStateController extends StatelessController {
  *  getName() {
- *    return 'switch-sagas';
+ *    return 'switch';
  *  }
  *
- *  toggleSwitch = this.createSaga()
+ *  toggleSwitch = this.createSaga(
+ *    function* () {
+ *      const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *      yield controller.toggleSwitchValue();
+ *      yield controller.incrementCount();
+ *    }
+ *  )
+ *    .withAddressableName('MY_ACTION')
  *    .withEffect(configureTakeLatest())
- *    .register(
- *      function* () {
- *        const controller = yield getControllerFromSagaContext(SwitchStateController);
- *        yield controller.toggleSwitchValue();
- *        yield controller.incrementCount();
- *      }
- *    );
+ *    .register();
  * }
  *
- * const instance = SwitchStateSagas.getInstance(objectiveStore);
+ * const instance = SwitchStateController.getInstance(objectiveStore);
  * instance.toggleSwitch();
  * ```
  */
@@ -146,11 +149,13 @@ export abstract class StatelessController extends Controller {
   /**
    * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
    *
-   * @template Payload the payload the action and the saga will take.
+   * @param sagaFn The saga function to add to the ObjectiveStore.
+   * @template Payload the payload the action and the saga will take. If void, no action is expected.
+   * This template variable is optional.
    * @returns A builder that registers the saga.
    */
-  protected createSaga<Payload>(): SagaBuilder<Payload> {
-    return new SagaBuilder<Payload>(this.buildSaga.bind(this));
+  protected createSaga<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
+    return new SagaBuilder<Payload>(sagaFn, this.buildSaga.bind(this));
   }
 
   protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {

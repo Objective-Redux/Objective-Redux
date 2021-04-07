@@ -14,15 +14,15 @@ class MyControllerClass extends StateController {
 // For Sagas
 class MyControllerClass extends StatelessController {
   // ...
-  toggleSwitch = this.createSaga()
+  toggleSwitch = this.createSaga(
+    function *() {
+      const myController = yield getControllerFromSagaContext(MyController);
+      yield myController.myAction(payload);
+    }
+  )
     .withEffect(configureTakeLatest())
     .withAddressableName('SET_SWITCH_STATE') // <--
-    .register(
-      function *() {
-        const myController = yield getControllerFromSagaContext(MyController);
-        yield myController.myAction(payload);
-      }
-    );
+    .register();
 }
 </code></pre>
 

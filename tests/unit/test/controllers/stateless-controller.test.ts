@@ -49,6 +49,7 @@ import {
   configureTake,
 } from '../../../../src';
 import { EffectBuilder } from '../../../../src/helpers/effect-type';
+import { SagaFn } from '../../../../src/store/objective-store';
 
 class TestController extends StatelessController {
   // eslint-disable-next-line no-useless-constructor
@@ -64,8 +65,8 @@ class TestController extends StatelessController {
     return 'MyNamespace';
   }
 
-  public createSagaHandle<T>(): SagaBuilder<T> {
-    return this.createSaga();
+  public createSagaHandle<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
+    return this.createSaga(sagaFn);
   }
 }
 
@@ -107,9 +108,9 @@ describe('stateless-controller', () => {
     function checkSaga(effectBuilder: EffectBuilder, verify: (saga: any) => void): void {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
-      instance.createSagaHandle()
+      instance.createSagaHandle(testSaga)
         .withEffect(effectBuilder)
-        .register(testSaga);
+        .register();
       // Calling this to force the saga to be registered/started.
       // Normally, this happens when the object is initialized; but because we are adding the saga
       // dynamically after initialization, we have to manually call this to complete the setup.
@@ -235,10 +236,10 @@ describe('stateless-controller', () => {
     it('should name actions', () => {
       const objectiveStoreMock: any = { registerSaga, dispatch: jest.fn() };
       const instance = TestController.getInstance(objectiveStoreMock);
-      const action = instance.createSagaHandle<void>()
+      const action = instance.createSagaHandle(testSaga)
         .withEffect(configureTakeLeading())
         .withAddressableName('NAME')
-        .register(testSaga);
+        .register();
       // Manually calling. See previous comment.
       instance.setObjectiveStore(objectiveStoreMock);
       const { mock: { calls: [[saga]] } } = registerSaga;
@@ -251,8 +252,8 @@ describe('stateless-controller', () => {
     it('should create saga without effect', () => {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
-      instance.createSagaHandle()
-        .register(testSaga);
+      instance.createSagaHandle(testSaga)
+        .register();
       // Manually calling. See previous comment.
       instance.setObjectiveStore(objectiveStoreMock);
       expect(registerSaga).toHaveBeenCalledWith(testSaga, instance);

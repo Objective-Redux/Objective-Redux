@@ -30,21 +30,19 @@ export class SwitchStateSagas extends StatelessController {
     }
   }
 
-  toggleSwitch = this.createSaga()
+  toggleSwitch = this.createSaga(function* () {
+    const objectiveStore = yield getObjectiveStoreFromSagaContext();
+    const testCanary = yield getContext('test');
+    if (testCanary !== 'Some Value') {
+      throw new Error('Original context is corrupt');
+    }
+    const switchStateController = yield getControllerFromSagaContext(SwitchStateController);
+    yield switchStateController.toggleSwitchValue();
+    yield SwitchStateController.getInstance(objectiveStore).incrementCount();
+  })
     .withEffect(configureTakeLatest())
     .withAddressableName('update-switch')
-    .register(
-      function* () {
-        const objectiveStore = yield getObjectiveStoreFromSagaContext();
-        const testCanary = yield getContext('test');
-        if (testCanary !== 'Some Value') {
-          throw new Error('Original context is corrupt');
-        }
-        const switchStateController = yield getControllerFromSagaContext(SwitchStateController);
-        yield switchStateController.toggleSwitchValue();
-        yield SwitchStateController.getInstance(objectiveStore).incrementCount();
-      }
-    );
+    .register();
 }
 
 SwitchStateSagas.initializeOnExternalAction();

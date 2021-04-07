@@ -45,8 +45,8 @@ interface ObjectiveStoreOptions {
 /**
  * @internal
  */
-export interface SagaFn<Payload> {
-    (action?: Action<Payload>): any;
+export interface SagaFn<Payload = void> {
+    (action: Action<Payload>): any;
 }
 /**
  * The ObjectiveStore handles the connection of controllers, reducers, and sagas to Redux. Each ObjectiveStore has its

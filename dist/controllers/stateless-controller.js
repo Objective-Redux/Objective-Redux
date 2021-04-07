@@ -35,8 +35,9 @@ var SagaBuilder = /** @class */ (function () {
     /**
      * @internal
      */
-    function SagaBuilder(registerFn) {
+    function SagaBuilder(sagaFn, registerFn) {
         this.registerFn = registerFn;
+        this.sagaFn = sagaFn;
         this.name = null;
         this.effectBuilder = null;
     }
@@ -82,14 +83,13 @@ var SagaBuilder = /** @class */ (function () {
     /**
      * Completes the builder and adds the saga to the objectiveStore.
      *
-     * @param sagaFn The saga function to add to the ObjectiveStore.
      * @returns An action for calling the saga.
      */
-    SagaBuilder.prototype.register = function (sagaFn) {
+    SagaBuilder.prototype.register = function () {
         return this.registerFn({
             name: this.name,
             effectBuilder: this.effectBuilder,
-            sagaFn: sagaFn,
+            sagaFn: this.sagaFn,
         });
     };
     return SagaBuilder;
@@ -105,15 +105,15 @@ exports.SagaBuilder = SagaBuilder;
  *    return 'switch-sagas';
  *  }
  *
- *  toggleSwitch = this.createSaga()
+ *  toggleSwitch = this.createSaga(
+ *    function* () {
+ *      const controller = yield getControllerFromSagaContext(SwitchStateController);
+ *      yield controller.toggleSwitchValue();
+ *      yield controller.incrementCount();
+ *    }
+ *  )
  *    .withEffect(configureTakeLatest())
- *    .register(
- *      function* () {
- *        const controller = yield getControllerFromSagaContext(SwitchStateController);
- *        yield controller.toggleSwitchValue();
- *        yield controller.incrementCount();
- *      }
- *    );
+ *    .register();
  * }
  *
  * const instance = SwitchStateSagas.getInstance(objectiveStore);
@@ -140,11 +140,13 @@ var StatelessController = /** @class */ (function (_super) {
     /**
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
      *
-     * @template Payload the payload the action and the saga will take.
+     * @param sagaFn The saga function to add to the ObjectiveStore.
+     * @template Payload the payload the action and the saga will take. If void, no action is expected.
+     * This template variable is optional.
      * @returns A builder that registers the saga.
      */
-    StatelessController.prototype.createSaga = function () {
-        return new SagaBuilder(this.buildSaga.bind(this));
+    StatelessController.prototype.createSaga = function (sagaFn) {
+        return new SagaBuilder(sagaFn, this.buildSaga.bind(this));
     };
     StatelessController.prototype.buildSaga = function (config) {
         var _this = this;
