@@ -41,34 +41,6 @@ interface ReducerMap<State, Payload> {
  * controller.action({ isOn: true });
  * const slice = controller.getStateSlice();
  * ```
- * @example TypeScript
- * ```typescript
- * interface SwitchState {
- *   isOn: boolean;
- * }
- *
- * class SwitchStateController extends StateController<SwitchState> {
- *   constructor() {
- *     super({ isOn: false });
- *   }
- *
- *   public static getName(): string {
- *     return 'switch';
- *   }
- *
- *   const readonly action = this.registerAction<SwitchState>(
- *     (state, payload) => ({
- *       ...state,
- *       ...payload,
- *     })
- *   ).withAddressableName('MY_ACTION');
- * }
- *
- * const objectiveStore = new ObjectiveStore();
- * const controller = SwitchStateController.getInstance(objectiveStore);
- * controller.action({ isOn: true });
- * const slice = controller.getStateSlice();
- * ```
  */
 export declare abstract class StateController<State> extends Controller {
     /**
@@ -141,7 +113,7 @@ export declare abstract class StateController<State> extends Controller {
      * Registers a data mutator as part of the slice's reducer and returns the action for calling it.
      *
      * @template Payload The interface to which the payload of the action will adhere. If the type is void, no payload
-     * will be accepted.
+     * will be accepted. Defaults to void when the template is not provided and the payload type is not specified.
      *
      * @param fn The mutating function to add to the reducer.
      *
@@ -155,7 +127,7 @@ export declare abstract class StateController<State> extends Controller {
      * This action producing function also has a `withAddressableName` function that can be called to change the action
      * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
      */
-    protected registerAction<Payload>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload>;
+    protected registerAction<Payload = void>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload>;
     /**
      * The reducer, which handles mutations to the state slice.
      *

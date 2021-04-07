@@ -69,7 +69,7 @@ export function getActionNameForController(controllerName: string, actionName: s
  * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
  * ```
  */
-export function createAction<Payload>(type: string): (payload: Payload) => Action<Payload> {
+export function createAction<Payload = void>(type: string): (payload: Payload) => Action<Payload> {
   return (payload: Payload): Action<Payload> => ({
     type,
     payload,
@@ -84,7 +84,7 @@ export function createAction<Payload>(type: string): (payload: Payload) => Actio
  * @returns The action generating function.
  * @internal
  */
-export function createConnectedAction<Payload>(type: string, objectiveStoreFn: () => ObjectiveStore):
+export function createConnectedAction<Payload = void>(type: string, objectiveStoreFn: () => ObjectiveStore):
   (payload: Payload) => Action<Payload> {
   return (payload: Payload): Action<Payload> => objectiveStoreFn().dispatch({
     type,

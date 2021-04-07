@@ -51,7 +51,7 @@ export declare function getActionNameForController(controllerName: string, actio
  * const action = createAction(getActionNameForController('myControllerName', 'myActionName'));
  * ```
  */
-export declare function createAction<Payload>(type: string): (payload: Payload) => Action<Payload>;
+export declare function createAction<Payload = void>(type: string): (payload: Payload) => Action<Payload>;
 /**
  * Returns a function that generates a Redux action of the form { type, payload }.
  *
@@ -60,5 +60,5 @@ export declare function createAction<Payload>(type: string): (payload: Payload) 
  * @returns The action generating function.
  * @internal
  */
-export declare function createConnectedAction<Payload>(type: string, objectiveStoreFn: () => ObjectiveStore): (payload: Payload) => Action<Payload>;
+export declare function createConnectedAction<Payload = void>(type: string, objectiveStoreFn: () => ObjectiveStore): (payload: Payload) => Action<Payload>;
 //# sourceMappingURL=action.d.ts.map

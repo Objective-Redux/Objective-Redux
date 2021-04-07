@@ -46,12 +46,12 @@ class TestController extends StateController<boolean> {
     return 'TestSlice';
   }
 
-  public readonly unnamedAction = this.registerAction<boolean>(
-    (state, payload) => payload
+  public readonly unnamedAction = this.registerAction(
+    (state, payload: boolean) => payload
   );
 
-  public readonly namedAction = this.registerAction<boolean>(
-    (state, payload) => payload
+  public readonly namedAction = this.registerAction(
+    (state, payload: boolean) => payload
   ).withAddressableName('NAME');
 
   public readonly reducerHandle = this.reducer.bind(this);
