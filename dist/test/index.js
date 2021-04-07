@@ -9,7 +9,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mocked = exports.actual = void 0;
+exports.mocked = exports.actual = exports.configureTake = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = void 0;
 /* istanbul ignore file */
 var objective_store_1 = require("../store/objective-store");
 var reducer_injector_1 = require("../store/reducer-injector");
