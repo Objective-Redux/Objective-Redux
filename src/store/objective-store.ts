@@ -298,7 +298,7 @@ export class ObjectiveStore {
 
   // eslint-disable-next-line max-statements
   private useControllerReducer(controller: any, remove: boolean = false): void {
-    const name = controller.constructor.getStoreName();
+    const name = controller.constructor.getName();
     const namespace = controller.constructor.getNamespace();
     let placement = this.registeredReducers;
 

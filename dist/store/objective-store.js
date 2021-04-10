@@ -224,7 +224,7 @@ var ObjectiveStore = /** @class */ (function () {
     // eslint-disable-next-line max-statements
     ObjectiveStore.prototype.useControllerReducer = function (controller, remove) {
         if (remove === void 0) { remove = false; }
-        var name = controller.constructor.getStoreName();
+        var name = controller.constructor.getName();
         var namespace = controller.constructor.getNamespace();
         var placement = this.registeredReducers;
         if (namespace) {

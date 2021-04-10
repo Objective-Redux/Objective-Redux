@@ -217,7 +217,6 @@ describe('objective-store', () => {
         constructor: {
           getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): null => null,
-          getStoreName: (): string => 'TEST',
         },
         reducer,
       };
@@ -227,7 +226,7 @@ describe('objective-store', () => {
       registerReducerFn(controller);
       expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((objectiveStore as any).registeredReducers.TEST).not.toBeNull();
+      expect((objectiveStore as any).registeredReducers.TEST_CONTROLLER).not.toBeNull();
     });
 
     it('adds the new, namespaced reducer for state controllers', () => {
@@ -236,7 +235,6 @@ describe('objective-store', () => {
         constructor: {
           getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): string => 'NAMESPACE',
-          getStoreName: (): string => 'TEST',
         },
         reducer,
       };
@@ -246,7 +244,7 @@ describe('objective-store', () => {
       registerReducerFn(controller);
       expect(objectiveStore).toBeInstanceOf(ObjectiveStore);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((objectiveStore as any).registeredReducers.NAMESPACE.TEST).not.toBeNull();
+      expect((objectiveStore as any).registeredReducers.NAMESPACE.TEST_CONTROLLER).not.toBeNull();
     });
   });
 
@@ -257,17 +255,16 @@ describe('objective-store', () => {
         constructor: {
           getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): null => null,
-          getStoreName: (): string => 'TEST',
         },
         reducer,
       };
 
       const objectiveStore = new ObjectiveStore();
       const [[, { unregisterReducerFn }]] = addObjectiveStore.mock.calls;
-      (objectiveStore as any).registeredReducers.TEST = {};
+      (objectiveStore as any).registeredReducers.TEST_CONTROLLER = {};
       unregisterReducerFn(controller);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
-      expect((objectiveStore as any).registeredReducers.TEST).toBeUndefined();
+      expect((objectiveStore as any).registeredReducers.TEST_CONTROLLER).toBeUndefined();
     });
 
     it('removes a namespaced reducer for state controllers', () => {
@@ -276,14 +273,13 @@ describe('objective-store', () => {
         constructor: {
           getName: (): string => 'TEST_CONTROLLER',
           getNamespace: (): string => 'NAMESPACE',
-          getStoreName: (): string => 'TEST',
         },
         reducer,
       };
 
       const objectiveStore = new ObjectiveStore();
       const [[, { unregisterReducerFn }]] = addObjectiveStore.mock.calls;
-      (objectiveStore as any).registeredReducers.NAMESPACE = { TEST: {} };
+      (objectiveStore as any).registeredReducers.NAMESPACE = { TEST_CONTROLLER: {} };
       unregisterReducerFn(controller);
       expect(replaceReducer).toHaveBeenCalledWith('TESTING_REDUCER');
       expect((objectiveStore as any).registeredReducers.NAMESPACE).toBeUndefined();

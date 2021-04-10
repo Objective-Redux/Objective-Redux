@@ -100,9 +100,9 @@ exports.SagaBuilder = SagaBuilder;
  *
  * @example
  * ```typescript
- * class SwitchStateSagas extends StatelessController {
+ * class SwitchStateController extends StatelessController {
  *  getName() {
- *    return 'switch-sagas';
+ *    return 'switch';
  *  }
  *
  *  toggleSwitch = this.createSaga(
@@ -112,11 +112,12 @@ exports.SagaBuilder = SagaBuilder;
  *      yield controller.incrementCount();
  *    }
  *  )
+ *    .withAddressableName('MY_ACTION')
  *    .withEffect(configureTakeLatest())
  *    .register();
  * }
  *
- * const instance = SwitchStateSagas.getInstance(objectiveStore);
+ * const instance = SwitchStateController.getInstance(objectiveStore);
  * instance.toggleSwitch();
  * ```
  */
