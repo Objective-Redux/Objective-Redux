@@ -80,9 +80,9 @@ export class ComponentConnector {
    * @param selector An optional mapping function.
    * @returns An instance of the ComponentConnector builder.
    */
-  public fromController<C extends StateController<any>>(
-    controller: typeof Controller & ModelConstructor<StateController<any>>,
-    selector: StateSelectorFn<C>|null = null
+  public fromController<StateType, C extends StateController<StateType>>(
+    controller: typeof Controller & ModelConstructor<StateController<StateType>>,
+    selector: StateSelectorFn<ReturnType<C['getStateSlice']>>|null = null
   ): ComponentConnector {
     this.controllers.push({
       controller,
