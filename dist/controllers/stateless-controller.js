@@ -105,7 +105,7 @@ exports.SagaBuilder = SagaBuilder;
  *    return 'switch';
  *  }
  *
- *  toggleSwitch = this.createSaga(
+ *  toggleSwitch = this.buildComplexAction(
  *    function* () {
  *      const controller = yield getControllerFromSagaContext(SwitchStateController);
  *      yield controller.toggleSwitchValue();
@@ -146,21 +146,20 @@ var StatelessController = /** @class */ (function (_super) {
      * This template variable is optional.
      * @returns A builder that registers the saga.
      */
-    StatelessController.prototype.createSaga = function (sagaFn) {
-        return new SagaBuilder(sagaFn, this.buildSaga.bind(this));
-    };
-    StatelessController.prototype.buildSaga = function (config) {
+    StatelessController.prototype.buildComplexAction = function (sagaFn) {
         var _this = this;
-        var name = this.createActionName(config.name);
-        var sagaFn = config.sagaFn;
-        if (config.effectBuilder !== null) {
-            sagaFn = config.effectBuilder({
-                name: name,
-                sagaFn: sagaFn,
-            });
-        }
-        this.sagasToRegister.push(sagaFn);
-        return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
+        return new SagaBuilder(sagaFn, function (config) {
+            var name = _this.createActionName(config.name);
+            var sagaToRegister = config.sagaFn;
+            if (config.effectBuilder !== null) {
+                sagaToRegister = config.effectBuilder({
+                    name: name,
+                    sagaFn: sagaToRegister,
+                });
+            }
+            _this.sagasToRegister.push(sagaToRegister);
+            return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
+        });
     };
     StatelessController.prototype.setObjectiveStore = function (objectiveStore) {
         _super.prototype.setObjectiveStore.call(this, objectiveStore);

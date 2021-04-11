@@ -15,7 +15,7 @@ import { ActionExtendFn, ActionFn } from '../helpers/action';
  * @internal
  */
 export class StateControllerMock<State> extends StateController<State> {
-  protected registerAction<Payload>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload> {
+  protected createReducingAction<Payload>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload> {
     let mutationFn: any = fn;
 
     mutationFn.withAddressableName = (name: string): ActionFn<Payload> => {

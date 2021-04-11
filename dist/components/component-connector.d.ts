@@ -51,7 +51,7 @@ export declare class ComponentConnector {
      * @param selector An optional mapping function.
      * @returns An instance of the ComponentConnector builder.
      */
-    fromController<C extends StateController<any>>(controller: typeof Controller & ModelConstructor<StateController<any>>, selector?: StateSelectorFn<C> | null): ComponentConnector;
+    fromController<StateType, C extends StateController<StateType>>(controller: typeof Controller & ModelConstructor<StateController<StateType>>, selector?: StateSelectorFn<ReturnType<C['getStateSlice']>> | null): ComponentConnector;
     /**
      * Adds a selection of the state to as props to the component.
      *

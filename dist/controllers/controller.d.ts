@@ -138,7 +138,7 @@ export declare abstract class Controller {
      *     return 'MY_CONTROLLER';
      *   }
      *
-     *   action = this.registerAction(
+     *   action = this.createReducingAction(
      *     (state, payload) => ({
      *       ...state,
      *       ...payload,

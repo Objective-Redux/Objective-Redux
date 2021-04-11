@@ -21,7 +21,7 @@ export class LazyLoadedStateController extends StateController {
     return 'lazy';
   }
 
-  action = this.registerAction(
+  action = this.createReducingAction(
     () => 'Lazy loaded data worked'
   ).withAddressableName('test');
 }

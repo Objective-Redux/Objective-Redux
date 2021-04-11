@@ -43,7 +43,7 @@ interface ReducerMap<State, Payload> {
  *     return 'switch';
  *   }
  *
- *   action = this.registerAction(
+ *   action = this.createReducingAction(
  *     (state, payload) => ({
  *       ...state,
  *       ...payload,
@@ -101,7 +101,7 @@ export abstract class StateController<State> extends Controller {
    * This action producing function also has a `withAddressableName` function that can be called to change the action
    * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
    */
-  protected registerAction<Payload = void>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload> {
+  protected createReducingAction<Payload = void>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload> {
     const actionName = this.createActionName();
     this.reducerMap[actionName] = fn;
 
@@ -161,7 +161,7 @@ export abstract class StateController<State> extends Controller {
    * MyController.getInstance(objectiveStore).reset();
    * ```
    */
-  public readonly reset = this.registerAction<void>(
+  public readonly reset = this.createReducingAction<void>(
     () => this.initialState
   );
 }

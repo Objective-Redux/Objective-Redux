@@ -28,21 +28,21 @@ export class SwitchStateController extends StateController {
     return 'TEST_NAMESPACE';
   }
 
-  toggleSwitchValue = this.registerAction(
+  toggleSwitchValue = this.createReducingAction(
     state => ({
       ...state,
       isOn: !state.isOn,
     })
   );
 
-  setSwitch = this.registerAction(
+  setSwitch = this.createReducingAction(
     (state, isOn) => ({
       ...state,
       isOn,
     })
   );
 
-  incrementCount = this.registerAction(
+  incrementCount = this.createReducingAction(
     state => ({
       ...state,
       count: state.count + state.isOn,

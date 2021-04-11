@@ -112,7 +112,7 @@ export class SagaBuilder<Payload> {
  *    return 'switch';
  *  }
  *
- *  toggleSwitch = this.createSaga(
+ *  toggleSwitch = this.buildComplexAction(
  *    function* () {
  *      const controller = yield getControllerFromSagaContext(SwitchStateController);
  *      yield controller.toggleSwitchValue();
@@ -154,24 +154,25 @@ export abstract class StatelessController extends Controller {
    * This template variable is optional.
    * @returns A builder that registers the saga.
    */
-  protected createSaga<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
-    return new SagaBuilder<Payload>(sagaFn, this.buildSaga.bind(this));
-  }
+  protected buildComplexAction<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
+    return new SagaBuilder<Payload>(
+      sagaFn,
+      (config: SagaConfig): ActionFn<Payload> => {
+        const name = this.createActionName(config.name);
 
-  protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
-    const name = this.createActionName(config.name);
+        let { sagaFn: sagaToRegister } = config;
 
-    let { sagaFn } = config;
+        if (config.effectBuilder !== null) {
+          sagaToRegister = config.effectBuilder({
+            name,
+            sagaFn: sagaToRegister,
+          });
+        }
 
-    if (config.effectBuilder !== null) {
-      sagaFn = config.effectBuilder({
-        name,
-        sagaFn,
-      });
-    }
-
-    this.sagasToRegister.push(sagaFn);
-    return createConnectedAction(name, () => (this.objectiveStore as any));
+        this.sagasToRegister.push(sagaToRegister);
+        return createConnectedAction(name, () => (this.objectiveStore as any));
+      }
+    );
   }
 
   public setObjectiveStore(objectiveStore: ObjectiveStore): void {

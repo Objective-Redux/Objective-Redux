@@ -32,7 +32,7 @@ var StateControllerMock = /** @class */ (function (_super) {
     function StateControllerMock() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    StateControllerMock.prototype.registerAction = function (fn) {
+    StateControllerMock.prototype.createReducingAction = function (fn) {
         var mutationFn = fn;
         mutationFn.withAddressableName = function (name) {
             mutationFn = fn;

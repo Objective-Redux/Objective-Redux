@@ -74,7 +74,7 @@ export declare class SagaBuilder<Payload> {
  *    return 'switch';
  *  }
  *
- *  toggleSwitch = this.createSaga(
+ *  toggleSwitch = this.buildComplexAction(
  *    function* () {
  *      const controller = yield getControllerFromSagaContext(SwitchStateController);
  *      yield controller.toggleSwitchValue();
@@ -110,8 +110,7 @@ export declare abstract class StatelessController extends Controller {
      * This template variable is optional.
      * @returns A builder that registers the saga.
      */
-    protected createSaga<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload>;
-    protected buildSaga<Payload>(config: SagaConfig): ActionFn<Payload>;
+    protected buildComplexAction<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload>;
     setObjectiveStore(objectiveStore: ObjectiveStore): void;
 }
 //# sourceMappingURL=stateless-controller.d.ts.map

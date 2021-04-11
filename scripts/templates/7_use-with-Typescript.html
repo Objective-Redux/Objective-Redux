@@ -6,7 +6,7 @@
 class ThemeStateController extends StateController&lt;ThemeState&gt; {
   // ...
 
-  public readonly setTheme = this.registerAction&lt;string&gt;(
+  public readonly setTheme = this.createReducingAction&lt;string&gt;(
     (state: ThemeState, theme: string) => ({
       ...state,
       theme,
@@ -31,7 +31,7 @@ class ThemeStateController extends StateController&lt;ThemeState&gt; {
   // ...
 
   // The template variable will be inferred from the payload parameter type (string, in this example)
-  public readonly setTheme = this.registerAction(
+  public readonly setTheme = this.createReducingAction(
     (state: ThemeState, theme: string) => ({
       ...state,
       theme,
@@ -46,13 +46,13 @@ class ThemeStateController extends StateController&lt;ThemeState&gt; {
 
 <pre><code class="language-typescript">
 class MyStatelessController extends StatelessController {
-  public foo = this.createSaga(
+  public foo = this.buildComplexAction(
     function* (action: { type: string; payload?: string }) {
       //
     }
   ).register();
 
-  public bar = this.createSaga(
+  public bar = this.buildComplexAction(
     function* () {
       //
     }

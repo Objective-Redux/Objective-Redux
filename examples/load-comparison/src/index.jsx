@@ -103,7 +103,7 @@ const makeController = name => {
       return name;
     }
 
-    increment = this.registerAction(
+    increment = this.createReducingAction(
       state => ({
         ...state,
         incValue: state.incValue + 1,

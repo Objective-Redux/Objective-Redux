@@ -6,7 +6,7 @@
 // For Reducers
 class MyControllerClass extends StateController {
   // ...
-  setSwitch = this.registerAction(
+  setSwitch = this.createReducingAction(
     (state, isOn) => ({ isOn })
   ).withAddressableName('SET_SWITCH_STATE'); // <--
 }
@@ -14,7 +14,7 @@ class MyControllerClass extends StateController {
 // For Sagas
 class MyControllerClass extends StatelessController {
   // ...
-  toggleSwitch = this.createSaga(
+  toggleSwitch = this.buildComplexAction(
     function *() {
       const myController = yield getControllerFromSagaContext(MyController);
       yield myController.myAction(payload);

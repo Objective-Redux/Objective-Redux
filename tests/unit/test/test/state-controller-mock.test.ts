@@ -19,14 +19,14 @@ class TestController extends mocked.StateController<any> {
     super(null);
   }
 
-  public myAction = this.registerAction(testMutationOne);
+  public myAction = this.createReducingAction(testMutationOne);
 
-  public myActionWithName = this.registerAction(testMutationTwo)
+  public myActionWithName = this.createReducingAction(testMutationTwo)
     .withAddressableName(testName);
 }
 
 describe('StateControllerMock', () => {
-  describe('registerAction', () => {
+  describe('createReducingAction', () => {
     it('returns the mutation function when withAddressableName is not called', () => {
       const controller: any = new TestController();
       expect(controller.myAction).toEqual(testMutationOne);

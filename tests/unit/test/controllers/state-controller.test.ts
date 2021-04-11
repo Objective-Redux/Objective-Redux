@@ -46,11 +46,11 @@ class TestController extends StateController<boolean> {
     return 'TestSlice';
   }
 
-  public readonly unnamedAction = this.registerAction(
+  public readonly unnamedAction = this.createReducingAction(
     (state, payload: boolean) => payload
   );
 
-  public readonly namedAction = this.registerAction(
+  public readonly namedAction = this.createReducingAction(
     (state, payload: boolean) => payload
   ).withAddressableName('NAME');
 
@@ -98,7 +98,7 @@ describe('state-controller', () => {
     });
   });
 
-  describe('registerAction', () => {
+  describe('createReducingAction', () => {
     it('creates the action', () => {
       const instance = NamespacedTestController.getInstance(objectiveStoreMock);
       instance.unnamedAction(true);

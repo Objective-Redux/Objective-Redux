@@ -165,7 +165,7 @@ var Controller = /** @class */ (function () {
      *     return 'MY_CONTROLLER';
      *   }
      *
-     *   action = this.registerAction(
+     *   action = this.createReducingAction(
      *     (state, payload) => ({
      *       ...state,
      *       ...payload,

@@ -54,7 +54,7 @@ export class SwitchStateController extends StateController {
     return 'switch';
   }
 
-  setSwitch = this.registerAction(
+  setSwitch = this.createReducingAction(
     (state, isOn) => ({ isOn })
   );
 }
@@ -91,7 +91,7 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
 
 ```typescript
   // Define your mutation and forget about the rest.
-  myAction = this.registerAction(
+  myAction = this.createReducingAction(
     (state, payload) => ({
       ...state,
       value: payload.value,

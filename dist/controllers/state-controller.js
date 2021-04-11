@@ -41,7 +41,7 @@ var controller_1 = require("./controller");
  *     return 'switch';
  *   }
  *
- *   action = this.registerAction(
+ *   action = this.createReducingAction(
  *     (state, payload) => ({
  *       ...state,
  *       ...payload,
@@ -81,7 +81,7 @@ var StateController = /** @class */ (function (_super) {
          * MyController.getInstance(objectiveStore).reset();
          * ```
          */
-        _this.reset = _this.registerAction(function () { return _this.initialState; });
+        _this.reset = _this.createReducingAction(function () { return _this.initialState; });
         _this.initialState = initialState;
         return _this;
     }
@@ -103,7 +103,7 @@ var StateController = /** @class */ (function (_super) {
      * This action producing function also has a `withAddressableName` function that can be called to change the action
      * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
      */
-    StateController.prototype.registerAction = function (fn) {
+    StateController.prototype.createReducingAction = function (fn) {
         var _this = this;
         var actionName = this.createActionName();
         this.reducerMap[actionName] = fn;

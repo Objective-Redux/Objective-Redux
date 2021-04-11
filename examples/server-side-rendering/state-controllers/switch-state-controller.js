@@ -27,7 +27,7 @@ export class SwitchStateController extends StateController {
     return 'TEST_NAMESPACE';
   }
 
-  toggleSwitchValue = this.registerAction(
+  toggleSwitchValue = this.createReducingAction(
     state => ({
       ...state,
       isOn: !state.isOn,

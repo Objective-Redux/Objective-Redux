@@ -65,8 +65,8 @@ class TestController extends StatelessController {
     return 'MyNamespace';
   }
 
-  public createSagaHandle<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
-    return this.createSaga(sagaFn);
+  public buildComplexActionHandle<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
+    return this.buildComplexAction(sagaFn);
   }
 }
 
@@ -104,11 +104,11 @@ describe('stateless-controller', () => {
     });
   });
 
-  describe('createSaga', () => {
+  describe('buildComplexAction', () => {
     function checkSaga(effectBuilder: EffectBuilder, verify: (saga: any) => void): void {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
-      instance.createSagaHandle(testSaga)
+      instance.buildComplexActionHandle(testSaga)
         .withEffect(effectBuilder)
         .register();
       // Calling this to force the saga to be registered/started.
@@ -236,7 +236,7 @@ describe('stateless-controller', () => {
     it('should name actions', () => {
       const objectiveStoreMock: any = { registerSaga, dispatch: jest.fn() };
       const instance = TestController.getInstance(objectiveStoreMock);
-      const action = instance.createSagaHandle(testSaga)
+      const action = instance.buildComplexActionHandle(testSaga)
         .withEffect(configureTakeLeading())
         .withAddressableName('NAME')
         .register();
@@ -252,7 +252,7 @@ describe('stateless-controller', () => {
     it('should create saga without effect', () => {
       const objectiveStoreMock: any = { registerSaga };
       const instance = TestController.getInstance(objectiveStoreMock);
-      instance.createSagaHandle(testSaga)
+      instance.buildComplexActionHandle(testSaga)
         .register();
       // Manually calling. See previous comment.
       instance.setObjectiveStore(objectiveStoreMock);

@@ -28,7 +28,7 @@ interface ReducerMap<State, Payload> {
  *     return 'switch';
  *   }
  *
- *   action = this.registerAction(
+ *   action = this.createReducingAction(
  *     (state, payload) => ({
  *       ...state,
  *       ...payload,
@@ -80,7 +80,7 @@ export declare abstract class StateController<State> extends Controller {
      * This action producing function also has a `withAddressableName` function that can be called to change the action
      * name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.
      */
-    protected registerAction<Payload = void>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload>;
+    protected createReducingAction<Payload = void>(fn: ReducerFn<State, Payload>): ActionExtendFn<Payload>;
     /**
      * The reducer, which handles mutations to the state slice.
      *
