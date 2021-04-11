@@ -1,5 +1,5 @@
 import { Action, ActionExtendFn } from '../helpers/action';
-import { Controller } from './controller';
+import { StatelessController } from './stateless-controller';
 /**
  * @internal
  */
@@ -42,7 +42,7 @@ interface ReducerMap<State, Payload> {
  * const slice = controller.getStateSlice();
  * ```
  */
-export declare abstract class StateController<State> extends Controller {
+export declare abstract class StateController<State> extends StatelessController {
     /**
      * The initial value of the state slice.
      */
