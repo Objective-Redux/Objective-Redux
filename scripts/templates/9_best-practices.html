@@ -1,0 +1,17 @@
+<h1>Best Practices</h1>
+
+<h2>1. Avoid having complex actions in StateControllers</h2>
+
+<h3>When should you <i>not</i> have complex actions in a StateController?</h3>
+
+<p>While a <a href="./statecontroller.html">StateController</a> can be used to create complex actions (e.g. sagas), this can make forming a mental map of actions very difficult.</p>
+
+<p>Consider, for example, a StateController with a complex action that triggers actions in other controllers. Then, imagine that those controllers, in turn, call other StateController instances. This makes the code very hard to follow.</p>
+
+<p>A better practice is to keep complex actions in a href="./statelesscontroller.html">StatelessController</a>. The StatelessController can call the various StateControllers and be independent of any particular state.</p>
+
+<h3>When is it acceptable to have complex actions in a StateController?</h3>
+
+<p>If there are complex actions that do not require another Controller, it might be acceptable to put the complex action in the StateController.</p>
+
+<p>For example, if you have a StateController that gets or sends data to an external API and does not rely on another Controller.</p>
