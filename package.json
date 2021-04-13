@@ -1,7 +1,7 @@
 {
   "name": "objective-redux",
   "productName": "Objective Redux",
-  "version": "0.26.1",
+  "version": "0.27.0",
   "description": "A powerful Redux wrapper for easy state development and management.",
   "repository": {
     "url": "git@github.com:Objective-Redux/Objective-Redux.git"
@@ -22,8 +22,8 @@
     "docs": "node scripts/generate-docs.js",
     "lint": "./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js  --ignore-pattern \"!**/.*.*\"",
     "lint-fix": "npm run lint -- --fix",
-    "prep-release": "npm i && npm run build && npm run docs",
-    "prepublishOnly": "npm run build",
+    "prep-release": "npm run prepublishOnly && npm run docs",
+    "prepublishOnly": "npm i && npm run transpile",
     "start-server": "cd examples/react-redux && npm start",
     "test": "npm run test-unit && npm run test-e2e",
     "test-e2e": "cd examples/react-redux && npm run test-e2e && cd ../lazy-loading && npm run test-e2e",

@@ -43,7 +43,8 @@
 <p><a href="lazy-loading-webpack-modules.html">Lazy loading webpack modules</a></p>
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p>
-<p><a href="testing.html">Testing</a></p><p class="nav-section">Classes</p>
+<p><a href="testing.html">Testing</a></p>
+<p><a href="best-practices.html">Best practices</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
 <p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
@@ -75,7 +76,7 @@
 class ThemeStateController extends StateController&lt;ThemeState&gt; {
   // ...
 
-  public readonly setTheme = this.registerAction&lt;string&gt;(
+  public readonly setTheme = this.createReducingAction&lt;string&gt;(
     (state: ThemeState, theme: string) => ({
       ...state,
       theme,
@@ -93,32 +94,56 @@ ThemeStateController.getInstance(objectiveStore).setTheme('dark'); // works
 
 <p>You can also set the action template type to &lt;void&gt; to indicate that no parameter should be taken by the action.</void>
 
-<p>In StateControllers, the template variable for actions is optional. For example, the following will also work:</p>
+<p>The template variable for actions is optional. For example, the following will also work:</p>
 
 <pre><code class="language-typescript">
-  class ThemeStateController extends StateController&lt;ThemeState&gt; {
-    // ...
-  
-    // The template variable will be inferred from the payload parameter type (string, in this example)
-    public readonly setTheme = this.registerAction(
-      (state: ThemeState, theme: string) => ({
-        ...state,
-        theme,
-      })
-    );
-  }
+class ThemeStateController extends StateController&lt;ThemeState&gt; {
+  // ...
+
+  // The template variable will be inferred from the payload parameter type (string, in this example)
+  public readonly setTheme = this.createReducingAction(
+    (state: ThemeState, theme: string) => ({
+      ...state,
+      theme,
+    })
+  );
+}
 </code></pre>
 
 <p>In the above example, TypeScript will correctly infer that the action takes a string payload.</p>
 
-<p>For StatelessController classes, all actions require the template variable.</p>
+<p>This also works for StatelessController classes, as shown below:</p>
+
+<pre><code class="language-typescript">
+class MyStatelessController extends StatelessController {
+  public foo = this.buildComplexAction(
+    function* (action: { type: string; payload?: string }) {
+      //
+    }
+  ).register();
+
+  public bar = this.buildComplexAction(
+    function* () {
+      //
+    }
+  ).register();
+}
+
+MyStatelessController.getInstance(objectiveStore).foo('okay'); // works
+MyStatelessController.getInstance(objectiveStore).foo(123);    // error
+MyStatelessController.getInstance(objectiveStore).foo();       // error
+
+MyStatelessController.getInstance(objectiveStore).bar();       // works
+MyStatelessController.getInstance(objectiveStore).bar('okay'); // error
+MyStatelessController.getInstance(objectiveStore).bar(123);    // error
+</code></pre>
       </div>
     </div>
   </div>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.26.1 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 0.27.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>

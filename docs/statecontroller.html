@@ -43,7 +43,8 @@
 <p><a href="lazy-loading-webpack-modules.html">Lazy loading webpack modules</a></p>
 <p><a href="use-with-react-redux.html">Use with React-Redux</a></p>
 <p><a href="use-with-typescript.html">Use with Typescript</a></p>
-<p><a href="testing.html">Testing</a></p><p class="nav-section">Classes</p>
+<p><a href="testing.html">Testing</a></p>
+<p><a href="best-practices.html">Best practices</a></p><p class="nav-section">Classes</p>
 <p><a href="componentconnector.html">ComponentConnector</a></p>
 <p><a href="objectivestore.html">ObjectiveStore</a></p>
 <p><a href="reducerinjector.html">ReducerInjector</a></p>
@@ -69,7 +70,7 @@
       <div class="padded">
         
     <h1 class="code">StateController</h1>
-    <p class="code">abstract class StateController&lt;State&gt; extends Controller</p>
+    <p class="code">abstract class StateController&lt;State&gt; extends StatelessController extends Controller</p>
     <p>Creates and manages a slice of Redux state.</p>
     <h3>Template Parameters</h3>
 <p><dt>&lt;State&gt;</dt><dd>The interface to which the slice of state will adhere.</dd></p>
@@ -84,7 +85,7 @@ JavaScript
     return 'switch';
   }
 
-  action = this.registerAction(
+  action = this.createReducingAction(
     (state, payload) =&gt; ({
       ...state,
       ...payload,
@@ -141,6 +142,20 @@ have adverse affects on the application.</p>
   
 
   <section>
+    <h2 class="code">buildComplexAction</h2>
+    <p class="code">protected buildComplexAction&lt;Payload&gt;(sagaFn: SagaFn&lt;Payload&gt;): SagaBuilder&lt;Payload&gt;</p>
+    <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.</p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;Payload&gt;</dt><dd>the payload the action and the saga will take. If void, no action is expected.<br />This template variable is optional.</dd></p>
+    <h3>Parameters</h3>
+<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ObjectiveStore.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.</dd></p>
+    
+  </section>
+  
+
+  <section>
     <h2 class="code">createActionName</h2>
     <p class="code">protected createActionName(name: string|null = null): string</p>
     <p>Generates a unique, default action name.</p>
@@ -149,6 +164,26 @@ have adverse affects on the application.</p>
 <p><dt>name: string|null = null</dt><dd>The name of the action or null to generate a unique, default action name.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>An action name.</dd></p>
+    
+  </section>
+  
+
+  <section>
+    <h2 class="code">createReducingAction</h2>
+    <p class="code">protected createReducingAction&lt;Payload&gt;(fn: ReducerFn&lt;State, Payload&gt;): ActionExtendFn&lt;Payload&gt;</p>
+    <p>Registers a data mutator as part of the slice's reducer and returns the action for calling it.</p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;Payload&gt;</dt><dd>The interface to which the payload of the action will adhere. If the type is void, no payload<br />will be accepted. Defaults to void when the template is not provided and the payload type is not specified.</dd></p>
+    <h3>Parameters</h3>
+<p><dt>fn: ReducerFn&lt;State, Payload&gt;</dt><dd>The mutating function to add to the reducer.<br />
+The function should be in the form:
+```.
+(state, payload?) => state
+```.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>ActionExtendFn<Payload></dt><dd>The action producing function for calling the mutating function.<br />
+This action producing function also has a `withAddressableName` function that can be called to change the action
+name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.</dd></p>
     
   </section>
   
@@ -180,21 +215,14 @@ have adverse affects on the application.</p>
   
 
   <section>
-    <h2 class="code">registerAction</h2>
-    <p class="code">protected registerAction&lt;Payload&gt;(fn: ReducerFn&lt;State, Payload&gt;): ActionExtendFn&lt;Payload&gt;</p>
-    <p>Registers a data mutator as part of the slice's reducer and returns the action for calling it.</p>
-    <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd>The interface to which the payload of the action will adhere. If the type is void, no payload<br />will be accepted. Defaults to void when the template is not provided and the payload type is not specified.</dd></p>
+    <h2 class="code">setObjectiveStore</h2>
+    <p class="code">public setObjectiveStore(objectiveStore: ObjectiveStore): void</p>
+    <p></p>
+    
     <h3>Parameters</h3>
-<p><dt>fn: ReducerFn&lt;State, Payload&gt;</dt><dd>The mutating function to add to the reducer.<br />
-The function should be in the form:
-```.
-(state, payload?) => state
-```.</dd><p>
+<p><dt>objectiveStore: ObjectiveStore</dt><dd></dd><p>
     <h3>Returns</h3>
-    <p><dt>ActionExtendFn<Payload></dt><dd>The action producing function for calling the mutating function.<br />
-This action producing function also has a `withAddressableName` function that can be called to change the action
-name. For example: `myAction.withAddressableName('MY_ACTION_NAME');`.</dd></p>
+    <p><dt>void</dt><dd></dd></p>
     
   </section>
   
@@ -288,57 +316,6 @@ class MySecondController extends StateController {
   
 
   <section>
-    <h2 class="code">getStoreName</h2>
-    <p class="code">public static getStoreName(): string</p>
-    <p>Specified the name of the reducer/slice in the Redux store. Defaults to the value of getName.</p>
-    
-    
-    <h3>Returns</h3>
-    <p><dt>string</dt><dd>The name of the controller in the store. Defaults to the value of getName.</dd></p>
-    <h3>Examples</h3>
-
-<pre><code class="language-typescript">class MyFirstController extends StateController {
-  // ...
-
-  // Since getStoreName is not overloaded, this will be used as the slice name in the store
-  static getName() {
-    return 'MY_FIRST_CONTROLLER';
-  }
-
-  // ...
-}
-
-class MySecondController extends StateController {
-  // ...
-
-  // Since getStoreName is overloaded, this will identify the controller but not be used as the slice name
-  static getName() {
-    return 'MY_SECOND_CONTROLLER';
-  }
-
-  // This will be used as the slice name in the store
-  static getStoreName() {
-    return 'Second';
-  }
-
-  // ...
-}
-
-// Creates a state of the form:
-//
-// {
-//   MY_FIRST_CONTROLLER: {
-//     // ...
-//   },
-//   Second: {
-//     // ...
-//   },
-// }</code></pre>
-
-  </section>
-  
-
-  <section>
     <h2 class="code">initializeOnExternalAction</h2>
     <p class="code">public static initializeOnExternalAction&lt;T&gt;(this: T): void</p>
     <p>Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.<br />In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load without using the controller directly, this needs to be used in conjunction with the method
@@ -356,7 +333,7 @@ class MySecondController extends StateController {
     return 'MY_CONTROLLER';
   }
 
-  action = this.registerAction(
+  action = this.createReducingAction(
     (state, payload) =&gt; ({
       ...state,
       ...payload,
@@ -401,7 +378,7 @@ objectiveStore.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.26.1 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 0.27.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>
