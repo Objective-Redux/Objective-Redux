@@ -14,7 +14,7 @@ import { StatelessController, SagaConfig } from '../controllers/stateless-contro
  * @internal
  */
 export class StatelessControllerMock extends StatelessController {
-  protected buildSaga<Payload>(config: SagaConfig): any {
+  protected internalBuildSaga<Payload>(config: SagaConfig): any {
     const {
       name,
       effectBuilder,

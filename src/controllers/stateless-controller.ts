@@ -157,22 +157,28 @@ export abstract class StatelessController extends Controller {
   protected buildComplexAction<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload> {
     return new SagaBuilder<Payload>(
       sagaFn,
-      (config: SagaConfig): ActionFn<Payload> => {
-        const name = this.createActionName(config.name);
-
-        let { sagaFn: sagaToRegister } = config;
-
-        if (config.effectBuilder !== null) {
-          sagaToRegister = config.effectBuilder({
-            name,
-            sagaFn: sagaToRegister,
-          });
-        }
-
-        this.sagasToRegister.push(sagaToRegister);
-        return createConnectedAction(name, () => (this.objectiveStore as any));
-      }
+      this.internalBuildSaga.bind(this)
     );
+  }
+
+  // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+  /**
+   * @internal
+   */
+  protected internalBuildSaga<Payload>(config: SagaConfig): ActionFn<Payload> {
+    const name = this.createActionName(config.name);
+
+    let { sagaFn: sagaToRegister } = config;
+
+    if (config.effectBuilder !== null) {
+      sagaToRegister = config.effectBuilder({
+        name,
+        sagaFn: sagaToRegister,
+      });
+    }
+
+    this.sagasToRegister.push(sagaToRegister);
+    return createConnectedAction(name, () => (this.objectiveStore as any));
   }
 
   public setObjectiveStore(objectiveStore: ObjectiveStore): void {
