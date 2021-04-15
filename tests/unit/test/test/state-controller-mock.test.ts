@@ -9,6 +9,7 @@
 // ================================================================================================
 
 import { mocked } from '../../../../src/test/index';
+import { configureTakeEvery } from '../../../../dist';
 
 const testMutationOne = (): any => {};
 const testMutationTwo = (): any => {};
@@ -37,6 +38,32 @@ describe('StateControllerMock', () => {
       const controller: any = new TestController();
       expect(controller.myActionWithName).toEqual(testMutationTwo);
       expect(controller.myActionWithName.actionName).toEqual(testName);
+    });
+  });
+
+  describe('internalBuildSaga', () => {
+    it('returns full data', () => {
+      const controller: any = new TestController();
+      const sagaFn = (): any => {};
+      const mockFn = controller.internalBuildSaga({
+        name: 'TEST',
+        effectBuilder: configureTakeEvery(),
+        sagaFn,
+      });
+      expect(mockFn.actionName).toEqual('TEST');
+      expect(mockFn.effectType).toEqual('TAKE_EVERY');
+      expect(mockFn).toEqual(sagaFn);
+    });
+
+    it('returns partial data', () => {
+      const controller: any = new TestController();
+      const sagaFn = (): any => {};
+      const mockFn = controller.internalBuildSaga({
+        sagaFn,
+      });
+      expect(mockFn.actionName).toBeUndefined();
+      expect(mockFn.effectType).toBeUndefined();
+      expect(mockFn).toEqual(sagaFn);
     });
   });
 });

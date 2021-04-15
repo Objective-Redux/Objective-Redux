@@ -12,11 +12,11 @@ import { mocked } from '../../../../src/test/index';
 import { configureTakeEvery } from '../../../../dist';
 
 describe('StatelessControllerMock', () => {
-  describe('buildSaga', () => {
+  describe('internalBuildSaga', () => {
     it('returns full data', () => {
       const controller: any = new mocked.StatelessController();
       const sagaFn = (): any => {};
-      const mockFn = controller.buildSaga({
+      const mockFn = controller.internalBuildSaga({
         name: 'TEST',
         effectBuilder: configureTakeEvery(),
         sagaFn,
@@ -29,7 +29,7 @@ describe('StatelessControllerMock', () => {
     it('returns partial data', () => {
       const controller: any = new mocked.StatelessController();
       const sagaFn = (): any => {};
-      const mockFn = controller.buildSaga({
+      const mockFn = controller.internalBuildSaga({
         sagaFn,
       });
       expect(mockFn.actionName).toBeUndefined();

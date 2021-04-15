@@ -111,6 +111,10 @@ export declare abstract class StatelessController extends Controller {
      * @returns A builder that registers the saga.
      */
     protected buildComplexAction<Payload = void>(sagaFn: SagaFn<Payload>): SagaBuilder<Payload>;
+    /**
+     * @internal
+     */
+    protected internalBuildSaga<Payload>(config: SagaConfig): ActionFn<Payload>;
     setObjectiveStore(objectiveStore: ObjectiveStore): void;
 }
 //# sourceMappingURL=stateless-controller.d.ts.map

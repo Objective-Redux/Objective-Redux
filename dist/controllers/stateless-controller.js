@@ -147,19 +147,24 @@ var StatelessController = /** @class */ (function (_super) {
      * @returns A builder that registers the saga.
      */
     StatelessController.prototype.buildComplexAction = function (sagaFn) {
+        return new SagaBuilder(sagaFn, this.internalBuildSaga.bind(this));
+    };
+    // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
+    /**
+     * @internal
+     */
+    StatelessController.prototype.internalBuildSaga = function (config) {
         var _this = this;
-        return new SagaBuilder(sagaFn, function (config) {
-            var name = _this.createActionName(config.name);
-            var sagaToRegister = config.sagaFn;
-            if (config.effectBuilder !== null) {
-                sagaToRegister = config.effectBuilder({
-                    name: name,
-                    sagaFn: sagaToRegister,
-                });
-            }
-            _this.sagasToRegister.push(sagaToRegister);
-            return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
-        });
+        var name = this.createActionName(config.name);
+        var sagaToRegister = config.sagaFn;
+        if (config.effectBuilder !== null) {
+            sagaToRegister = config.effectBuilder({
+                name: name,
+                sagaFn: sagaToRegister,
+            });
+        }
+        this.sagasToRegister.push(sagaToRegister);
+        return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
     };
     StatelessController.prototype.setObjectiveStore = function (objectiveStore) {
         _super.prototype.setObjectiveStore.call(this, objectiveStore);

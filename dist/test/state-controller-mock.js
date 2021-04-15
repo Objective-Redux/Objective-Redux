@@ -41,6 +41,14 @@ var StateControllerMock = /** @class */ (function (_super) {
         };
         return mutationFn;
     };
+    StateControllerMock.prototype.internalBuildSaga = function (config) {
+        var name = config.name, effectBuilder = config.effectBuilder, sagaFn = config.sagaFn;
+        var resultFn = sagaFn;
+        resultFn.actionName = name;
+        resultFn.effect = effectBuilder;
+        resultFn.effectType = effectBuilder === null || effectBuilder === void 0 ? void 0 : effectBuilder.name;
+        return resultFn;
+    };
     return StateControllerMock;
 }(state_controller_1.StateController));
 exports.StateControllerMock = StateControllerMock;

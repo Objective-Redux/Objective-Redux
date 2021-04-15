@@ -32,7 +32,7 @@ var StatelessControllerMock = /** @class */ (function (_super) {
     function StatelessControllerMock() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    StatelessControllerMock.prototype.buildSaga = function (config) {
+    StatelessControllerMock.prototype.internalBuildSaga = function (config) {
         var name = config.name, effectBuilder = config.effectBuilder, sagaFn = config.sagaFn;
         var resultFn = sagaFn;
         resultFn.actionName = name;
