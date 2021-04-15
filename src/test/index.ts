@@ -22,15 +22,15 @@ import { getControllerFromSagaContext } from '../hooks/get-controller-from-saga-
 import { useObjectiveStore } from '../hooks/use-objective-store';
 import { useController } from '../hooks/use-controller';
 import { useSelector } from '../hooks/use-selector';
-import { StatelessControllerMock } from './stateless-controller-mock';
-import { StateControllerMock } from './state-controller-mock';
-export {
+import {
   configureTakeLatest,
   configureTakeEvery,
   configureTakeLeading,
   configureDebounce,
   configureTake,
 } from '../helpers/effect-type';
+import { StatelessControllerMock } from './stateless-controller-mock';
+import { StateControllerMock } from './state-controller-mock';
 
 export const actual = {
   ObjectiveStore,
@@ -46,6 +46,11 @@ export const actual = {
   useObjectiveStore,
   useController,
   useSelector,
+  configureTakeLatest,
+  configureTakeEvery,
+  configureTakeLeading,
+  configureDebounce,
+  configureTake,
 };
 
 export const mocked = {

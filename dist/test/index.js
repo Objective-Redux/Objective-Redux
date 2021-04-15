@@ -9,7 +9,7 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mocked = exports.actual = exports.configureTake = exports.configureDebounce = exports.configureTakeLeading = exports.configureTakeEvery = exports.configureTakeLatest = void 0;
+exports.mocked = exports.actual = void 0;
 /* istanbul ignore file */
 var objective_store_1 = require("../store/objective-store");
 var reducer_injector_1 = require("../store/reducer-injector");
@@ -23,14 +23,9 @@ var get_controller_from_saga_context_1 = require("../hooks/get-controller-from-s
 var use_objective_store_1 = require("../hooks/use-objective-store");
 var use_controller_1 = require("../hooks/use-controller");
 var use_selector_1 = require("../hooks/use-selector");
+var effect_type_1 = require("../helpers/effect-type");
 var stateless_controller_mock_1 = require("./stateless-controller-mock");
 var state_controller_mock_1 = require("./state-controller-mock");
-var effect_type_1 = require("../helpers/effect-type");
-Object.defineProperty(exports, "configureTakeLatest", { enumerable: true, get: function () { return effect_type_1.configureTakeLatest; } });
-Object.defineProperty(exports, "configureTakeEvery", { enumerable: true, get: function () { return effect_type_1.configureTakeEvery; } });
-Object.defineProperty(exports, "configureTakeLeading", { enumerable: true, get: function () { return effect_type_1.configureTakeLeading; } });
-Object.defineProperty(exports, "configureDebounce", { enumerable: true, get: function () { return effect_type_1.configureDebounce; } });
-Object.defineProperty(exports, "configureTake", { enumerable: true, get: function () { return effect_type_1.configureTake; } });
 exports.actual = {
     ObjectiveStore: objective_store_1.ObjectiveStore,
     ReducerInjector: reducer_injector_1.ReducerInjector,
@@ -45,6 +40,11 @@ exports.actual = {
     useObjectiveStore: use_objective_store_1.useObjectiveStore,
     useController: use_controller_1.useController,
     useSelector: use_selector_1.useSelector,
+    configureTakeLatest: effect_type_1.configureTakeLatest,
+    configureTakeEvery: effect_type_1.configureTakeEvery,
+    configureTakeLeading: effect_type_1.configureTakeLeading,
+    configureDebounce: effect_type_1.configureDebounce,
+    configureTake: effect_type_1.configureTake,
 };
 exports.mocked = {
     StatelessController: stateless_controller_mock_1.StatelessControllerMock,
