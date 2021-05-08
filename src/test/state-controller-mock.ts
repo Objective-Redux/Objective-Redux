@@ -9,7 +9,6 @@
 // ================================================================================================
 
 import { StateController, ReducerFn } from '../controllers/state-controller';
-import { SagaConfig } from '../controllers/stateless-controller';
 import { ActionExtendFn, ActionFn } from '../helpers/action';
 
 /**
@@ -26,20 +25,5 @@ export class StateControllerMock<State> extends StateController<State> {
     };
 
     return mutationFn;
-  }
-
-  protected internalBuildSaga<Payload>(config: SagaConfig): any {
-    const {
-      name,
-      effectBuilder,
-      sagaFn,
-    } = config;
-
-    const resultFn: any = sagaFn;
-    resultFn.actionName = name;
-    resultFn.effect = effectBuilder;
-    resultFn.effectType = effectBuilder?.name;
-
-    return resultFn;
   }
 }

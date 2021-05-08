@@ -24,7 +24,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StateController = void 0;
 var action_1 = require("../helpers/action");
-var stateless_controller_1 = require("./stateless-controller");
+var controller_1 = require("./controller");
 /**
  * Creates and manages a slice of Redux state.
  *
@@ -151,5 +151,5 @@ var StateController = /** @class */ (function (_super) {
         return state && state[this.constructor.getName()];
     };
     return StateController;
-}(stateless_controller_1.StatelessController));
+}(controller_1.Controller));
 exports.StateController = StateController;
