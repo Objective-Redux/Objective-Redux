@@ -108,8 +108,7 @@ describe('component-connector', () => {
   it('not update unless forced', () => {
     const Connected: any = ComponentConnector
       .addPropsTo(ConnectedTest)
-      .connect()
-      .type;
+      .connect();
 
     const instance: any = new Connected({ foo: 'bar' });
     instance.unsubscribe = null;
@@ -128,8 +127,7 @@ describe('component-connector', () => {
   it('handleChange triggers only when state data has changed', () => {
     const Connected: any = ComponentConnector
       .addPropsTo(ConnectedTest)
-      .connect()
-      .type;
+      .connect();
 
     const instance: any = new Connected({ foo: 'bar' });
     instance.unsubscribe = jest.fn();
