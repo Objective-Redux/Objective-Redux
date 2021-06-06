@@ -135,7 +135,7 @@ export class ComponentConnector {
         this.existingState = null;
       }
 
-      public shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+      public shouldComponentUpdate(nextProps: any): boolean {
         return !deepEquals(this.props, nextProps);
       }
 
