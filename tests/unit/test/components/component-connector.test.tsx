@@ -105,7 +105,7 @@ describe('component-connector', () => {
     expect(unsubscribe).toHaveBeenCalled();
   });
 
-  it('not update unless forced', () => {
+  it('does not update unless forced', () => {
     const Connected: any = ComponentConnector
       .addPropsTo(ConnectedTest)
       .connect();
@@ -119,9 +119,6 @@ describe('component-connector', () => {
     instance.componentWillUnmount();
 
     expect(instance.render()).toBeNull();
-    expect(instance.shouldComponentUpdate({ foo: 'bar' })).toBeFalsy();
-    expect(instance.shouldComponentUpdate({ bar: 'foo' })).toBeTruthy();
-    expect(instance.shouldComponentUpdate({})).toBeTruthy();
   });
 
   it('handleChange triggers only when state data has changed', () => {

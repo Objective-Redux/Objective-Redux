@@ -117,9 +117,6 @@ var ComponentConnector = /** @class */ (function () {
                     _this.existingState = null;
                     return _this;
                 }
-                class_1.prototype.shouldComponentUpdate = function (nextProps) {
-                    return !deep_equals_1.deepEquals(this.props, nextProps);
-                };
                 class_1.prototype.render = function () {
                     // Render can be called even though the component is unmounted.
                     // In that case, return null so that nothing is rendered.

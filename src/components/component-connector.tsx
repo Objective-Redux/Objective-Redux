@@ -135,10 +135,6 @@ export class ComponentConnector {
         this.existingState = null;
       }
 
-      public shouldComponentUpdate(nextProps: any): boolean {
-        return !deepEquals(this.props, nextProps);
-      }
-
       public render(): JSX.Element|null {
         // Render can be called even though the component is unmounted.
         // In that case, return null so that nothing is rendered.
