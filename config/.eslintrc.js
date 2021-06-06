@@ -98,17 +98,10 @@ const universalRules = {
   'no-label-var': ['error'],
   'no-shadow': ['error'],
   'no-shadow-restricted-names': ['error'],
-  'no-undef': ['error'],
+  'no-undef': 'off',
   'no-undef-init': ['error'],
   'no-undefined': ['error'],
-  'no-use-before-define': [
-    'error',
-    {
-      functions: false,
-      classes: false,
-      variables: true,
-    },
-  ],
+  'no-use-before-define': 'off',
   'callback-return': ['error'],
   'global-require': ['error'],
   'no-new-require': ['error'],
@@ -451,28 +444,10 @@ const universalRules = {
   'jsdoc/check-indentation': ['error'],
   'jsdoc/check-param-names': ['error'],
   'jsdoc/check-types': ['error'],
-  'jsdoc/implements-on-classes': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
+  'jsdoc/implements-on-classes': ['error'],
   'jsdoc/match-description': ['error'],
   'jsdoc/newline-after-description': ['error'],
-  'jsdoc/no-types': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
+  'jsdoc/no-types': ['error'],
   'jsdoc/no-undefined-types': ['error'],
   'jsdoc/require-description': ['error'],
   'jsdoc/require-description-complete-sentence': ['error'],
@@ -487,47 +462,11 @@ const universalRules = {
   //   }
   // ],
   'jsdoc/require-param': ['error'],
-  'jsdoc/require-param-description': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
-  'jsdoc/require-param-name': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
+  'jsdoc/require-param-description': ['error'],
+  'jsdoc/require-param-name': ['error'],
   'jsdoc/require-returns': ['error'],
-  'jsdoc/require-returns-description': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
-  'jsdoc/valid-types': [
-    'error',
-    {
-      require: {
-        ArrowFunctionExpression: true,
-        FunctionExpression: true,
-        MethodDefinition: true,
-      },
-    },
-  ],
+  'jsdoc/require-returns-description': ['error'],
+  'jsdoc/valid-types': ['error'],
 };
 
 const typescriptRules = {
@@ -584,6 +523,7 @@ const typescriptRules = {
   ],
   '@typescript-eslint/explicit-member-accessibility': ['error'],
   '@typescript-eslint/member-delimiter-style': ['error'],
+  '@typescript-eslint/no-use-before-define': ['error'],
   '@typescript-eslint/no-misused-new': ['error'],
   '@typescript-eslint/no-misused-promises': ['error'],
   '@typescript-eslint/no-parameter-properties': ['error'],
@@ -616,6 +556,7 @@ module.exports = {
     sourceType: 'module',
     project: path.resolve(__dirname, 'tsconfig.json'),
     tsconfigRootDir: `${__dirname}/../`,
+    allowAutomaticSingleRunInference: true,
   },
   plugins: [
     'react',

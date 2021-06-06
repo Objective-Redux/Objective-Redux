@@ -42,7 +42,7 @@ class TestController extends StateController<boolean> {
     super(false);
   }
 
-  public static getName(): string {
+  public static override getName(): string {
     return 'TestSlice';
   }
 
@@ -58,7 +58,7 @@ class TestController extends StateController<boolean> {
 }
 
 class NamespacedTestController extends TestController {
-  public static getNamespace(): string {
+  public static override getNamespace(): string {
     return 'NAMESPACE';
   }
 }

@@ -64,11 +64,11 @@ class TestStateController extends StateController<any> {
     super(stateValue);
   }
 
-  public static getName(): string {
+  public static override getName(): string {
     return 'TestController';
   }
 
-  public getStateSlice = (): any => stateValue;
+  public override getStateSlice = (): any => stateValue;
 }
 
 class TestStatelessController extends StatelessController {
@@ -77,7 +77,7 @@ class TestStatelessController extends StatelessController {
     super();
   }
 
-  public static getName(): string {
+  public static override getName(): string {
     return 'TestController';
   }
 }

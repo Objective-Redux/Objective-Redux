@@ -16,6 +16,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -132,9 +134,9 @@ var ComponentConnector = /** @class */ (function () {
                     return (React.createElement(Component, __assign({}, this.existingState, this.props, { objectiveStore: objectiveStore })));
                 };
                 class_1.prototype.getState = function () {
-                    var _a;
+                    var context = this.context;
                     /* istanbul ignore next */
-                    var state = (_a = this.context) === null || _a === void 0 ? void 0 : _a.getState();
+                    var state = context === null || context === void 0 ? void 0 : context.getState();
                     var selectedState = {};
                     for (var i = 0; i < controllers.length; i++) {
                         var slice = controllers[i].controller.getInstance(this.context).getStateSlice();

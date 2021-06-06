@@ -10,19 +10,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ObjectiveStoreProvider, ObjectiveStore } from 'objective-redux';
+import { ObjectiveStoreProvider, ObjectiveStore, ReducerInjector } from 'objective-redux';
 import ConnectedComponent from './connected-component';
 import ConnectedStateComponent from './connected-state-component';
 import HookComponent from './hook-component';
 import HookStateComponent from './hook-state-component';
 import ReactReduxComponent from './react-redux-component';
+import ReduxInjectorsComponent from './redux-injectors-component';
 import { SwitchStateController } from './store/switch-state-controller';
 import { SwitchStateSagas } from './store/switch-state-sagas';
+import { createInjectorsEnhancer } from 'redux-injectors';
+
+const injector = new ReducerInjector();
+
+const middleware = [
+  createInjectorsEnhancer({
+    createReducer: injector.getReducerCreationFn(),
+    runSaga: injector.getSagaRunningFn(),
+  }),
+];
 
 export const objectiveStore = new ObjectiveStore({
   sagaContext: {
     test: 'Some Value',
   },
+  middleware,
+  injector,
 });
 
 const removeStateController = () => SwitchStateController.removeInstance(objectiveStore);
@@ -37,6 +50,7 @@ ReactDOM.render(
         <ReactReduxComponent />
         <ConnectedStateComponent />
         <HookStateComponent />
+        <ReduxInjectorsComponent />
         <button id="removeStateController" onClick={removeStateController}>Remove StateController</button>
         <br />
         <button id="removeStatelessController" onClick={removeStatelessController}>Remove StatelessController</button>

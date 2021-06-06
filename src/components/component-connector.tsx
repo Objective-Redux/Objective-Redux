@@ -118,7 +118,7 @@ export class ComponentConnector {
     } = this;
 
     const connected = class extends React.Component {
-      public static contextType = ObjectiveStoreProviderContext;
+      public static override contextType = ObjectiveStoreProviderContext;
 
       public unsubscribe: Unsubscribe|null = null;
 
@@ -135,7 +135,7 @@ export class ComponentConnector {
         this.existingState = null;
       }
 
-      public render(): JSX.Element|null {
+      public override render(): JSX.Element|null {
         // Render can be called even though the component is unmounted.
         // In that case, return null so that nothing is rendered.
         if (!this.unsubscribe && this.mounted) {
@@ -160,8 +160,9 @@ export class ComponentConnector {
       }
 
       private getState(): any {
+        const { context } = this;
         /* istanbul ignore next */
-        const state = this.context?.getState();
+        const state = context?.getState();
         let selectedState = {};
         for (let i = 0; i < controllers.length; i++) {
           const slice = (controllers[i].controller as any).getInstance(this.context).getStateSlice();
@@ -179,13 +180,13 @@ export class ComponentConnector {
         return selectedState;
       }
 
-      public componentDidMount(): void {
+      public override componentDidMount(): void {
         const objectiveStore: ObjectiveStore = this.context;
         this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
         this.mounted = true;
       }
 
-      public componentWillUnmount(): void {
+      public override componentWillUnmount(): void {
         if (this.unsubscribe) {
           this.unsubscribe();
           this.unsubscribe = null;

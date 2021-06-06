@@ -13,6 +13,7 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
+    "noImplicitOverride": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
