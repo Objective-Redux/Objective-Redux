@@ -67,6 +67,6 @@ export declare class ComponentConnector {
      *
      * @returns The connected React component.
      */
-    connect(): React.MemoExoticComponent<any>;
+    connect(): React.ComponentClass<any>;
 }
 //# sourceMappingURL=component-connector.d.ts.map

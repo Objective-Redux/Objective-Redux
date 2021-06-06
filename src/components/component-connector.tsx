@@ -110,7 +110,7 @@ export class ComponentConnector {
    *
    * @returns The connected React component.
    */
-  public connect(): React.MemoExoticComponent<any> {
+  public connect(): React.ComponentClass<any> {
     const {
       controllers,
       stateSelectors,
@@ -136,7 +136,7 @@ export class ComponentConnector {
       }
 
       public shouldComponentUpdate(nextProps: any, nextState: any): boolean {
-        return !deepEquals(this.props, nextProps) || !deepEquals(this.state, nextState);
+        return !deepEquals(this.props, nextProps);
       }
 
       public render(): JSX.Element|null {
@@ -208,6 +208,6 @@ export class ComponentConnector {
     };
 
     /* istanbul ignore next */
-    return React.memo(connected, () => true);
+    return connected;
   }
 }
