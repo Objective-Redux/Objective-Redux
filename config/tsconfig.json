@@ -11,6 +11,7 @@
     "target": "ES6",
     "allowJs": true,
     "checkJs": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "sourceMap": true
   }
 }
