@@ -57,11 +57,11 @@ class TestController extends StatelessController {
     super();
   }
 
-  public static getName(): string {
+  public static override getName(): string {
     return 'test-saga';
   }
 
-  public static getNamespace(): string {
+  public static override getNamespace(): string {
     return 'MyNamespace';
   }
 

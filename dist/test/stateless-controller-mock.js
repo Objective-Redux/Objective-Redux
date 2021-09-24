@@ -16,6 +16,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -32,6 +34,7 @@ var StatelessControllerMock = /** @class */ (function (_super) {
     function StatelessControllerMock() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     StatelessControllerMock.prototype.internalBuildSaga = function (config) {
         var name = config.name, effectBuilder = config.effectBuilder, sagaFn = config.sagaFn;
         var resultFn = sagaFn;

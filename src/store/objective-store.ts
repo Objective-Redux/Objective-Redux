@@ -217,15 +217,15 @@ export class ObjectiveStore {
       (this as any)[fn] = (...params: any): any => internalFn(...params);
     });
 
+    /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/unbound-method */
     const {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
       dispatch,
       subscribe,
       replaceReducer,
       getState,
-      /* eslint-enable @typescript-eslint/no-unused-vars */
       ...otherFns
     } = this.store;
+    /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/unbound-method */
 
     Object.assign(this, otherFns);
   }

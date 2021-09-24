@@ -28,7 +28,7 @@ export declare class LazyLoader {
     static registerController(controller: typeof Controller): void;
     static getControllerForAction(action: AnyAction): typeof Controller | null;
     static addObjectiveStore(objectiveStore: ObjectiveStore, storeFns: StoreHandlingFns): void;
-    static getController<T extends Controller>(objectiveStore: ObjectiveStore, ControllerClass: ModelConstructor<T> & typeof Controller): T;
+    static getController<T extends Controller>(objectiveStore: ObjectiveStore, ControllerClass: ModelConstructor<T> & Required<typeof Controller>): T;
     static removeController<T extends Controller>(objectiveStore: ObjectiveStore, ControllerClass: ModelConstructor<T> & typeof Controller): void;
 }
 export {};

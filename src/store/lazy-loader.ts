@@ -110,7 +110,7 @@ export class LazyLoader {
   // eslint-disable-next-line max-statements
   public static getController<T extends Controller>(
     objectiveStore: ObjectiveStore,
-    ControllerClass: ModelConstructor<T> & typeof Controller
+    ControllerClass: ModelConstructor<T> & Required<typeof Controller>
   ): T {
     const name = ControllerClass.getName();
     const namespace = ControllerClass.getNamespace() || '';

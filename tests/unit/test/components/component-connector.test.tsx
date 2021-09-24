@@ -26,7 +26,7 @@ const objectiveStoreMock: any = {
 };
 
 class ConnectedTest extends React.Component {
-  public render(): React.ReactChild {
+  public override render(): React.ReactChild {
     return <div />;
   }
 }

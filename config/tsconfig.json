@@ -7,8 +7,14 @@
     "../**/*.jsx",
     "../**/*.tsx"
   ],
+  "exclude": [
+    "../**/node_modules/**",
+    "../**/dist/**",
+    "../**/coverage/**"
+  ],
   "compilerOptions": {
     "target": "ES6",
+    "module": "commonjs",
     "allowJs": true,
     "checkJs": true,
     "baseUrl": "./",

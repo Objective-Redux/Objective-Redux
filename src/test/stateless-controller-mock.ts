@@ -14,7 +14,8 @@ import { StatelessController, SagaConfig } from '../controllers/stateless-contro
  * @internal
  */
 export class StatelessControllerMock extends StatelessController {
-  protected internalBuildSaga<Payload>(config: SagaConfig): any {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected override internalBuildSaga<Payload>(config: SagaConfig): any {
     const {
       name,
       effectBuilder,

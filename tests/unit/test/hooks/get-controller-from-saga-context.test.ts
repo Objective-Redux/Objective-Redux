@@ -32,7 +32,7 @@ class TestStateController extends StateController<number> {
     super(42);
   }
 
-  public static getName(): string {
+  public static override getName(): string {
     return 'Test';
   }
 }

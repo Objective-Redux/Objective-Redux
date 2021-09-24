@@ -106,7 +106,7 @@ export declare abstract class StatelessController extends Controller {
      * Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.
      *
      * @param sagaFn The saga function to add to the ObjectiveStore.
-     * @template Payload the payload the action and the saga will take. If void, no action is expected.
+     * @template Payload The payload the action and the saga will take. If void, no action is expected.
      * This template variable is optional.
      * @returns A builder that registers the saga.
      */

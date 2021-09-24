@@ -30,12 +30,10 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ObjectiveStore = void 0;
@@ -127,7 +125,7 @@ var ObjectiveStore = /** @class */ (function () {
             internalMiddleware.push(this.sagaMiddleware);
             this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         }
-        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, composeMiddlewareFn.apply(void 0, __spreadArrays(middleware, [redux_1.applyMiddleware.apply(void 0, internalMiddleware)])));
+        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, composeMiddlewareFn.apply(void 0, __spreadArray(__spreadArray([], middleware), [redux_1.applyMiddleware.apply(void 0, internalMiddleware)])));
         this.wrapStore();
         if (reducer) {
             this.replaceReducer(reducer);
@@ -155,11 +153,9 @@ var ObjectiveStore = /** @class */ (function () {
                 return internalFn.apply(void 0, params);
             };
         });
-        var _a = this.store, 
-        /* eslint-disable @typescript-eslint/no-unused-vars */
-        dispatch = _a.dispatch, subscribe = _a.subscribe, replaceReducer = _a.replaceReducer, getState = _a.getState, 
-        /* eslint-enable @typescript-eslint/no-unused-vars */
-        otherFns = __rest(_a, ["dispatch", "subscribe", "replaceReducer", "getState"]);
+        /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/unbound-method */
+        var _a = this.store, dispatch = _a.dispatch, subscribe = _a.subscribe, replaceReducer = _a.replaceReducer, getState = _a.getState, otherFns = __rest(_a, ["dispatch", "subscribe", "replaceReducer", "getState"]);
+        /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/unbound-method */
         Object.assign(this, otherFns);
     };
     ObjectiveStore.prototype.getReducers = function () {

@@ -22,6 +22,7 @@ module.exports = {
       lines: 100,
     },
   },
+  coverageProvider: 'babel',
   preset: 'ts-jest',
   rootDir: path.resolve(__dirname, '../'),
   testEnvironment: 'jsdom',

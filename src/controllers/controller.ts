@@ -15,7 +15,7 @@ import { getActionNameForController } from '../helpers/action';
 /**
  * @internal
  */
-export type ModelConstructor<T> = new (objectiveStore: ObjectiveStore) => T;
+export type ModelConstructor<T> = new () => T;
 
 /**
  * @internal
@@ -137,7 +137,7 @@ export abstract class Controller {
    *
    * This should be used as the method of instantiating controllers.
    *
-   * @template T the controller type. Will be inferred from the class instance and does not need to be provided.
+   * @template T The controller type. Will be inferred from the class instance and does not need to be provided.
    * @param this Implicit "this" for internal use. When calling, this parameter should be ignored/skipped.
    * @param objectiveStore An instance of the ObjectiveStore from which to get the controller.
    * @returns An instance of the controller.
