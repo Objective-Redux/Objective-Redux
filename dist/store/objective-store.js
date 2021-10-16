@@ -30,10 +30,14 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ObjectiveStore = void 0;
@@ -109,10 +113,10 @@ var ObjectiveStore = /** @class */ (function () {
             unregisterReducerFn: this.removeControllerReducer.bind(this),
             cancelSagasForController: this.cancelSagasForController.bind(this),
         });
-        var reduxSaga = get_redux_saga_module_1.getReduxSagaModule();
+        var reduxSaga = (0, get_redux_saga_module_1.getReduxSagaModule)();
         var internalMiddleware = [
-            pre_dispatch_hook_middleware_1.preDispatchHookMiddleware(preDispatchHook),
-            lazy_loading_middleware_1.lazyLoadingMiddleware(this),
+            (0, pre_dispatch_hook_middleware_1.preDispatchHookMiddleware)(preDispatchHook),
+            (0, lazy_loading_middleware_1.lazyLoadingMiddleware)(this),
         ];
         this.injector = injector;
         this.injector.setGetObjectiveReduxReducers(this.getReducers.bind(this));
@@ -125,7 +129,7 @@ var ObjectiveStore = /** @class */ (function () {
             internalMiddleware.push(this.sagaMiddleware);
             this.injector.setSagaRunningFn(this.sagaMiddleware.run);
         }
-        this.store = redux_1.createStore(reducer || reducer_injector_1.defaultReducer, initialState, composeMiddlewareFn.apply(void 0, __spreadArray(__spreadArray([], middleware), [redux_1.applyMiddleware.apply(void 0, internalMiddleware)])));
+        this.store = (0, redux_1.createStore)(reducer || reducer_injector_1.defaultReducer, initialState, composeMiddlewareFn.apply(void 0, __spreadArray(__spreadArray([], middleware, false), [redux_1.applyMiddleware.apply(void 0, internalMiddleware)], false)));
         this.wrapStore();
         if (reducer) {
             this.replaceReducer(reducer);
@@ -164,7 +168,7 @@ var ObjectiveStore = /** @class */ (function () {
         Object.keys(this.registeredReducers).forEach(function (key) {
             var reducer = _this.registeredReducers[key];
             if (typeof reducer == 'object') {
-                reducer = redux_1.combineReducers(reducer);
+                reducer = (0, redux_1.combineReducers)(reducer);
             }
             reducerMap[key] = reducer;
         });

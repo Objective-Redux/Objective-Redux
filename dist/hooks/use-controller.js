@@ -41,8 +41,8 @@ var use_objective_store_1 = require("./use-objective-store");
 // eslint-disable-next-line max-statements
 var useController = function (controller, selectorFn) {
     if (selectorFn === void 0) { selectorFn = function (state) { return state; }; }
-    var objectiveStore = use_objective_store_1.useObjectiveStore();
-    var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
+    var objectiveStore = (0, use_objective_store_1.useObjectiveStore)();
+    var _a = (0, react_1.useReducer)(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
     if (!objectiveStore) {
         return null;
     }
@@ -52,9 +52,9 @@ var useController = function (controller, selectorFn) {
     if (instance.getStateSlice) {
         getSlice = function () { return selectorFn(instance.getStateSlice()); };
     }
-    var subscription = react_1.useMemo(function () { return new hook_subscriber_1.HookSubscriber(objectiveStore, getSlice, forceUpdate); }, [objectiveStore]);
+    var subscription = (0, react_1.useMemo)(function () { return new hook_subscriber_1.HookSubscriber(objectiveStore, getSlice, forceUpdate); }, [objectiveStore]);
     subscription.subscribe();
-    react_1.useEffect(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
+    (0, react_1.useEffect)(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
     return instance;
 };
 exports.useController = useController;

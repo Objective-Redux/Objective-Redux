@@ -109,7 +109,7 @@ var StateController = /** @class */ (function (_super) {
         var _this = this;
         var actionName = this.createActionName();
         this.reducerMap[actionName] = fn;
-        var actionFn = action_1.createConnectedAction(actionName, function () { return _this.objectiveStore; });
+        var actionFn = (0, action_1.createConnectedAction)(actionName, function () { return _this.objectiveStore; });
         /**
          * Adds a specific name to the saga so that it can be addressed without calling the specific action returned by
          * this builder.
@@ -121,7 +121,7 @@ var StateController = /** @class */ (function (_super) {
             delete _this.reducerMap[actionName];
             var addressableActionName = _this.createActionName(name);
             _this.reducerMap[addressableActionName] = fn;
-            return action_1.createConnectedAction(addressableActionName, function () { return _this.objectiveStore; });
+            return (0, action_1.createConnectedAction)(addressableActionName, function () { return _this.objectiveStore; });
         };
         return actionFn;
     };

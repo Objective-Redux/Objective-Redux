@@ -32,15 +32,15 @@ var use_objective_store_1 = require("./use-objective-store");
  * ```
  */
 var useSelector = function (selectorFn) {
-    var objectiveStore = use_objective_store_1.useObjectiveStore();
-    var _a = react_1.useReducer(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
+    var objectiveStore = (0, use_objective_store_1.useObjectiveStore)();
+    var _a = (0, react_1.useReducer)(function (c) { return c + 1; }, 0), forceUpdate = _a[1];
     if (!objectiveStore) {
         return null;
     }
     var getSlice = function () { return selectorFn(objectiveStore.getState()); };
-    var subscription = react_1.useMemo(function () { return new hook_subscriber_1.HookSubscriber(objectiveStore, getSlice, forceUpdate); }, [objectiveStore]);
+    var subscription = (0, react_1.useMemo)(function () { return new hook_subscriber_1.HookSubscriber(objectiveStore, getSlice, forceUpdate); }, [objectiveStore]);
     subscription.subscribe();
-    react_1.useEffect(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
+    (0, react_1.useEffect)(function () { return subscription.unsubscribe.bind(subscription); }, [objectiveStore]);
     return getSlice();
 };
 exports.useSelector = useSelector;

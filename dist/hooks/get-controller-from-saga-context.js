@@ -63,7 +63,7 @@ function getControllerFromSagaContext(controller) {
     var objectiveStore;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, get_objective_store_from_saga_context_1.getObjectiveStoreFromSagaContext()];
+            case 0: return [4 /*yield*/, (0, get_objective_store_from_saga_context_1.getObjectiveStoreFromSagaContext)()];
             case 1:
                 objectiveStore = _a.sent();
                 if (!objectiveStore) {

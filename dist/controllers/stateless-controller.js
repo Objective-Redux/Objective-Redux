@@ -166,7 +166,7 @@ var StatelessController = /** @class */ (function (_super) {
             });
         }
         this.sagasToRegister.push(sagaToRegister);
-        return action_1.createConnectedAction(name, function () { return _this.objectiveStore; });
+        return (0, action_1.createConnectedAction)(name, function () { return _this.objectiveStore; });
     };
     StatelessController.prototype.setObjectiveStore = function (objectiveStore) {
         _super.prototype.setObjectiveStore.call(this, objectiveStore);

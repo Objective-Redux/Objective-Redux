@@ -34,5 +34,5 @@ var context_1 = require("../context");
  * }
  * ```
  */
-var useObjectiveStore = function () { return react_1.useContext(context_1.ObjectiveStoreProviderContext); };
+var useObjectiveStore = function () { return (0, react_1.useContext)(context_1.ObjectiveStoreProviderContext); };
 exports.useObjectiveStore = useObjectiveStore;

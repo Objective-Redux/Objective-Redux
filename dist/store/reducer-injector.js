@@ -139,7 +139,7 @@ var ReducerInjector = /** @class */ (function () {
             _this.injectedReducers = injectedReducers;
             var reducers = __assign(__assign(__assign({}, _this.initialReducers), _this.injectedReducers), (_this.getObjectiveReduxReducers && _this.getObjectiveReduxReducers()));
             return Object.keys(reducers).length > 0
-                ? redux_1.combineReducers(reducers)
+                ? (0, redux_1.combineReducers)(reducers)
                 : exports.defaultReducer;
         };
     };

@@ -161,7 +161,7 @@ var ComponentConnector = /** @class */ (function () {
                 class_1.prototype.handleChange = function () {
                     if (this.unsubscribe) {
                         var newState = this.getState();
-                        if (!deep_equals_1.deepEquals(this.existingState, newState)) {
+                        if (!(0, deep_equals_1.deepEquals)(this.existingState, newState)) {
                             this.existingState = newState;
                             this.forceUpdate();
                         }

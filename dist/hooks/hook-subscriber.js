@@ -28,7 +28,7 @@ var HookSubscriber = /** @class */ (function () {
         if (!this.unsubscribeFn && this.objectiveStore) {
             this.unsubscribeFn = this.objectiveStore.subscribe(function () {
                 var slice = _this.getSlice();
-                if (!deep_equals_1.deepEquals(_this.previousSlice, slice)) {
+                if (!(0, deep_equals_1.deepEquals)(_this.previousSlice, slice)) {
                     _this.previousSlice = slice;
                     _this.updateFn();
                 }

@@ -49,7 +49,7 @@ var get_redux_saga_module_1 = require("./get-redux-saga-module");
  * ```
  */
 function configureTakeLatest() {
-    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    var effects = (0, get_redux_saga_module_1.getReduxSagaEffects)();
     return function TAKE_LATEST(config) {
         return function () {
             return __generator(this, function (_a) {
@@ -75,7 +75,7 @@ exports.configureTakeLatest = configureTakeLatest;
  * ```
  */
 function configureTakeEvery() {
-    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    var effects = (0, get_redux_saga_module_1.getReduxSagaEffects)();
     return function TAKE_EVERY(config) {
         return function () {
             return __generator(this, function (_a) {
@@ -101,7 +101,7 @@ exports.configureTakeEvery = configureTakeEvery;
  * ```
  */
 function configureTakeLeading() {
-    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    var effects = (0, get_redux_saga_module_1.getReduxSagaEffects)();
     return function TAKE_LEADING(config) {
         return function () {
             return __generator(this, function (_a) {
@@ -128,7 +128,7 @@ exports.configureTakeLeading = configureTakeLeading;
  * ```
  */
 function configureDebounce(debounceConfig) {
-    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    var effects = (0, get_redux_saga_module_1.getReduxSagaEffects)();
     return function DEBOUNCE(config) {
         return function () {
             return __generator(this, function (_a) {
@@ -155,7 +155,7 @@ exports.configureDebounce = configureDebounce;
  * ```
  */
 function configureTake(takeConfig) {
-    var effects = get_redux_saga_module_1.getReduxSagaEffects();
+    var effects = (0, get_redux_saga_module_1.getReduxSagaEffects)();
     return function TAKE(config) {
         return function () {
             var patternFn, payload;
