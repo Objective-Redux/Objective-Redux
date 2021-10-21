@@ -2,17 +2,17 @@
 
 <h2>The StatelessController class</h2>
 
-<p>A stateless controller is a controller that does not have an associated slice of state in the Redux store. In other words, a stateless controller does not have a reducer.</p>
+<p>A stateless controller is a controller that does not modify the state of the application. In other words, it does not have an associated slice of state in the Redux store or a reducer.</p>
 
 <p>This class is used to create actions that have side effect&mdash;in other words, Redux-Saga's.</p>
+
+<p>In order to use StatelessControllers, first ensure you have the optional dependency redux-saga installed and bundled with your application. See the <a href="./setup.html">Setup</a> page for instructions.</p>
 
 <h2>Defining a StatelessController</h2>
 
 <h3>Required Implementation</h3>
 
-<p>The StatelessController required a static getName function be implemented to return a string name for the controller. The getName method will need to return a string name that is unique for all of the Objective-Redux controllers. This allows Objective-Redux to quickly lazy-load controllers on-the-fly.</p>
-
-<p>If the constructor is overridden, it will need to take in an ObjectiveStore as a parameter and call the super constructor with the ObjectiveStore instance.</p>
+<p>The StatelessController requires a static getName function is implemented and returns a string name for the controller. The name it returns will need to be unique for all of the Objective-Redux controllers.<sup>1</sup> This allows Objective-Redux to lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
 
 <pre><code class="language-typescript">
   import { StatelessController } from 'objective-redux';
@@ -56,3 +56,5 @@ export class SwitchStateSagas extends StatelessController {
     .register();
 }
 </code></pre>
+
+<p><sup>1</sup> Optionally, namespaces can be used to help with scoping controllers and Redux store slices. See the <a href="./statelesscontroller.html">StatelessController API documentation</a> for more.</p>

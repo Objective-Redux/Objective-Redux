@@ -8,7 +8,7 @@
 
 <h3>How does it work?</h3>
 
-<p>This is an abstraction of Redux's reducers, actions, and selectors. It defines a slice of the state in the Redux store and automatically sets up up the reducer that manages it's mutations. It is initialized on-demand only when it's needed to fire an action or respond to a state change.</p>
+<p>This is an abstraction of Redux's reducers, actions, and selectors. It defines a slice of the state in the Redux store and automatically sets up up the reducer that manages its mutations. It is initialized on-demand only when it's needed to fire an action or respond to a state change.</p>
 
 <h2>Defining a StateController</h2>
 
@@ -24,7 +24,7 @@ import { StateController } from 'objective-redux';
 const initialState = { isOn: false };
 
 class SwitchStateController extends StateController {
-  // The construct should look like this
+  // The constructor should look like this
   constructor() {
     super(initialState);
     // ... additional setup code can go here
@@ -36,7 +36,7 @@ export SwitchStateController;
 
 <h3>getName</h3>
 
-<p>The static getName method should returns a string name of the state slice. The name it returns will need to be unique for all of the Objective-Redux controllers.<sup>1</sup> This allows Objective-Redux to quickly lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
+<p>The static getName method should returns the string name of the state slice. The name it returns will need to be unique for all of the Objective-Redux controllers.<sup>1</sup> This allows Objective-Redux to lazy-load controllers on-the-fly and prevents reducer collisions in the store.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -62,9 +62,9 @@ export SwitchStateController;
 
 <h3>Defining Actions</h3>
 
-<p>Actions and their associated mutations are created by using the createReducingAction method. This method takes a function or the form (state, payload) => nextState. That is, it should accepts the current state and the action payload as parameters and returns the new state. When the action is called, the mutation function will run and the state will be updated.</p>
+<p>Actions and their associated mutations are created by using the createReducingAction method. This method takes a function of the form (state, payload) => nextState. That is, it accepts the current state and the action payload as parameters and returns the new state. When the action is called, the mutation function will run and the state will be updated.</p>
 
-<p>Below is an example of a state controller that has two actions: one that toggles a switch on and off and one that sets the switch to a value.</p>
+<p>Below is an example of a state controller that has two actions: one that toggles a switch on and off, one that sets the switch to a value.</p>
 
 <pre><code class="language-typescript">
 import { StateController } from 'objective-redux';
@@ -100,9 +100,9 @@ export SwitchStateController;
 
 <p>Below are two examples of how the above class would be used with React.</p>
 
-<h3>With a connected component:</h3>
+<h3>With a connected component</h3>
 
-<p>For higher order components, a ComponentConnector can be used to create a wrapper that connect the component to the ObjectiveStore. This allows the component and controllers used by it to have access to the ObjectiveStore.</p>
+<p>For higher order components, a ComponentConnector can be used to create a wrapper that connects the component to the ObjectiveStore. This allows the component and controllers used by it to have access to the ObjectiveStore.</p>
 
 <pre><code class="language-typescript">
 import React from 'react';
@@ -129,12 +129,12 @@ export default ComponentConnector
   .addPropsTo(AppComponent)              // Our component we are connecting to the ObjectiveStore
   .fromController(SwitchStateController) // (optional) Adds the StateController's state as properties to the component
                                          // Alternatively, .fromController(SwitchStateController, state => ({ isOn: state.isOn }))
-                                         // for custom mappings. More than one controller can be chained with .from to add more
-                                         // props to the component.
+                                         // for custom mappings. More than one controller can be chained with .fromController to
+                                         // add more props to the component.
   .connect(); // Returns a new component that wraps the provided component
 </code></pre>
 
-<h3>With a React hook:</h3>
+<h3>With a React hook</h3>
 
 <p>React hooks can be used for functional components.</p>
 
