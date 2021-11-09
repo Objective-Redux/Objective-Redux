@@ -18,7 +18,7 @@
   ],
   "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
-    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i",
+    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i && cd ../server-side-rendering && npm i",
     "docs": "node scripts/generate-docs.js",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=4096\"; ./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js",
     "lint-fix": "npm run lint -- --fix",
