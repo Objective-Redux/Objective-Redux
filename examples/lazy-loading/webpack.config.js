@@ -44,8 +44,12 @@ module.exports = function(_env, argv) {
     devServer: {
       compress: true,
       historyApiFallback: true,
-      overlay: true,
       port: 3000,
+    },
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000,
     },
   };
 };
