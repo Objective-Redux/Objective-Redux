@@ -18,7 +18,7 @@
   ],
   "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
-    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i",
+    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i && cd ../server-side-rendering && npm i",
     "docs": "node scripts/generate-docs.js",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=4096\"; ./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js",
     "lint-fix": "npm run lint -- --fix",
@@ -27,7 +27,7 @@
     "start-server": "cd examples/react-redux && npm start",
     "test": "npm run test-unit && npm run test-e2e",
     "test-ci": "./node_modules/.bin/cypress install --force && npm run test",
-    "test-e2e": "cd examples/react-redux && npm run test-e2e && cd ../lazy-loading && npm run test-e2e",
+    "test-e2e": "cd examples/react-redux && npm run test-e2e && cd ../lazy-loading && npm run test-e2e && cd ../server-side-rendering && npm run test-e2e",
     "test-unit": "jest --no-cache --config ./config/jest.config.js",
     "transpile": "tsc",
     "version": "npm run build && npm run docs"

@@ -14,19 +14,19 @@
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/preset-react": "^7.10.4",
-    "@babel/runtime": "^7.10.5",
-    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/runtime": "^7.16.0",
+    "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
-    "html-webpack-plugin": "^4.3.0",
+    "html-webpack-plugin": "^5.5.0",
     "objective-redux": "file:../../",
-    "redux": "4.0.5",
-    "start-server-and-test": "^1.11.0",
-    "webpack": "^4.44.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "redux": "4.1.2",
+    "start-server-and-test": "^1.14.0",
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
   }
 }
