@@ -247,16 +247,16 @@ writeFile({
   body: marked(
     fs.readFileSync(path.resolve(__dirname, '../README.md'), 'utf-8'),
     {
-      baseUrl: 'https://github.com/Objective-Redux/Objective-Redux/tree/master',
+      baseUrl: 'https://github.com/Objective-Redux/Objective-Redux/tree/main',
       gfm: true,
       headerIds: true,
       smartypants: true,
       xhtml: true,
     }
   // eslint-disable-next-line prefer-named-capture-group
-  ).replace(/ src=".\/([^"]+?)"/g, ' src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/master/$1"')
+  ).replace(/ src=".\/([^"]+?)"/g, ' src="https://raw.githubusercontent.com/Objective-Redux/Objective-Redux/main/$1"')
   // eslint-disable-next-line prefer-named-capture-group
-    .replace(/ href=".\/([^"]+?)"/g, ' href="https://github.com/Objective-Redux/Objective-Redux/tree/master/$1"'),
+    .replace(/ href=".\/([^"]+?)"/g, ' href="https://github.com/Objective-Redux/Objective-Redux/tree/main/$1"'),
   menu,
   filename: 'index.html',
 });
