@@ -14,7 +14,7 @@ class MyControllerClass extends StateController {
 // For Sagas
 class MyControllerClass extends StatelessController {
   // ...
-  toggleSwitch = this.buildComplexAction(
+  toggleSwitch = this.createSagaAction(
     function *() {
       const myController = yield getControllerFromSagaContext(MyController);
       yield myController.myAction(payload);

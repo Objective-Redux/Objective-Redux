@@ -107,7 +107,7 @@ exports.SagaBuilder = SagaBuilder;
  *    return 'switch';
  *  }
  *
- *  toggleSwitch = this.buildComplexAction(
+ *  toggleSwitch = this.createSagaAction(
  *    function* () {
  *      const controller = yield getControllerFromSagaContext(SwitchStateController);
  *      yield controller.toggleSwitchValue();
@@ -148,7 +148,7 @@ var StatelessController = /** @class */ (function (_super) {
      * This template variable is optional.
      * @returns A builder that registers the saga.
      */
-    StatelessController.prototype.buildComplexAction = function (sagaFn) {
+    StatelessController.prototype.createSagaAction = function (sagaFn) {
         return new SagaBuilder(sagaFn, this.internalBuildSaga.bind(this));
     };
     // eslint-disable-next-line jsdoc/require-description, jsdoc/require-param, jsdoc/require-returns
