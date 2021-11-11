@@ -79,7 +79,7 @@
    return 'switch';
  }
 
- toggleSwitch = this.buildComplexAction(
+ toggleSwitch = this.createSagaAction(
    function* () {
      const controller = yield getControllerFromSagaContext(SwitchStateController);
      yield controller.toggleSwitchValue();
@@ -116,20 +116,6 @@ have adverse affects on the application.</p>
   
 
   <section>
-    <h2 class="code">buildComplexAction</h2>
-    <p class="code">protected buildComplexAction&lt;Payload&gt;(sagaFn: SagaFn&lt;Payload&gt;): SagaBuilder&lt;Payload&gt;</p>
-    <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.</p>
-    <h3>Template Parameters</h3>
-<p><dt>&lt;Payload&gt;</dt><dd>The payload the action and the saga will take. If void, no action is expected.<br />This template variable is optional.</dd></p>
-    <h3>Parameters</h3>
-<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ObjectiveStore.</dd><p>
-    <h3>Returns</h3>
-    <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.</dd></p>
-    
-  </section>
-  
-
-  <section>
     <h2 class="code">createActionName</h2>
     <p class="code">protected createActionName(name: string|null = null): string</p>
     <p>Generates a unique, default action name.</p>
@@ -138,6 +124,20 @@ have adverse affects on the application.</p>
 <p><dt>name: string|null = null</dt><dd>The name of the action or null to generate a unique, default action name.</dd><p>
     <h3>Returns</h3>
     <p><dt>string</dt><dd>An action name.</dd></p>
+    
+  </section>
+  
+
+  <section>
+    <h2 class="code">createSagaAction</h2>
+    <p class="code">protected createSagaAction&lt;Payload&gt;(sagaFn: SagaFn&lt;Payload&gt;): SagaBuilder&lt;Payload&gt;</p>
+    <p>Creates an instance of a [[SagaBuilder]] that will be registered when the builder finishes.</p>
+    <h3>Template Parameters</h3>
+<p><dt>&lt;Payload&gt;</dt><dd>The payload the action and the saga will take. If void, no action is expected.<br />This template variable is optional.</dd></p>
+    <h3>Parameters</h3>
+<p><dt>sagaFn: SagaFn&lt;Payload&gt;</dt><dd>The saga function to add to the ObjectiveStore.</dd><p>
+    <h3>Returns</h3>
+    <p><dt>SagaBuilder<Payload></dt><dd>A builder that registers the saga.</dd></p>
     
   </section>
   
@@ -306,7 +306,7 @@ objectiveStore.dispatch(myAction);</code></pre>
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.29.0 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 1.0.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>

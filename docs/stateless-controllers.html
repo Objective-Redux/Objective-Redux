@@ -115,7 +115,7 @@ export class SwitchStateSagas extends StatelessController {
     return 'Switch-State-Sagas';
   }
 
-  toggleSwitch = this.buildComplexAction(
+  toggleSwitch = this.createSagaAction(
     function* () {
       const switchController = yield getControllerFromSagaContext(SwitchStateController);
       yield switchController.toggleSwitch();
@@ -133,7 +133,7 @@ export class SwitchStateSagas extends StatelessController {
   <footer>
     <div class="left">
       <div class="padded">
-        <p>Documentation for v 0.29.0 | &copy; Copyright 2021 by Jason Mace.</p>
+        <p>Documentation for v 1.0.0 | &copy; Copyright 2021 by Jason Mace.</p>
       </div>
     </div>
   </footer>

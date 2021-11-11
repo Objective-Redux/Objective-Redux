@@ -10,6 +10,8 @@
 
 Make organizing and managing your Redux store easy.
 
+<p style="font-size: 1.2em"><br /><b>Version 1.0 now available!</b></p>
+
 <br />
 
 <br />
