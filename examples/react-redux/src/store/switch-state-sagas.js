@@ -30,7 +30,7 @@ export class SwitchStateSagas extends StatelessController {
     }
   }
 
-  toggleSwitch = this.buildComplexAction(function* () {
+  toggleSwitch = this.createSagaAction(function* () {
     const objectiveStore = yield getObjectiveStoreFromSagaContext();
     const testCanary = yield getContext('test');
     if (testCanary !== 'Some Value') {

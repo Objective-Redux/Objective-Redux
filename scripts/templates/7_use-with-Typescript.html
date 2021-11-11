@@ -46,13 +46,13 @@ class ThemeStateController extends StateController&lt;ThemeState&gt; {
 
 <pre><code class="language-typescript">
 class MyStatelessController extends StatelessController {
-  public foo = this.buildComplexAction(
+  public foo = this.createSagaAction(
     function* (action: { type: string; payload?: string }) {
       //
     }
   ).register();
 
-  public bar = this.buildComplexAction(
+  public bar = this.createSagaAction(
     function* () {
       //
     }
