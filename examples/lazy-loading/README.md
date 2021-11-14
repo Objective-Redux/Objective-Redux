@@ -8,4 +8,4 @@ This example waits for an action to be fired. When that happens:
  - the store, recognizing the controller is being targeted, initialized the controller
  - the action is dispatched and reduced by the controller
 
- This is accomplished by using `React.lazy` and a `preDispatchHook` exposed by Objective-Redux. See the [index.jsx file](./src/index.jsx).
+ This is accomplished by using `React.lazy` and a `preDispatchHook` exposed by Objective Redux. See the [index.jsx file](./src/index.jsx).

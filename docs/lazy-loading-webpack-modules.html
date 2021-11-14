@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Objective-Redux Documentation</title>
+  <title>Objective Redux Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans&family=Ubuntu:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs.css">
   <link rel="stylesheet" href="prism.css">
@@ -69,11 +69,11 @@
       <div class="padded">
         <h1>Lazy Loading Webpack Modules</h1>
 
-<p>Objective-Redux makes it simple to dynamically load webpack modules, connect their controllers, and fire actions.</p>
+<p>Objective Redux makes it simple to dynamically load webpack modules, connect their controllers, and fire actions.</p>
 
 <p><img src="https://github.com/Objective-Redux/Objective-Redux/raw/main/statics/pre-dispatch-hook.png" alt="Load bundles at runtime when an action targets a controller in the bundle" style="height: 200px;" /></p>
 
-<p>For example, suppose that you want to render a modal when the user clicks on a button, but you don't want to include the modal and its associated controllers on page load. Objective-Redux can listen to the action the button fires, load the webpack module that handles the action, then handle the action normally.</p>
+<p>For example, suppose that you want to render a modal when the user clicks on a button, but you don't want to include the modal and its associated controllers on page load. Objective Redux can listen to the action the button fires, load the webpack module that handles the action, then handle the action normally.</p>
 
 <p>As a pre-requisite, you'll need to <a href="./code-splitting.html">code split</a> the controller(s) that will be bundled and targeted separately.</p>
 
@@ -145,14 +145,14 @@
 
 <ol>
   <li>The webpack bundle is loaded</li>
-  <li>The Objective-Redux controllers in the bundle are registered</li>
+  <li>The Objective Redux controllers in the bundle are registered</li>
   <li>The controller handling the action is instantiated (its reducers are connected/sagas are run)</li>
   <li>The action is fired</li>
 </ol>
 
 <p>See the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/main/examples/lazy-loading">working example</a> in the <a href="https://github.com/Objective-Redux/Objective-Redux">public GitHub repository</a>.</p>
 
-<p>For an example implementation using Objective-Redux to lazy-load React components and Controllers, see the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/main/examples/lazy-loading/src/PreDispatchManager.js">PreDispatchManage.js file</a> in the working example.</p>
+<p>For an example implementation using Objective Redux to lazy-load React components and Controllers, see the <a href="https://github.com/Objective-Redux/Objective-Redux/tree/main/examples/lazy-loading/src/PreDispatchManager.js">PreDispatchManage.js file</a> in the working example.</p>
 
       </div>
     </div>

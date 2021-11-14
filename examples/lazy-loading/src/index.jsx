@@ -21,7 +21,7 @@ import { PreDispatchManager } from './PreDispatchManager';
 // Action in the lazy-loaded bundle we want to target
 //
 // Note that the, when the page loads, the controller for this action is not present, yet.
-// Objective-Redux will see that the bundle needs to be loaded before the action can be
+// Objective Redux will see that the bundle needs to be loaded before the action can be
 // fired and handle the loading and setup.
 const lazyLoadedComponentAction = getActionNameForController('lazy', 'test');
 
@@ -38,7 +38,7 @@ const LazyComponent = preDispatchManager.watchForActionWithComponent(
 
 // Setup the ObjectiveStore
 //
-// We are connecting our pre-dispatch hook, which will allow Objective-Redux to do its
+// We are connecting our pre-dispatch hook, which will allow Objective Redux to do its
 // magic.
 const objectiveStore = new ObjectiveStore({
   preDispatchHook: preDispatchManager.loadComponentForAction.bind(preDispatchManager),
@@ -47,7 +47,7 @@ const objectiveStore = new ObjectiveStore({
 // Setup a function to fire our action in the lazy-loaded bundle
 //
 // This will fire an action that cannot be resolved until the lazy-loaded bundle has
-// been loaded and setup. When Objective-Redux sees this action fired, it will download
+// been loaded and setup. When Objective Redux sees this action fired, it will download
 // the bundle, setup the controllers, resolve the React.lazy component, and fire the
 // action.
 const action = createAction(lazyLoadedComponentAction);

@@ -16,7 +16,7 @@ export declare abstract class Controller {
     /**
      * Gets the unique name of the controller. By default, the name of the class.
      *
-     * The name of the controller should be globally unique for all Objective-Redux controllers in the application.
+     * The name of the controller should be globally unique for all Objective Redux controllers in the application.
      *
      * @returns The name of the state slice.
      */
@@ -124,7 +124,7 @@ export declare abstract class Controller {
      */
     static removeInstance<T extends Controller>(this: typeof Controller & ModelConstructor<T>, objectiveStore: ObjectiveStore): void;
     /**
-     * Allows the controller to be lazy loaded by actions triggered outside of Objective-Redux.
+     * Allows the controller to be lazy loaded by actions triggered outside of Objective Redux.
      *
      * In order for calls to be routed to the controller without using the controller directly, and thus to lazy-load
      * without using the controller directly, this needs to be used in conjunction with the method

@@ -32,7 +32,7 @@ interface RunSagaFn {
  * An object that handles injection of reducers into the Redux store that is managed by an ObjectiveStore.
  *
  * This can be used when middleware or another part of the application also needs to handle injection. For example,
- * this should be used when Redux-Injectors is being used with Objective-Redux.
+ * this should be used when Redux-Injectors is being used with Objective Redux.
  *
  * @example
  * ```typescript
@@ -86,9 +86,9 @@ export class ReducerInjector {
   /**
    * This function should not be called directly.
    *
-   * Sets the get function for retrieving the reducers internal to Objective-Redux.
+   * Sets the get function for retrieving the reducers internal to Objective Redux.
    *
-   * @param getObjectiveReduxReducers Function that can be called to get the reducers internal to Objective-Redux.
+   * @param getObjectiveReduxReducers Function that can be called to get the reducers internal to Objective Redux.
    * This only be used by the ObjectiveStore and should not be called directly.
    *
    * @example
@@ -120,7 +120,7 @@ export class ReducerInjector {
    * A function that can be used to get add additional reducers to the store.
    *
    * @returns A function that takes a map of reducers. The reducers are added to the initial reducers and the reducers
-   * internal to Objective-Redux, resulting in a final, combined reducer.
+   * internal to Objective Redux, resulting in a final, combined reducer.
    *
    * @example
    * ```typescript

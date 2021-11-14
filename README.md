@@ -81,7 +81,7 @@ In addition, you can take a look at the <a href="./examples">example apps</a> in
 
 <br />
 
-# Why use Objective-Redux?
+# Why use Objective Redux?
 
 <br />
 
@@ -89,7 +89,7 @@ In addition, you can take a look at the <a href="./examples">example apps</a> in
 
 ### Actions are a thing of the past&mdash; among other things
 
-Object-Redux largely removes the need for action names, actions, switch-statement-reducers, selectors, and dispatching. You just need to write the mutating functions. Objective-Redux can take it from there.
+Object Redux largely removes the need for action names, actions, switch-statement-reducers, selectors, and dispatching. You just need to write the mutating functions. Objective Redux can take it from there.
 
 ```typescript
   // Define your mutation and forget about the rest.
@@ -107,7 +107,7 @@ Object-Redux largely removes the need for action names, actions, switch-statemen
 
 ### No more global searches for action names
 
-Using Objective-Redux, your editor knows exactly where to find everything. That means you get intellisense, jump to definition, and more. Plus, your actions and reducer will never get out-of-sync.
+Using Objective Redux, your editor knows exactly where to find everything. That means you get intellisense, jump to definition, and more. Plus, your actions and reducer will never get out-of-sync.
 
 <p style="text-align: center;">
   <img src="./statics/debugging.png" alt="Debugging in VS Code" style="height: 500px;" />
@@ -119,7 +119,7 @@ Using Objective-Redux, your editor knows exactly where to find everything. That 
 
 ### Get the pieces of state you need, when you need them
 
-Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective-Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
+Stop wiring-up your reducers and sagas manually. And, for that matter, stop using large middleware package to help. Objective Redux will take care of it for you, and it will do it on demand, dynamically, at runtime. Your store no longer needs to know about what's in it, leaving you free to move parts around as needed.
 
 <img src="./statics/lazy.png" alt="Lazy load reducers and controller when you need them" style="height: 200px;" />
 
@@ -147,7 +147,7 @@ A slice of state never needs to know about what other slices are doing or how th
 
 ### No direct dependencies
 
-Objective-Redux only requires peer dependencies on [Redux](https://www.npmjs.com/package/redux) and [React](https://www.npmjs.com/package/react).
+Objective Redux only requires peer dependencies on [Redux](https://www.npmjs.com/package/redux) and [React](https://www.npmjs.com/package/react).
 
 Optionally, you can also add [Redux-Saga](https://www.npmjs.com/package/redux-saga) for StatelessControllers.
 
@@ -156,7 +156,7 @@ Optionally, you can also add [Redux-Saga](https://www.npmjs.com/package/redux-sa
 ## Keep your bundle small
 ### Lots of features, one small package
 
-Objective-Redux replaces many of the packages you're already using.
+Objective Redux replaces many of the packages you're already using.
 
 For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
 
@@ -166,7 +166,7 @@ For example, instead of React-Redux + Redux-Injectors + Redux-Toolkit
 +
 <a href="https://bundlephobia.com/result?p=redux-toolkit"><img src="https://badgen.net/bundlephobia/min/redux-toolkit" alt="redux-toolkit bundle size" /></a>
 
-you can simply use Objective-Redux
+you can simply use Objective Redux
 
 <a href="https://bundlephobia.com/result?p=objective-redux"><img src="https://badgen.net/bundlephobia/min/objective-redux" alt="objective-redux bundle size" /></a>
 
@@ -177,7 +177,7 @@ _Bundle sizes vary based on how much of the package is unused and how effectivel
 ## Compatible with React-Redux
 
 ### Migrate over time
-You can use Objective-Redux and React-Redux together. The ObjectiveStore is a decorated Redux store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.
+You can use Objective Redux and React-Redux together. The ObjectiveStore is a decorated Redux store object and can be used to `dispatch`, `subscribe`, `getState`, and even `replaceReducer`. Simply pass the ObjectiveStore to the React-Redux provider and use it normally.
 
 See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-react-redux.html">Use with React-Redux</a> topic in the documentation for more.
 
@@ -187,4 +187,4 @@ See the <a href="https://objective-redux.github.io/Objective-Redux/use-with-reac
 
 ### Inject properties or use hooks
 
-You can connect your components to Objective-Redux to inject props from the store. Or, skip the connection process and use React hooks, instead.
+You can connect your components to Objective Redux to inject props from the store. Or, skip the connection process and use React hooks, instead.

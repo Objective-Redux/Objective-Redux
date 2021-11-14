@@ -39,7 +39,7 @@ export class PreDispatchManager {
    * Adds a webpack module with a React component that needs to be lazily-loaded when
    * an action with the value of actionType is fired.
    *
-   * @param actionType The name of the action for which Objective-Redux will watch.
+   * @param actionType The name of the action for which Objective Redux will watch.
    * @param importFn A function to import the webpack module.
    * @returns A React.lazy component instance.
    */

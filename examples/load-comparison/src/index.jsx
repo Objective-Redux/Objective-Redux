@@ -221,7 +221,7 @@ ReactDOM.render(
       <h1>Load Testing Tool</h1>
       <div style={{ border: '1px solid #000', margin: '75px', padding: '75px 50px' }}>
         <h2>
-          {USE_OBJECTIVE_REDUX ? 'Objective-Redux' : 'React-Redux'}
+          {USE_OBJECTIVE_REDUX ? 'Objective Redux' : 'React-Redux'}
           :&nbsp;
           {USE_HOOKS ? 'Hook Components' : 'Connected Components'}
         </h2>

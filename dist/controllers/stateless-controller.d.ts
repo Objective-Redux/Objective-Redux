@@ -35,7 +35,7 @@ export declare class SagaBuilder<Payload> {
     /**
      * Adds a watcher to the saga.
      *
-     * Objective-Redux provides some build in configurations, or custom one can be built by using the below paradigm.
+     * Objective Redux provides some build in configurations, or custom one can be built by using the below paradigm.
      *
      * @example
      * ```typescript
