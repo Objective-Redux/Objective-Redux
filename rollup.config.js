@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ObjectiveStoreProviderContext = void 0;
 // ================================================================================================
 //                                          OBJECTIVE REDUX
 //                                  Redux made better, objectively.
@@ -10,8 +7,34 @@ exports.ObjectiveStoreProviderContext = void 0;
 // This project is provided under the terms of the MIT license. The license details can be found in
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
-var React = require("react");
-/**
- * @internal
- */
-exports.ObjectiveStoreProviderContext = React.createContext(null);
+
+import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import pkgJson from './package.json';
+
+const input = 'src/index.ts';
+const plugins = [
+  typescript(),
+  nodeResolve(),
+  commonjs(),
+];
+
+export default [
+  {
+    input,
+    output: {
+      file: pkgJson.main,
+      format: 'cjs',
+    },
+    plugins,
+  },
+  {
+    input,
+    output: {
+      file: pkgJson.module,
+      format: 'esm',
+    },
+    plugins,
+  },
+];
