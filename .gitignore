@@ -3,5 +3,6 @@
 **/.*.*
 coverage/
 cypress/
+dist/
 **/node_modules/
 examples/**/build
