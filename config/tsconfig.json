@@ -18,6 +18,7 @@
     "allowJs": true,
     "checkJs": true,
     "baseUrl": "./",
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true
   }
 }
