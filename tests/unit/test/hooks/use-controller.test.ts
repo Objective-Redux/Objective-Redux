@@ -10,14 +10,16 @@
 
 const forceUpdate = jest.fn();
 const useReducer = jest.fn(() => [null, forceUpdate]);
-const useMemo = jest.fn((fn: any) => fn());
-const useEffect = jest.fn();
 
 jest.mock('react', () => ({
   useReducer,
-  useMemo,
-  useEffect,
   createContext: jest.fn(),
+}));
+
+const useSyncExternalStoreWithSelector = jest.fn();
+
+jest.mock('use-sync-external-store/with-selector', () => ({
+  useSyncExternalStoreWithSelector,
 }));
 
 const registerStateController = jest.fn();
@@ -95,17 +97,31 @@ describe('use-controller', () => {
     expect(controller).toBeInstanceOf(TestStateController);
 
     const { mock: { calls: [[reducingFn]] } } = useReducer as any;
-    const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
+    const {
+      mock: {
+        calls: [
+          [
+            subFn,
+            getFn,
+            serverGetFn,
+            selectorFn,
+          ],
+        ],
+      },
+    } = useSyncExternalStoreWithSelector as any;
+
+    const unsubFn = subFn();
+    unsubFn();
+
     expect(reducingFn(0)).toEqual(1);
     expect(subscribe).toBeCalled();
-    expect(watchParams).toEqual([registerMock]);
-
-    unmountFn()();
     expect(unsubscribe).toBeCalled();
 
     const { mock: { calls: [[, getSlice, update]] } } = HookSubscriber as any;
 
     expect(getSlice()).toEqual(stateValue);
+    expect(selectorFn((getFn()))).toEqual(stateValue);
+    expect(selectorFn((serverGetFn()))).toEqual(stateValue);
 
     update();
     expect(forceUpdate).toHaveBeenCalled();
@@ -117,18 +133,31 @@ describe('use-controller', () => {
     expect(controller).toBeInstanceOf(TestStatelessController);
 
     const { mock: { calls: [[reducingFn]] } } = useReducer as any;
-    const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
+    const {
+      mock: {
+        calls: [
+          [
+            subFn,
+            getFn,
+            serverGetFn,
+            selectorFn,
+          ],
+        ],
+      },
+    } = useSyncExternalStoreWithSelector as any;
+
+    const unsubFn = subFn();
+    unsubFn();
+
     expect(reducingFn(0)).toEqual(1);
     expect(subscribe).toBeCalled();
-    expect(watchParams).toEqual([registerMock]);
-
-    unmountFn()();
     expect(unsubscribe).toBeCalled();
 
     const { mock: { calls: [[, getSlice, update]] } } = HookSubscriber as any;
 
     expect(getSlice()).toEqual(0);
-    expect(getSlice()).toEqual(1);
+    expect(selectorFn((getFn()))).toEqual(0);
+    expect(selectorFn((serverGetFn()))).toEqual(0);
 
     update();
     expect(forceUpdate).toHaveBeenCalled();

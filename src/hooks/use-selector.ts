@@ -8,11 +8,8 @@
 // the LICENSE file, found in the project's root directory.
 // ================================================================================================
 
-import {
-  useReducer,
-  useMemo,
-  useEffect,
-} from 'react';
+import { useReducer } from 'react';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/with-selector';
 import { HookSubscriber } from './hook-subscriber';
 import { useObjectiveStore } from './use-objective-store';
 
@@ -42,22 +39,22 @@ export const useSelector = <T>(selectorFn: (state: any) => T): any => {
     return null;
   }
 
-  const getSlice = (): T => selectorFn(objectiveStore.getState());
+  const getSlice = (): T => objectiveStore.getState();
 
-  const subscription = useMemo(
-    () => new HookSubscriber(
-      objectiveStore,
-      getSlice,
-      forceUpdate
-    ),
-    [objectiveStore]
+  useSyncExternalStoreWithSelector(
+    () => {
+      const sub = new HookSubscriber(
+        objectiveStore,
+        () => selectorFn(getSlice()),
+        forceUpdate
+      );
+      sub.subscribe();
+      return sub.unsubscribe.bind(sub);
+    },
+    getSlice,
+    getSlice,
+    selectorFn
   );
-  subscription.subscribe();
 
-  useEffect(
-    () => subscription.unsubscribe.bind(subscription),
-    [objectiveStore]
-  );
-
-  return getSlice();
+  return selectorFn(getSlice());
 };

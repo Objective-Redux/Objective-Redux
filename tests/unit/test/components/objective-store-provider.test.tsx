@@ -9,24 +9,26 @@
 // ================================================================================================
 
 import * as React from 'react';
-import { configure, shallow } from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
-import { ObjectiveStoreProvider } from '../../../../src';
+import { render, screen } from '../../utils';
+import { ObjectiveStore, ObjectiveStoreProvider, useObjectiveStore } from '../../../../src';
 
-configure({ adapter: new Adapter() });
+const TestComponent = (): any => {
+  const store = useObjectiveStore();
+  expect(store).toBeInstanceOf(ObjectiveStore);
+
+  return <p>TEST</p>;
+};
 
 describe('objective-store-provider', () => {
   describe('create provider', () => {
     it('should render a provider and children components', () => {
-      const child = <div />;
-      const objectiveStore: any = {};
-      const wrapper = shallow(
+      const objectiveStore = new ObjectiveStore();
+      render(
         <ObjectiveStoreProvider objectiveStore={objectiveStore}>
-          {child}
+          <TestComponent />
         </ObjectiveStoreProvider>
       );
-      expect(wrapper.find('div')).toHaveLength(1);
-      expect(wrapper.prop('value')).toBe(objectiveStore);
+      screen.findByText('TEST');
     });
   });
 });

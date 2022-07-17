@@ -19,7 +19,7 @@
   ],
   "homepage": "https://objective-redux.github.io/Objective-Redux/",
   "scripts": {
-    "build": "npm run transpile && cd examples/react-redux && npm i && cd ../lazy-loading && npm i && cd ../server-side-rendering && npm i",
+    "build": "npm run transpile && cd examples/react-redux && npm i --force && cd ../lazy-loading && npm i && cd ../server-side-rendering && npm i",
     "docs": "node scripts/generate-docs.js",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=4096\"; ./node_modules/.bin/eslint \"**/{.*,*}.{js,jsx,ts,tsx}\" --config ./config/.eslintrc.js",
     "lint-fix": "npm run lint -- --fix",
@@ -49,7 +49,7 @@
   "author": "Jason Mace (https://github.com/jmace01)",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">= 16.8.0",
+    "react": "16 >= 16.8.0 || ^17.0.0  || ^18.0.0",
     "redux": "^4.0.0"
   },
   "optionalDependencies": {
@@ -58,15 +58,13 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.3",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@testing-library/react": "^13.3.0",
     "@types/jest": "^26.0.23",
-    "@types/react": "^16.9.35",
+    "@types/react": "^18.0.6",
+    "@types/use-sync-external-store": "^0.0.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
     "cypress": "^8.4.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^7.32.0",
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-filenames": "^1.3.2",
@@ -76,8 +74,8 @@
     "eslint-plugin-react": "^7.24.0",
     "jest": "^27.0.4",
     "marked": "^4.0.10",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
     "rollup": "^2.63.0",
@@ -86,5 +84,8 @@
     "ts-jest": "^27.0.3",
     "typedoc": "^0.17.7",
     "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "use-sync-external-store": "^1.0.0"
   }
 }

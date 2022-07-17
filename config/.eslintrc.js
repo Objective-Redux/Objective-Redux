@@ -500,6 +500,8 @@ const typescriptRules = {
       devDependencies: [
         '**/*.test.ts',
         '**/*.test.tsx',
+        '**/tests/unit/utils/*.ts',
+        '**/tests/unit/utils/*.tsx',
       ],
       optionalDependencies: true,
       peerDependencies: true,

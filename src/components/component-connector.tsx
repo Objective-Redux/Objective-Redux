@@ -9,12 +9,11 @@
 // ================================================================================================
 
 import * as React from 'react';
-import { Unsubscribe } from 'redux';
 import { Controller, ModelConstructor } from '../controllers/controller';
-import { ObjectiveStoreProviderContext } from '../context';
-import { ObjectiveStore } from '../store/objective-store';
 import { StateController } from '../controllers/state-controller';
-import { deepEquals } from '../helpers/deep-equals';
+import { useController } from '../hooks/use-controller';
+import { useObjectiveStore } from '../hooks/use-objective-store';
+import { useSelector } from '../hooks/use-selector';
 
 /**
  * @internal
@@ -110,98 +109,50 @@ export class ComponentConnector {
    *
    * @returns The connected React component.
    */
-  public connect(): React.ComponentClass<any> {
+  public connect(): any {
     const {
       controllers,
       stateSelectors,
       component: Component,
     } = this;
 
-    const connected = class extends React.Component {
-      public static override contextType = ObjectiveStoreProviderContext;
+    const connected = (props: any, ...otherParams: any): React.ReactElement => {
+      const {
+        children,
+        ...restOfProps
+      } = props;
+      let state = {};
+      const objectiveStore = useObjectiveStore();
 
-      public unsubscribe: Unsubscribe|null = null;
-
-      private mounted: boolean;
-
-      private existingState: any;
-
-      public static displayName: string = 'ComponentConnector';
-
-      public constructor(props: any) {
-        super(props);
-        this.unsubscribe = null;
-        this.mounted = false;
-        this.existingState = null;
-      }
-
-      public override render(): JSX.Element|null {
-        // Render can be called even though the component is unmounted.
-        // In that case, return null so that nothing is rendered.
-        if (!this.unsubscribe && this.mounted) {
-          return null;
-        }
-
-        const objectiveStore: ObjectiveStore = this.context;
-
-        // This will happen on this initial render of the component
-        /* istanbul ignore else */
-        if (this.existingState === null) {
-          this.existingState = this.getState();
-        }
-
-        return (
-          <Component
-            {...this.existingState}
-            {...this.props}
-            {...{ objectiveStore }}
-          />
-        );
-      }
-
-      private getState(): any {
-        const { context } = this;
-        /* istanbul ignore next */
-        const state = context?.getState();
-        let selectedState = {};
-        for (let i = 0; i < controllers.length; i++) {
-          const slice = (controllers[i].controller as any).getInstance(this.context).getStateSlice();
-          selectedState = {
-            ...selectedState,
-            ...controllers[i].selector(slice),
+      controllers.forEach(controller => {
+        const instance = useController(controller.controller);
+        if (instance) {
+          state = {
+            ...state,
+            ...controller.selector(instance.getStateSlice()),
           };
         }
-        for (let i = 0; i < stateSelectors.length; i++) {
-          selectedState = {
-            ...selectedState,
-            ...stateSelectors[i](state),
-          };
-        }
-        return selectedState;
-      }
+      });
 
-      public override componentDidMount(): void {
-        const objectiveStore: ObjectiveStore = this.context;
-        this.unsubscribe = objectiveStore.subscribe(this.handleChange.bind(this));
-        this.mounted = true;
-      }
+      stateSelectors.forEach(selector => {
+        state = {
+          ...state,
+          ...useSelector(selector),
+        };
+      });
 
-      public override componentWillUnmount(): void {
-        if (this.unsubscribe) {
-          this.unsubscribe();
-          this.unsubscribe = null;
-        }
-      }
+      const finalState = {
+        ...state,
+        ...restOfProps,
+        ...otherParams,
+        ...{ objectiveStore },
+      };
 
-      public handleChange(): void {
-        if (this.unsubscribe) {
-          const newState = this.getState();
-          if (!deepEquals(this.existingState, newState)) {
-            this.existingState = newState;
-            this.forceUpdate();
-          }
-        }
-      }
+      return (
+        <Component {...finalState}>
+          {children}
+        </Component>
+      );
     };
 
     /* istanbul ignore next */

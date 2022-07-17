@@ -19,7 +19,7 @@
     "next": "^9.5.5",
     "objective-redux": "file:../../",
     "react": "file:../../node_modules/react",
-    "react-dom": "^16.13.1",
+    "react-dom": "file:../../node_modules/react-dom",
     "redux": "4.1.2"
   }
 }
