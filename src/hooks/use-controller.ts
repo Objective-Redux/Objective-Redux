@@ -10,9 +10,8 @@
 
 import {
   useReducer,
-  useMemo,
-  useEffect,
 } from 'react';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/with-selector';
 import { Controller, ModelConstructor } from '../controllers/controller';
 import { HookSubscriber } from './hook-subscriber';
 import { useObjectiveStore } from './use-objective-store';
@@ -56,26 +55,25 @@ export const useController = <C extends Controller>(
 
   const instance: any = controller.getInstance(objectiveStore);
 
-  let i = 0;
-  let getSlice = (): number => i++;
+  let getSlice = (): number => 0;
 
   if (instance.getStateSlice) {
-    getSlice = (): any => selectorFn(instance.getStateSlice());
+    getSlice = (): any => instance.getStateSlice();
   }
 
-  const subscription = useMemo(
-    () => new HookSubscriber(
-      objectiveStore,
-      getSlice,
-      forceUpdate
-    ),
-    [objectiveStore]
-  );
-  subscription.subscribe();
-
-  useEffect(
-    () => subscription.unsubscribe.bind(subscription),
-    [objectiveStore]
+  useSyncExternalStoreWithSelector(
+    () => {
+      const sub = new HookSubscriber(
+        objectiveStore,
+        getSlice,
+        forceUpdate
+      );
+      sub.subscribe();
+      return sub.unsubscribe.bind(sub);
+    },
+    getSlice,
+    getSlice,
+    selectorFn
   );
 
   return instance;

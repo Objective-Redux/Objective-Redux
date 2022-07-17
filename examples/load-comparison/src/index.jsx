@@ -215,7 +215,7 @@ for (let i = 0; i < controllers.length; i++) {
   );
 }
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <ObjectiveStoreProvider objectiveStore={objectiveStore}>
     <Provider store={objectiveStore}>
       <h1>Load Testing Tool</h1>
@@ -287,8 +287,7 @@ ReactDOM.render(
         </div>
       </Profiler>
     </Provider>
-  </ObjectiveStoreProvider>,
-  document.getElementById('root')
+  </ObjectiveStoreProvider>
 );
 
 new Promise((resolve, reject) => {

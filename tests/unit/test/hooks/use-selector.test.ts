@@ -10,14 +10,15 @@
 
 const forceUpdate = jest.fn();
 const useReducer = jest.fn(() => [null, forceUpdate]);
-const useMemo = jest.fn((fn: any) => fn());
-const useEffect = jest.fn();
+const useSyncExternalStoreWithSelector = jest.fn();
 
 jest.mock('react', () => ({
   useReducer,
-  useMemo,
-  useEffect,
   createContext: jest.fn(),
+}));
+
+jest.mock('use-sync-external-store/with-selector', () => ({
+  useSyncExternalStoreWithSelector,
 }));
 
 const getState = (): any => ({ foo: { bar: 'baz' } });
@@ -56,17 +57,30 @@ describe('use-selector', () => {
     const state = useSelector(s => ({ bar: s.foo.bar }));
 
     const { mock: { calls: [[reducingFn]] } } = useReducer as any;
-    const { mock: { calls: [[unmountFn, watchParams]] } } = useEffect as any;
+    const {
+      mock: {
+        calls: [
+          [
+            subFn,
+            getFn,
+            serverGetFn,
+            selectorFn,
+          ],
+        ],
+      },
+    } = useSyncExternalStoreWithSelector as any;
+    const unsubFn = subFn();
     expect(reducingFn(0)).toEqual(1);
     expect(subscribe).toBeCalled();
-    expect(watchParams).toEqual([objectiveStoreMock]);
 
-    unmountFn()();
+    unsubFn();
     expect(unsubscribe).toBeCalled();
 
     const { mock: { calls: [[, getSlice, update]] } } = HookSubscriber as any;
 
     expect(state).toEqual({ bar: 'baz' });
+    expect(selectorFn(getFn())).toEqual({ bar: 'baz' });
+    expect(selectorFn(serverGetFn())).toEqual({ bar: 'baz' });
     expect(getSlice()).toEqual({ bar: 'baz' });
 
     update();

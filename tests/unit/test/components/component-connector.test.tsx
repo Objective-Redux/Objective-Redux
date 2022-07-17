@@ -9,52 +9,46 @@
 // ================================================================================================
 
 import * as React from 'react';
-import { configure, mount } from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
-import { ObjectiveStoreProvider, ComponentConnector } from '../../../../src';
-
-configure({ adapter: new Adapter() });
-
-const mockState = { T: 'test' };
-const unsubscribe = jest.fn();
-const subscribe = jest.fn(() => unsubscribe);
-const getState = jest.fn(() => mockState);
-
-const objectiveStoreMock: any = {
-  subscribe,
-  getState,
-};
+import { render, screen } from '../../utils';
+import {
+  ObjectiveStoreProvider,
+  ComponentConnector,
+  ObjectiveStore,
+  StateController,
+  ReducerInjector,
+} from '../../../../src';
 
 class ConnectedTest extends React.Component {
   public override render(): React.ReactChild {
-    return <div />;
+    const content = JSON.stringify(
+      this.props,
+      Object.keys(this.props).sort()
+    );
+
+    return (
+      <div>
+        {content}
+      </div>
+    );
   }
 }
 
-class SliceOne {
-  public static getInstance(): any {
-    return new SliceOne();
-  }
-
-  public getStateSlice(): any {
-    return {
+class SliceOne extends StateController<any> {
+  protected constructor() {
+    super({
       a: 'A',
       b: 'B1',
       c: 'C1',
-    };
+    });
   }
 }
 
-class SliceTwo {
-  public static getInstance(): any {
-    return new SliceTwo();
-  }
-
-  public getStateSlice(): any {
-    return {
+class SliceTwo extends StateController<any> {
+  protected constructor() {
+    super({
       b: 'B2',
       c: 'C2',
-    };
+    });
   }
 }
 
@@ -67,73 +61,55 @@ describe('component-connector', () => {
       .fromState(state => ({ T: state.T }))
       .connect();
 
-    const wrapper = mount(
-      <ObjectiveStoreProvider objectiveStore={objectiveStoreMock}>
+    const injector = new ReducerInjector();
+    injector.getReducerCreationFn()(({ T: () => 'test' }));
+
+    const objectiveStore = new ObjectiveStore({
+      injector,
+    });
+
+    render(
+      <ObjectiveStoreProvider objectiveStore={objectiveStore}>
         <Connected />
       </ObjectiveStoreProvider>
     );
 
-    expect(wrapper.find('div')).toHaveLength(1);
-
-    const connectedComponent = wrapper.find('ConnectedTest');
-    expect(connectedComponent).toHaveLength(1);
-    expect(connectedComponent.props()).toEqual({
-      objectiveStore: objectiveStoreMock,
+    const expectedObj = {
+      objectiveStore: objectiveStore,
       a: 'A',
       b: 'B2',
       c: 'C1',
       foo: 'C2',
       T: 'test',
-    });
+    };
 
-    expect(subscribe).toHaveBeenCalled();
-    (subscribe.mock.calls as any)[0][0]();
+    screen.findByText(
+      JSON.stringify(
+        expectedObj,
+        Object.keys(expectedObj).sort()
+      )
+    );
   });
 
-  it('unmounts properly', () => {
+  it('Ignores connection with no store', () => {
     const Connected = ComponentConnector
       .addPropsTo(ConnectedTest)
+      .fromController(SliceOne as any)
+      .fromController(SliceTwo as any, (slice: any) => ({ b: slice.b, foo: slice.c }))
+      .fromState(state => ({ T: state.T }))
       .connect();
 
-    const wrapper = mount(
-      <ObjectiveStoreProvider objectiveStore={objectiveStoreMock}>
-        <Connected />
-      </ObjectiveStoreProvider>
+    render(
+      <Connected />
     );
 
-    wrapper.unmount();
-    expect(unsubscribe).toHaveBeenCalled();
-  });
+    const expectedObj = {};
 
-  it('does not update unless forced', () => {
-    const Connected: any = ComponentConnector
-      .addPropsTo(ConnectedTest)
-      .connect();
-
-    const instance: any = new Connected({ foo: 'bar' });
-    instance.unsubscribe = null;
-    instance.mounted = true;
-    instance.forceUpdate = null;
-
-    instance.handleChange();
-    instance.componentWillUnmount();
-
-    expect(instance.render()).toBeNull();
-  });
-
-  it('handleChange triggers only when state data has changed', () => {
-    const Connected: any = ComponentConnector
-      .addPropsTo(ConnectedTest)
-      .connect();
-
-    const instance: any = new Connected({ foo: 'bar' });
-    instance.unsubscribe = jest.fn();
-    instance.mounted = true;
-    instance.forceUpdate = jest.fn();
-    instance.getState = (): any => ({ a: 1 });
-
-    instance.handleChange();
-
-    expect(instance.forceUpdate).toBeCalledTimes(1);
+    screen.findByText(
+      JSON.stringify(
+        expectedObj,
+        Object.keys(expectedObj).sort()
+      )
+    );
   });
 });
