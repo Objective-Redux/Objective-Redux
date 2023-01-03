@@ -16,7 +16,7 @@
     "cross-env": "^7.0.3"
   },
   "dependencies": {
-    "next": "^9.5.5",
+    "next": "^13.1.1",
     "objective-redux": "file:../../",
     "react": "file:../../node_modules/react",
     "react-dom": "file:../../node_modules/react-dom",
