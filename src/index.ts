@@ -15,6 +15,7 @@ export { StatelessController } from './controllers/stateless-controller';
 export { createAction, getActionNameForController } from './helpers/action';
 export { ObjectiveStoreProvider } from './components/objective-store-provider';
 export { ComponentConnector } from './components/component-connector';
+export { useActionToLoadComponent } from './hooks/use-action-to-load-component';
 export { getObjectiveStoreFromSagaContext } from './hooks/get-objective-store-from-saga-context';
 export { getControllerFromSagaContext } from './hooks/get-controller-from-saga-context';
 export { useObjectiveStore } from './hooks/use-objective-store';

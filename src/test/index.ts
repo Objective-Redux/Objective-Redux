@@ -17,6 +17,7 @@ import { StatelessController } from '../controllers/stateless-controller';
 import { createAction, getActionNameForController } from '../helpers/action';
 import { ObjectiveStoreProvider } from '../components/objective-store-provider';
 import { ComponentConnector } from '../components/component-connector';
+import { useActionToLoadComponent } from '../hooks/use-action-to-load-component';
 import { getObjectiveStoreFromSagaContext } from '../hooks/get-objective-store-from-saga-context';
 import { getControllerFromSagaContext } from '../hooks/get-controller-from-saga-context';
 import { useObjectiveStore } from '../hooks/use-objective-store';
@@ -43,6 +44,7 @@ export const actual = {
   ComponentConnector,
   getObjectiveStoreFromSagaContext,
   getControllerFromSagaContext,
+  useActionToLoadComponent,
   useObjectiveStore,
   useController,
   useSelector,

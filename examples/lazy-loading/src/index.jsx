@@ -15,8 +15,8 @@ import {
   ObjectiveStoreProvider,
   createAction,
   getActionNameForController,
+  useActionToLoadComponent,
 } from 'objective-redux';
-import { PreDispatchManager } from './PreDispatchManager';
 
 // Action in the lazy-loaded bundle we want to target
 //
@@ -25,24 +25,8 @@ import { PreDispatchManager } from './PreDispatchManager';
 // fired and handle the loading and setup.
 const lazyLoadedComponentAction = getActionNameForController('lazy', 'test');
 
-// Setup the pre-dispatch hook using an example implementation.
-//
-// There are many ways you can setup the lazy-loading maps. The PreDispatchManager,
-// defined in the PreDispatchManage.js class of this example, shows one approach.
-const preDispatchManager = new PreDispatchManager();
-
-const LazyComponent = preDispatchManager.watchForActionWithComponent(
-  lazyLoadedComponentAction,
-  () => import(/* webpackChunkName: "lazy" */ './lazy-module')
-);
-
 // Setup the ObjectiveStore
-//
-// We are connecting our pre-dispatch hook, which will allow Objective Redux to do its
-// magic.
-const objectiveStore = new ObjectiveStore({
-  preDispatchHook: preDispatchManager.loadComponentForAction.bind(preDispatchManager),
-});
+const objectiveStore = new ObjectiveStore();
 
 // Setup a function to fire our action in the lazy-loaded bundle
 //
@@ -55,16 +39,31 @@ const load = () => {
   objectiveStore.dispatch(action());
 };
 
+// Our initially rendered components
+const MainComponent = () => {
+  // The hook to setup lazy loading
+  const LazyComponent = useActionToLoadComponent(
+    lazyLoadedComponentAction,
+    () => import(/* webpackChunkName: "lazy" */ './lazy-module')
+  );
+
+  return (
+    <>
+      <Suspense fallback={<div>Click the button</div>}>
+        <LazyComponent />
+      </Suspense>
+      <button onClick={load} id="load-bundle">Click Me</button>
+    </>
+  );
+};
+
 // Output the page
 const applicationRoot = document.createElement('div');
 applicationRoot.id = 'appMain';
 document.body.appendChild(applicationRoot);
 ReactDOM.render(
   <ObjectiveStoreProvider objectiveStore={objectiveStore}>
-    <Suspense fallback={<div>Click the button</div>}>
-      <LazyComponent />
-    </Suspense>
-    <button onClick={load} id="load-bundle">Click Me</button>
+    <MainComponent />
   </ObjectiveStoreProvider>,
   applicationRoot
 );

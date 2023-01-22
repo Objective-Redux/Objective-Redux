@@ -25,6 +25,7 @@ import { LazyLoader } from './lazy-loader';
 import { ReducerInjector, defaultReducer } from './reducer-injector';
 import { lazyLoadingMiddleware } from './lazy-loading-middleware';
 import { preDispatchHookMiddleware } from './pre-dispatch-hook-middleware';
+import { PreDispatchWatcher } from './pre-dispatch-watcher';
 
 /**
  * @internal
@@ -100,6 +101,8 @@ export class ObjectiveStore {
 
   private readonly registeredSagas: any = {};
 
+  private readonly preDispatchWatcher: PreDispatchWatcher;
+
   /**
    * Creates an instance of the ObjectiveStore.
    *
@@ -163,9 +166,24 @@ export class ObjectiveStore {
       }
     );
 
+    this.preDispatchWatcher = new PreDispatchWatcher();
+
+    const wrappedPreDispatchHook = (action: Action<any>): any => {
+      const internalResult = this.preDispatchWatcher.loadComponentForAction(action);
+      const userProvidedResult = preDispatchHook(action);
+      const promises = [];
+      if (internalResult?.then) {
+        promises.push(internalResult);
+      }
+      if (userProvidedResult?.then) {
+        promises.push(userProvidedResult);
+      }
+      return Promise.all(promises);
+    };
+
     const reduxSaga = getReduxSagaModule();
     const internalMiddleware: any[] = [
-      preDispatchHookMiddleware(preDispatchHook),
+      preDispatchHookMiddleware(wrappedPreDispatchHook),
       lazyLoadingMiddleware(this),
     ];
 
@@ -387,5 +405,17 @@ export class ObjectiveStore {
     }
 
     placement[name].push(task);
+  }
+
+  /**
+   * Watched for an action and, when it is fired, imports the bundle and returns the React component.
+   *
+   * @param actionType The name of the action for which to watch.
+   * @param importFn The bundle importing function.
+   * @returns A lazy loading component from React.
+   * @internal
+   */
+  public watchForActionWithComponent(actionType: string, importFn: () => Promise<any>): any {
+    return this.preDispatchWatcher.watchForActionWithComponent(actionType, importFn);
   }
 }

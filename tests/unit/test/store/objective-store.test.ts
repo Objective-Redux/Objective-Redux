@@ -60,6 +60,15 @@ jest.mock('../../../../src/store/pre-dispatch-hook-middleware', () => ({
   preDispatchHookMiddleware,
 }));
 
+const loadComponentForAction = jest.fn(() => Promise.resolve());
+const watchForActionWithComponent = jest.fn();
+jest.mock('../../../../src/store/pre-dispatch-watcher', () => ({
+  PreDispatchWatcher: jest.fn().mockImplementation(() => ({
+    loadComponentForAction,
+    watchForActionWithComponent,
+  })),
+}));
+
 const setContext = jest.fn();
 jest.mock('redux-saga', () => ({ default: createSagaMiddleware }));
 jest.mock('redux-saga/effects', () => ({ setContext }));
@@ -122,7 +131,7 @@ describe('objective-store', () => {
         setGetObjectiveReduxReducers: setGetObjectiveReduxReducersMock,
         setSagaRunningFn: setSagaRunningFnMock,
       };
-      const preDispatchHook = (): Promise<any> => Promise.resolve();
+      const preDispatchHook = jest.fn(() => Promise.resolve());
       const composeMiddlewareFn = compose;
 
       const expectedMiddleware = [
@@ -148,7 +157,14 @@ describe('objective-store', () => {
           objectiveStore,
         },
       });
-      expect(preDispatchHookMiddleware).toBeCalledWith(preDispatchHook);
+
+      const { mock: { calls: [wrappedHookFn] } } = preDispatchHookMiddleware;
+      (wrappedHookFn as any)[0]({ type: 'foo' });
+
+      loadComponentForAction.mockImplementation((() => null) as any);
+      preDispatchHook.mockImplementation((() => null) as any);
+      (wrappedHookFn as any)[0]({ type: 'bar' });
+
       expect(applyMiddleware).toBeCalledWith(...expectedMiddleware);
       expect((createStore.mock.calls[0] as any)[1]).toEqual(initialState);
       expect((createStore.mock.calls[0] as any)[2]).toEqual([
@@ -390,5 +406,13 @@ describe('objective-store', () => {
     };
     const objectiveStore: any = new ObjectiveStore();
     objectiveStore.cancelSagasForController(controller);
+  });
+
+  it('watches for an action with component', () => {
+    const objectiveStore = new ObjectiveStore();
+    const action = 'foo';
+    const fn = (): Promise<any> => Promise.resolve();
+    objectiveStore.watchForActionWithComponent(action, fn);
+    expect(watchForActionWithComponent).toBeCalledWith(action, fn);
   });
 });
